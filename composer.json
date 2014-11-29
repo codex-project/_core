@@ -1,0 +1,21 @@
+{
+    "name": "codexproject/core",
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
+    "license": "MIT",
+    "require": {
+        "laravel/framework": "~4.2",
+        "erusev/parsedown": "~1.0",
+        "guzzlehttp/guzzle": "~5.0",
+        "kzykhys/git": "1.0.x-dev"
+    },
+    "autoload": {
+        "classmap" : [
+            "src/controllers"
+        ],
+        "psr-0": {
+            "Codexproject\\Core": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
