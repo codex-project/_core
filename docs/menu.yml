@@ -1,0 +1,65 @@
+menu:
+  - name: Overview
+    icon: fa fa-eye
+    document: index
+
+  - name: Preface
+    icon: fa fa-eye
+    children:
+      - name: Download
+        document: preface/download
+
+      - name: License
+        document: preface/license
+
+  - name: Getting Started
+    icon: fa fa-coffee
+    children:
+      - name: Installation
+        document: getting-started/installation
+
+      - name: Configuration
+        document: getting-started/configuration
+
+      - name: Creating a project
+        document: getting-started/creating-a-project
+
+  - name: Hooks
+    icon: fa fa-coffee
+    children:
+      - name: Adding hooks
+        document: usage/creating-a-theme
+
+      - name: Creating a hook
+        document: usage/loading-theme-views
+
+  - name: Filters
+    icon: fa fa-coffee
+    children:
+      - name: Adding filters
+        document: usage/creating-a-theme
+
+      - name: Creating a hook
+        document: usage/loading-theme-views
+
+  - name: Themes
+    icon: fa fa-coffee
+    children:
+      - name: Creating a theme
+        document: usage/creating-a-theme
+
+      - name: Loading views
+        document: usage/loading-theme-views
+
+
+
+
+  - name: Links
+    icon: fa fa-link
+    children:
+      - name: Github
+        href: https://github.com/laradic/themes
+      - name: Packagist
+        href: http://packagist.org/laradic/themes
+      - name: Jenkins
+        href: http://radic.nl:8080/job/laradic-themes
