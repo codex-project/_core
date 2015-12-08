@@ -1,9 +1,10 @@
 'use strict';
 
 var _redefineProperty = require('./define-property')._redefineProperty;
+var utils = require("../utils");
 
 function apply() {
-  if (!('registerElement' in global.document)) {
+  if (utils.isWebWorker() || !('registerElement' in global.document)) {
     return;
   }
 
@@ -20,7 +21,7 @@ function apply() {
       callbacks.forEach(function (callback) {
         if (opts.prototype.hasOwnProperty(callback)) {
           var descriptor = Object.getOwnPropertyDescriptor(opts.prototype, callback);
-          if (descriptor.value) {
+          if (descriptor && descriptor.value) {
             descriptor.value = global.zone.bind(descriptor.value);
             _redefineProperty(opts.prototype, callback, descriptor);
           } else {

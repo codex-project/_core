@@ -48,15 +48,41 @@ function patchSetClearFunction(obj, fnNames) {
   });
 };
 
+
+/**
+ * requestAnimationFrame is typically recursively called from within the callback function
+ * that it executes.  To handle this case, only fork a zone if this is executed
+ * within the root zone.
+ */
+function patchRequestAnimationFrame(obj, fnNames) {
+  fnNames.forEach(function (name) {
+    var delegate = obj[name];
+    if (delegate) {
+      global.zone[name] = function (fn) {
+        var callZone = global.zone.isRootZone() ? global.zone.fork() : global.zone;
+        if (fn) {
+          arguments[0] = function () {
+            return callZone.run(fn, this, arguments);
+          };
+        }
+        return delegate.apply(obj, arguments);
+      };
+
+      obj[name] = function () {
+        return global.zone[name].apply(this, arguments);
+      };
+    }
+  });
+};
+
 function patchSetFunction(obj, fnNames) {
   fnNames.forEach(function (name) {
     var delegate = obj[name];
 
     if (delegate) {
       global.zone[name] = function (fn) {
-        var fnRef = fn;
         arguments[0] = function () {
-          return fnRef.apply(this, arguments);
+          return fn.apply(this, arguments);
         };
         var args = utils.bindArgumentsOnce(arguments);
         return delegate.apply(obj, args);
@@ -86,5 +112,6 @@ function patchFunction(obj, fnNames) {
 module.exports = {
   patchSetClearFunction: patchSetClearFunction,
   patchSetFunction: patchSetFunction,
+  patchRequestAnimationFrame: patchRequestAnimationFrame,
   patchFunction: patchFunction
 };

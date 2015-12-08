@@ -1,6 +1,6 @@
 (function() {
 
-	if (typeof self === 'undefined' || !self.Prism || !self.document) {
+	if (typeof self === 'undefined' || !self.Prism || !self.document || !Function.prototype.bind) {
 		return;
 	}
 
@@ -45,13 +45,14 @@
 	 * @param {string[]|string=} supportedLanguages Aliases of the languages this previewer must be enabled for. Defaults to "*", all languages.
 	 * @constructor
 	 */
-	var Previewer = function (type, updater, supportedLanguages) {
+	var Previewer = function (type, updater, supportedLanguages, initializer) {
 		this._elt = null;
 		this._type = type;
 		this._clsRegexp = RegExp('(?:^|\\s)' + type + '(?=$|\\s)');
 		this._token = null;
 		this.updater = updater;
 		this._mouseout = this.mouseout.bind(this);
+		this.initializer = initializer;
 
 		var self = this;
 
@@ -72,6 +73,7 @@
 				Previewer.byLanguages[lang].push(self);
 			}
 		});
+		Previewer.byType[type] = this;
 	};
 
 	/**
@@ -84,6 +86,9 @@
 		this._elt = document.createElement('div');
 		this._elt.className = 'prism-previewer prism-previewer-' + this._type;
 		document.body.appendChild(this._elt);
+		if(this.initializer) {
+			this.initializer();
+		}
 	};
 
 	/**
@@ -91,11 +96,15 @@
 	 * @param token
 	 */
 	Previewer.prototype.check = function (token) {
-		if (tokenRegexp.test(token.className) && this._clsRegexp.test(token.className)) {
-			if (token !== this._token) {
-				this._token = token;
-				this.show();
+		do {
+			if (tokenRegexp.test(token.className) && this._clsRegexp.test(token.className)) {
+				break;
 			}
+		} while(token = token.parentNode);
+
+		if (token && token !== this._token) {
+			this._token = token;
+			this.show();
 		}
 	};
 
@@ -153,6 +162,12 @@
 	 * @type {{}}
 	 */
 	Previewer.byLanguages = {};
+
+	/**
+	 * Map of all registered previewers by type
+	 * @type {{}}
+	 */
+	Previewer.byType = {};
 
 	/**
 	 * Initializes the mouseover event on the code block.

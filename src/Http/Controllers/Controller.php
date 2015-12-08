@@ -1,9 +1,9 @@
 <?php
 namespace Docit\Core\Http\Controllers;
 
-use App\Http\Controllers\Controller as BaseController;
 use Docit\Core\Contracts\Factory;
 use Docit\Core\Contracts\Menus\MenuFactory;
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**

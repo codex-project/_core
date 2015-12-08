@@ -1,4 +1,9 @@
-var _ = require('./index')
+import { warn } from './debug'
+import { resolveAsset } from './options'
+import { getAttr, getBindAttr } from './dom'
+import { isArray, isPlainObject } from './lang'
+
+export const commonTagRE = /^(div|p|span|img|a|b|i|br|ul|ol|li|h1|h2|h3|h4|h5|h6|code|pre|table|th|td|tr|form|label|input|select|option|nav|article|section|header|footer)$/
 
 /**
  * Check if an element is a component, if yes return its
@@ -6,49 +11,74 @@ var _ = require('./index')
  *
  * @param {Element} el
  * @param {Object} options
- * @return {String|undefined}
+ * @return {Object|undefined}
  */
 
-exports.commonTagRE = /^(div|p|span|img|a|br|ul|ol|li|h1|h2|h3|h4|h5|code|pre)$/
-exports.checkComponent = function (el, options) {
+export function checkComponentAttr (el, options) {
   var tag = el.tagName.toLowerCase()
-  if (tag === 'component') {
-    // dynamic syntax
-    var exp = el.getAttribute('is')
-    el.removeAttribute('is')
-    return exp
-  } else if (
-    !exports.commonTagRE.test(tag) &&
-    _.resolveAsset(options, 'components', tag)
-  ) {
-    return tag
-  /* eslint-disable no-cond-assign */
-  } else if (tag = _.attr(el, 'component')) {
-  /* eslint-enable no-cond-assign */
-    return tag
+  var hasAttrs = el.hasAttributes()
+  if (!commonTagRE.test(tag) && tag !== 'component') {
+    if (resolveAsset(options, 'components', tag)) {
+      return { id: tag }
+    } else {
+      var is = hasAttrs && getIsBinding(el)
+      if (is) {
+        return is
+      } else if (process.env.NODE_ENV !== 'production') {
+        if (
+          tag.indexOf('-') > -1 ||
+          (
+            /HTMLUnknownElement/.test(el.toString()) &&
+            // Chrome returns unknown for several HTML5 elements.
+            // https://code.google.com/p/chromium/issues/detail?id=540526
+            !/^(data|time|rtc|rb)$/.test(tag)
+          )
+        ) {
+          warn(
+            'Unknown custom element: <' + tag + '> - did you ' +
+            'register the component correctly?'
+          )
+        }
+      }
+    }
+  } else if (hasAttrs) {
+    return getIsBinding(el)
+  }
+}
+
+/**
+ * Get "is" binding from an element.
+ *
+ * @param {Element} el
+ * @return {Object|undefined}
+ */
+
+function getIsBinding (el) {
+  // dynamic syntax
+  var exp = getAttr(el, 'is')
+  if (exp != null) {
+    return { id: exp }
+  } else {
+    exp = getBindAttr(el, 'is')
+    if (exp != null) {
+      return { id: exp, dynamic: true }
+    }
   }
 }
 
 /**
  * Set a prop's initial value on a vm and its data object.
- * The vm may have inherit:true so we need to make sure
- * we don't accidentally overwrite parent value.
  *
  * @param {Vue} vm
  * @param {Object} prop
  * @param {*} value
  */
 
-exports.initProp = function (vm, prop, value) {
-  if (exports.assertProp(prop, value)) {
-    var key = prop.path
-    if (key in vm) {
-      _.define(vm, key, value, true)
-    } else {
-      vm[key] = value
-    }
-    vm._data[key] = value
-  }
+export function initProp (vm, prop, value) {
+  const key = prop.path
+  vm[key] = vm._data[key] = assertProp(prop, value)
+    ? value
+    : undefined
 }
 
 /**
@@ -58,7 +88,7 @@ exports.initProp = function (vm, prop, value) {
  * @param {*} value
  */
 
-exports.assertProp = function (prop, value) {
+export function assertProp (prop, value) {
   // if a prop is not provided and is not required,
   // skip the check.
   if (prop.raw === null && !prop.required) {
@@ -83,16 +113,16 @@ exports.assertProp = function (prop, value) {
       valid = typeof value === 'function'
     } else if (type === Object) {
       expectedType = 'object'
-      valid = _.isPlainObject(value)
+      valid = isPlainObject(value)
     } else if (type === Array) {
       expectedType = 'array'
-      valid = _.isArray(value)
+      valid = isArray(value)
     } else {
       valid = value instanceof type
     }
   }
   if (!valid) {
-    process.env.NODE_ENV !== 'production' && _.warn(
+    process.env.NODE_ENV !== 'production' && warn(
       'Invalid prop: type check failed for ' +
       prop.path + '="' + prop.raw + '".' +
       ' Expected ' + formatType(expectedType) +
@@ -103,7 +133,7 @@ exports.assertProp = function (prop, value) {
   var validator = options.validator
   if (validator) {
     if (!validator.call(null, value)) {
-      process.env.NODE_ENV !== 'production' && _.warn(
+      process.env.NODE_ENV !== 'production' && warn(
         'Invalid prop: custom validator check failed for ' +
         prop.path + '="' + prop.raw + '"'
       )

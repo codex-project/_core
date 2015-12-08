@@ -50,7 +50,7 @@ module.exports = (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=ty
             b0 = b; e0 = b;
     l1 = l; b1 = b; e1 = e;
     end = e;
-    eventHandler.clearValidation(input);
+    eventHandler.reset(input);
   }
 
   this.getOffendingToken = function(e)
@@ -4341,7 +4341,7 @@ var Rules = {
         { name: 'JSONChar', token: 'string' }
     ]
 };
-
+    
 exports.JSONiqLexer = function(){ return new Lexer(JSONiqTokenizer, Rules); };
 },
 {"./JSONiqTokenizer":1,"./lexer":3}],
@@ -4351,12 +4351,12 @@ exports.JSONiqLexer = function(){ return new Lexer(JSONiqTokenizer, Rules); };
 var TokenHandler = function(code) {
     var input = code;
     this.tokens = [];
-
+ 
     this.reset = function() {
         input = input;
         this.tokens = [];
     };
-
+    
     this.startNonterminal = function() {};
     this.endNonterminal = function() {};
 
@@ -4378,21 +4378,21 @@ var TokenHandler = function(code) {
 exports.Lexer = function(Tokenizer, Rules) {
 
     this.tokens = [];
-
+  
     this.getLineTokens = function(line, state) {
         state = (state === 'start' || !state) ? '["start"]' : state;
         var stack = JSON.parse(state);
         var h = new TokenHandler(line);
         var tokenizer = new Tokenizer(line, h);
         var tokens = [];
-
+    
         while(true) {
             var currentState = stack[stack.length - 1];
             try {
                 h.tokens = [];
                 tokenizer['parse_' + currentState]();
                 var info = null;
-
+        
                 if(h.tokens.length > 1 && h.tokens[0].name === 'WS') {
                     tokens.push({
                         type: 'text',
@@ -4400,7 +4400,7 @@ exports.Lexer = function(Tokenizer, Rules) {
                     });
                     h.tokens.splice(0, 1);
                 }
-
+        
                 var token = h.tokens[0];
                 var rules  = Rules[currentState];
                 for(var k = 0; k < rules.length; k++) {
@@ -4410,19 +4410,19 @@ exports.Lexer = function(Tokenizer, Rules) {
                         break;
                     }
                 }
-
+        
                 if(token.name === 'EOF') { break; }
                 if(token.value === '') { throw 'Encountered empty string lexical rule.'; }
-
+        
                 tokens.push({
                     type: info === null ? 'text' : (typeof(info.token) === 'function' ? info.token(token.value) : info.token),
                     value: token.value
                 });
-
+        
                 if(info && info.next) {
                     info.next(stack);
                 }
-
+      
             } catch(e) {
                 if(e instanceof tokenizer.ParseException) {
                     var index = 0;

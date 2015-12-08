@@ -153,7 +153,7 @@ const Alert = (($) => {
           event.preventDefault()
         }
 
-        alertInstance.hide(this)
+        alertInstance.close(this)
       }
     }
 

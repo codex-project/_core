@@ -16,7 +16,7 @@ var SnippetManager = function() {
 
 (function() {
     oop.implement(this, EventEmitter);
-
+    
     this.getTokenizer = function() {
         function TabstopToken(str, _, stack) {
             str = str.substr(1);
@@ -239,7 +239,7 @@ var SnippetManager = function() {
         var line = editor.session.getLine(cursor.row);
         var tabString = editor.session.getTabString();
         var indentString = line.match(/^\s*/)[0];
-
+        
         if (cursor.column < indentString.length)
             indentString = indentString.slice(0, cursor.column);
 
@@ -271,7 +271,7 @@ var SnippetManager = function() {
                 return;
 
             var value = tokens.slice(i + 1, i1);
-            var isNested = value.some(function(t) {return typeof t === "object"});
+            var isNested = value.some(function(t) {return typeof t === "object"});          
             if (isNested && !ts.value) {
                 ts.value = value;
             } else if (value.length && (!ts.value || typeof ts.value !== "string")) {
@@ -305,7 +305,7 @@ var SnippetManager = function() {
                     expanding[id] = null;
                 continue;
             }
-
+            
             var ts = tabstops[id];
             var arg = typeof ts.value == "string" ? [ts.value] : copyValue(ts.value);
             arg.unshift(i + 1, Math.max(0, i1 - i));
@@ -340,16 +340,16 @@ var SnippetManager = function() {
         var selectionId = editor.inVirtualSelectionMode && editor.selection.index;
         tabstopManager.addTabstops(tabstops, range.start, end, selectionId);
     };
-
+    
     this.insertSnippet = function(editor, snippetText) {
         var self = this;
         if (editor.inVirtualSelectionMode)
             return self.insertSnippetForSelection(editor, snippetText);
-
+        
         editor.forEachSelection(function() {
             self.insertSnippetForSelection(editor, snippetText);
         }, null, {keepOrder: true});
-
+        
         if (editor.tabstopManager)
             editor.tabstopManager.tabNext();
     };
@@ -358,7 +358,7 @@ var SnippetManager = function() {
         var scope = editor.session.$mode.$id || "";
         scope = scope.split("/").pop();
         if (scope === "html" || scope === "php") {
-            if (scope === "php" && !editor.session.$mode.inlinePhp)
+            if (scope === "php" && !editor.session.$mode.inlinePhp) 
                 scope = "html";
             var c = editor.getCursorPosition();
             var state = editor.session.getState(c.row);
@@ -374,7 +374,7 @@ var SnippetManager = function() {
                     scope = "php";
             }
         }
-
+        
         return scope;
     };
 
@@ -398,7 +398,7 @@ var SnippetManager = function() {
             editor.tabstopManager.tabNext();
         return result;
     };
-
+    
     this.expandSnippetForSelection = function(editor, options) {
         var cursor = editor.getCursorPosition();
         var line = editor.session.getLine(cursor.row);
@@ -454,10 +454,10 @@ var SnippetManager = function() {
         var snippetMap = this.snippetMap;
         var snippetNameMap = this.snippetNameMap;
         var self = this;
-
-        if (!snippets)
+        
+        if (!snippets) 
             snippets = [];
-
+        
         function wrapRegexp(src) {
             if (src && !/^\^?\(.*\)\$?$|^\\b$/.test(src))
                 src = "(?:" + src + ")";
@@ -502,7 +502,10 @@ var SnippetManager = function() {
                     s.guard = "\\b";
                 s.trigger = lang.escapeRegExp(s.tabTrigger);
             }
-
+            
+            if (!s.trigger && !s.guard && !s.endTrigger && !s.endGuard)
+                return;
+            
             s.startRe = guardedRegexp(s.trigger, s.guard, true);
             s.triggerRe = new RegExp(s.trigger, "", true);
 
@@ -514,7 +517,7 @@ var SnippetManager = function() {
             addSnippet(snippets);
         else if (Array.isArray(snippets))
             snippets.forEach(addSnippet);
-
+        
         this._signal("registerSnippets", {scope: scope});
     };
     this.unregister = function(snippets, scope) {
@@ -731,9 +734,9 @@ var TabstopManager = function(editor) {
         ts = this.tabstops[this.index];
         if (!ts || !ts.length)
             return;
-
+        
         this.selectedTabstop = ts;
-        if (!this.editor.inVirtualSelectionMode) {
+        if (!this.editor.inVirtualSelectionMode) {        
             var sel = this.editor.multiSelect;
             sel.toSingleRange(ts.firstNonLinked.clone());
             for (var i = ts.length; i--;) {
@@ -746,7 +749,7 @@ var TabstopManager = function(editor) {
         } else {
             this.editor.selection.setRange(ts.firstNonLinked);
         }
-
+        
         this.editor.keyBinding.addKeyboardHandler(this.keyboardHandler);
     };
     this.addTabstops = function(tabstops, start, end) {
@@ -765,7 +768,7 @@ var TabstopManager = function(editor) {
         var ranges = this.ranges;
         tabstops.forEach(function(ts, index) {
             var dest = this.$openTabstops[index] || ts;
-
+                
             for (var i = ts.length; i--;) {
                 var p = ts[i];
                 var range = Range.fromPoints(p.start, p.end || p.start);
@@ -792,7 +795,7 @@ var TabstopManager = function(editor) {
             }
             this.addTabstopMarkers(dest);
         }, this);
-
+        
         if (arg.length > 2) {
             if (this.tabstops.length)
                 arg.push(arg.splice(2, 1)[0]);
@@ -860,7 +863,7 @@ changeTracker.setPosition = function(row, column) {
 };
 changeTracker.update = function(pos, delta, $insertRight) {
     this.$insertRight = $insertRight;
-    this.pos = pos;
+    this.pos = pos; 
     this.onChange(delta);
 };
 
@@ -1313,7 +1316,7 @@ var Autocomplete = function() {
         this.popup.setData(this.completions.filtered);
 
         editor.keyBinding.addKeyboardHandler(this.keyboardHandler);
-
+        
         var renderer = editor.renderer;
         this.popup.setRow(this.autoSelect ? 0 : -1);
         if (!keepPopupPosition) {
@@ -1368,7 +1371,7 @@ var Autocomplete = function() {
 
     this.blurListener = function(e) {
         var el = document.activeElement;
-        var text = this.editor.textInput._getValidationControl();
+        var text = this.editor.textInput.getElement();
         var fromTooltip = e.relatedTarget && e.relatedTarget == this.tooltipNode;
         var container = this.popup && this.popup.container;
         if (el != text && el.parentNode != container && !fromTooltip
@@ -1706,7 +1709,7 @@ exports.FilteredList = FilteredList;
 
 define("ace/autocomplete/text_completer",["require","exports","module","ace/range"], function(require, exports, module) {
     var Range = require("../range").Range;
-
+    
     var splitRegex = /[^a-zA-Z_0-9\$\-\u00C0-\u1FFF\u2C00-\uD7FF\w]+/;
 
     function getWordIndex(doc, pos) {
@@ -1717,7 +1720,7 @@ define("ace/autocomplete/text_completer",["require","exports","module","ace/rang
         var prefixPos = getWordIndex(doc, pos);
         var words = doc.getValue().split(splitRegex);
         var wordScores = Object.create(null);
-
+        
         var currentWord = words[prefixPos];
 
         words.forEach(function(word, idx) {
@@ -1931,3 +1934,4 @@ require("../config").defineOptions(Editor.prototype, "editor", {
                 (function() {
                     window.require(["ace/ext/language_tools"], function() {});
                 })();
+            

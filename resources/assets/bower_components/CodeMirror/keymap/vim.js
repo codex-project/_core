@@ -1214,7 +1214,7 @@
         var originalScrollPos = cm.getScrollInfo();
         function handleQuery(query, ignoreCase, smartCase) {
           vimGlobalState.searchHistoryController.pushInput(query);
-          vimGlobalState.searchHistoryController.clearValidation();
+          vimGlobalState.searchHistoryController.reset();
           try {
             updateSearchQuery(cm, query, ignoreCase, smartCase);
           } catch (e) {
@@ -1244,7 +1244,7 @@
             close(query);
           } else {
             if ( keyName != 'Left' && keyName != 'Right' && keyName != 'Ctrl' && keyName != 'Alt' && keyName != 'Shift')
-              vimGlobalState.searchHistoryController.clearValidation();
+              vimGlobalState.searchHistoryController.reset();
           }
           var parsedQuery;
           try {
@@ -1265,7 +1265,7 @@
           if (keyName == 'Esc' || keyName == 'Ctrl-C' || keyName == 'Ctrl-[' ||
               (keyName == 'Backspace' && query == '')) {
             vimGlobalState.searchHistoryController.pushInput(query);
-            vimGlobalState.searchHistoryController.clearValidation();
+            vimGlobalState.searchHistoryController.reset();
             updateSearchQuery(cm, originalQuery);
             clearSearchHighlight(cm);
             cm.scrollTo(originalScrollPos.left, originalScrollPos.top);
@@ -1332,7 +1332,7 @@
           // Give the prompt some time to close so that if processCommand shows
           // an error, the elements don't overlap.
           vimGlobalState.exCommandHistoryController.pushInput(input);
-          vimGlobalState.exCommandHistoryController.clearValidation();
+          vimGlobalState.exCommandHistoryController.reset();
           exCommandDispatcher.processCommand(cm, input);
         }
         function onPromptKeyDown(e, input, close) {
@@ -1340,7 +1340,7 @@
           if (keyName == 'Esc' || keyName == 'Ctrl-C' || keyName == 'Ctrl-[' ||
               (keyName == 'Backspace' && input == '')) {
             vimGlobalState.exCommandHistoryController.pushInput(input);
-            vimGlobalState.exCommandHistoryController.clearValidation();
+            vimGlobalState.exCommandHistoryController.reset();
             CodeMirror.e_stop(e);
             clearInputState(cm);
             close();
@@ -1356,7 +1356,7 @@
             close('');
           } else {
             if ( keyName != 'Left' && keyName != 'Right' && keyName != 'Ctrl' && keyName != 'Alt' && keyName != 'Shift')
-              vimGlobalState.exCommandHistoryController.clearValidation();
+              vimGlobalState.exCommandHistoryController.reset();
           }
         }
         if (command.type == 'keyToEx') {

@@ -1,5 +1,7 @@
 'use strict';
 
+var keys = require('./keys');
+
 function Zone(parentZone, data) {
   var zone = (arguments.length) ? Object.create(parentZone) : this;
 
@@ -119,7 +121,13 @@ Zone.prototype = {
   onZoneCreated: function () {},
   afterTask: function () {},
   enqueueTask: function () {},
-  dequeueTask: function () {}
+  dequeueTask: function () {},
+  addEventListener: function () {
+    return this[keys.common.addEventListener].apply(this, arguments);
+  },
+  removeEventListener: function () {
+    return this[keys.common.removeEventListener].apply(this, arguments);
+  }
 };
 
 // Root zone ID === 1

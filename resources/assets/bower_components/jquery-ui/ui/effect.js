@@ -804,7 +804,7 @@ $.effects.animateClass = function( value, duration, easing, callback ) {
 
 		// map all animated objects again - calculate new styles and diff
 		allAnimations = allAnimations.map(function() {
-			this.end = getElementStyles( this.e[ 0 ] );
+			this.end = getElementStyles( this.el[ 0 ] );
 			this.diff = styleDifference( this.start, this.end );
 			return this;
 		});
@@ -823,7 +823,7 @@ $.effects.animateClass = function( value, duration, easing, callback ) {
 					}
 				});
 
-			this.e.animate( this.diff, opts );
+			this.el.animate( this.diff, opts );
 			return dfd.promise();
 		});
 
@@ -836,7 +836,7 @@ $.effects.animateClass = function( value, duration, easing, callback ) {
 			// for each animated element,
 			// clear all css properties that were animated
 			$.each( arguments, function() {
-				var el = this.e;
+				var el = this.el;
 				$.each( this.diff, function(key) {
 					el.css( key, "" );
 				});

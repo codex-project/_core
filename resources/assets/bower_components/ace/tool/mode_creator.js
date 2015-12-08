@@ -241,7 +241,7 @@ var logEditor;
 function log(e) {
     console.log(e);
     if (!logEditor) {
-        logEditor = util.aceCreateEditor(document.getElementById("consoleEditor"));
+        logEditor = util.createEditor(document.getElementById("consoleEditor"));
         logEditor.session.setMode("ace/mode/javascript");
         logEditor.session.setUseWorker(false);
     }

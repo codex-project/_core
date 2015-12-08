@@ -2875,7 +2875,7 @@ $.widget( "ui.autocomplete", {
 						if ( !this.isMultiLine ) {
 							this._value( this.term );
 						}
-						this.hide( event );
+						this.close( event );
 						// Different browsers have different default behavior for escape
 						// Single press can mean undo or clear
 						// Double press in IE means clear the whole form
@@ -2937,7 +2937,7 @@ $.widget( "ui.autocomplete", {
 				}
 
 				clearTimeout( this.searching );
-				this.hide( event );
+				this.close( event );
 				this._change( event );
 			}
 		});
@@ -2977,7 +2977,7 @@ $.widget( "ui.autocomplete", {
 							if ( event.target !== that.element[ 0 ] &&
 									event.target !== menuElement &&
 									!$.contains( menuElement, event.target ) ) {
-								that.hide();
+								that.close();
 							}
 						});
 					});
@@ -3039,7 +3039,7 @@ $.widget( "ui.autocomplete", {
 				// this allows custom select handling to work properly
 				this.term = this._value();
 
-				this.hide( event );
+				this.close( event );
 				this.selectedItem = item;
 			}
 		});
@@ -8416,7 +8416,7 @@ var dialog = $.widget( "ui.dialog", {
 				if ( this.options.closeOnEscape && !event.isDefaultPrevented() && event.keyCode &&
 						event.keyCode === $.ui.keyCode.ESCAPE ) {
 					event.preventDefault();
-					this.hide( event );
+					this.close( event );
 					return;
 				}
 
@@ -8491,7 +8491,7 @@ var dialog = $.widget( "ui.dialog", {
 		this._on( this.uiDialogTitlebarClose, {
 			click: function( event ) {
 				event.preventDefault();
-				this.hide( event );
+				this.close( event );
 			}
 		});
 
@@ -10140,7 +10140,7 @@ $.effects.animateClass = function( value, duration, easing, callback ) {
 
 		// map all animated objects again - calculate new styles and diff
 		allAnimations = allAnimations.map(function() {
-			this.end = getElementStyles( this.e[ 0 ] );
+			this.end = getElementStyles( this.el[ 0 ] );
 			this.diff = styleDifference( this.start, this.end );
 			return this;
 		});
@@ -10159,7 +10159,7 @@ $.effects.animateClass = function( value, duration, easing, callback ) {
 					}
 				});
 
-			this.e.animate( this.diff, opts );
+			this.el.animate( this.diff, opts );
 			return dfd.promise();
 		});
 
@@ -10172,7 +10172,7 @@ $.effects.animateClass = function( value, duration, easing, callback ) {
 			// for each animated element,
 			// clear all css properties that were animated
 			$.each( arguments, function() {
-				var el = this.e;
+				var el = this.el;
 				$.each( this.diff, function(key) {
 					el.css( key, "" );
 				});
@@ -16468,7 +16468,7 @@ var tooltip = $.widget( "ui.tooltip", {
 				if ( event.keyCode === $.ui.keyCode.ESCAPE ) {
 					var fakeEvent = $.Event(event);
 					fakeEvent.currentTarget = target[0];
-					this.hide( fakeEvent, true );
+					this.close( fakeEvent, true );
 				}
 			}
 		};

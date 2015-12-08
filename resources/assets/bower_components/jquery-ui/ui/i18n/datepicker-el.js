@@ -12,7 +12,7 @@
 	}
 }(function( datepicker ) {
 
-datepicker.regional['e'] = {
+datepicker.regional['el'] = {
 	closeText: 'Κλείσιμο',
 	prevText: 'Προηγούμενος',
 	nextText: 'Επόμενος',
@@ -30,8 +30,8 @@ datepicker.regional['e'] = {
 	isRTL: false,
 	showMonthAfterYear: false,
 	yearSuffix: ''};
-datepicker.setDefaults(datepicker.regional['e']);
+datepicker.setDefaults(datepicker.regional['el']);
 
-return datepicker.regional['e'];
+return datepicker.regional['el'];
 
 }));

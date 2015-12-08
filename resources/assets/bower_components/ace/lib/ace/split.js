@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2010, Ajax.org B.V.
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -14,7 +14,7 @@
  *     * Neither the name of Ajax.org B.V. nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -39,7 +39,7 @@ var Editor = require("./editor").Editor;
 var Renderer = require("./virtual_renderer").VirtualRenderer;
 var EditSession = require("./edit_session").EditSession;
 
-/**
+/** 
  * @class Split
  *
  *
@@ -117,7 +117,7 @@ var Split = function(container, theme, splits) {
     };
 
     /**
-     *
+     * 
      * Returns the number of splits.
      * @returns {Number}
      **/
@@ -136,7 +136,7 @@ var Split = function(container, theme, splits) {
     };
 
     /**
-     *
+     * 
      * Returns the current editor.
      * @returns {Editor}
      **/
@@ -144,7 +144,7 @@ var Split = function(container, theme, splits) {
         return this.$cEditor;
     };
 
-    /**
+    /** 
      * Focuses the current editor.
      * @related Editor.focus
      **/
@@ -152,7 +152,7 @@ var Split = function(container, theme, splits) {
         this.$cEditor.focus();
     };
 
-    /**
+    /** 
      * Blurs the current editor.
      * @related Editor.blur
      **/
@@ -160,10 +160,10 @@ var Split = function(container, theme, splits) {
         this.$cEditor.blur();
     };
 
-    /**
-     *
+    /** 
+     * 
      * @param {String} theme The name of the theme to set
-     *
+     * 
      * Sets a theme for each of the available editors.
      * @related Editor.setTheme
      **/
@@ -173,10 +173,10 @@ var Split = function(container, theme, splits) {
         });
     };
 
-    /**
-     *
-     * @param {String} keybinding
-     *
+    /** 
+     * 
+     * @param {String} keybinding 
+     * 
      * Sets the keyboard handler for the editor.
      * @related editor.setKeyboardHandler
      **/
@@ -186,12 +186,12 @@ var Split = function(container, theme, splits) {
         });
     };
 
-    /**
-     *
+    /** 
+     * 
      * @param {Function} callback A callback function to execute
      * @param {String} scope The default scope for the callback
-     *
-     * Executes `callback` on all of the available editors.
+     * 
+     * Executes `callback` on all of the available editors. 
      *
      **/
     this.forEach = function(callback, scope) {
@@ -200,9 +200,9 @@ var Split = function(container, theme, splits) {
 
 
     this.$fontSize = "";
-    /**
+    /** 
      * @param {Number} size The new font size
-     *
+     * 
      * Sets the font size, in pixels, for all the available editors.
      *
      **/
@@ -240,11 +240,11 @@ var Split = function(container, theme, splits) {
         return s;
     };
 
-   /**
-     *
+   /** 
+     * 
      * @param {EditSession} session The new edit session
      * @param {Number} idx The editor's index you're interested in
-     *
+     * 
      * Sets a new [[EditSession `EditSession`]] for the indicated editor.
      * @related Editor.setSession
      **/
@@ -274,8 +274,8 @@ var Split = function(container, theme, splits) {
         return session;
     };
 
-   /**
-     *
+   /** 
+     * 
      * Returns the orientation.
      * @returns {Number}
      **/
@@ -283,8 +283,8 @@ var Split = function(container, theme, splits) {
         return this.$orientation;
     };
 
-   /**
-     *
+   /** 
+     * 
      * Sets the orientation.
      * @param {Number} orientation The new orientation value
      *
@@ -298,7 +298,7 @@ var Split = function(container, theme, splits) {
         this.resize();
     };
 
-   /**
+   /**  
      * Resizes the editor.
      **/
     this.resize = function() {
@@ -331,7 +331,7 @@ var Split = function(container, theme, splits) {
 
 }).call(Split.prototype);
 
-
+ 
 function UndoManagerProxy(undoManager, session) {
     this.$u = undoManager;
     this.$doc = session;
@@ -357,7 +357,7 @@ function UndoManagerProxy(undoManager, session) {
     };
 
     this.reset = function() {
-        this.$u.clearValidation();
+        this.$u.reset();
     };
 
     this.hasUndo = function() {

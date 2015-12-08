@@ -45,7 +45,7 @@ module.exports = (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=ty
             b0 = b; e0 = b;
     l1 = l; b1 = b; e1 = e;
     end = e;
-    eventHandler.clearValidation(input);
+    eventHandler.reset(input);
   }
 
   this.getOffendingToken = function(e)
@@ -1828,12 +1828,12 @@ XQueryTokenizer.TOKEN =
 var TokenHandler = function(code) {
     var input = code;
     this.tokens = [];
-
+ 
     this.reset = function() {
         input = input;
         this.tokens = [];
     };
-
+    
     this.startNonterminal = function() {};
     this.endNonterminal = function() {};
 
@@ -1855,21 +1855,21 @@ var TokenHandler = function(code) {
 exports.Lexer = function(Tokenizer, Rules) {
 
     this.tokens = [];
-
+  
     this.getLineTokens = function(line, state) {
         state = (state === 'start' || !state) ? '["start"]' : state;
         var stack = JSON.parse(state);
         var h = new TokenHandler(line);
         var tokenizer = new Tokenizer(line, h);
         var tokens = [];
-
+    
         while(true) {
             var currentState = stack[stack.length - 1];
             try {
                 h.tokens = [];
                 tokenizer['parse_' + currentState]();
                 var info = null;
-
+        
                 if(h.tokens.length > 1 && h.tokens[0].name === 'WS') {
                     tokens.push({
                         type: 'text',
@@ -1877,7 +1877,7 @@ exports.Lexer = function(Tokenizer, Rules) {
                     });
                     h.tokens.splice(0, 1);
                 }
-
+        
                 var token = h.tokens[0];
                 var rules  = Rules[currentState];
                 for(var k = 0; k < rules.length; k++) {
@@ -1887,19 +1887,19 @@ exports.Lexer = function(Tokenizer, Rules) {
                         break;
                     }
                 }
-
+        
                 if(token.name === 'EOF') { break; }
                 if(token.value === '') { throw 'Encountered empty string lexical rule.'; }
-
+        
                 tokens.push({
                     type: info === null ? 'text' : (typeof(info.token) === 'function' ? info.token(token.value) : info.token),
                     value: token.value
                 });
-
+        
                 if(info && info.next) {
                     info.next(stack);
                 }
-
+      
             } catch(e) {
                 if(e instanceof tokenizer.ParseException) {
                     var index = 0;
@@ -2060,7 +2060,7 @@ var Rules = {
         { name: 'QuotChar', token: 'string' }
     ]
 };
-
+    
 exports.XQueryLexer = function(){ return new Lexer(XQueryTokenizer, Rules); };
 },
 {"./XQueryTokenizer":1,"./lexer":2}]},{},[3])
@@ -2302,15 +2302,15 @@ var CstyleBehaviour = function() {
                 var line = session.doc.getLine(cursor.row);
                 var leftChar = line.substring(cursor.column-1, cursor.column);
                 var rightChar = line.substring(cursor.column, cursor.column + 1);
-
+                
                 var token = session.getTokenAt(cursor.row, cursor.column);
                 var rightToken = session.getTokenAt(cursor.row, cursor.column + 1);
                 if (leftChar == "\\" && token && /escape/.test(token.type))
                     return null;
-
+                
                 var stringBefore = token && /string|escape/.test(token.type);
                 var stringAfter = !rightToken || /string|escape/.test(rightToken.type);
-
+                
                 var pair;
                 if (rightChar == quote) {
                     pair = stringBefore !== stringAfter;
@@ -2353,7 +2353,7 @@ var CstyleBehaviour = function() {
 
 };
 
-
+    
 CstyleBehaviour.isSaneInsertion = function(editor, session) {
     var cursor = editor.getCursorPosition();
     var iterator = new TokenIterator(session, cursor.row, cursor.column);
@@ -2609,12 +2609,12 @@ function hasType(token, type) {
     });
     return hasType;
 }
-
+ 
   var XQueryBehaviour = function () {
-
+      
       this.inherit(CstyleBehaviour, ["braces", "parens", "string_dquotes"]); // Get string behaviour
       this.inherit(XmlBehaviour); // Get xml behaviour
-
+      
       this.add("autoclosing", "insertion", function (state, action, editor, session, text) {
         if (text == '>') {
             var position = editor.getCursorPosition();
@@ -2672,7 +2672,7 @@ var FoldMode = exports.FoldMode = function(commentRegex) {
 oop.inherits(FoldMode, BaseFoldMode);
 
 (function() {
-
+    
     this.foldingStartMarker = /(\{|\[)[^\}\]]*$|^\s*(\/\*)/;
     this.foldingStopMarker = /^[^\[\{]*(\}|\])|^[\s\*]*(\*\/)/;
     this.singleLineBlockCommentRe= /^\s*(\/\*).*\*\/\s*$/;
@@ -2681,42 +2681,42 @@ oop.inherits(FoldMode, BaseFoldMode);
     this._getFoldWidgetBase = this.getFoldWidget;
     this.getFoldWidget = function(session, foldStyle, row) {
         var line = session.getLine(row);
-
+    
         if (this.singleLineBlockCommentRe.test(line)) {
             if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
                 return "";
         }
-
+    
         var fw = this._getFoldWidgetBase(session, foldStyle, row);
-
+    
         if (!fw && this.startRegionRe.test(line))
             return "start"; // lineCommentRegionStart
-
+    
         return fw;
     };
 
     this.getFoldWidgetRange = function(session, foldStyle, row, forceMultiline) {
         var line = session.getLine(row);
-
+        
         if (this.startRegionRe.test(line))
             return this.getCommentRegionBlock(session, line, row);
-
+        
         var match = line.match(this.foldingStartMarker);
         if (match) {
             var i = match.index;
 
             if (match[1])
                 return this.openingBracketBlock(session, match[1], row, i);
-
+                
             var range = session.getCommentFoldRange(row, i + match[0].length, 1);
-
+            
             if (range && !range.isMultiLine()) {
                 if (forceMultiline) {
                     range = this.getSectionRange(session, row);
                 } else if (foldStyle != "all")
                     range = null;
             }
-
+            
             return range;
         }
 
@@ -2733,7 +2733,7 @@ oop.inherits(FoldMode, BaseFoldMode);
             return session.getCommentFoldRange(row, i, -1);
         }
     };
-
+    
     this.getSectionRange = function(session, row) {
         var line = session.getLine(row);
         var startIndent = line.search(/\S/);
@@ -2750,7 +2750,7 @@ oop.inherits(FoldMode, BaseFoldMode);
             if  (startIndent > indent)
                 break;
             var subRange = this.getFoldWidgetRange(session, "all", row);
-
+            
             if (subRange) {
                 if (subRange.start.row <= startRow) {
                     break;
@@ -2762,14 +2762,14 @@ oop.inherits(FoldMode, BaseFoldMode);
             }
             endRow = row;
         }
-
+        
         return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
     };
     this.getCommentRegionBlock = function(session, line, row) {
         var startColumn = line.search(/\s*$/);
         var maxRow = session.getLength();
         var startRow = row;
-
+        
         var re = /^\s*(?:\/\*|\/\/|--)#?(end)?region\b/;
         var depth = 1;
         while (++row < maxRow) {
@@ -2814,7 +2814,7 @@ var Mode = function() {
 oop.inherits(Mode, TextMode);
 
 (function() {
-
+    
     this.completer = {
         getCompletions: function(editor, session, pos, prefix, callback) {
             if (!session.$worker)
@@ -2833,14 +2833,14 @@ oop.inherits(Mode, TextMode);
             indent += tab;
         return indent;
     };
-
+    
     this.checkOutdent = function(state, line, input) {
         if (! /^\s+$/.test(line))
             return false;
 
         return (/^\s*[\}\)]/).test(input);
     };
-
+    
     this.autoOutdent = function(state, doc, row) {
         var line = doc.getLine(row);
         var match = line.match(/^(\s*[\}\)])/);
@@ -2878,27 +2878,27 @@ oop.inherits(Mode, TextMode);
             doc.replace(range, outdent ? line.match(re)[1] : "(:" + line + ":)");
         }
     };
-
+    
     this.createWorker = function(session) {
-
+        
       var worker = new WorkerClient(["ace"], "ace/mode/xquery_worker", "XQueryWorker");
         var that = this;
 
         worker.attachToDocument(session.getDocument());
-
+        
         worker.on("ok", function(e) {
           session.clearAnnotations();
         });
-
+        
         worker.on("markers", function(e) {
           session.clearAnnotations();
           that.addMarkers(e.data, session);
         });
-
+ 
         worker.on("highlight", function(tokens) {
           that.$tokenizer.tokens = tokens.data.tokens;
           that.$tokenizer.lines  = session.getDocument().getAllLines();
-
+          
           var rows = Object.keys(that.$tokenizer.tokens);
           for(var i=0; i < rows.length; i++) {
             var row = parseInt(rows[i]);
@@ -2907,7 +2907,7 @@ oop.inherits(Mode, TextMode);
             session.bgTokenizer.fireUpdateEvent(row, row);
           }
         });
-
+        
         return worker;
     };
 
@@ -2926,7 +2926,7 @@ oop.inherits(Mode, TextMode);
 
     this.addMarkers = function(annos, mySession) {
         var _self = this;
-
+        
         if (!mySession.markerAnchors) mySession.markerAnchors = [];
         this.removeMarkers(mySession);
         mySession.languageAnnos = [];
@@ -2935,7 +2935,7 @@ oop.inherits(Mode, TextMode);
             mySession.markerAnchors.push(anchor);
             var markerId;
             var colDiff = anno.pos.ec - anno.pos.sc;
-            var rowDiff = anno.pos.e - anno.pos.sl;
+            var rowDiff = anno.pos.el - anno.pos.sl;
             var gutterAnno = {
                 guttertext: anno.message,
                 type: anno.level || "warning",
@@ -2947,7 +2947,7 @@ oop.inherits(Mode, TextMode);
                     mySession.removeMarker(markerId);
                 gutterAnno.row = anchor.row;
                 if (anno.pos.sc !== undefined && anno.pos.ec !== undefined) {
-                    var range = new Range(anno.pos.sl, anno.pos.sc, anno.pos.e, anno.pos.ec);
+                    var range = new Range(anno.pos.sl, anno.pos.sc, anno.pos.el, anno.pos.ec);
                     markerId = mySession.addMarker(range, "language_highlight_" + (anno.type ? anno.type : "default"));
                 }
                 if (single) mySession.setAnnotations(mySession.languageAnnos);
@@ -2959,8 +2959,8 @@ oop.inherits(Mode, TextMode);
             if (anno.message) mySession.languageAnnos.push(gutterAnno);
         });
         mySession.setAnnotations(mySession.languageAnnos);
-    };
-
+    };    
+        
     this.$id = "ace/mode/xquery";
 }).call(Mode.prototype);
 

@@ -326,7 +326,7 @@ return $.widget( "ui.tooltip", {
 				if ( event.keyCode === $.ui.keyCode.ESCAPE ) {
 					var fakeEvent = $.Event(event);
 					fakeEvent.currentTarget = target[0];
-					this.hide( fakeEvent, true );
+					this.close( fakeEvent, true );
 				}
 			}
 		};

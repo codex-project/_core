@@ -98,7 +98,7 @@
 
     // Override magic textarea content restore that IE sometimes does
     // on our hidden textarea on reload
-    if (ie && ie_version < 11) setTimeout(function() { cm.display.input.clearValidation(true); }, 20);
+    if (ie && ie_version < 11) setTimeout(function() { cm.display.input.reset(true); }, 20);
 
     registerEventHandlers(this);
     ensureGlobalHandlers();
@@ -1418,7 +1418,7 @@
       // some key combos in Mac (#2689).
       if (ie && ie_version >= 9 && this.hasSelection === text ||
           mac && /[\uf700-\uf7ff]/.test(text)) {
-        cm.display.input.clearValidation();
+        cm.display.input.reset();
         return false;
       }
 
@@ -1478,7 +1478,7 @@
       if (webkit) var oldScrollY = window.scrollY; // Work around Chrome issue (#2712)
       display.input.focus();
       if (webkit) window.scrollTo(null, oldScrollY);
-      display.input.clearValidation();
+      display.input.reset();
       // Adds "Select all" to context menu in FF
       if (!cm.somethingSelected()) te.value = input.prevInput = " ";
       input.contextMenuPending = true;
@@ -1515,7 +1515,7 @@
                 te.selectionEnd > 0 && input.prevInput == "\u200b")
               operation(cm, commands.selectAll)(cm);
             else if (i++ < 10) display.detectingSelectAll = setTimeout(poll, 500);
-            else display.input.clearValidation();
+            else display.input.reset();
           };
           display.detectingSelectAll = setTimeout(poll, 200);
         }
@@ -3090,7 +3090,7 @@
     if (op.selectionChanged) restartBlink(cm);
 
     if (cm.state.focused && op.updateInput)
-      cm.display.input.clearValidation(op.typing);
+      cm.display.input.reset(op.typing);
     if (op.focus && op.focus == activeElt()) ensureFocus(op.cm);
   }
 
@@ -4069,7 +4069,7 @@
       stopSeq.set(50, function() {
         if (cm.state.keySeq == seq) {
           cm.state.keySeq = null;
-          cm.display.input.clearValidation();
+          cm.display.input.reset();
         }
       });
       name = seq + " " + name;
@@ -4195,8 +4195,8 @@
       // menu is closed (since the input reset would kill the
       // select-all detection hack)
       if (!cm.curOp && cm.display.selForContextMenu != cm.doc.sel) {
-        cm.display.input.clearValidation();
-        if (webkit) setTimeout(function() { cm.display.input.clearValidation(true); }, 20); // Issue #1730
+        cm.display.input.reset();
+        if (webkit) setTimeout(function() { cm.display.input.reset(true); }, 20); // Issue #1730
       }
       cm.display.input.receivedFocus();
     }
@@ -5277,7 +5277,7 @@
       old.cm = null;
       attachDoc(this, doc);
       clearCaches(this);
-      this.display.input.clearValidation();
+      this.display.input.reset();
       this.scrollTo(doc.scrollLeft, doc.scrollTop);
       this.curOp.forceScroll = true;
       signalLater(this, "swapDoc", this, old);
@@ -5402,7 +5402,7 @@
     }
     cm.display.input.readOnlyChanged(val)
   });
-  option("disableInput", false, function(cm, val) {if (!val) cm.display.input.clearValidation();}, true);
+  option("disableInput", false, function(cm, val) {if (!val) cm.display.input.reset();}, true);
   option("dragDrop", true, dragDropChanged);
 
   option("cursorBlinkRate", 530);

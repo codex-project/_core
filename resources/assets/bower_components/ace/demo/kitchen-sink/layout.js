@@ -45,7 +45,7 @@ var SplitRoot = function(el, theme, position, getSize) {
     this.resize = this.$resize.bind(this);
 
     event.addListener(el.ownerDocument.defaultView, "resize", this.resize);
-    this.editor = this.aceCreateEditor();
+    this.editor = this.createEditor();
 };
 
 (function(){

@@ -16,7 +16,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'root_dir' => env('CODEX_ROOT_DIR', base_path('resources/docs')),
+    'root_dir' => env('DOCIT_ROOT_DIR', base_path('resources/docs')),
 
     /*
     |--------------------------------------------------------------------------
@@ -28,7 +28,7 @@ return [
     | Docit as a stand alone application.
     |
     */
-    'base_route' => env('CODEX_BASE_ROUTE', 'docit'),
+    'base_route' => env('DOCIT_BASE_ROUTE', 'docit'),
 
     /*
     |--------------------------------------------------------------------------
@@ -36,7 +36,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'default_project' => env('CODEX_DEFAULT_PROJECT', 'docit'),
+    'default_project' => env('DOCIT_DEFAULT_PROJECT', 'docit'),
 
     /*
     |--------------------------------------------------------------------------
@@ -44,7 +44,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'projects_menus_view_composer' => 'Docit\\Docit\\Http\\ViewComposers\\ProjectMenusComposer',
+    'projects_menus_view_composer' => 'Docit\\Core\\Http\\ViewComposers\\ProjectMenusComposer',
 
     /*
     |--------------------------------------------------------------------------

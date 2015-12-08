@@ -39,7 +39,7 @@
       _results = [];
       for (position in drops) {
         drop = drops[position];
-        _results.push(drop.show());
+        _results.push(drop.open());
       }
       return _results;
     };
@@ -47,7 +47,7 @@
       var drop;
       for (position in drops) {
         drop = drops[position];
-        drop.hide();
+        drop.close();
       }
       drops[positions[openIndex]].open();
       drops[positions[(openIndex + 6) % positions.length]].open();
@@ -140,14 +140,14 @@
       $(".section-copy[data-section=\"" + section + "\"]").addClass('active');
       openExampleItem = function() {
         if (isMobile) {
-          return $iframe.contents().find('.item:first').data().drop.show();
+          return $iframe.contents().find('.item:first').data().drop.open();
         } else {
-          return $iframe.contents().find('.item:eq(2)').data().drop.show();
+          return $iframe.contents().find('.item:eq(2)').data().drop.open();
         }
       };
       closeAllItems = function() {
         return $iframe.contents().find('.item').each(function() {
-          return $(this).data().drop.hide() || true;
+          return $(this).data().drop.close() || true;
         });
       };
       scrollLeftSection = function() {

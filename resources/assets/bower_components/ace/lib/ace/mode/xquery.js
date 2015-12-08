@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2010, Ajax.org B.V.
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -14,7 +14,7 @@
  *     * Neither the name of Ajax.org B.V. nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -49,7 +49,7 @@ var Mode = function() {
 oop.inherits(Mode, TextMode);
 
 (function() {
-
+    
     this.completer = {
         getCompletions: function(editor, session, pos, prefix, callback) {
             if (!session.$worker)
@@ -68,14 +68,14 @@ oop.inherits(Mode, TextMode);
             indent += tab;
         return indent;
     };
-
+    
     this.checkOutdent = function(state, line, input) {
         if (! /^\s+$/.test(line))
             return false;
 
         return (/^\s*[\}\)]/).test(input);
     };
-
+    
     this.autoOutdent = function(state, doc, row) {
         var line = doc.getLine(row);
         var match = line.match(/^(\s*[\}\)])/);
@@ -113,27 +113,27 @@ oop.inherits(Mode, TextMode);
             doc.replace(range, outdent ? line.match(re)[1] : "(:" + line + ":)");
         }
     };
-
+    
     this.createWorker = function(session) {
-
+        
       var worker = new WorkerClient(["ace"], "ace/mode/xquery_worker", "XQueryWorker");
         var that = this;
 
         worker.attachToDocument(session.getDocument());
-
+        
         worker.on("ok", function(e) {
           session.clearAnnotations();
         });
-
+        
         worker.on("markers", function(e) {
           session.clearAnnotations();
           that.addMarkers(e.data, session);
         });
-
+ 
         worker.on("highlight", function(tokens) {
           that.$tokenizer.tokens = tokens.data.tokens;
           that.$tokenizer.lines  = session.getDocument().getAllLines();
-
+          
           var rows = Object.keys(that.$tokenizer.tokens);
           for(var i=0; i < rows.length; i++) {
             var row = parseInt(rows[i]);
@@ -142,7 +142,7 @@ oop.inherits(Mode, TextMode);
             session.bgTokenizer.fireUpdateEvent(row, row);
           }
         });
-
+        
         return worker;
     };
 
@@ -162,7 +162,7 @@ oop.inherits(Mode, TextMode);
 
     this.addMarkers = function(annos, mySession) {
         var _self = this;
-
+        
         if (!mySession.markerAnchors) mySession.markerAnchors = [];
         this.removeMarkers(mySession);
         mySession.languageAnnos = [];
@@ -178,7 +178,7 @@ oop.inherits(Mode, TextMode);
             mySession.markerAnchors.push(anchor);
             var markerId;
             var colDiff = anno.pos.ec - anno.pos.sc;
-            var rowDiff = anno.pos.e - anno.pos.sl;
+            var rowDiff = anno.pos.el - anno.pos.sl;
             var gutterAnno = {
                 guttertext: anno.message,
                 type: anno.level || "warning",
@@ -191,7 +191,7 @@ oop.inherits(Mode, TextMode);
                     mySession.removeMarker(markerId);
                 gutterAnno.row = anchor.row;
                 if (anno.pos.sc !== undefined && anno.pos.ec !== undefined) {
-                    var range = new Range(anno.pos.sl, anno.pos.sc, anno.pos.e, anno.pos.ec);
+                    var range = new Range(anno.pos.sl, anno.pos.sc, anno.pos.el, anno.pos.ec);
                     //var range = Range.fromPoints(anchor.getPosition(), {
                     //    row: anchor.row + rowDiff,
                     //    column: anchor.column + colDiff
@@ -207,8 +207,8 @@ oop.inherits(Mode, TextMode);
             if (anno.message) mySession.languageAnnos.push(gutterAnno);
         });
         mySession.setAnnotations(mySession.languageAnnos);
-    };
-
+    };    
+        
     this.$id = "ace/mode/xquery";
 }).call(Mode.prototype);
 

@@ -1,16 +1,21 @@
-var _ = require('../util')
-var queue = require('./queue')
-var addClass = _.addClass
-var removeClass = _.removeClass
-var transitionEndEvent = _.transitionEndEvent
-var animationEndEvent = _.animationEndEvent
-var transDurationProp = _.transitionProp + 'Duration'
-var animDurationProp = _.animationProp + 'Duration'
+import { pushJob } from './queue'
+import {
+  on,
+  off,
+  bind,
+  addClass,
+  removeClass,
+  cancellable,
+  transitionEndEvent,
+  animationEndEvent,
+  transitionProp,
+  animationProp
+} from '../util/index'
 
-var TYPE_TRANSITION = 1
-var TYPE_ANIMATION = 2
-
-var uid = 0
+const TYPE_TRANSITION = 1
+const TYPE_ANIMATION = 2
+const transDurationProp = transitionProp + 'Duration'
+const animDurationProp = animationProp + 'Duration'
 
 /**
  * A Transition object that encapsulates the state and logic
@@ -22,8 +27,8 @@ var uid = 0
  * @param {Vue} vm
  */
 
-function Transition (el, id, hooks, vm) {
-  this.id = uid++
+export default function Transition (el, id, hooks, vm) {
+  this.id = id
   this.el = el
   this.enterClass = id + '-enter'
   this.leaveClass = id + '-leave'
@@ -43,7 +48,7 @@ function Transition (el, id, hooks, vm) {
   var self = this
   ;['enterNextTick', 'enterDone', 'leaveNextTick', 'leaveDone']
     .forEach(function (m) {
-      self[m] = _.bind(self[m], self)
+      self[m] = bind(self[m], self)
     })
 }
 
@@ -86,7 +91,7 @@ p.enter = function (op, cb) {
     return // user called done synchronously.
   }
   this.cancel = this.hooks && this.hooks.enterCancelled
-  queue.push(this.enterNextTick)
+  pushJob(this.enterNextTick)
 }
 
 /**
@@ -96,10 +101,20 @@ p.enter = function (op, cb) {
  */
 
 p.enterNextTick = function () {
+
+  // Important hack:
+  // in Chrome, if a just-entered element is applied the
+  // leave class while its interpolated property still has
+  // a very small value (within one frame), Chrome will
+  // skip the leave transition entirely and not firing the
+  // transtionend event. Therefore we need to protected
+  // against such cases using a one-frame timeout.
   this.justEntered = true
-  _.nextTick(function () {
-    this.justEntered = false
-  }, this)
+  var self = this
+  setTimeout(function () {
+    self.justEntered = false
+  }, 17)
+
   var enterDone = this.enterDone
   var type = this.getCssTransitionType(this.enterClass)
   if (!this.pendingJsCb) {
@@ -173,7 +188,7 @@ p.leave = function (op, cb) {
     if (this.justEntered) {
       this.leaveDone()
     } else {
-      queue.push(this.leaveNextTick)
+      pushJob(this.leaveNextTick)
     }
   }
 }
@@ -218,7 +233,7 @@ p.cancelPending = function () {
   var hasPending = false
   if (this.pendingCssCb) {
     hasPending = true
-    _.off(this.el, this.pendingCssEvent, this.pendingCssCb)
+    off(this.el, this.pendingCssEvent, this.pendingCssCb)
     this.pendingCssEvent = this.pendingCssCb = null
   }
   if (this.pendingJsCb) {
@@ -263,7 +278,7 @@ p.callHookWithCb = function (type) {
   var hook = this.hooks && this.hooks[type]
   if (hook) {
     if (hook.length > 1) {
-      this.pendingJsCb = _.cancellable(this[type + 'Done'])
+      this.pendingJsCb = cancellable(this[type + 'Done'])
     }
     hook.call(this.vm, this.el, this.pendingJsCb)
   }
@@ -330,14 +345,14 @@ p.setupCssCb = function (event, cb) {
   var el = this.el
   var onEnd = this.pendingCssCb = function (e) {
     if (e.target === el) {
-      _.off(el, event, onEnd)
+      off(el, event, onEnd)
       self.pendingCssEvent = self.pendingCssCb = null
       if (!self.pendingJsCb && cb) {
         cb()
       }
     }
   }
-  _.on(el, event, onEnd)
+  on(el, event, onEnd)
 }
 
 /**
@@ -349,9 +364,9 @@ p.setupCssCb = function (event, cb) {
  */
 
 function isHidden (el) {
-  return el.style.display === 'none' ||
-    el.style.visibility === 'hidden' ||
-    el.hidden
+  return !(
+    el.offsetWidth ||
+    el.offsetHeight ||
+    el.getClientRects().length
+  )
 }
-
-module.exports = Transition

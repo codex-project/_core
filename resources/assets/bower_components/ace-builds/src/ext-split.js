@@ -194,7 +194,7 @@ var Split = function(container, theme, splits) {
 
 }).call(Split.prototype);
 
-
+ 
 function UndoManagerProxy(undoManager, session) {
     this.$u = undoManager;
     this.$doc = session;
@@ -220,7 +220,7 @@ function UndoManagerProxy(undoManager, session) {
     };
 
     this.reset = function() {
-        this.$u.clearValidation();
+        this.$u.reset();
     };
 
     this.hasUndo = function() {
@@ -243,3 +243,4 @@ module.exports = require("../split");
                 (function() {
                     window.require(["ace/ext/split"], function() {});
                 })();
+            

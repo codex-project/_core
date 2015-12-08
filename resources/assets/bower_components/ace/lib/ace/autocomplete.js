@@ -85,7 +85,7 @@ var Autocomplete = function() {
         this.popup.setData(this.completions.filtered);
 
         editor.keyBinding.addKeyboardHandler(this.keyboardHandler);
-
+        
         var renderer = editor.renderer;
         this.popup.setRow(this.autoSelect ? 0 : -1);
         if (!keepPopupPosition) {
@@ -142,7 +142,7 @@ var Autocomplete = function() {
         // we have to check if activeElement is a child of popup because
         // on IE preventDefault doesn't stop scrollbar from being focussed
         var el = document.activeElement;
-        var text = this.editor.textInput._getValidationControl();
+        var text = this.editor.textInput.getElement();
         var fromTooltip = e.relatedTarget && e.relatedTarget == this.tooltipNode;
         var container = this.popup && this.popup.container;
         if (el != text && el.parentNode != container && !fromTooltip

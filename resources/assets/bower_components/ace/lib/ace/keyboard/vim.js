@@ -140,10 +140,10 @@ define(function(require, exports, module) {
     TextModeTokenRe.lastIndex = 0;
     return TextModeTokenRe.test(ch);
   };
-
+  
 (function() {
   oop.implement(CodeMirror.prototype, EventEmitter);
-
+  
   this.destroy = function() {
     this.ace.off('change', this.onChange);
     this.ace.off('changeSelection', this.onSelectionChange);
@@ -264,7 +264,7 @@ define(function(require, exports, module) {
       r.cursor = Range.comparePoints(r.start, head) ? r.end : r.start;
       return r;
     });
-
+    
     if (this.ace.inVirtualSelectionMode) {
       this.ace.selection.fromOrientedRange(ranges[0]);
       return;
@@ -307,7 +307,7 @@ define(function(require, exports, module) {
     var rowShift = (end.row - start.row) * (isInsert ? 1 : -1);
     var colShift = (end.column - start.column) * (isInsert ? 1 : -1);
     if (isInsert) end = start;
-
+    
     for (var i in this.marks) {
       var point = this.marks[i];
       var cmp = Range.comparePoints(point, start);
@@ -496,7 +496,7 @@ define(function(require, exports, module) {
     }, this);
   };
   this.getInputField = function() {
-    return this.ace.textInput._getValidationControl();
+    return this.ace.textInput.getElement();
   };
   this.getWrapperElement = function() {
     return this.ace.containter;
@@ -849,7 +849,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
   });
 })();
 
-
+  
   var defaultKeymap = [
     // Key to key mapping. This goes first to make it possible to override
     // existing mappings.
@@ -1626,7 +1626,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
           // TODO: Look into using CodeMirror's multi-key handling.
           // Return no-op since we are caching the key. Counts as handled, but
           // don't want act on it just yet.
-          return function() {};
+          return function() { return true; };
         } else {
           return function() {
             if ((command.operator || command.isEdit) && cm.getOption('readOnly'))
@@ -2024,7 +2024,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
         var originalScrollPos = cm.getScrollInfo();
         function handleQuery(query, ignoreCase, smartCase) {
           vimGlobalState.searchHistoryController.pushInput(query);
-          vimGlobalState.searchHistoryController.clearValidation();
+          vimGlobalState.searchHistoryController.reset();
           try {
             updateSearchQuery(cm, query, ignoreCase, smartCase);
           } catch (e) {
@@ -2054,7 +2054,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
             close(query);
           } else {
             if ( keyName != 'Left' && keyName != 'Right' && keyName != 'Ctrl' && keyName != 'Alt' && keyName != 'Shift')
-              vimGlobalState.searchHistoryController.clearValidation();
+              vimGlobalState.searchHistoryController.reset();
           }
           var parsedQuery;
           try {
@@ -2075,7 +2075,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
           if (keyName == 'Esc' || keyName == 'Ctrl-C' || keyName == 'Ctrl-[' ||
               (keyName == 'Backspace' && query == '')) {
             vimGlobalState.searchHistoryController.pushInput(query);
-            vimGlobalState.searchHistoryController.clearValidation();
+            vimGlobalState.searchHistoryController.reset();
             updateSearchQuery(cm, originalQuery);
             clearSearchHighlight(cm);
             cm.scrollTo(originalScrollPos.left, originalScrollPos.top);
@@ -2142,7 +2142,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
           // Give the prompt some time to close so that if processCommand shows
           // an error, the elements don't overlap.
           vimGlobalState.exCommandHistoryController.pushInput(input);
-          vimGlobalState.exCommandHistoryController.clearValidation();
+          vimGlobalState.exCommandHistoryController.reset();
           exCommandDispatcher.processCommand(cm, input);
         }
         function onPromptKeyDown(e, input, close) {
@@ -2150,7 +2150,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
           if (keyName == 'Esc' || keyName == 'Ctrl-C' || keyName == 'Ctrl-[' ||
               (keyName == 'Backspace' && input == '')) {
             vimGlobalState.exCommandHistoryController.pushInput(input);
-            vimGlobalState.exCommandHistoryController.clearValidation();
+            vimGlobalState.exCommandHistoryController.reset();
             CodeMirror.e_stop(e);
             clearInputState(cm);
             close();
@@ -2166,7 +2166,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
             close('');
           } else {
             if ( keyName != 'Left' && keyName != 'Right' && keyName != 'Ctrl' && keyName != 'Alt' && keyName != 'Shift')
-              vimGlobalState.exCommandHistoryController.clearValidation();
+              vimGlobalState.exCommandHistoryController.reset();
           }
         }
         if (command.type == 'keyToEx') {
@@ -2516,12 +2516,14 @@ dom.importCssString(".normal-mode .ace_cursor{\
           return;
         }
         // ace_patch{
-        var fold = cm.ace.session.getFoldAt(line, endCh);
+        var fold = cm.ace.session.getFoldLine(line);
         if (fold) {
-          if (motionArgs.forward)
-            line = fold.end.row + 1;
-          else
-            line = fold.start.row - 1;
+          if (motionArgs.forward) {
+            if (line > fold.start.row)
+              line = fold.end.row + 1;
+          } else {
+            line = fold.start.row;
+          }
         }
         // ace_patch}
         if (motionArgs.toFirstChar){
@@ -4229,8 +4231,17 @@ dom.importCssString(".normal-mode .ace_cursor{\
         if (any) { return isEmpty(i) != isEmpty(i + dir); }
         return !isEmpty(i) && isEmpty(i + dir);
       }
+      function skipFold(i) {
+          dir = dir > 0 ? 1 : -1;
+          var foldLine = cm.ace.session.getFoldLine(i);
+          if (foldLine) {
+              if (i + dir > foldLine.start.row && i + dir < foldLine.end.row)
+                  dir = (dir > 0 ? foldLine.end.row : foldLine.start.row) - i;
+          }
+      }
       if (dir) {
         while (min <= i && i <= max && repeat > 0) {
+          skipFold(i);
           if (isBoundary(i, dir)) { repeat--; }
           i += dir;
         }
@@ -5932,7 +5943,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
     } else if (cm.ace.inMultiSelectMode && vim.visualBlock) {
        vim.wasInVisualBlock = true;
     }
-
+    
     if (key == '<Esc>' && !vim.insertMode && !vim.visualMode && cm.ace.inMultiSelectMode) {
       cm.ace.exitMultiSelectMode();
     } else if (visualBlock || !cm.ace.inMultiSelectMode || cm.ace.inVirtualSelectionMode) {
@@ -5951,7 +5962,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
           anchor = offsetCursor(anchor, 0, anchorOffset);
           cm.state.vim.sel.head = head;
           cm.state.vim.sel.anchor = anchor;
-
+          
           isHandled = handleKey(cm, key, origin);
           sel.$desiredColumn = cm.state.vim.lastHPos == -1 ? null : cm.state.vim.lastHPos;
           if (cm.virtualSelectionMode()) {
@@ -5975,12 +5986,12 @@ dom.importCssString(".normal-mode .ace_cursor{\
       var top = pixelPos.top;
       var left = pixelPos.left;
       if (!vim.insertMode) {
-        var isbackwards = !sel.cursor
+        var isbackwards = !sel.cursor 
             ? session.selection.isBackwards() || session.selection.isEmpty()
             : Range.comparePoints(sel.cursor, sel.start) <= 0;
         if (!isbackwards && left > w)
           left -= w;
-      }
+      }     
       if (!vim.insertMode && vim.status) {
         h = h / 2;
         top += h;
@@ -5995,7 +6006,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
       var cm = editor.state.cm;
       var vim = getVim(cm);
       if (keyCode == -1) return;
-
+      
       if (key == "c" && hashId == 1) { // key == "ctrl-c"
         if (!useragent.isMac && editor.getCopyText()) {
           editor.once("copy", function() {
@@ -6009,7 +6020,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
           key = data.inputChar;
         }
       }
-
+      
       if (hashId == -1 || hashId & 1 || hashId === 0 && key.length > 1) {
         var insertMode = vim.insertMode;
         var name = lookupKey(hashId, key, e || {});
@@ -6089,7 +6100,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
         data.inputChar = key;
         data.lastEvent = "input";
       } else if (data.inputChar && data.$lastHash == hashId && data.$lastKey == key) {
-        // check for repeated keypress
+        // check for repeated keypress 
         if (data.lastEvent == "input") {
           data.lastEvent = "input1";
         } else if (data.lastEvent == "input1") {
@@ -6109,7 +6120,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
         var cm = editor.state.cm;
         var vim = getVim(cm);
         if (!vim.insertMode) {
-          var el = this.textInput._getValidationControl();
+          var el = this.textInput.getElement();
           el.blur();
           el.focus();
           el.value = text;
@@ -6179,7 +6190,7 @@ dom.importCssString(".normal-mode .ace_cursor{\
     { keys: 'zA', type: 'action', action: 'fold', actionArgs: { toggle: true, all: true } },
     { keys: 'zf', type: 'action', action: 'fold', actionArgs: { open: true, all: true } },
     { keys: 'zd', type: 'action', action: 'fold', actionArgs: { open: true, all: true } },
-
+    
     { keys: '<C-A-k>', type: 'action', action: 'aceCommand', actionArgs: { name: "addCursorAbove" } },
     { keys: '<C-A-j>', type: 'action', action: 'aceCommand', actionArgs: { name: "addCursorBelow" } },
     { keys: '<C-A-S-k>', type: 'action', action: 'aceCommand', actionArgs: { name: "addCursorAboveSkipCurrent" } },
@@ -6212,6 +6223,6 @@ dom.importCssString(".normal-mode .ace_cursor{\
   exports.handler.defaultKeymap = defaultKeymap;
   exports.handler.actions = actions;
   exports.Vim = Vim;
-
+  
   Vim.map("Y", "yy", "normal");
 });

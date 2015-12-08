@@ -1,16 +1,13 @@
 <?php
+use Docit\Core\Extensions;
 
-/*
-|--------------------------------------------------------------------------
-| Docit Routes
-|--------------------------------------------------------------------------
-|
-*/
+$index = Route::get('/', ['as' => 'docit.index', 'uses' => 'DocitController@index']);
 
-Route::get('/', ['as' => 'docit.index', 'uses' => 'DocitController@index']);
-Route::get('{projectSlug}/{ref?}/{document?}', [
-    'as' => 'docit.document',
-    'uses' => 'DocitController@document'
-])
-    ->where('projectSlug', '^((?!' . \Docit\Core\Extensions::getExcludedProjectNames(true) . ').*?)$')
-    ->where('document', '(.*)');
+$document = Route::get('{projectSlug}/{ref?}/{document?}', [ 'as' => 'docit.document', 'uses' => 'DocitController@document' ]);
+$document->where('document', '(.*)');
+
+if(count(Extensions::getExcludedProjectNames()) > 0)
+{
+    $document->where('projectSlug', '^((?!' . Extensions::getExcludedProjectNames(true) . ').*?)$');
+}
+

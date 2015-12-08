@@ -4,7 +4,7 @@ var event = require("../lib/event");
 
 exports.contextMenuHandler = function(e){
     var host = e.target;
-    var text = host.textInput._getValidationControl();
+    var text = host.textInput.getElement();
     if (!host.selection.isEmpty())
         return;
     var c = host.getCursorPosition();
@@ -53,7 +53,7 @@ var Editor = require("../editor").Editor;
 require("../config").defineOptions(Editor.prototype, "editor", {
     spellcheck: {
         set: function(val) {
-            var text = this.textInput._getValidationControl();
+            var text = this.textInput.getElement();
             text.spellcheck = !!val;
             if (!val)
                 this.removeListener("nativecontextmenu", exports.contextMenuHandler);
@@ -68,3 +68,4 @@ require("../config").defineOptions(Editor.prototype, "editor", {
                 (function() {
                     ace.require(["ace/ext/spellcheck"], function() {});
                 })();
+            

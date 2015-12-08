@@ -338,7 +338,7 @@ var Alert = (function ($) {
             event.preventDefault();
           }
 
-          alertInstance.hide(this);
+          alertInstance.close(this);
         };
       }
     }, {

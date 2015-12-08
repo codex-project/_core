@@ -1,16 +1,30 @@
-var _ = require('../util')
-var textParser = require('../parsers/text')
-var propDef = require('../directives/prop')
-var propBindingModes = require('../config')._propBindingModes
+import config from '../config'
+import { parseDirective } from '../parsers/directive'
+import propDef from '../directives/internal/prop'
+import {
+  warn,
+  camelize,
+  hyphenate,
+  getAttr,
+  getBindAttr,
+  isLiteral,
+  initProp,
+  hasOwn,
+  toBoolean,
+  toNumber,
+  stripQuotes,
+  isObject
+} from '../util/index'
+
+const propBindingModes = config._propBindingModes
+const empty = {}
 
 // regexes
-var identRE = require('../parsers/path').identRE
-var dataAttrRE = /^data-/
-var settablePathRE = /^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*|\[[^\[\]]+\])*$/
-var literalValueRE = /^(true|false)$|^\d.*/
+const identRE = /^[$_a-zA-Z]+[\w$]*$/
+const settablePathRE = /^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*|\[[^\[\]]+\])*$/
 
 /**
- * Compile param attributes on a root element and return
+ * Compile props on a root element and return
  * a props link function.
  *
  * @param {Element|DocumentFragment} el
@@ -18,80 +32,96 @@ var literalValueRE = /^(true|false)$|^\d.*/
  * @return {Function} propsLinkFn
  */
 
-module.exports = function compileProps (el, propOptions) {
+export function compileProps (el, propOptions) {
   var props = []
-  var i = propOptions.length
-  var options, name, attr, value, path, prop, literal, single
+  var names = Object.keys(propOptions)
+  var i = names.length
+  var options, name, attr, value, path, parsed, prop
   while (i--) {
-    options = propOptions[i]
-    name = options.name
+    name = names[i]
+    options = propOptions[name] || empty
+
+    if (process.env.NODE_ENV !== 'production' && name === '$data') {
+      warn('Do not use $data as prop.')
+      continue
+    }
+
     // props could contain dashes, which will be
     // interpreted as minus calculations by the parser
     // so we need to camelize the path here
-    path = _.camelize(name.replace(dataAttrRE, ''))
+    path = camelize(name)
     if (!identRE.test(path)) {
-      process.env.NODE_ENV !== 'production' && _.warn(
+      process.env.NODE_ENV !== 'production' && warn(
         'Invalid prop key: "' + name + '". Prop keys ' +
         'must be valid identifiers.'
       )
       continue
     }
-    attr = _.hyphenate(name)
-    value = el.getAttribute(attr)
-    if (value === null) {
-      attr = 'data-' + attr
-      value = el.getAttribute(attr)
-    }
-    // create a prop descriptor
+
     prop = {
       name: name,
-      raw: value,
       path: path,
       options: options,
-      mode: propBindingModes.ONE_WAY
+      mode: propBindingModes.ONE_WAY,
+      raw: null
+    }
+
+    attr = hyphenate(name)
+    // first check dynamic version
+    if ((value = getBindAttr(el, attr)) === null) {
+      if ((value = getBindAttr(el, attr + '.sync')) !== null) {
+        prop.mode = propBindingModes.TWO_WAY
+      } else if ((value = getBindAttr(el, attr + '.once')) !== null) {
+        prop.mode = propBindingModes.ONE_TIME
+      }
     }
     if (value !== null) {
-      // important so that this doesn't get compiled
-      // again as a normal attribute binding
-      el.removeAttribute(attr)
-      var tokens = textParser.parse(value)
-      if (tokens) {
+      // has dynamic binding!
+      prop.raw = value
+      parsed = parseDirective(value)
+      value = parsed.expression
+      prop.filters = parsed.filters
+      // check binding type
+      if (isLiteral(value)) {
+        // for expressions containing literal numbers and
+        // booleans, there's no need to setup a prop binding,
+        // so we can optimize them as a one-time set.
+        prop.optimizedLiteral = true
+      } else {
         prop.dynamic = true
-        prop.parentPath = textParser.tokensToExp(tokens)
-        // check prop binding type.
-        single = tokens.length === 1
-        literal = literalValueRE.test(prop.parentPath)
-        // one time: {{* prop}}
-        if (literal || (single && tokens[0].oneTime)) {
-          prop.mode = propBindingModes.ONE_TIME
-        } else if (
-          !literal &&
-          (single && tokens[0].twoWay)
-        ) {
-          if (settablePathRE.test(prop.parentPath)) {
-            prop.mode = propBindingModes.TWO_WAY
-          } else {
-            process.env.NODE_ENV !== 'production' && _.warn(
-              'Cannot bind two-way prop with non-settable ' +
-              'parent path: ' + prop.parentPath
-            )
-          }
-        }
-        if (
-          process.env.NODE_ENV !== 'production' &&
-          options.twoWay &&
-          prop.mode !== propBindingModes.TWO_WAY
-        ) {
-          _.warn(
-            'Prop "' + name + '" expects a two-way binding type.'
+        // check non-settable path for two-way bindings
+        if (process.env.NODE_ENV !== 'production' &&
+            prop.mode === propBindingModes.TWO_WAY &&
+            !settablePathRE.test(value)) {
+          prop.mode = propBindingModes.ONE_WAY
+          warn(
+            'Cannot bind two-way prop with non-settable ' +
+            'parent path: ' + value
           )
         }
       }
-    } else if (options && options.required) {
-      process.env.NODE_ENV !== 'production' && _.warn(
+      prop.parentPath = value
+
+      // warn required two-way
+      if (
+        process.env.NODE_ENV !== 'production' &&
+        options.twoWay &&
+        prop.mode !== propBindingModes.TWO_WAY
+      ) {
+        warn(
+          'Prop "' + name + '" expects a two-way binding type.'
+        )
+      }
+    } else if ((value = getAttr(el, attr)) !== null) {
+      // has literal binding!
+      prop.raw = value
+    } else if (options.required) {
+      // warn missing required
+      process.env.NODE_ENV !== 'production' && warn(
         'Missing required prop: ' + name
       )
     }
+    // push prop
     props.push(prop)
   }
   return makePropsLinkFn(props)
@@ -105,48 +135,56 @@ module.exports = function compileProps (el, propOptions) {
  */
 
 function makePropsLinkFn (props) {
-  return function propsLinkFn (vm, el) {
+  return function propsLinkFn (vm, scope) {
     // store resolved props info
     vm._props = {}
     var i = props.length
-    var prop, path, options, value
+    var prop, path, options, value, raw
     while (i--) {
       prop = props[i]
+      raw = prop.raw
       path = prop.path
-      vm._props[path] = prop
       options = prop.options
-      if (prop.raw === null) {
+      vm._props[path] = prop
+      if (raw === null) {
         // initialize absent prop
-        _.initProp(vm, prop, getDefault(options))
+        initProp(vm, prop, getDefault(vm, options))
       } else if (prop.dynamic) {
         // dynamic prop
         if (vm._context) {
           if (prop.mode === propBindingModes.ONE_TIME) {
             // one time binding
-            value = vm._context.$get(prop.parentPath)
-            _.initProp(vm, prop, value)
+            value = (scope || vm._context).$get(prop.parentPath)
+            initProp(vm, prop, value)
           } else {
             // dynamic binding
-            vm._bindDir('prop', el, prop, propDef)
+            vm._bindDir({
+              name: 'prop',
+              def: propDef,
+              prop: prop
+            }, null, null, scope) // el, host, scope
           }
         } else {
-          process.env.NODE_ENV !== 'production' && _.warn(
+          process.env.NODE_ENV !== 'production' && warn(
             'Cannot bind dynamic prop on a root instance' +
             ' with no parent: ' + prop.name + '="' +
-            prop.raw + '"'
+            raw + '"'
           )
         }
+      } else if (prop.optimizedLiteral) {
+        // optimized literal, cast it and just set once
+        var stripped = stripQuotes(raw)
+        value = stripped === raw
+          ? toBoolean(toNumber(raw))
+          : stripped
+        initProp(vm, prop, value)
       } else {
-        // literal, cast it and just set once
-        var raw = prop.raw
+        // string literal, but we need to cater for
+        // Boolean props with no value
         value = options.type === Boolean && raw === ''
           ? true
-          // do not cast emptry string.
-          // _.toNumber casts empty string to 0.
-          : raw.trim()
-            ? _.toBoolean(_.toNumber(raw))
-            : raw
-        _.initProp(vm, prop, value)
+          : raw
+        initProp(vm, prop, value)
       }
     }
   }
@@ -155,13 +193,14 @@ function makePropsLinkFn (props) {
 /**
  * Get the default value of a prop.
  *
+ * @param {Vue} vm
  * @param {Object} options
  * @return {*}
  */
 
-function getDefault (options) {
+function getDefault (vm, options) {
   // no default, return undefined
-  if (!options.hasOwnProperty('default')) {
+  if (!hasOwn(options, 'default')) {
     // absent boolean value defaults to false
     return options.type === Boolean
       ? false
@@ -169,8 +208,8 @@ function getDefault (options) {
   }
   var def = options.default
   // warn against non-factory defaults for Object & Array
-  if (_.isObject(def)) {
-    process.env.NODE_ENV !== 'production' && _.warn(
+  if (isObject(def)) {
+    process.env.NODE_ENV !== 'production' && warn(
       'Object/Array as default prop values will be shared ' +
       'across multiple instances. Use a factory function ' +
       'to return the default value instead.'
@@ -178,6 +217,6 @@ function getDefault (options) {
   }
   // call factory function for non-Function types
   return typeof def === 'function' && options.type !== Function
-    ? def()
+    ? def.call(vm)
     : def
 }

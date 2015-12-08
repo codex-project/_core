@@ -1,5 +1,7 @@
 'use strict';
 
+var keys = require('./keys');
+
 function bindArguments(args) {
   for (var i = args.length - 1; i >= 0; i--) {
     if (typeof args[i] === 'function') {
@@ -28,6 +30,10 @@ function patchPrototype(obj, fnNames) {
     }
   });
 };
+
+function isWebWorker() {
+  return (typeof document === "undefined");
+}
 
 function patchProperty(obj, prop) {
   var desc = Object.getOwnPropertyDescriptor(obj, prop) || {
@@ -68,7 +74,6 @@ function patchProperty(obj, prop) {
 };
 
 function patchProperties(obj, properties) {
-
   (properties || (function () {
       var props = [];
       for (var prop in obj) {
@@ -84,26 +89,65 @@ function patchProperties(obj, properties) {
     });
 };
 
+var originalFnKey = keys.create('originalFn');
+var boundFnsKey = keys.create('boundFns');
+
 function patchEventTargetMethods(obj) {
-  var addDelegate = obj.addEventListener;
-  obj.addEventListener = function (eventName, fn) {
-    fn._bound = fn._bound || {};
-    arguments[1] = fn._bound[eventName] = zone.bind(fn);
-    return addDelegate.apply(this, arguments);
+  // This is required for the addEventListener hook on the root zone.
+  obj[keys.common.addEventListener] = obj.addEventListener;
+  obj.addEventListener = function (eventName, handler, useCapturing) {
+    var eventType = eventName + (useCapturing ? '$capturing' : '$bubbling');
+    var fn;
+    //Ignore special listeners of IE11 & Edge dev tools, see https://github.com/angular/zone.js/issues/150
+    if (handler.toString() !== "[object FunctionWrapper]") {
+      if (handler.handleEvent) {
+        // Have to pass in 'handler' reference as an argument here, otherwise it gets clobbered in
+        // IE9 by the arguments[1] assignment at end of this function.
+        fn = (function(handler) {
+          return function() {
+            handler.handleEvent.apply(handler, arguments);
+          };
+        })(handler);
+      } else {
+        fn = handler;
+      }
+
+      handler[originalFnKey] = fn;
+      handler[boundFnsKey] = handler[boundFnsKey] || {};
+      handler[boundFnsKey][eventType] = handler[boundFnsKey][eventType] || zone.bind(fn);
+      arguments[1] = handler[boundFnsKey][eventType];
+    }
+
+    // - Inside a Web Worker, `this` is undefined, the context is `global` (= `self`)
+    // - When `addEventListener` is called on the global context in strict mode, `this` is undefined
+    // see https://github.com/angular/zone.js/issues/190
+    var target = this || global;
+
+    return global.zone.addEventListener.apply(target, arguments);
   };
 
-  var removeDelegate = obj.removeEventListener;
-  obj.removeEventListener = function (eventName, fn) {
-    if(arguments[1]._bound && arguments[1]._bound[eventName]) {
-      var _bound = arguments[1]._bound;
-      arguments[1] = _bound[eventName];
-      delete _bound[eventName];
+  // This is required for the removeEventListener hook on the root zone.
+  obj[keys.common.removeEventListener] = obj.removeEventListener;
+  obj.removeEventListener = function (eventName, handler, useCapturing) {
+    var eventType = eventName + (useCapturing ? '$capturing' : '$bubbling');
+    if (handler[boundFnsKey] && handler[boundFnsKey][eventType]) {
+      var _bound = handler[boundFnsKey];
+      arguments[1] = _bound[eventType];
+      delete _bound[eventType];
     }
-    var result = removeDelegate.apply(this, arguments);
-    global.zone.dequeueTask(fn);
+
+    // - Inside a Web Worker, `this` is undefined, the context is `global`
+    // - When `addEventListener` is called on the global context in strict mode, `this` is undefined
+    // see https://github.com/angular/zone.js/issues/190
+    var target = this || global;
+
+    var result = global.zone.removeEventListener.apply(target, arguments);
+    global.zone.dequeueTask(handler[originalFnKey]);
     return result;
   };
 };
+
+var originalInstanceKey = keys.create('originalInstance');
 
 // wrap some native API on `window`
 function patchClass(className) {
@@ -113,11 +157,11 @@ function patchClass(className) {
   global[className] = function () {
     var a = bindArguments(arguments);
     switch (a.length) {
-      case 0: this._o = new OriginalClass(); break;
-      case 1: this._o = new OriginalClass(a[0]); break;
-      case 2: this._o = new OriginalClass(a[0], a[1]); break;
-      case 3: this._o = new OriginalClass(a[0], a[1], a[2]); break;
-      case 4: this._o = new OriginalClass(a[0], a[1], a[2], a[3]); break;
+      case 0: this[originalInstanceKey] = new OriginalClass(); break;
+      case 1: this[originalInstanceKey] = new OriginalClass(a[0]); break;
+      case 2: this[originalInstanceKey] = new OriginalClass(a[0], a[1]); break;
+      case 3: this[originalInstanceKey] = new OriginalClass(a[0], a[1], a[2]); break;
+      case 4: this[originalInstanceKey] = new OriginalClass(a[0], a[1], a[2], a[3]); break;
       default: throw new Error('what are you even doing?');
     }
   };
@@ -129,19 +173,19 @@ function patchClass(className) {
     (function (prop) {
       if (typeof instance[prop] === 'function') {
         global[className].prototype[prop] = function () {
-          return this._o[prop].apply(this._o, arguments);
+          return this[originalInstanceKey][prop].apply(this[originalInstanceKey], arguments);
         };
       } else {
         Object.defineProperty(global[className].prototype, prop, {
           set: function (fn) {
             if (typeof fn === 'function') {
-              this._o[prop] = global.zone.bind(fn);
+              this[originalInstanceKey][prop] = global.zone.bind(fn);
             } else {
-              this._o[prop] = fn;
+              this[originalInstanceKey][prop] = fn;
             }
           },
           get: function () {
-            return this._o[prop];
+            return this[originalInstanceKey][prop];
           }
         });
       }
@@ -162,5 +206,6 @@ module.exports = {
   patchProperty: patchProperty,
   patchProperties: patchProperties,
   patchEventTargetMethods: patchEventTargetMethods,
-  patchClass: patchClass
+  patchClass: patchClass,
+  isWebWorker: isWebWorker
 };

@@ -19,7 +19,7 @@ describe('WebSocket', ifEnvSupports('WebSocket', function () {
 
   afterEach(function (done) {
     socket.addEventListener('close', done);
-    socket.hide();
+    socket.close();
   });
 
 

@@ -1,19 +1,3 @@
-(function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module unless amdModuleId is set
-    define([], function () {
-      return (root['packadic'] = factory());
-    });
-  } else if (typeof exports === 'object') {
-    // Node. Does not work with strict CommonJS, but
-    // only CommonJS-like environments that support module.exports,
-    // like Node.
-    module.exports = factory();
-  } else {
-    root['packadic'] = factory();
-  }
-}(this, function () {
-
 /// <reference path="./../types.d.ts" />
 console.groupCollapsed('Packadic pre-init logs');
 var packadic;
@@ -91,11 +75,6 @@ var packadic;
     }
     packadic.callReadyCallbacks = callReadyCallbacks;
 })(packadic || (packadic = {}));
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var packadic;
 (function (packadic) {
     packadic.namespacePrefix = 'packadic.';
@@ -107,123 +86,6 @@ var packadic;
         };
     }
     packadic.extension = extension;
-    function directive(name, isElementDirective) {
-        if (isElementDirective === void 0) { isElementDirective = false; }
-        return function (cls) {
-            var definition = {
-                isLiteral: false,
-                twoWay: false,
-                acceptStatement: false,
-                deep: false
-            };
-            var obj = new cls();
-            var proto = Object.getPrototypeOf(obj);
-            Object.getOwnPropertyNames(obj).forEach(function (defName) {
-                definition[defName] = obj[defName];
-            });
-            Object.getOwnPropertyNames(proto).forEach(function (method) {
-                if (['constructor'].indexOf(method) > -1)
-                    return;
-                var desc = Object.getOwnPropertyDescriptor(proto, method);
-                if (typeof desc.value === 'function') {
-                    definition[method] = proto[method];
-                }
-                else if (typeof desc.set === 'function') {
-                    Object.defineProperty(definition, method, desc);
-                }
-                else if (typeof desc.get === 'function') {
-                    Object.defineProperty(definition, method, desc);
-                }
-            });
-            console.log('@directive ', name, definition, proto);
-            if (isElementDirective) {
-                Vue.elementDirective(name, definition);
-            }
-            else {
-                Vue.directive(name, definition);
-            }
-        };
-    }
-    packadic.directive = directive;
-    function filter(name) {
-        return function (target, propertyKey, descriptor) {
-            name = name || propertyKey;
-            var originalMethod = descriptor.value;
-            descriptor.value = function () {
-                var args = [];
-                for (var _i = 0; _i < arguments.length; _i++) {
-                    args[_i - 0] = arguments[_i];
-                }
-                console.log("The method args are: " + JSON.stringify(args));
-                var result = originalMethod.apply(this, args);
-                console.log("The return value is: " + result);
-                return result;
-            };
-            Vue.filter(name, target);
-            return descriptor;
-        };
-    }
-    packadic.filter = filter;
-    function component(name) {
-        return function (cls) {
-            var options = {
-                props: {},
-                methods: {},
-                computed: {}
-            };
-            if (cls.hasOwnProperty('replace'))
-                options.replace = cls.replace;
-            if (cls.hasOwnProperty('template'))
-                options.template = cls.template;
-            var obj = new cls();
-            var proto = Object.getPrototypeOf(obj);
-            if (proto.hasOwnProperty('__props__')) {
-                options.props = proto.__props__;
-            }
-            Object.getOwnPropertyNames(obj).forEach(function (name) {
-                var type = null;
-                var t = typeof obj[name];
-                if (t === 'string') {
-                    type = String;
-                }
-                else if (t === 'number') {
-                    type = Number;
-                }
-                else if (t === 'boolean') {
-                    type = Boolean;
-                }
-                options.props[name] = { type: type, 'default': obj[name] };
-            });
-            if (proto.hasOwnProperty('__events__'))
-                options.events = proto.__events__;
-            if (proto.hasOwnProperty('__hooks__'))
-                Object.keys(proto.__hooks__).forEach(function (name) {
-                    options[name] = proto.__hooks__[name];
-                });
-            Object.getOwnPropertyNames(proto).forEach(function (method) {
-                if (['constructor'].indexOf(method) > -1)
-                    return;
-                var desc = Object.getOwnPropertyDescriptor(proto, method);
-                if (typeof desc.value === 'function')
-                    options.methods[method] = proto[method];
-                else if (typeof desc.set === 'function')
-                    options.computed[method] = {
-                        get: desc.get,
-                        set: desc.set
-                    };
-                else if (typeof desc.get === 'function')
-                    options.computed[method] = desc.get;
-            });
-            if (name === 'modal') {
-                console.log('!component cls', cls);
-                console.log('!component obj', obj);
-                console.log('!component proto', proto);
-                console.log('!component options', options);
-            }
-            Vue.component(name, options);
-        };
-    }
-    packadic.component = component;
     function widget(name, parent) {
         return function (cls) {
             if (parent) {
@@ -393,166 +255,6 @@ var packadic;
         })();
         extensions_1.Extension = Extension;
     })(extensions = packadic.extensions || (packadic.extensions = {}));
-    var directives;
-    (function (directives) {
-        var Directive = (function () {
-            function Directive() {
-                var myPrototype = Directive.prototype;
-                $.each(myPrototype, function (propertyName, value) {
-                    delete myPrototype[propertyName];
-                });
-            }
-            Object.defineProperty(Directive.prototype, "$el", {
-                get: function () {
-                    return $(this.el);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Directive.prototype.$set = function (exp, val) {
-            };
-            Directive.prototype.$delete = function (key) { };
-            Directive.prototype.set = function (value) { };
-            Directive.prototype.on = function (event, handler) { };
-            Directive.prototype.bind = function () {
-            };
-            Directive.prototype.unbind = function () {
-            };
-            Directive.prototype.update = function (newValue, oldValue) {
-            };
-            return Directive;
-        })();
-        directives.Directive = Directive;
-        var ElementDirective = (function (_super) {
-            __extends(ElementDirective, _super);
-            function ElementDirective() {
-                _super.apply(this, arguments);
-            }
-            return ElementDirective;
-        })(Directive);
-        directives.ElementDirective = ElementDirective;
-    })(directives = packadic.directives || (packadic.directives = {}));
-    var filters;
-    (function (filters_1) {
-        function FilterCollection(excludedFunctions) {
-            if (excludedFunctions === void 0) { excludedFunctions = []; }
-            return function (target) {
-                var proto = Object.getPrototypeOf(target);
-                var filters = {};
-                Object.getOwnPropertyNames(proto).forEach(function (method) {
-                    if (['constructor'].concat(excludedFunctions).indexOf(method) > -1) {
-                        return;
-                    }
-                    var desc = Object.getOwnPropertyDescriptor(proto, method);
-                    if (typeof desc.value === 'function') {
-                        Vue.filter(method, proto[method]);
-                    }
-                });
-            };
-        }
-        filters_1.FilterCollection = FilterCollection;
-    })(filters = packadic.filters || (packadic.filters = {}));
-    var components;
-    (function (components) {
-        var Component = (function () {
-            function Component() {
-            }
-            Component.prototype.$add = function (key, val) {
-            };
-            Component.prototype.$addChild = function (options, constructor) {
-            };
-            Component.prototype.$after = function (target, cb) {
-            };
-            Component.prototype.$appendTo = function (target, cb) {
-            };
-            Component.prototype.$before = function (target, cb) {
-            };
-            Component.prototype.$broadcast = function (event) {
-                var args = [];
-                for (var _i = 1; _i < arguments.length; _i++) {
-                    args[_i - 1] = arguments[_i];
-                }
-            };
-            Component.prototype.$compile = function (el) {
-                return function () {
-                };
-            };
-            Component.prototype.$delete = function (key) {
-            };
-            Component.prototype.$destroy = function (remove) {
-            };
-            Component.prototype.$dispatch = function (event) {
-                var args = [];
-                for (var _i = 1; _i < arguments.length; _i++) {
-                    args[_i - 1] = arguments[_i];
-                }
-            };
-            Component.prototype.$emit = function (event) {
-                var args = [];
-                for (var _i = 1; _i < arguments.length; _i++) {
-                    args[_i - 1] = arguments[_i];
-                }
-            };
-            Component.prototype.$eval = function (text) {
-            };
-            Component.prototype.$get = function (exp) {
-            };
-            Component.prototype.$interpolate = function (text) {
-            };
-            Component.prototype.$log = function (path) {
-            };
-            Component.prototype.$mount = function (el) {
-            };
-            Component.prototype.$nextTick = function (fn) {
-            };
-            Component.prototype.$off = function (event, fn) {
-            };
-            Component.prototype.$on = function (event, fn) {
-            };
-            Component.prototype.$once = function (event, fn) {
-            };
-            Component.prototype.$remove = function (cb) {
-            };
-            Component.prototype.$set = function (exp, val) {
-            };
-            Component.prototype.$watch = function (exp, cb, options) {
-            };
-            return Component;
-        })();
-        components.Component = Component;
-        function lifecycleHook(hook) {
-            return function (cls, name, desc) {
-                if ([
-                    'created', 'beforeCompile', 'compiled', 'ready', 'attached', 'detached', 'beforeDestroy', 'destroyed'
-                ].indexOf(hook) == -1)
-                    throw new Error('Unknown Lifecyle Hook: ' + hook);
-                if (!cls.hasOwnProperty('__hooks__'))
-                    cls.__hooks__ = {};
-                cls.__hooks__[name] = cls[name];
-                desc.value = void 0;
-                return desc;
-            };
-        }
-        components.lifecycleHook = lifecycleHook;
-        function eventHook(hook) {
-            return function (cls, name, desc) {
-                if (!cls.hasOwnProperty('__events__'))
-                    cls.__events__ = {};
-                cls.__events__[name] = cls[name];
-                desc.value = void 0;
-                return desc;
-            };
-        }
-        components.eventHook = eventHook;
-        function prop(options) {
-            return function (cls, name) {
-                if (!cls.hasOwnProperty('__props__'))
-                    cls.__props__ = {};
-                cls.__props__[name] = options;
-            };
-        }
-        components.prop = prop;
-    })(components = packadic.components || (packadic.components = {}));
     var widgets;
     (function (widgets) {
         var Widget = (function () {
@@ -772,13 +474,9 @@ var packadic;
         };
     }
     packadic.EventHook = EventHook;
-    var Application = (function (_super) {
-        __extends(Application, _super);
+    var Application = (function () {
         function Application(options) {
-            _super.call(this, options);
-            this.data = {};
             this.timers = { construct: null, init: null, boot: null };
-            this._loaded = {};
             this._events = new EventEmitter2({
                 wildcard: true,
                 delimiter: ':',
@@ -863,7 +561,6 @@ var packadic;
             if (this.DEBUG)
                 console.groupCollapsed('DEBUG: boot');
             $(function () {
-                _this.$mount('html');
                 _this.emit('boot', _this);
                 _this.timers.boot = new Date;
                 if (!packadic.isTouchDevice()) {
@@ -892,42 +589,6 @@ var packadic;
             if (prefixBaseUrl === void 0) { prefixBaseUrl = true; }
             path = packadic.util.str.startsWith(path, '/') ? path : '/' + path;
             return (prefixBaseUrl ? this.config('baseUrl') : '') + this.config('assetPath') + path;
-        };
-        Application.prototype.mergeData = function (newData) {
-            var _this = this;
-            if (newData === void 0) { newData = {}; }
-            Object.keys(newData).forEach(function (key) {
-                if (typeof _this.$get(key) !== 'undefined') {
-                    _this.$set(key, newData[key]);
-                }
-                else {
-                    _this.$add(key, newData[key]);
-                }
-            });
-        };
-        Application.prototype.load = function (type, path, bower, pathSuffix) {
-            if (bower === void 0) { bower = false; }
-            if (pathSuffix === void 0) { pathSuffix = ''; }
-            var defer = packadic.util.promise.create();
-            path = packadic.util.str.endsWith(path, '.' + type) ? path : path + '.' + type;
-            var fullPath = this.getAssetPath((bower ? 'bower_components/' : 'scripts/') + path) + pathSuffix;
-            this._loaded[fullPath] = true;
-            System.import(fullPath).then(function () {
-                var args = [];
-                for (var _i = 0; _i < arguments.length; _i++) {
-                    args[_i - 0] = arguments[_i];
-                }
-                defer.resolve(args);
-            });
-            return defer.promise;
-        };
-        Application.prototype.loadJS = function (path, bower) {
-            if (bower === void 0) { bower = false; }
-            return this.load('js', path, bower);
-        };
-        Application.prototype.loadCSS = function (path, bower) {
-            if (bower === void 0) { bower = false; }
-            return this.load('css', path, bower, '!css');
         };
         Application.prototype.on = function (event, listener) {
             if (event === 'init' && this.isInitialised && listener(this)) {
@@ -964,7 +625,7 @@ var packadic;
             }
         };
         return Application;
-    })(Vue);
+    })();
     packadic.Application = Application;
 })(packadic || (packadic = {}));
 var packadic;
@@ -1291,24 +952,6 @@ var packadic;
         return window['JST'][name];
     }
     packadic.getTemplate = getTemplate;
-    function getClipboard() {
-        var defer = packadic.util.promise.create();
-        var app = packadic.Application.instance;
-        if (defined(packadic.Clipboard)) {
-            defer.resolve(packadic.Clipboard);
-        }
-        else {
-            app.on('init', function () {
-                app.loadJS('zeroclipboard/dist/ZeroClipboard', true).then(function (z) {
-                    var Clipboard = z[0];
-                    Clipboard.config({ swfPath: app.getAssetPath('bower_components/zeroclipboard/dist/ZeroClipboard.swf') });
-                    defer.resolve(Clipboard);
-                });
-            });
-        }
-        return defer.promise;
-    }
-    packadic.getClipboard = getClipboard;
 })(packadic || (packadic = {}));
 var packadic;
 (function (packadic) {
@@ -3570,27 +3213,5 @@ var packadic;
 })(packadic || (packadic = {}));
 (function () {
     packadic.debug = new packadic.Debug();
-    packadic.ready(function (app) {
-        console.log('init app systemjs', app);
-        System.config({
-            defaultJSExtensions: true,
-            map: {
-                css: app.getAssetPath('scripts/systemjs/css-plugin.js'),
-                'jquery-fake': app.getAssetPath('scripts/systemjs/jquery-fake-plugin.js')
-            },
-            meta: {
-                '*.css': {
-                    loader: 'css'
-                },
-                'jquery': { format: 'global', exports: '$', loader: 'jquery-fake' },
-                '*codemirror.js': { format: 'global', exports: 'CodeMirror' },
-                '*highlightjs/highlight.pack*.js': { format: 'global', exports: 'hljs' },
-                '*prism/prism*.js': { format: 'global', exports: 'Prism' }
-            }
-        });
-    });
 }.call(this));
-
-return packadic;
-
-}));
+//# sourceMappingURL=packadic.js.map

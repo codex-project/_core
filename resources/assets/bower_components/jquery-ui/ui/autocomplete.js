@@ -133,7 +133,7 @@ $.widget( "ui.autocomplete", {
 						if ( !this.isMultiLine ) {
 							this._value( this.term );
 						}
-						this.hide( event );
+						this.close( event );
 						// Different browsers have different default behavior for escape
 						// Single press can mean undo or clear
 						// Double press in IE means clear the whole form
@@ -195,7 +195,7 @@ $.widget( "ui.autocomplete", {
 				}
 
 				clearTimeout( this.searching );
-				this.hide( event );
+				this.close( event );
 				this._change( event );
 			}
 		});
@@ -235,7 +235,7 @@ $.widget( "ui.autocomplete", {
 							if ( event.target !== that.element[ 0 ] &&
 									event.target !== menuElement &&
 									!$.contains( menuElement, event.target ) ) {
-								that.hide();
+								that.close();
 							}
 						});
 					});
@@ -297,7 +297,7 @@ $.widget( "ui.autocomplete", {
 				// this allows custom select handling to work properly
 				this.term = this._value();
 
-				this.hide( event );
+				this.close( event );
 				this.selectedItem = item;
 			}
 		});

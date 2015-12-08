@@ -57,6 +57,7 @@ class DocitServiceProvider extends ServiceProvider
      * @var array
      */
     protected $providers = [
+        \Docit\Support\SupportServiceProvider::class,
         Providers\ConsoleServiceProvider::class,
         Providers\RouteServiceProvider::class
     ];

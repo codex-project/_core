@@ -99,7 +99,7 @@ class Extensions
      *
      * @return array
      */
-    public static function getExcludedProjectNames($parse = true)
+    public static function getExcludedProjectNames($parse = false)
     {
         return $parse === true ? implode('|', static::$excludedProjectNames) : static::$excludedProjectNames;
     }
@@ -114,7 +114,7 @@ class Extensions
         if (! is_array($projectNames)) {
             $projectNames = [ $projectNames ];
         }
-        static::$excludedProjectNames = array_merge(static::$excludedProjectNames, $projectNames);
+        static::$excludedProjectNames = array_replace(static::$excludedProjectNames, $projectNames);
     }
 
     /**
@@ -123,7 +123,7 @@ class Extensions
      * @param array $excludedProjectNames
      * @return RouteServiceProvider
      */
-    public static function setExcludedProjectNames($excludedProjectNames)
+    public static function setExcludedProjectNames(array $excludedProjectNames)
     {
         static::$excludedProjectNames = $excludedProjectNames;
     }

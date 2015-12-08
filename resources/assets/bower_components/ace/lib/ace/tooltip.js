@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2010, Ajax.org B.V.
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -14,7 +14,7 @@
  *     * Neither the name of Ajax.org B.V. nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -69,14 +69,14 @@ function Tooltip (parentNode) {
      * @param {String} text
      **/
     this.setText = function(text) {
-        dom.setInnerText(this._getValidationControl(), text);
+        dom.setInnerText(this.getElement(), text);
     };
 
     /**
      * @param {String} html
      **/
     this.setHtml = function(html) {
-        this._getValidationControl().innerHTML = html;
+        this.getElement().innerHTML = html;
     };
 
     /**
@@ -84,15 +84,15 @@ function Tooltip (parentNode) {
      * @param {Number} y
      **/
     this.setPosition = function(x, y) {
-        this._getValidationControl().style.left = x + "px";
-        this._getValidationControl().style.top = y + "px";
+        this.getElement().style.left = x + "px";
+        this.getElement().style.top = y + "px";
     };
 
     /**
      * @param {String} className
      **/
     this.setClassName = function(className) {
-        dom.addCssClass(this._getValidationControl(), className);
+        dom.addCssClass(this.getElement(), className);
     };
 
     /**
@@ -106,14 +106,14 @@ function Tooltip (parentNode) {
         if (x != null && y != null)
             this.setPosition(x, y);
         if (!this.isOpen) {
-            this._getValidationControl().style.display = "block";
+            this.getElement().style.display = "block";
             this.isOpen = true;
         }
     };
 
     this.hide = function() {
         if (this.isOpen) {
-            this._getValidationControl().style.display = "none";
+            this.getElement().style.display = "none";
             this.isOpen = false;
         }
     };
@@ -122,14 +122,14 @@ function Tooltip (parentNode) {
      * @returns {Number}
      **/
     this.getHeight = function() {
-        return this._getValidationControl().offsetHeight;
+        return this.getElement().offsetHeight;
     };
 
     /**
      * @returns {Number}
      **/
     this.getWidth = function() {
-        return this._getValidationControl().offsetWidth;
+        return this.getElement().offsetWidth;
     };
 
 }).call(Tooltip.prototype);

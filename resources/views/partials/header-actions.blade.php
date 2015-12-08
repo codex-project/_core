@@ -1,28 +1,31 @@
 <div class="btn-group">
     @if(isset($projectsList))
         <div class="btn-group">
-            <a href="#" type="button" data-toggle="dropdown" aria-expanded="false" class="btn dropdown-toggle btn-primary btn-sm">
+            <div class="btn btn-primary btn-sm">Project</div>
+            <a href="#" type="button" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle btn btn-primary btn-sm">
                 @yield('projectName', $projectName)
             </a>
-            <ul class="dropdown-menu">
-                <li><a href="overview">Overview</a></li>
-                <li role="separator" class="divider bg-color-grey-300"></li>
+
+            <div class="dropdown-menu">
                 @foreach($projectsList as $displayName => $url)
-                    <li><a href="{{ $url }}">{{ $displayName }}</a></li>
+                    <a href="{{ $url }}" class="dropdown-item">{{ $displayName }}</a>
                 @endforeach
-            </ul>
+            </div>
         </div>
     @endif
     @if(isset($projectRefList))
         <div class="btn-group">
-            <a href="#" type="button" data-toggle="dropdown" aria-expanded="false" class="btn dropdown-toggle btn-primary btn-sm">
+            <div class="btn btn-primary btn-sm">Version</div>
+            <a href="#" type="button" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle btn btn-primary btn-sm">
                 @yield('projectRef', $projectRef)
             </a>
-            <ul class="dropdown-menu">
+
+            <div class="dropdown-menu">
                 @foreach($projectRefList as $ref => $url)
-                    <li><a href="{{ $url }}">{{ $ref }}</a></li>
+                    <a href="{{ $url }}" class="dropdown-item">{{ $ref }}</a>
                 @endforeach
-            </ul>
+            </div>
+
         </div>
     @endif
 </div>

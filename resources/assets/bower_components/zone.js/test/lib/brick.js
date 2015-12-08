@@ -2604,7 +2604,7 @@ if (typeof WeakMap === "undefined") {
                     multiple: this.hasAttribute("multiple"),
                     firstWeekdayNum: this.getAttribute("first-weekday-num")
                 });
-                appendChild(this, this.xtag.calObj.e);
+                appendChild(this, this.xtag.calObj.el);
                 this.xtag.calControls = null;
                 this.xtag.dragType = null;
                 this.xtag.dragStartEl = null;

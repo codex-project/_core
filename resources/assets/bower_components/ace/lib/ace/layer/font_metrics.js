@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2010, Ajax.org B.V.
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -14,7 +14,7 @@
  *     * Neither the name of Ajax.org B.V. nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -41,22 +41,22 @@ var CHAR_COUNT = 0;
 var FontMetrics = exports.FontMetrics = function(parentEl, interval) {
     this.el = dom.createElement("div");
     this.$setMeasureNodeStyles(this.el.style, true);
-
+    
     this.$main = dom.createElement("div");
     this.$setMeasureNodeStyles(this.$main.style);
-
+    
     this.$measureNode = dom.createElement("div");
     this.$setMeasureNodeStyles(this.$measureNode.style);
-
-
+    
+    
     this.el.appendChild(this.$main);
     this.el.appendChild(this.$measureNode);
     parentEl.appendChild(this.el);
-
+    
     if (!CHAR_COUNT)
         this.$testFractionalRect();
     this.$measureNode.innerHTML = lang.stringRepeat("X", CHAR_COUNT);
-
+    
     this.$characterSize = {width: 0, height: 0};
     this.checkForSizeChanges();
 };
@@ -64,9 +64,9 @@ var FontMetrics = exports.FontMetrics = function(parentEl, interval) {
 (function() {
 
     oop.implement(this, EventEmitter);
-
+        
     this.$characterSize = {width: 0, height: 0};
-
+    
     this.$testFractionalRect = function() {
         var el = dom.createElement("div");
         this.$setMeasureNodeStyles(el.style);
@@ -79,7 +79,7 @@ var FontMetrics = exports.FontMetrics = function(parentEl, interval) {
             CHAR_COUNT = 100;
         el.parentNode.removeChild(el);
     };
-
+    
     this.$setMeasureNodeStyles = function(style, isRoot) {
         style.width = style.height = "auto";
         style.left = style.top = "0px";
@@ -116,7 +116,7 @@ var FontMetrics = exports.FontMetrics = function(parentEl, interval) {
             self.checkForSizeChanges();
         }, 500);
     };
-
+    
     this.setPolling = function(val) {
         if (val) {
             this.$pollSizeChanges();
@@ -129,7 +129,7 @@ var FontMetrics = exports.FontMetrics = function(parentEl, interval) {
     this.$measureSizes = function() {
         if (CHAR_COUNT === 50) {
             var rect = null;
-            try {
+            try { 
                rect = this.$measureNode.getBoundingClientRect();
             } catch(e) {
                rect = {width: 0, height:0 };
@@ -156,19 +156,19 @@ var FontMetrics = exports.FontMetrics = function(parentEl, interval) {
         var rect = this.$main.getBoundingClientRect();
         return rect.width / CHAR_COUNT;
     };
-
+    
     this.getCharacterWidth = function(ch) {
         var w = this.charSizes[ch];
         if (w === undefined) {
-            this.charSizes[ch] = this.$measureCharWidth(ch) / this.$characterSize.width;
+            w = this.charSizes[ch] = this.$measureCharWidth(ch) / this.$characterSize.width;
         }
         return w;
     };
 
     this.destroy = function() {
         clearInterval(this.$pollSizeChangesTimer);
-        if (this.e && this.e.parentNode)
-            this.e.parentNode.removeChild(this.e);
+        if (this.el && this.el.parentNode)
+            this.el.parentNode.removeChild(this.el);
     };
 
 }).call(FontMetrics.prototype);

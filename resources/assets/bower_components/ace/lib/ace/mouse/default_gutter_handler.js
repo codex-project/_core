@@ -93,9 +93,9 @@ function GutterHandler(mouseHandler) {
         if (mouseHandler.$tooltipFollowsMouse) {
             moveTooltip(mouseEvent);
         } else {
-            var gutterElement = gutter.$cells[editor.session.documentToScreenRow(row, 0)].element;
+            var gutterElement = mouseEvent.domEvent.target;
             var rect = gutterElement.getBoundingClientRect();
-            var style = tooltip._getValidationControl().style;
+            var style = tooltip.getElement().style;
             style.left = rect.right + "px";
             style.top = rect.bottom + "px";
         }
@@ -145,7 +145,7 @@ function GutterHandler(mouseHandler) {
             hideTooltip();
         }, 50);
     });
-
+    
     editor.on("changeSession", hideTooltip);
 }
 

@@ -9,6 +9,7 @@ var webSocketPatch = require('./websocket');
 var eventTargetPatch = require('./event-target');
 var propertyDescriptorPatch = require('./property-descriptor');
 var geolocationPatch = require('./geolocation');
+var fileReaderPatch = require('./file-reader');
 
 function apply() {
   fnPatch.patchSetClearFunction(global, [
@@ -17,7 +18,7 @@ function apply() {
     'immediate'
   ]);
 
-  fnPatch.patchSetFunction(global, [
+  fnPatch.patchRequestAnimationFrame(global, [
     'requestAnimationFrame',
     'mozRequestAnimationFrame',
     'webkitRequestAnimationFrame'
@@ -42,6 +43,8 @@ function apply() {
   registerElementPatch.apply();
 
   geolocationPatch.apply();
+
+  fileReaderPatch.apply();
 }
 
 module.exports = {

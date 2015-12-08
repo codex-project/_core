@@ -343,7 +343,7 @@ return $.widget( "ui.dialog", {
 				if ( this.options.closeOnEscape && !event.isDefaultPrevented() && event.keyCode &&
 						event.keyCode === $.ui.keyCode.ESCAPE ) {
 					event.preventDefault();
-					this.hide( event );
+					this.close( event );
 					return;
 				}
 
@@ -418,7 +418,7 @@ return $.widget( "ui.dialog", {
 		this._on( this.uiDialogTitlebarClose, {
 			click: function( event ) {
 				event.preventDefault();
-				this.hide( event );
+				this.close( event );
 			}
 		});
 

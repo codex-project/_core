@@ -25203,7 +25203,7 @@ if ( xhrSupported ) {
 						id = ++xhrId;
 
 					// Open the socket
-					xhr.show( options.type, options.url, options.async, options.username, options.password );
+					xhr.open( options.type, options.url, options.async, options.username, options.password );
 
 					// Apply custom fields if provided
 					if ( options.xhrFields ) {
@@ -27016,7 +27016,7 @@ return $.widget;
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  *
- * Version: 1.3.6
+ * Version: 1.3.7
  *
  */
 (function($) {
@@ -27114,8 +27114,8 @@ return $.widget;
             var offset = me.scrollTop();
 
             // find bar and rail
-            bar = me.closest('.' + o.barClass);
-            rail = me.closest('.' + o.railClass);
+            bar = me.siblings('.' + o.barClass);
+            rail = me.siblings('.' + o.railClass);
 
             getBarHeight();
 
@@ -27129,6 +27129,10 @@ return $.widget;
                 var height = me.parent().parent().height();
                 me.parent().css('height', height);
                 me.css('height', height);
+              } else if ('height' in options) {
+                var h = options.height;
+                me.parent().css('height', h);
+                me.css('height', h);
               }
 
               if ('scrollTo' in options)
@@ -28996,9 +29000,10 @@ function getScrollParent(el) {
       return parent;
     }
 
-    var overflow = style.overflow;
-    var overflowX = style.overflowX;
-    var overflowY = style.overflowY;
+    var _style = style;
+    var overflow = _style.overflow;
+    var overflowX = _style.overflowX;
+    var overflowY = _style.overflowY;
 
     if (/(auto|scroll)/.test(overflow + overflowY + overflowX)) {
       if (position !== 'absolute' || ['relative', 'absolute', 'fixed'].indexOf(style.position) >= 0) {
@@ -29280,6 +29285,11 @@ var Evented = (function () {
     value: function trigger(event) {
       if (typeof this.bindings !== 'undefined' && this.bindings[event]) {
         var i = 0;
+
+        for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          args[_key - 1] = arguments[_key];
+        }
+
         while (i < this.bindings[event].length) {
           var _bindings$event$i = this.bindings[event][i];
           var handler = _bindings$event$i.handler;
@@ -29289,10 +29299,6 @@ var Evented = (function () {
           var context = ctx;
           if (typeof context === 'undefined') {
             context = this;
-          }
-
-          for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-            args[_key - 1] = arguments[_key];
           }
 
           handler.apply(context, args);
@@ -29358,6 +29364,9 @@ function within(a, b) {
 }
 
 var transformKey = (function () {
+  if (typeof document === 'undefined') {
+    return '';
+  }
   var el = document.createElement('div');
 
   var transforms = ['transform', 'webkitTransform', 'OTransform', 'MozTransform', 'msTransform'];
@@ -29415,9 +29424,11 @@ function now() {
     lastDuration = now() - lastCall;
   };
 
-  ['resize', 'scroll', 'touchmove'].forEach(function (event) {
-    window.addEventListener(event, tick);
-  });
+  if (typeof window !== 'undefined') {
+    ['resize', 'scroll', 'touchmove'].forEach(function (event) {
+      window.addEventListener(event, tick);
+    });
+  }
 })();
 
 var MIRROR_LR = {
@@ -30012,10 +30023,10 @@ var TetherClass = (function () {
 
       return true;
     }
-  }, {
-    key: 'move',
 
     // THE ISSUE
+  }, {
+    key: 'move',
     value: function move(pos) {
       var _this6 = this;
 
@@ -30074,7 +30085,7 @@ var TetherClass = (function () {
           if (transformKey !== 'msTransform') {
             // The Z transform will keep this in the GPU (faster, and prevents artifacts),
             // but IE9 doesn't support 3d transforms and will choke.
-            css[transformKey] += ' translateZ(0)';
+            css[transformKey] += " translateZ(0)";
           }
         } else {
           if (_same.top) {
@@ -30638,10 +30649,12 @@ TetherBase.modules.push({
       shift = shift.split(' ');
       shift[1] = shift[1] || shift[0];
 
-      var _shift = _slicedToArray(shift, 2);
+      var _shift = shift;
 
-      shiftTop = _shift[0];
-      shiftLeft = _shift[1];
+      var _shift2 = _slicedToArray(_shift, 2);
+
+      shiftTop = _shift2[0];
+      shiftLeft = _shift2[1];
 
       shiftTop = parseFloat(shiftTop, 10);
       shiftLeft = parseFloat(shiftLeft, 10);
@@ -31000,7 +31013,7 @@ var Alert = (function ($) {
             event.preventDefault();
           }
 
-          alertInstance.hide(this);
+          alertInstance.close(this);
         };
       }
     }, {
