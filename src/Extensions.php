@@ -114,7 +114,7 @@ class Extensions
         if (! is_array($projectNames)) {
             $projectNames = [ $projectNames ];
         }
-        static::$excludedProjectNames = array_replace(static::$excludedProjectNames, $projectNames);
+        static::$excludedProjectNames = array_merge(static::$excludedProjectNames, $projectNames);
     }
 
     /**
