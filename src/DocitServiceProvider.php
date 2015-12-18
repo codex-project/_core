@@ -58,6 +58,7 @@ class DocitServiceProvider extends ServiceProvider
      */
     protected $providers = [
         \Docit\Support\SupportServiceProvider::class,
+        Providers\LogServiceProvider::class,
         Providers\ConsoleServiceProvider::class,
         Providers\RouteServiceProvider::class
     ];
@@ -99,4 +100,5 @@ class DocitServiceProvider extends ServiceProvider
         $this->addDocitFilter('front_matter', FrontMatterFilter::class);
         $this->addDocitFilter('parsedown', ParsedownFilter::class);
     }
+
 }

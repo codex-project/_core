@@ -81,6 +81,7 @@ class Extensions
 
         foreach (static::$hooks[ $name ] as $handler) {
             if ($handler instanceof \Closure) {
+
                 call_user_func_array($handler, $params);
             } elseif (class_exists($handler)) {
                 $instance = app()->make($handler);

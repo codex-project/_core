@@ -84,5 +84,9 @@ return [
                 'fenced_code_lang_class' => 'hljs lang-{LANG}'//'prettyprint lang-{LANG}'
             ]
         ]
+    ],
+
+    'log' => [
+        'path' => storage_path('logs/docit.log')
     ]
 ];

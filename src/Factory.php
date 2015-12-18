@@ -1,15 +1,16 @@
 <?php
 /**
-* Part of the Docit PHP packages.
-*
-* MIT License and copyright information bundled with this package in the LICENSE file
+ * Part of the Docit PHP packages.
+ *
+ * MIT License and copyright information bundled with this package in the LICENSE file
  */
 namespace Docit\Core;
 
-use Docit\Support\Path;
 use Docit\Core\Contracts\Factory as FactoryContract;
+use Docit\Core\Contracts\Log;
 use Docit\Core\Contracts\Menus\MenuFactory;
 use Docit\Core\Traits\Hookable;
+use Docit\Support\Path;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
@@ -71,13 +72,20 @@ class Factory implements FactoryContract
     protected $projects;
 
     /**
+     * @var \Docit\Core\Contracts\Log
+     */
+    protected $log;
+
+
+    /**
      * @param \Illuminate\Contracts\Container\Container   $container
      * @param \Illuminate\Contracts\Filesystem\Filesystem $files
      * @param \Illuminate\Contracts\Config\Repository     $config
      * @param \Illuminate\Contracts\Cache\Repository      $cache
-     * @param \Docit\Core\Contracts\Menus\MenuFactory    $menus The menu factory
+     * @param \Docit\Core\Contracts\Log                   $log
+     * @param \Docit\Core\Contracts\Menus\MenuFactory     $menus The menu factory
      */
-    public function __construct(Container $container, Filesystem $files, Repository $config, Cache $cache, MenuFactory $menus)
+    public function __construct(Container $container, Filesystem $files, Repository $config, Cache $cache, Log $log, MenuFactory $menus)
     {
         $this->container = $container;
         $this->cache     = $cache;
@@ -85,6 +93,7 @@ class Factory implements FactoryContract
         $this->files     = $files;
         $this->rootDir   = config('docit.root_dir');
         $this->menus     = $menus;
+        $this->log       = $log;
         $this->projects  = new Collection();
 
         // 'factory:ready' is called after parameters have been set as class properties.
@@ -103,7 +112,8 @@ class Factory implements FactoryContract
      */
     protected function resolveProjects()
     {
-        if (! $this->projects->isEmpty()) {
+        if ( ! $this->projects->isEmpty() )
+        {
             return;
         }
 
@@ -114,8 +124,9 @@ class Factory implements FactoryContract
         $finder       = new Finder();
         $projects     = $finder->in($this->rootDir)->files()->name('config.php')->depth('<= 1')->followLinks();
 
-        foreach ($projects as $projectDir) {
-        /** @var \SplFileInfo $projectDir */
+        foreach ( $projects as $projectDir )
+        {
+            /** @var \SplFileInfo $projectDir */
             $name    = Path::getDirectoryName($projectDir->getPath());
             $config  = $this->container->make('fs')->getRequire($projectDir->getRealPath());
             $config  = array_replace_recursive($this->config('default_project_config'), $config);
@@ -145,7 +156,8 @@ class Factory implements FactoryContract
      */
     public function getProject($name)
     {
-        if (! $this->hasProject($name)) {
+        if ( ! $this->hasProject($name) )
+        {
             throw new \InvalidArgumentException("Project [$name] could not be found in [{$this->rootDir}]");
         }
 
@@ -184,7 +196,8 @@ class Factory implements FactoryContract
      */
     public function config($key = null, $default = null)
     {
-        if (is_null($key)) {
+        if ( is_null($key) )
+        {
             return $this->config;
         }
 
@@ -227,21 +240,27 @@ class Factory implements FactoryContract
     {
         $uri = $this->config('base_route');
 
-        if (! is_null($project)) {
-            if (! $project instanceof Project) {
+        if ( ! is_null($project) )
+        {
+            if ( ! $project instanceof Project )
+            {
                 $project = $this->getProject($project);
             }
             $uri .= '/' . $project->getName();
 
 
-            if (! is_null($ref)) {
+            if ( ! is_null($ref) )
+            {
                 $uri .= '/' . $ref;
-            } else {
+            }
+            else
+            {
                 $uri .= '/' . $project->getDefaultRef();
             }
 
 
-            if (! is_null($doc)) {
+            if ( ! is_null($doc) )
+            {
                 $uri .= '/' . $doc;
             }
         }
@@ -249,6 +268,17 @@ class Factory implements FactoryContract
         return url($uri);
     }
 
+    /**
+     * log method
+     *
+     * @param       $level
+     * @param       $message
+     * @param array $context
+     */
+    public function log($level, $message, $context = [])
+    {
+        return $this->log->log($level, $message, $context);
+    }
 
     # Getters / setters
 
@@ -354,4 +384,29 @@ class Factory implements FactoryContract
 
         return $this;
     }
+
+    /**
+     * get log value
+     *
+     * @return Log
+     */
+    public function getLog()
+    {
+        return $this->log;
+    }
+
+    /**
+     * Set the log value
+     *
+     * @param Log $log
+     * @return Factory
+     */
+    public function setLog($log)
+    {
+        $this->log = $log;
+
+        return $this;
+    }
+
+
 }
