@@ -88,5 +88,7 @@ return [
 
     'log' => [
         'path' => storage_path('logs/docit.log')
-    ]
+    ],
+
+    'stubs_path' => __DIR__ . '/../resources/stubs'
 ];

@@ -56,7 +56,17 @@ class ProjectMenusComposer
     {
         $list = [ ];
         foreach ($this->factory->getProjects() as $project) {
-            $list[ (string)$project->config('display_name') ] = $project->url();
+            $name = (string)$project->config('display_name');
+            if(strpos($name, ' :: ') !== false){
+                $names = explode(' :: ', $name);
+                $name = array_shift($names);
+                array_set($list, "{$name}.". implode('.', $names), $project->url());
+            }
+            else
+            {
+                $list[$name] = $project->url();
+            }
+
         }
 
         return $list;

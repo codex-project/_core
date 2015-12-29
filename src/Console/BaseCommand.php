@@ -6,8 +6,9 @@
  */
 namespace Docit\Core\Console;
 
-use Docit\Support\Command;
 use Docit\Core\Contracts\Factory;
+use Docit\Support\Command;
+use Docit\Support\StubGenerator;
 
 /**
  * This is the DocitMakeCommand.
@@ -22,11 +23,55 @@ abstract class BaseCommand extends Command
     /**
      * @var \Docit\Core\Factory
      */
-    protected $factory;
+    protected $docit;
 
-    public function __construct(Factory $factory)
+    protected $generator;
+
+    public function __construct(Factory $factory, StubGenerator $generator)
     {
         parent::__construct();
-        $this->factory = $factory;
+        $this->docit     = $factory;
+        $this->generator = $generator;
+    }
+
+    #
+    # GENERATOR
+
+    /**
+     * generate
+     *
+     * @param array $files
+     * @param array $vars
+     */
+    public function generate($directory, array $files = [ ], array $vars = [ ])
+    {
+        $this->generator->generate(
+            $this->docit->config('stubs_path'),
+            $this->docit->getRootDir() . DIRECTORY_SEPARATOR . $directory,
+            $files,
+            array_replace_recursive($this->getGeneratorVars($directory), $vars)
+        );
+    }
+
+    /**
+     * getVars
+     *
+     * @param null $packageName
+     * @return array
+     */
+    public function getGeneratorVars($directory)
+    {
+        $stubDir = $this->docit->config('stubs_path');
+        $destDir = $this->docit->getRootDir() . DIRECTORY_SEPARATOR . $directory;
+
+        $vars = [
+            'config'    => array_dot($this->docit->config()),
+            'open'      => '<?php',
+            'stubDir'   => $stubDir,
+            'destDir'   => $destDir,
+            'directory' => $directory
+        ];
+
+        return $vars;
     }
 }

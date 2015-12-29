@@ -3,13 +3,11 @@
         <div class="btn-group">
             <div class="btn btn-primary btn-sm">Project</div>
             <a href="#" type="button" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle btn btn-primary btn-sm">
-                @yield('projectName', $projectName)
+                @yield('projectName', last(explode(' :: ', $project->config('display_name'))))
             </a>
 
             <div class="dropdown-menu">
-                @foreach($projectsList as $displayName => $url)
-                    <a href="{{ $url }}" class="dropdown-item">{{ $displayName }}</a>
-                @endforeach
+                @include('docit::partials/header-actions-item', ['item' => $projectsList])
             </div>
         </div>
     @endif

@@ -1,16 +1,18 @@
 <?php
 /**
-* Part of the Docit PHP packages.
-*
-* MIT License and copyright information bundled with this package in the LICENSE file
+ * Part of the Docit PHP packages.
+ *
+ * MIT License and copyright information bundled with this package in the LICENSE file
  */
 namespace Docit\Core;
 
-use Docit\Support\ServiceProvider;
 use Docit\Core\Filters\FrontMatterFilter;
 use Docit\Core\Filters\ParsedownFilter;
+use Docit\Core\Log\Writer;
 use Docit\Core\Traits\DocitProviderTrait;
+use Docit\Support\ServiceProvider;
 use Illuminate\Contracts\Foundation\Application;
+use Monolog\Logger as Monolog;
 
 /**
  * Docit service provider.
@@ -58,7 +60,6 @@ class DocitServiceProvider extends ServiceProvider
      */
     protected $providers = [
         \Docit\Support\SupportServiceProvider::class,
-        Providers\LogServiceProvider::class,
         Providers\ConsoleServiceProvider::class,
         Providers\RouteServiceProvider::class
     ];
@@ -67,7 +68,7 @@ class DocitServiceProvider extends ServiceProvider
      * @var array
      */
     protected $singletons = [
-        'docit' => Factory::class,
+        'docit'       => Factory::class,
         'docit.menus' => Menus\MenuFactory::class
     ];
 
@@ -75,7 +76,8 @@ class DocitServiceProvider extends ServiceProvider
      * @var array
      */
     protected $aliases = [
-        'docit' => Contracts\Factory::class,
+        'docit'       => Contracts\Factory::class,
+        'docit.log'   => Contracts\Log::class,
         'docit.menus' => Contracts\Menus\MenuFactory::class
     ];
 
@@ -87,6 +89,7 @@ class DocitServiceProvider extends ServiceProvider
     public function register()
     {
         $app = parent::register();
+        $this->registerLogger($app);
         $this->registerFilters();
     }
 
@@ -101,4 +104,19 @@ class DocitServiceProvider extends ServiceProvider
         $this->addDocitFilter('parsedown', ParsedownFilter::class);
     }
 
+    /**
+     * registerLogger method
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @return \Docit\Core\Log\Writer
+     */
+    protected function registerLogger(Application $app)
+    {
+        $app->instance('docit.log', $log = new Writer(
+            new Monolog($app->environment()), $app[ 'events' ])
+        );
+        $log->useFiles($app[ 'config' ][ 'docit.log.path' ]);
+
+        return $log;
+    }
 }

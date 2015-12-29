@@ -24,7 +24,7 @@ class ListCommand extends BaseCommand
     {
         $headers = ['Name', 'Display name', 'Ref'];
         $rows = [];
-        foreach ($this->factory->getProjects() as $project) {
+        foreach ( $this->docit->getProjects() as $project) {
             $rows[] = [$project->getName(), $project->config('display_name'), $project->getRef()];
         }
         $this->table($headers, $rows);

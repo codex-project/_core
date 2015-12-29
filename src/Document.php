@@ -38,7 +38,7 @@ class Document
     /**
      * @var \Docit\Core\Factory
      */
-    protected $factory;
+    protected $docit;
 
     /**
      * @var \Illuminate\Filesystem\Filesystem
@@ -74,17 +74,17 @@ class Document
     /**
      * Creates a new Document class
      *
-     * @param \Docit\Core\Contracts\Factory              $factory   The factory class
+     * @param \Docit\Core\Contracts\Factory               $docit     The factory class
      * @param \Illuminate\Contracts\Filesystem\Filesystem $files     The filesystem
-     * @param \Docit\Core\Project                        $project   The project instance
+     * @param \Docit\Core\Project                         $project   The project instance
      * @param \Illuminate\Contracts\Container\Container   $container The container class
      * @param string                                      $path      The absolute path to the document
      * @param string                                      $pathName  The relative path to the document
      */
-    public function __construct(Factory $factory, Filesystem $files, Project $project, Container $container, $path, $pathName)
+    public function __construct(Factory $docit, Filesystem $files, Project $project, Container $container, $path, $pathName)
     {
         $this->container = $container;
-        $this->factory   = $factory;
+        $this->docit     = $docit;
         $this->project   = $project;
         $this->files     = $files;
         $this->path      = $path;
@@ -92,7 +92,7 @@ class Document
 
         $this->runHook('document:ready', [ $this ]);
 
-        $this->attributes = $factory->config('default_document_attributes');
+        $this->attributes = $docit->config('default_document_attributes');
         $this->content    = $this->files->get($this->path);
 
         $this->runHook('document:done', [ $this ]);
@@ -148,7 +148,7 @@ class Document
      */
     public function url()
     {
-        return $this->factory->url($this->project, $this->project->getRef(), $this->pathName);
+        return $this->docit->url($this->project, $this->project->getRef(), $this->pathName);
     }
 
     /**
