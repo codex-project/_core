@@ -170,7 +170,7 @@ class Document
      *
      * @return string
      */
-    public function sgetPath()
+    public function getPath()
     {
         return $this->path;
     }

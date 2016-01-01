@@ -114,9 +114,9 @@ class CodexServiceProvider extends ServiceProvider
     protected function registerLogger(Application $app)
     {
         $app->instance('codex.log', $log = new Writer(
-        new Monolog($app->environment()),
+            new Monolog($app->environment()),
             $app[ 'events' ]
-            ));
+        ));
         $log->useFiles($app[ 'config' ][ 'codex.log.path' ]);
 
         return $log;

@@ -165,7 +165,7 @@ class Project
                 usort($this->versions, function (version $v1, version $v2) {
                 
                     return version::gt($v1, $v2) ? -1 : 1;
-                    });
+                });
 
                 $defaultRef = head($this->versions);
                 break;
