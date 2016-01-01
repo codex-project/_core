@@ -122,8 +122,7 @@ class Factory implements FactoryContract
      */
     protected function resolveProjects()
     {
-        if ( !$this->projects->isEmpty() )
-        {
+        if (!$this->projects->isEmpty()) {
             return;
         }
 
@@ -134,9 +133,8 @@ class Factory implements FactoryContract
         $finder       = new Finder();
         $projects     = $finder->in($this->rootDir)->files()->name('config.php')->depth('<= 1')->followLinks();
 
-        foreach ( $projects as $projectDir )
-        {
-            /** @var \SplFileInfo $projectDir */
+        foreach ($projects as $projectDir) {
+        /** @var \SplFileInfo $projectDir */
             $name    = Path::getDirectoryName($projectDir->getPath());
             $config  = $this->container->make('fs')->getRequire($projectDir->getRealPath());
             $config  = array_replace_recursive($this->config('default_project_config'), $config);
@@ -167,8 +165,7 @@ class Factory implements FactoryContract
      */
     public function getProject($name)
     {
-        if ( !$this->hasProject($name) )
-        {
+        if (!$this->hasProject($name)) {
             throw new \InvalidArgumentException("Project [$name] could not be found in [{$this->rootDir}]");
         }
 
@@ -209,8 +206,7 @@ class Factory implements FactoryContract
      */
     public function config($key = null, $default = null)
     {
-        if ( is_null($key) )
-        {
+        if (is_null($key)) {
             return $this->config;
         }
 
@@ -255,27 +251,21 @@ class Factory implements FactoryContract
     {
         $uri = $this->config('base_route');
 
-        if ( !is_null($project) )
-        {
-            if ( !$project instanceof Project )
-            {
+        if (!is_null($project)) {
+            if (!$project instanceof Project) {
                 $project = $this->getProject($project);
             }
             $uri .= '/' . $project->getName();
 
 
-            if ( !is_null($ref) )
-            {
+            if (!is_null($ref)) {
                 $uri .= '/' . $ref;
-            }
-            else
-            {
+            } else {
                 $uri .= '/' . $project->getDefaultRef();
             }
 
 
-            if ( !is_null($doc) )
-            {
+            if (!is_null($doc)) {
                 $uri .= '/' . $doc;
             }
         }
@@ -427,6 +417,4 @@ class Factory implements FactoryContract
 
         return $this;
     }
-
-
 }

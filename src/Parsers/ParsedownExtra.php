@@ -1,7 +1,6 @@
 <?php
 namespace Codex\Core\Parsers;
 
-
 use ParsedownExtra as BaseParsedownExtra;
 
 /**

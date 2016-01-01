@@ -23,5 +23,4 @@ class Writer extends BaseWriter implements Log
         parent::__construct($monolog, $dispatcher);
 
     }
-
 }

@@ -6,8 +6,6 @@ $index = Route::get('/', ['as' => 'codex.index', 'uses' => 'CodexController@inde
 $document = Route::get('{projectSlug}/{ref?}/{document?}', [ 'as' => 'codex.document', 'uses' => 'CodexController@document' ]);
 $document->where('document', '(.*)');
 
-if(count(Extensions::getExcludedProjectNames()) > 0)
-{
+if (count(Extensions::getExcludedProjectNames()) > 0) {
     $document->where('projectSlug', '^((?!' . Extensions::getExcludedProjectNames(true) . ').*?)$');
 }
-
