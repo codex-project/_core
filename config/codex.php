@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'display_name' => 'Docit',
+    'display_name' => 'Codex',
 
     /*
     |--------------------------------------------------------------------------
@@ -16,19 +16,19 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'root_dir' => env('DOCIT_ROOT_DIR', base_path('resources/docs')),
+    'root_dir' => env('CODEX_ROOT_DIR', base_path('resources/docs')),
 
     /*
     |--------------------------------------------------------------------------
     | Route Base
     |--------------------------------------------------------------------------
     |
-    | You may define a base route for your Docit documentation here. By default
-    | it is set to "docit", but you may leave this empty if you wish to use
-    | Docit as a stand alone application.
+    | You may define a base route for your Codex documentation here. By default
+    | it is set to "codex", but you may leave this empty if you wish to use
+    | Codex as a stand alone application.
     |
     */
-    'base_route' => env('DOCIT_BASE_ROUTE', 'docit'),
+    'base_route' => env('CODEX_BASE_ROUTE', 'codex'),
 
     /*
     |--------------------------------------------------------------------------
@@ -36,7 +36,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'default_project' => env('DOCIT_DEFAULT_PROJECT', 'docit'),
+    'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
 
     /*
     |--------------------------------------------------------------------------
@@ -44,7 +44,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'projects_menus_view_composer' => 'Docit\\Core\\Http\\ViewComposers\\ProjectMenusComposer',
+    'projects_menus_view_composer' => 'Codex\\Core\\Http\\ViewComposers\\ProjectMenusComposer',
 
     /*
     |--------------------------------------------------------------------------
@@ -60,8 +60,8 @@ return [
         'author' => 'John Doe',
         'title' => 'Documentation',
         'subtitle' => '',
-        'layout' => 'docit::layouts/default',
-        'view' => 'docit::document'
+        'layout' => 'codex::layouts/default',
+        'view' => 'codex::document'
     ],
 
     /*
@@ -75,7 +75,7 @@ return [
     */
     'default_project_config' => [
         'description'      => '',
-        'default'          => Docit\Core\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
+        'default'          => Codex\Core\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
         'custom'           => null,
         'filters'          => ['front_matter', 'parsedown'],
         'filters_settings' => [
@@ -87,7 +87,7 @@ return [
     ],
 
     'log' => [
-        'path' => storage_path('logs/docit.log')
+        'path' => storage_path('logs/codex.log')
     ],
 
     'stubs_path' => __DIR__ . '/../resources/stubs'

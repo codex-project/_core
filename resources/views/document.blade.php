@@ -1,7 +1,7 @@
 @extends($document->attr('layout'))
 
 @push('stylesheets')
-<link href="{{ asset('vendor/docit/bower_components/highlightjs/styles/tomorrow.css') }}" type="text/css" rel="stylesheet">
+<link href="{{ asset('vendor/codex/bower_components/highlightjs/styles/tomorrow.css') }}" type="text/css" rel="stylesheet">
 @stop
 
 @section('title')
@@ -36,7 +36,7 @@
 
 @section('header-actions')
     @parent
-    @include('docit::partials/header-actions')
+    @include('codex::partials/header-actions')
 @stop
 
 @section('content')
@@ -44,7 +44,7 @@
 @stop
 
 @push('init-scripts')
-<script src="{{ asset('vendor/docit/bower_components/highlightjs/highlight.pack.js') }}"></script>
+<script src="{{ asset('vendor/codex/bower_components/highlightjs/highlight.pack.js') }}"></script>
 <script>
     $(function(){
         console.log('highlighting');

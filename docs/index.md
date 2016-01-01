@@ -1,19 +1,19 @@
 <!---
-title: Docit Documentation
+title: Codex Documentation
 subtitle: Overview   
 -->
 
 
 #### Composer
 ```JSON
-"docit/docit": "~2.0"
+"codex/codex": "~2.0"
 ```
   
   
 #### Laravel
 Add the ThemesServiceProvider to your config.
 ```php
-'Docit\Core\DocitServiceProvider'
+'Codex\Core\CodexServiceProvider'
 ```
   
   
@@ -28,5 +28,5 @@ php artisan vendor:publish --tag=views
   
 #### Create a project
 ```sh
-php artisan docit:make
+php artisan codex:make
 ```

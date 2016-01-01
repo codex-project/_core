@@ -6,7 +6,7 @@
                 {{ $displayName }}
             </a>
             <div class="dropdown-menu">
-                @include('docit::partials/header-actions-item', ['item' => $url])
+                @include('codex::partials/header-actions-item', ['item' => $url])
             </div>
         </div>
     @else

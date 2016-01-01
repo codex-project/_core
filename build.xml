@@ -1,4 +1,4 @@
-<project name="docit" default="pre-commit">
+<project name="codex" default="pre-commit">
     <property name="buildfile-version" value="1.0.0"/>
     <property name="vendordir" value="${project.basedir}/../../../vendor"/>
     <property name="phpdocfile" value="${project.basedir}/docs/structure.xml"/>

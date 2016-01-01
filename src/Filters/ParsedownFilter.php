@@ -1,16 +1,16 @@
 <?php
-namespace Docit\Core\Filters;
+namespace Codex\Core\Filters;
 
-use Docit\Core\Contracts\Filter;
-use Docit\Core\Document;
-use Docit\Core\Parsers\ParsedownExtra;
+use Codex\Core\Contracts\Filter;
+use Codex\Core\Document;
+use Codex\Core\Parsers\ParsedownExtra;
 
 /**
  * Parsedown filter
  *
- * @package   Docit\Core
- * @author    Docit Project Dev Team
- * @copyright Copyright (c) 2015, Docit Project
+ * @package   Codex\Core
+ * @author    Codex Project Dev Team
+ * @copyright Copyright (c) 2015, Codex Project
  * @license   https://tldrlegal.com/license/mit-license MIT License
  */
 class ParsedownFilter implements Filter
@@ -31,9 +31,10 @@ class ParsedownFilter implements Filter
     /**
      * Handle the filter.
      *
-     * @param  \Docit\Core\Document  $document
-     * @param  array                  $config
-     * @return void
+     * @param  \Codex\Core\Document $document
+     * @param  array                $config
+     *
+*@return void
      */
     public function handle(Document $document, array $config)
     {

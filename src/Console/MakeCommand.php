@@ -1,26 +1,26 @@
 <?php
 /**
- * Part of the Docit PHP packages.
+ * Part of the Codex PHP packages.
  *
  * MIT License and copyright information bundled with this package in the LICENSE file
  */
-namespace Docit\Core\Console;
+namespace Codex\Core\Console;
 
-use Docit\Support\Str;
+use Sebwite\Support\Str;
 
 /**
- * This is the DocitMakeCommand.
+ * This is the CodexMakeCommand.
  *
- * @package        Docit\Core
- * @author         Docit Dev Team
- * @copyright      Copyright (c) 2015, Docit
+ * @package        Codex\Core
+ * @author         Codex Dev Team
+ * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
 class MakeCommand extends BaseCommand
 {
-    protected $signature = 'docit:make';
+    protected $signature = 'codex:make';
 
-    protected $description = 'Create a new docit project';
+    protected $description = 'Create a new codex project';
 
 
     public function handle()

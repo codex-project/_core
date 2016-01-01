@@ -1,22 +1,22 @@
 <?php
 /**
-* Part of the Docit PHP packages.
+* Part of the Codex PHP packages.
 *
 * MIT License and copyright information bundled with this package in the LICENSE file
  */
-namespace Docit\Core;
+namespace Codex\Core;
 
-use Docit\Core\Contracts\Factory;
-use Docit\Core\Traits\Hookable;
+use Codex\Core\Contracts\Factory;
+use Codex\Core\Traits\Hookable;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
 
 /**
  * Document class.
  *
- * @package   Docit\Core
- * @author    Docit Project Dev Team
- * @copyright Copyright (c) 2015, Docit Project
+ * @package   Codex\Core
+ * @author    Codex Project Dev Team
+ * @copyright Copyright (c) 2015, Codex Project
  * @license   https://tldrlegal.com/license/mit-license MIT License
  */
 class Document
@@ -36,9 +36,9 @@ class Document
     protected $content;
 
     /**
-     * @var \Docit\Core\Factory
+     * @var \Codex\Core\Factory
      */
-    protected $docit;
+    protected $codex;
 
     /**
      * @var \Illuminate\Filesystem\Filesystem
@@ -55,7 +55,7 @@ class Document
     /**
      * The project instance
      *
-     * @var \Docit\Core\Project
+     * @var \Codex\Core\Project
      */
     protected $project;
 
@@ -74,17 +74,17 @@ class Document
     /**
      * Creates a new Document class
      *
-     * @param \Docit\Core\Contracts\Factory               $docit     The factory class
+     * @param \Codex\Core\Contracts\Factory               $codex     The factory class
      * @param \Illuminate\Contracts\Filesystem\Filesystem $files     The filesystem
-     * @param \Docit\Core\Project                         $project   The project instance
+     * @param \Codex\Core\Project                         $project   The project instance
      * @param \Illuminate\Contracts\Container\Container   $container The container class
      * @param string                                      $path      The absolute path to the document
      * @param string                                      $pathName  The relative path to the document
      */
-    public function __construct(Factory $docit, Filesystem $files, Project $project, Container $container, $path, $pathName)
+    public function __construct(Factory $codex, Filesystem $files, Project $project, Container $container, $path, $pathName)
     {
         $this->container = $container;
-        $this->docit     = $docit;
+        $this->codex     = $codex;
         $this->project   = $project;
         $this->files     = $files;
         $this->path      = $path;
@@ -92,7 +92,7 @@ class Document
 
         $this->runHook('document:ready', [ $this ]);
 
-        $this->attributes = $docit->config('default_document_attributes');
+        $this->attributes = $codex->config('default_document_attributes');
         $this->content    = $this->files->get($this->path);
 
         $this->runHook('document:done', [ $this ]);
@@ -148,7 +148,7 @@ class Document
      */
     public function url()
     {
-        return $this->docit->url($this->project, $this->project->getRef(), $this->pathName);
+        return $this->codex->url($this->project, $this->project->getRef(), $this->pathName);
     }
 
     /**
@@ -233,7 +233,7 @@ class Document
     /**
      * Get the document's project.
      *
-     * @return \Docit\Core\Project
+     * @return \Codex\Core\Project
      */
     public function getProject()
     {

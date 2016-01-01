@@ -1,5 +1,5 @@
 <?php
-namespace Docit\Core\Parsers;
+namespace Codex\Core\Parsers;
 
 
 use ParsedownExtra as BaseParsedownExtra;
@@ -7,9 +7,9 @@ use ParsedownExtra as BaseParsedownExtra;
 /**
  * Parsedown Extra parser
  *
- * @package   Docit\Core
- * @author    Docit Project Dev Team
- * @copyright Copyright (c) 2015, Docit Project
+ * @package   Codex\Core
+ * @author    Codex Project Dev Team
+ * @copyright Copyright (c) 2015, Codex Project
  * @license   https://tldrlegal.com/license/mit-license MIT License
  */
 class ParsedownExtra extends BaseParsedownExtra

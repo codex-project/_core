@@ -1,17 +1,17 @@
 <?php
 /**
- * Part of the Docit PHP packages.
+ * Part of the Codex PHP packages.
  *
  * MIT License and copyright information bundled with this package in the LICENSE file
  */
-namespace Docit\Core\Menus;
+namespace Codex\Core\Menus;
 
 /**
  * This is the Node.
  *
- * @package        Docit\Core
- * @author         Docit Dev Team
- * @copyright      Copyright (c) 2015, Docit
+ * @package        Codex\Core
+ * @author         Codex Dev Team
+ * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
 class Node extends \Tree\Node\Node
@@ -22,7 +22,7 @@ class Node extends \Tree\Node\Node
     protected $id;
 
     /**
-     * @var \Docit\Core\Menu
+     * @var \Codex\Core\Menu
      */
     protected $menu;
 
@@ -37,10 +37,10 @@ class Node extends \Tree\Node\Node
     protected $attributes;
 
     /**
-     * @param mixed|null              $id
-     * @param \Docit\Core\Menus\Menu $menu
-     * @param null                    $value
-     * @param array                   $children
+     * @param mixed|null             $id
+     * @param \Codex\Core\Menus\Menu $menu
+     * @param null                   $value
+     * @param array                  $children
      */
     public function __construct($id, Menu $menu, $value = null, array $children = [ ])
     {

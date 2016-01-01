@@ -1,4 +1,4 @@
-@extends('docit::layouts.docit')
+@extends('codex::layouts.codex')
 
 @section('sidebar')
 	<div class="panel panel-default">

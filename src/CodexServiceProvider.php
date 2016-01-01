@@ -1,30 +1,30 @@
 <?php
 /**
- * Part of the Docit PHP packages.
+ * Part of the Codex PHP packages.
  *
  * MIT License and copyright information bundled with this package in the LICENSE file
  */
-namespace Docit\Core;
+namespace Codex\Core;
 
-use Docit\Core\Filters\FrontMatterFilter;
-use Docit\Core\Filters\ParsedownFilter;
-use Docit\Core\Log\Writer;
-use Docit\Core\Traits\DocitProviderTrait;
-use Docit\Support\ServiceProvider;
+use Codex\Core\Filters\FrontMatterFilter;
+use Codex\Core\Filters\ParsedownFilter;
+use Codex\Core\Log\Writer;
+use Codex\Core\Traits\ProvidesCodex;
 use Illuminate\Contracts\Foundation\Application;
 use Monolog\Logger as Monolog;
+use Sebwite\Support\ServiceProvider;
 
 /**
- * Docit service provider.
+ * Codex service provider.
  *
- * @package   Docit\Core
- * @author    Docit Project Dev Team
- * @copyright Copyright (c) 2015, Docit Project
+ * @package   Codex\Core
+ * @author    Codex Project Dev Team
+ * @copyright Copyright (c) 2015, Codex Project
  * @license   https://tldrlegal.com/license/mit-license MIT License
  */
-class DocitServiceProvider extends ServiceProvider
+class CodexServiceProvider extends ServiceProvider
 {
-    use DocitProviderTrait;
+    use ProvidesCodex;
 
     /**
      * @var string
@@ -36,30 +36,30 @@ class DocitServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $configFiles = [ 'docit' ];
+    protected $configFiles = [ 'codex' ];
 
     /**
      * Collection of bound instances.
      *
      * @var array
      */
-    protected $provides = [ 'docit' ];
+    protected $provides = [ 'codex' ];
 
     /**
      * @var array
      */
-    protected $viewDirs = [ 'views' => 'docit' ];
+    protected $viewDirs = [ 'views' => 'codex' ];
 
     /**
      * @var array
      */
-    protected $assetDirs = [ 'assets' => 'docit' ];
+    protected $assetDirs = [ 'assets' => 'codex' ];
 
     /**
      * @var array
      */
     protected $providers = [
-        \Docit\Support\SupportServiceProvider::class,
+        \Sebwite\Support\SupportServiceProvider::class,
         Providers\ConsoleServiceProvider::class,
         Providers\RouteServiceProvider::class
     ];
@@ -68,17 +68,17 @@ class DocitServiceProvider extends ServiceProvider
      * @var array
      */
     protected $singletons = [
-        'docit'       => Factory::class,
-        'docit.menus' => Menus\MenuFactory::class
+        'codex'       => Factory::class,
+        'codex.menus' => Menus\MenuFactory::class
     ];
 
     /**
      * @var array
      */
     protected $aliases = [
-        'docit'       => Contracts\Factory::class,
-        'docit.log'   => Contracts\Log::class,
-        'docit.menus' => Contracts\Menus\MenuFactory::class
+        'codex'       => Contracts\Factory::class,
+        'codex.log'   => Contracts\Log::class,
+        'codex.menus' => Contracts\Menus\MenuFactory::class
     ];
 
     /**
@@ -100,22 +100,23 @@ class DocitServiceProvider extends ServiceProvider
      */
     protected function registerFilters()
     {
-        $this->addDocitFilter('front_matter', FrontMatterFilter::class);
-        $this->addDocitFilter('parsedown', ParsedownFilter::class);
+        $this->addCodexFilter('front_matter', FrontMatterFilter::class);
+        $this->addCodexFilter('parsedown', ParsedownFilter::class);
     }
 
     /**
      * registerLogger method
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
-     * @return \Docit\Core\Log\Writer
+     *
+*@return \Codex\Core\Log\Writer
      */
     protected function registerLogger(Application $app)
     {
-        $app->instance('docit.log', $log = new Writer(
+        $app->instance('codex.log', $log = new Writer(
             new Monolog($app->environment()), $app[ 'events' ])
         );
-        $log->useFiles($app[ 'config' ][ 'docit.log.path' ]);
+        $log->useFiles($app[ 'config' ][ 'codex.log.path' ]);
 
         return $log;
     }

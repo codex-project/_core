@@ -1,22 +1,21 @@
 <?php
-namespace Docit\Core\Menus;
+namespace Codex\Core\Menus;
 
-use Docit\Core\Contracts\Menus\MenuFactory as MenuFactoryContract;
-use Docit\Core\Traits\Hookable;
+use Codex\Core\Contracts\Menus\MenuFactory as MenuFactoryContract;
+use Codex\Core\Traits\Hookable;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Menu class.
  *
- * @package   Docit\Core
- * @author    Docit Project Dev Team
- * @copyright Copyright (c) 2015, Docit Project
+ * @package   Codex\Core
+ * @author    Codex Project Dev Team
+ * @copyright Copyright (c) 2015, Codex Project
  * @license   https://tldrlegal.com/license/mit-license MIT License
  */
 class Menu
@@ -44,7 +43,7 @@ class Menu
     protected $items;
 
     /**
-     * @var \Docit\Core\Factory
+     * @var \Codex\Core\Factory
      */
     protected $factory;
 
@@ -69,12 +68,12 @@ class Menu
     protected $viewFactory;
 
     /**
-     * @var \Docit\Core\Contracts\Menus\MenuFactory
+     * @var \Codex\Core\Contracts\Menus\MenuFactory
      */
     protected $menus;
 
     /**
-     * @param \Docit\Core\Contracts\Menus\MenuFactory    $menus
+     * @param \Codex\Core\Contracts\Menus\MenuFactory     $menus
      * @param \Illuminate\Contracts\Filesystem\Filesystem $files
      * @param \Illuminate\Contracts\Cache\Repository      $cache
      * @param \Illuminate\Routing\Router                  $router
@@ -89,7 +88,7 @@ class Menu
         $this->url         = $url;
         $this->files       = $files;
         $this->viewFactory = $viewFactory;
-        $this->view        = 'docit::partials/menu';
+        $this->view        = 'codex::partials/menu';
         $this->items       = new Collection();
 
         $this->runHook('menu:ready', [ $this ]);
@@ -124,7 +123,8 @@ class Menu
      * @param string $parent
      * @param array  $meta
      * @param array  $attributes
-     * @return \Docit\Core\Menus\Node
+     *
+*@return \Codex\Core\Menus\Node
      */
     public function add($id, $value, $parent = 'root', array $meta = [ ], array $attributes = [ ])
     {
@@ -157,7 +157,8 @@ class Menu
      *
      * @param string     $id
      * @param null|mixed $default
-     * @return \Docit\Core\Menus\Node
+     *
+*@return \Codex\Core\Menus\Node
      */
     public function get($id, $default = null)
     {
@@ -191,8 +192,9 @@ class Menu
     /**
      * Get breadcrumbs to the given Node
      *
-     * @param \Docit\Core\Menus\Node $item
-     * @return array
+     * @param \Codex\Core\Menus\Node $item
+     *
+*@return array
      */
     public function getBreadcrumbTo(Node $item)
     {
@@ -219,7 +221,8 @@ class Menu
      * findItemByHref
      *
      * @param $href
-     * @return \Docit\Core\Menus\Node|null
+     *
+*@return \Codex\Core\Menus\Node|null
      */
     public function findItemByHref($href)
     {

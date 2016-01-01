@@ -1,20 +1,20 @@
 <?php
 /**
- * Part of the Docit PHP packages.
+ * Part of the Codex PHP packages.
  *
  * MIT License and copyright information bundled with this package in the LICENSE file
  */
-namespace Docit\Core;
+namespace Codex\Core;
 
-use Docit\Core\Contracts\Filter;
-use Docit\Core\Contracts\Hook;
+use Codex\Core\Contracts\Filter;
+use Codex\Core\Contracts\Hook;
 
 /**
  * This is the Extensions class.
  *
- * @package        Docit\Core
- * @author         Docit Dev Team
- * @copyright      Copyright (c) 2015, Docit
+ * @package        Codex\Core
+ * @author         Codex Dev Team
+ * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
 class Extensions
@@ -61,7 +61,7 @@ class Extensions
     public static function addHook($point, $handler)
     {
         if (! $handler instanceof \Closure and ! in_array(Hook::class, class_implements($handler), false)) {
-            throw new \InvalidArgumentException("Failed adding hook. Provided handler for [{$point}] is not valid. Either provider a \\Closure or classpath that impelments \\Docit\\Docit\\Contracts\\Hook");
+            throw new \InvalidArgumentException("Failed adding hook. Provided handler for [{$point}] is not valid. Either provider a \\Closure or classpath that impelments \\Codex\\Codex\\Contracts\\Hook");
         }
 
         static::ensureHookPoint($point);
@@ -136,14 +136,15 @@ class Extensions
     /**
      * Add a new filter to the registered filters list.
      *
-     * @param  string                                 $name
-     * @param  \Closure|\Docit\Core\Contracts\Filter $handler
-     * @return void
+     * @param  string                                $name
+     * @param  \Closure|\Codex\Core\Contracts\Filter $handler
+     *
+*@return void
      */
     public static function filter($name, $handler)
     {
         if (! $handler instanceof \Closure and ! in_array(Filter::class, class_implements($handler), false)) {
-            throw new \InvalidArgumentException("Failed adding Filter. Provided handler for [{$name}] is not valid. Must either provide a \\Closure or classpath that impelments \\Docit\\Docit\\Contracts\\Filter");
+            throw new \InvalidArgumentException("Failed adding Filter. Provided handler for [{$name}] is not valid. Must either provide a \\Closure or classpath that impelments \\Codex\\Codex\\Contracts\\Filter");
         }
 
         static::$filters[ $name ] = $handler;

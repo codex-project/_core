@@ -1,26 +1,26 @@
 <?php
 /**
- * Part of the Docit PHP packages.
+ * Part of the Codex PHP packages.
  *
  * MIT License and copyright information bundled with this package in the LICENSE file
  */
-namespace Docit\Core\Providers;
+namespace Codex\Core\Providers;
 
-use Docit\Support\ConsoleServiceProvider as BaseConsoleServiceProvider;
+use Sebwite\Support\ConsoleServiceProvider as BaseConsoleServiceProvider;
 
 /**
  * This is the ConsoleServiceProvider.
  *
- * @package        Docit\Core
- * @author         Docit Dev Team
- * @copyright      Copyright (c) 2015, Docit
+ * @package        Codex\Core
+ * @author         Codex Dev Team
+ * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
 class ConsoleServiceProvider extends BaseConsoleServiceProvider
 {
-    protected $namespace = 'Docit\\Core\\Console';
+    protected $namespace = 'Codex\\Core\\Console';
 
-    protected $prefix = 'docit.commands.';
+    protected $prefix = 'codex.commands.';
 
     protected $commands = [
         'make' => 'Make',

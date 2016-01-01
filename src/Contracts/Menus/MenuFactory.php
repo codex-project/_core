@@ -1,17 +1,17 @@
 <?php
 /**
- * Part of the Docit PHP packages.
+ * Part of the Codex PHP packages.
  *
  * MIT License and copyright information bundled with this package in the LICENSE file
  */
-namespace Docit\Core\Contracts\Menus;
+namespace Codex\Core\Contracts\Menus;
 
 /**
  * This is the MenuFactory.
  *
- * @package        Docit\Core
- * @author         Docit Dev Team
- * @copyright      Copyright (c) 2015, Docit
+ * @package        Codex\Core
+ * @author         Codex Dev Team
+ * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
 interface MenuFactory

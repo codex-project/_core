@@ -1,9 +1,9 @@
 <?php
-use Docit\Core\Extensions;
+use Codex\Core\Extensions;
 
-$index = Route::get('/', ['as' => 'docit.index', 'uses' => 'DocitController@index']);
+$index = Route::get('/', ['as' => 'codex.index', 'uses' => 'CodexController@index']);
 
-$document = Route::get('{projectSlug}/{ref?}/{document?}', [ 'as' => 'docit.document', 'uses' => 'DocitController@document' ]);
+$document = Route::get('{projectSlug}/{ref?}/{document?}', [ 'as' => 'codex.document', 'uses' => 'CodexController@document' ]);
 $document->where('document', '(.*)');
 
 if(count(Extensions::getExcludedProjectNames()) > 0)

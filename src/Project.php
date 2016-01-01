@@ -1,27 +1,27 @@
 <?php
 /**
-* Part of the Docit PHP packages.
+* Part of the Codex PHP packages.
 *
 * MIT License and copyright information bundled with this package in the LICENSE file
  */
 
-namespace Docit\Core;
+namespace Codex\Core;
 
-use Docit\Support\Path;
-use Docit\Support\Str;
-use Docit\Core\Contracts\Factory;
-use Docit\Core\Traits\Hookable;
+use Codex\Core\Contracts\Factory;
+use Codex\Core\Traits\Hookable;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Sebwite\Support\Path;
+use Sebwite\Support\Str;
 use Symfony\Component\Yaml\Yaml;
 use vierbergenlars\SemVer\version;
 
 /**
  * Project class.
  *
- * @package   Docit\Core
- * @author    Docit Project Dev Team
- * @copyright Copyright (c) 2015, Docit Project
+ * @package   Codex\Core
+ * @author    Codex Project Dev Team
+ * @copyright Copyright (c) 2015, Codex Project
  * @license   https://tldrlegal.com/license/mit-license MIT License
  */
 class Project
@@ -49,7 +49,7 @@ class Project
     protected $defaultRef;
 
     /**
-     * @var \Docit\Core\Factory
+     * @var \Codex\Core\Factory
      */
     protected $factory;
 
@@ -104,7 +104,7 @@ class Project
     protected $container;
 
     /**
-     * @param \Docit\Core\Factory                        $factory
+     * @param \Codex\Core\Factory                         $factory
      * @param \Illuminate\Contracts\Filesystem\Filesystem $files
      * @param \Illuminate\Contracts\Container\Container   $container
      * @param string                                      $name
@@ -209,7 +209,8 @@ class Project
      * getDocument
      *
      * @param string $pathName
-     * @return \Docit\Core\Document
+     *
+*@return \Codex\Core\Document
      */
     public function getDocument($pathName = '')
     {
@@ -241,7 +242,7 @@ class Project
     /**
      * Returns the menu for this project
      *
-     * @return \Docit\Core\Menus\Menu
+     * @return \Codex\Core\Menus\Menu
      */
     public function getDocumentsMenu()
     {
@@ -251,7 +252,7 @@ class Project
         $this->factory->getMenus()->forget('project_sidebar_menu');
 
         $menu = $this->resolveDocumentsMenu($array[ 'menu' ]);
-        $menu->setView('docit::menus/project-sidebar');
+        $menu->setView('codex::menus/project-sidebar');
         $this->runHook('project:documents-menu', [ $this, $menu ]);
 
         return $menu;
@@ -262,7 +263,8 @@ class Project
      *
      * @param array       $items The array converted from yaml
      * @param string $parentId
-     * @return \Docit\Core\Menus\Menu
+     *
+*@return \Codex\Core\Menus\Menu
      */
     protected function resolveDocumentsMenu($items, $parentId = 'root')
     {
@@ -336,7 +338,8 @@ class Project
      * Set the ref (version/branch) you want to use. getDocument will be getting stuff using the ref
      *
      * @param  string $name
-     * @return \Docit\Core\Project
+     *
+*@return \Codex\Core\Project
      */
     public function setRef($name)
     {
@@ -416,7 +419,8 @@ class Project
      * Set project files.
      *
      * @param  \Illuminate\Contracts\Filesystem\Filesystem $files
-     * @return \Docit\Core\Project
+     *
+*@return \Codex\Core\Project
      */
     public function setFiles($files)
     {
@@ -479,7 +483,8 @@ class Project
      * Set path.
      *
      * @param  string $path
-     * @return \Docit\Core\Project
+     *
+     * @return \Codex\Core\Project
      */
     public function setPath($path)
     {
@@ -491,7 +496,7 @@ class Project
     /**
      * Get factory.
      *
-     * @return \Docit\Core\Factory
+     * @return \Codex\Core\Factory
      */
     public function getFactory()
     {
@@ -501,8 +506,9 @@ class Project
     /**
      * Set factory.
      *
-     * @param  \Docit\Core\Factory $factory
-     * @return \Docit\Core\Project
+     * @param  \Codex\Core\Factory $factory
+     *
+     * @return \Codex\Core\Project
      */
     public function setFactory($factory)
     {

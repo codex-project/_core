@@ -7,14 +7,14 @@
 <head>
     <title>
         @section('title')
-            {{ config('docit.display_name') }}
+            {{ config('codex.display_name') }}
         @show
     </title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <link href="{{ asset('vendor/docit/styles/stylesheet.css') }}" type="text/css" rel="stylesheet">
-    <link href="{{ asset('vendor/docit/styles/themes/theme-docit.css') }}" type="text/css" rel="stylesheet" id="theme-style">
+    <link href="{{ asset('vendor/codex/styles/stylesheet.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ asset('vendor/codex/styles/themes/theme-codex.css') }}" type="text/css" rel="stylesheet" id="theme-style">
 
     @stack('stylesheets')
 
@@ -31,7 +31,7 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <div class="logo-packadic pull-left">{{ config('docit.display_name') }}</div>
+                <div class="logo-packadic pull-left">{{ config('codex.display_name') }}</div>
                 <div data-toggle="tooltip" title="Toggle the sidebar menu" data-layout-api="sidebar-toggle" data-placement="right" class="menu-toggler sidebar-toggler"></div>
             </div><a href="javascript:;" data-toggle="collapse" data-target=".navbar-collapse" class="menu-toggler responsive-toggler"></a>
 
@@ -78,14 +78,14 @@
         </div>
     </div>
     <div class="page-footer">
-        <div class="page-footer-inner">Copyright {{ date('Y') }} &copy; {{ config('docit.display_name') }}</div>
+        <div class="page-footer-inner">Copyright {{ date('Y') }} &copy; {{ config('codex.display_name') }}</div>
         <div class="scroll-to-top"></div>
     </div>
 
 
-    <script src="{{ asset('vendor/docit/scripts/vendor.js') }}"></script>
-    <script src="{{ asset('vendor/docit/scripts/packadic.js') }}"></script>
-    <script src="{{ asset('vendor/docit/scripts/addons.js') }}"></script>
+    <script src="{{ asset('vendor/codex/scripts/vendor.js') }}"></script>
+    <script src="{{ asset('vendor/codex/scripts/packadic.js') }}"></script>
+    <script src="{{ asset('vendor/codex/scripts/addons.js') }}"></script>
 
     @stack('scripts')
 
@@ -95,7 +95,7 @@
                 var app = packadic.Application.instance;
                 if ( ! app.isInitialised ) {
                     app.init({
-                        assetPath: '/vendor/docit'
+                        assetPath: '/vendor/codex'
                     });
                 }
             }.call())

@@ -1,36 +1,36 @@
 <?php
 /**
- * Part of the Docit PHP packages.
+ * Part of the Codex PHP packages.
  *
  * MIT License and copyright information bundled with this package in the LICENSE file
  */
-namespace Docit\Core\Console;
+namespace Codex\Core\Console;
 
-use Docit\Core\Contracts\Factory;
-use Docit\Support\Command;
-use Docit\Support\StubGenerator;
+use Codex\Core\Contracts\Factory;
+use Sebwite\Support\Command;
+use Sebwite\Support\StubGenerator;
 
 /**
- * This is the DocitMakeCommand.
+ * This is the CodexMakeCommand.
  *
- * @package        Docit\Core
- * @author         Docit Dev Team
- * @copyright      Copyright (c) 2015, Docit
+ * @package        Codex\Core
+ * @author         Codex Dev Team
+ * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
 abstract class BaseCommand extends Command
 {
     /**
-     * @var \Docit\Core\Factory
+     * @var \Codex\Core\Factory
      */
-    protected $docit;
+    protected $codex;
 
     protected $generator;
 
     public function __construct(Factory $factory, StubGenerator $generator)
     {
         parent::__construct();
-        $this->docit     = $factory;
+        $this->codex     = $factory;
         $this->generator = $generator;
     }
 
@@ -46,8 +46,8 @@ abstract class BaseCommand extends Command
     public function generate($directory, array $files = [ ], array $vars = [ ])
     {
         $this->generator->generate(
-            $this->docit->config('stubs_path'),
-            $this->docit->getRootDir() . DIRECTORY_SEPARATOR . $directory,
+            $this->codex->config('stubs_path'),
+            $this->codex->getRootDir() . DIRECTORY_SEPARATOR . $directory,
             $files,
             array_replace_recursive($this->getGeneratorVars($directory), $vars)
         );
@@ -61,11 +61,11 @@ abstract class BaseCommand extends Command
      */
     public function getGeneratorVars($directory)
     {
-        $stubDir = $this->docit->config('stubs_path');
-        $destDir = $this->docit->getRootDir() . DIRECTORY_SEPARATOR . $directory;
+        $stubDir = $this->codex->config('stubs_path');
+        $destDir = $this->codex->getRootDir() . DIRECTORY_SEPARATOR . $directory;
 
         $vars = [
-            'config'    => array_dot($this->docit->config()),
+            'config'    => array_dot($this->codex->config()),
             'open'      => '<?php',
             'stubDir'   => $stubDir,
             'destDir'   => $destDir,

@@ -1,16 +1,16 @@
 <?php
-namespace Docit\Core\Http\ViewComposers;
+namespace Codex\Core\Http\ViewComposers;
 
-use Docit\Core\Factory;
-use Docit\Core\Project;
+use Codex\Core\Factory;
+use Codex\Core\Project;
 use Illuminate\Contracts\View\View;
 
 /**
  * This is the ProjectsMenus.
  *
- * @package        Docit\Core
- * @author         Docit Dev Team
- * @copyright      Copyright (c) 2015, Docit
+ * @package        Codex\Core
+ * @author         Codex Dev Team
+ * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
 class ProjectMenusComposer
@@ -19,7 +19,7 @@ class ProjectMenusComposer
 
     /** Instantiates the class
      *
-     * @param \Docit\Core\Factory $factory
+     * @param \Codex\Core\Factory $factory
      */
     public function __construct(Factory $factory)
     {

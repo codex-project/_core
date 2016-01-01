@@ -1,13 +1,13 @@
 <?php
 /**
- * Part of the Docit PHP packages.
+ * Part of the Codex PHP packages.
  *
  * MIT License and copyright information bundled with this package in the LICENSE file
  */
-namespace Docit\Core\Menus;
+namespace Codex\Core\Menus;
 
-use Docit\Core\Contracts\Menus\MenuFactory as MenuFactoryContract;
-use Docit\Core\Traits\Hookable;
+use Codex\Core\Contracts\Menus\MenuFactory as MenuFactoryContract;
+use Codex\Core\Traits\Hookable;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -19,9 +19,9 @@ use Illuminate\Support\Collection;
 /**
  * This is the MenuFactory.
  *
- * @package        Docit\Core
- * @author         Docit Dev Team
- * @copyright      Copyright (c) 2015, Docit
+ * @package        Codex\Core
+ * @author         Codex Dev Team
+ * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
 class MenuFactory implements MenuFactoryContract
@@ -89,7 +89,8 @@ class MenuFactory implements MenuFactoryContract
      * Creates a new menu or returns an existing
      *
      * @param string $id
-     * @return \Docit\Core\Menus\Menu
+     *
+*@return \Codex\Core\Menus\Menu
      */
     public function add($id)
     {
@@ -111,7 +112,8 @@ class MenuFactory implements MenuFactoryContract
      *
      * @param string $id
      * @param null $default
-     * @return \Docit\Core\Menus\Menu
+     *
+*@return \Codex\Core\Menus\Menu
      */
     public function get($id, $default = null)
     {

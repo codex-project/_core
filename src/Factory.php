@@ -1,29 +1,29 @@
 <?php
 /**
- * Part of the Docit PHP packages.
+ * Part of the Codex PHP packages.
  *
  * MIT License and copyright information bundled with this package in the LICENSE file
  */
-namespace Docit\Core;
+namespace Codex\Core;
 
-use Docit\Core\Contracts\Factory as FactoryContract;
-use Docit\Core\Contracts\Log;
-use Docit\Core\Contracts\Menus\MenuFactory;
-use Docit\Core\Traits\Hookable;
-use Docit\Support\Path;
+use Codex\Core\Contracts\Factory as FactoryContract;
+use Codex\Core\Contracts\Log;
+use Codex\Core\Contracts\Menus\MenuFactory;
+use Codex\Core\Traits\Hookable;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
+use Sebwite\Support\Path;
 use Symfony\Component\Finder\Finder;
 
 /**
  * Factory class.
  *
- * @package   Docit\Core
- * @author    Docit Project Dev Team
- * @copyright Copyright (c) 2015, Docit Project
+ * @package   Codex\Core
+ * @author    Codex Project Dev Team
+ * @copyright Copyright (c) 2015, Codex Project
  * @license   https://tldrlegal.com/license/mit-license MIT License
  */
 class Factory implements FactoryContract
@@ -36,7 +36,7 @@ class Factory implements FactoryContract
     protected $cache;
 
     /**
-     * The docit configuration
+     * The codex configuration
      *
      * @var array
      */
@@ -62,7 +62,7 @@ class Factory implements FactoryContract
     protected $container;
 
     /**
-     * @var \Docit\Core\Menus\MenuFactory
+     * @var \Codex\Core\Menus\MenuFactory
      */
     protected $menus;
 
@@ -72,7 +72,7 @@ class Factory implements FactoryContract
     protected $projects;
 
     /**
-     * @var \Docit\Core\Contracts\Log
+     * @var \Codex\Core\Contracts\Log
      */
     protected $log;
 
@@ -82,16 +82,16 @@ class Factory implements FactoryContract
      * @param \Illuminate\Contracts\Filesystem\Filesystem $files
      * @param \Illuminate\Contracts\Config\Repository     $config
      * @param \Illuminate\Contracts\Cache\Repository      $cache
-     * @param \Docit\Core\Contracts\Log                   $log
-     * @param \Docit\Core\Contracts\Menus\MenuFactory     $menus The menu factory
+     * @param \Codex\Core\Contracts\Log                   $log
+     * @param \Codex\Core\Contracts\Menus\MenuFactory     $menus The menu factory
      */
     public function __construct(Container $container, Filesystem $files, Repository $config, Cache $cache, Log $log, MenuFactory $menus)
     {
         $this->container = $container;
         $this->cache     = $cache;
-        $this->config    = $config->get('docit');
+        $this->config    = $config->get('codex');
         $this->files     = $files;
-        $this->rootDir   = config('docit.root_dir');
+        $this->rootDir   = config('codex.root_dir');
         $this->menus     = $menus;
         $this->log       = $log;
         $this->projects  = new Collection();
@@ -118,7 +118,7 @@ class Factory implements FactoryContract
         }
 
         /**
-         * @var \Docit\Core\Menus\Node $projectsMenu
+         * @var \Codex\Core\Menus\Node $projectsMenu
          */
         $projectsMenu = $this->menus->add('projects_menu');
         $finder       = new Finder();
@@ -152,7 +152,8 @@ class Factory implements FactoryContract
      * project
      *
      * @param $name
-     * @return \Docit\Core\Project
+     *
+*@return \Codex\Core\Project
      */
     public function getProject($name)
     {
@@ -188,7 +189,7 @@ class Factory implements FactoryContract
     # Config
 
     /**
-     * Retreive docit config using a dot notated key.
+     * Retreive codex config using a dot notated key.
      *
      * @param  null|string $key
      * @param  null|string $default

@@ -7,7 +7,7 @@
             </a>
 
             <div class="dropdown-menu">
-                @include('docit::partials/header-actions-item', ['item' => $projectsList])
+                @include('codex::partials/header-actions-item', ['item' => $projectsList])
             </div>
         </div>
     @endif

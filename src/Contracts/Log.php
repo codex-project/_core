@@ -1,6 +1,6 @@
 <?php
 
-namespace Docit\Core\Contracts;
+namespace Codex\Core\Contracts;
 
 interface Log
 {

@@ -1,28 +1,28 @@
 <?php
-namespace Docit\Core\Http\Controllers;
+namespace Codex\Core\Http\Controllers;
 
-use Docit\Core\Contracts\Factory;
-use Docit\Core\Contracts\Menus\MenuFactory;
-use Illuminate\Routing\Controller as BaseController;
+use Codex\Core\Contracts\Factory;
+use Codex\Core\Contracts\Menus\MenuFactory;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Routing\Controller as BaseController;
 
 /**
- * This is the DocitController.
+ * This is the CodexController.
  *
- * @package        Docit\Core
- * @author         Docit Dev Team
- * @copyright      Copyright (c) 2015, Docit
+ * @package        Codex\Core
+ * @author         Codex Dev Team
+ * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
 class Controller extends BaseController
 {
     /**
-     * @var \Docit\Core\Contracts\Factory|\Docit\Core\Factory
+     * @var \Codex\Core\Contracts\Factory|\Codex\Core\Factory
      */
     protected $factory;
 
     /**
-     * @var \Docit\Core\Contracts\Menus\MenuFactory|\Docit\Core\Menus\MenuFactory
+     * @var \Codex\Core\Contracts\Menus\MenuFactory|\Codex\Core\Menus\MenuFactory
      */
     protected $menus;
 
@@ -32,9 +32,9 @@ class Controller extends BaseController
     protected $view;
 
     /**
-     * @param \Docit\Core\Contracts\Factory           $factory
-     * @param \Docit\Core\Contracts\Menus\MenuFactory $menus
-     * @param \Illuminate\Contracts\View\Factory       $view
+     * @param \Codex\Core\Contracts\Factory           $factory
+     * @param \Codex\Core\Contracts\Menus\MenuFactory $menus
+     * @param \Illuminate\Contracts\View\Factory      $view
      */
     public function __construct(Factory $factory, MenuFactory $menus, ViewFactory $view)
     {

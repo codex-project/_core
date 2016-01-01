@@ -27,7 +27,7 @@
         </a>
         @if(isset($item['children']))
             <ul class="sub-menu">
-            @each('docit::partials/menu-item', $item['children'], 'item')
+            @each('codex::partials/menu-item', $item['children'], 'item')
             </ul>
         @endif
     </li>

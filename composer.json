@@ -1,14 +1,12 @@
 {
-    "name": "docit/core",
+    "name": "codex/core",
     "description": "Laravel 5 Documentation Platform",
     "keywords": ["documentation", "laravel"],
-    "license": "MIT",
+    "license": "MIkT",
     "authors": [ { "name": "Robin Radic", "email": "robin@radic.nl" } ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "require": {
         "php": ">=5.5.9",
-        "docit/support": "1.0.*",
+        "sebwite/support": "~1.0",
         "erusev/parsedown": "~1.5",
         "erusev/parsedown-extra": "~0.7",
         "symfony/yaml": "~2.7",
@@ -17,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Docit\\Core\\": "src/"
+            "Codex\\Core\\": "src/"
         }
     },
     "extra": {

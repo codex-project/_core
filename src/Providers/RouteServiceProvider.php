@@ -1,29 +1,29 @@
 <?php
-namespace Docit\Core\Providers;
+namespace Codex\Core\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 
 /**
- * Docit route service provider
+ * Codex route service provider
  *
- * @package   Docit\Core
- * @author    Docit Project Dev Team
- * @copyright Copyright (c) 2015, Docit Project
+ * @package   Codex\Core
+ * @author    Codex Project Dev Team
+ * @copyright Copyright (c) 2015, Codex Project
  * @license   https://tldrlegal.com/license/mit-license MIT License
  */
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * This namespace is applied to the controller routes in the Docit routes
+     * This namespace is applied to the controller routes in the Codex routes
      * file. In addition, it is set as the URL generator's root namespace.
      *
      * @var string
      */
-    protected $namespace = 'Docit\Core\Http\Controllers';
+    protected $namespace = 'Codex\Core\Http\Controllers';
 
     /**
-     * Boot Docit's route service provider.
+     * Boot Codex's route service provider.
      *
      * @param Illuminate\Routing\Router $router
      * @return void
@@ -45,14 +45,14 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Define the routes for Docit.
+     * Define the routes for Codex.
      *
      * @param Illuminate\Routing\Router $router
      * @return void
      */
     public function map(Router $router)
     {
-        $router->group([ 'prefix' => config('docit.base_route'), 'namespace' => $this->namespace ], function ($router)
+        $router->group([ 'prefix' => config('codex.base_route'), 'namespace' => $this->namespace ], function ($router)
         {
 
             require(realpath(__DIR__ . '/../Http/routes.php'));

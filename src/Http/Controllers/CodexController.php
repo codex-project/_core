@@ -1,15 +1,15 @@
 <?php
-namespace Docit\Core\Http\Controllers;
+namespace Codex\Core\Http\Controllers;
 
 /**
- * This is the DocitController.
+ * This is the CodexController.
  *
- * @package        Docit\Core
- * @author         Docit Dev Team
- * @copyright      Copyright (c) 2015, Docit
+ * @package        Codex\Core
+ * @author         Codex Dev Team
+ * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
-class DocitController extends Controller
+class CodexController extends Controller
 {
     /**
      * Redirect to the default project and version.
@@ -18,7 +18,7 @@ class DocitController extends Controller
      */
     public function index()
     {
-        return redirect(route('docit.document', [
+        return redirect(route('codex.document', [
             'projectSlug' => $this->factory->config('default_project')
         ]));
     }

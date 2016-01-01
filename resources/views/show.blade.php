@@ -1,4 +1,4 @@
-@extends('docit::layouts.docit')
+@extends('codex::layouts.codex')
 
 @section('sidebar')
 	{!! $toc['body'] !!}

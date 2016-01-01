@@ -6,13 +6,13 @@ icon: fa fa-legal
 
 ###### Composer
 ```JSON
-"docit/docit": "~2.0"
+"codex/codex": "~2.0"
 ```
 
 ###### Laravel
 Add the ThemesServiceProvider to your config.
 ```php
-'Docit\Core\DocitServiceProvider'
+'Codex\Core\CodexServiceProvider'
 ```
 
 ###### Publish
@@ -24,7 +24,7 @@ php artisan vendor:publish --tag=views
 ```
 
 ###### Basic configuration
-By default Docit will 
+By default Codex will 
 ```sh
 ```
 
