@@ -1,7 +1,7 @@
 <?php
 namespace Codex\Core\Http\Controllers;
 
-use Codex\Core\Contracts\Factory;
+use Codex\Core\Contracts\Codex;
 use Codex\Core\Contracts\Menus\MenuFactory;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Routing\Controller as BaseController;
@@ -17,7 +17,7 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     /**
-     * @var \Codex\Core\Contracts\Factory|\Codex\Core\Factory
+     * @var \Codex\Core\Contracts\Codex|\Codex\Core\Factory
      */
     protected $factory;
 
@@ -32,11 +32,11 @@ class Controller extends BaseController
     protected $view;
 
     /**
-     * @param \Codex\Core\Contracts\Factory           $factory
+     * @param \Codex\Core\Contracts\Codex             $factory
      * @param \Codex\Core\Contracts\Menus\MenuFactory $menus
      * @param \Illuminate\Contracts\View\Factory      $view
      */
-    public function __construct(Factory $factory, MenuFactory $menus, ViewFactory $view)
+    public function __construct(Codex $factory, MenuFactory $menus, ViewFactory $view)
     {
         $this->factory = $factory;
         $this->menus = $menus;

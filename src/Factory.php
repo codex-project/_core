@@ -6,7 +6,7 @@
  */
 namespace Codex\Core;
 
-use Codex\Core\Contracts\Factory as FactoryContract;
+use Codex\Core\Contracts\Codex;
 use Codex\Core\Contracts\Log;
 use Codex\Core\Contracts\Menus\MenuFactory;
 use Codex\Core\Traits\Hookable;
@@ -26,7 +26,7 @@ use Symfony\Component\Finder\Finder;
  * @copyright Copyright (c) 2015, Codex Project
  * @license   https://tldrlegal.com/license/mit-license MIT License
  */
-class Factory implements FactoryContract
+class Factory implements Codex
 {
     use Hookable;
 
@@ -139,7 +139,7 @@ class Factory implements FactoryContract
             $config  = $this->container->make('fs')->getRequire($projectDir->getRealPath());
             $config  = array_replace_recursive($this->config('default_project_config'), $config);
             $project = $this->container->make(Project::class, [
-                'factory' => $this,
+                'codex' => $this,
                 'name'    => $name,
                 'config'  => $config
             ]);

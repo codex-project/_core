@@ -13,8 +13,9 @@ namespace Codex\Core\Contracts;
  * @author         Codex Dev Team
  * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
+ * @mixin \Codex\Core\Factory
  */
-interface Factory
+interface Codex
 {
 
 }

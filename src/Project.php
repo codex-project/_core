@@ -7,7 +7,7 @@
 
 namespace Codex\Core;
 
-use Codex\Core\Contracts\Factory;
+use Codex\Core\Contracts\Codex;
 use Codex\Core\Traits\Hookable;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -59,7 +59,7 @@ class Project
      *
      * @var \Codex\Core\Factory
      */
-    protected $factory;
+    protected $codex;
 
     /**
      * The filesystem instance
@@ -118,20 +118,20 @@ class Project
     protected $container;
 
     /**
-     * @param \Codex\Core\Factory                         $factory
+     * @param \Codex\Core\Factory                         $codex
      * @param \Illuminate\Contracts\Filesystem\Filesystem $files
      * @param \Illuminate\Contracts\Container\Container   $container
      * @param string                                      $name
      * @param array                                       $config
      */
-    public function __construct(Factory $factory, Filesystem $files, Container $container, $name, $config)
+    public function __construct(Codex $codex, Filesystem $files, Container $container, $name, $config)
     {
         $this->container = $container;
-        $this->factory   = $factory;
+        $this->codex     = $codex;
         $this->files     = $files;
         $this->name      = $name;
         $this->config    = $config;
-        $this->path      = $path = Path::join($factory->getRootDir(), $name);
+        $this->path      = $path = Path::join($codex->getRootDir(), $name);
 
 
         $this->runHook('project:ready', [ $this ]);
@@ -215,7 +215,7 @@ class Project
      */
     public function url($doc = 'index', $ref = null)
     {
-        return $this->factory->url($this, $ref, $doc);
+        return $this->codex->url($this, $ref, $doc);
     }
 
     /**
@@ -235,7 +235,7 @@ class Project
             $path = Path::join($this->path, $this->ref, $pathName . '.md');
 
             $this->documents[ $pathName ] = $this->container->make(Document::class, [
-                'factory'  => $this->factory,
+                'factory'  => $this->codex,
                 'project'  => $this,
                 'path'     => $path,
                 'pathName' => $pathName
@@ -262,7 +262,7 @@ class Project
 
         $yaml  = $this->files->get(Path::join($this->path, $this->ref, 'menu.yml'));
         $array = Yaml::parse($yaml);
-        $this->factory->getMenus()->forget('project_sidebar_menu');
+        $this->codex->getMenus()->forget('project_sidebar_menu');
 
         $menu = $this->resolveDocumentsMenu($array[ 'menu' ]);
         $menu->setView('codex::menus/project-sidebar');
@@ -284,14 +284,14 @@ class Project
         /**
          * @var Menus\Menu $menu
          */
-        $menu = $this->factory->getMenus()->add('project_sidebar_menu');
+        $menu = $this->codex->getMenus()->add('project_sidebar_menu');
 
         foreach ($items as $item) {
             $link = '#';
             if (array_key_exists('document', $item)) {
             // remove .md extension if present
                 $path = Str::endsWith($item[ 'document' ], '.md', false) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
-                $link = $this->factory->url($this, $this->ref, $path);
+                $link = $this->codex->url($this, $this->ref, $path);
             } elseif (array_key_exists('href', $item)) {
                 $link = $item[ 'href' ];
             }
@@ -514,21 +514,21 @@ class Project
      *
      * @return \Codex\Core\Factory
      */
-    public function getFactory()
+    public function getCodex()
     {
-        return $this->factory;
+        return $this->codex;
     }
 
     /**
      * Set factory.
      *
-     * @param  \Codex\Core\Factory $factory
+     * @param  \Codex\Core\Factory $codex
      *
      * @return \Codex\Core\Project
      */
-    public function setFactory($factory)
+    public function setCodex($codex)
     {
-        $this->factory = $factory;
+        $this->codex = $codex;
 
         return $this;
     }

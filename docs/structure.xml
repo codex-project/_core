@@ -266,13 +266,13 @@
     </trait>
     <source>eJxdUk1vwjAMvedX+LADIEa3SbvApk1iSCDBhEZv6w6mTWlEmlSpu4Em/vuSkI4PK1KVvPfsZ7tPL1VRsajXY9CDJRoCnQMVHMY64ztYTpdQYbrFDa8HluJYi1kMc5FyVXNAlUGqq70Rm4JAqFybEkloBetGZZJn8COosAlF3eaxLF9gPhtP3lcTyIXkNm3EFJa8tqRQOxlrw5PYoKB6xFhTX7xPdmQN2EIWc9BMyqYUCoknq6aqtKEgTRaYGo1ryW2S0Gfs7NjjbEy13jq07e61tRniVNOj2FChDVyg8Ma/IeZYesZpHIHRXjtpFx7u7h/7R5UnyzDHEAVRVQ+jiGRmJN+gHKS6jAIpKgXdtoKzJfjhkWv2vxn2y1w6N5jz9t2bH4GLHnw0ChAKqwkvLWBnYLAMnm7cXq4QNAb3cOMvdcAi/62MJp6SXXzeqNT/CaZRzlfHJ+pfauEZPuGr66VHzy5Oyx0Or9RB1x158oEd2B90QNZG</source>
   </file>
-  <file path="Project.php" generated-path="Project.html" hash="87906ab3ce5997064f813f73f7f0835f" package="Default">
+  <file path="Project.php" generated-path="Project.html" hash="7eafd44e8aac781cfa7d4d59e22db79c" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
       <tag name="package" line="0" description="Default"/>
     </docblock>
-    <namespace-alias name="Factory">\Codex\Core\Contracts\Factory</namespace-alias>
+    <namespace-alias name="Codex">\Codex\Core\Contracts\Codex</namespace-alias>
     <namespace-alias name="Hookable">\Codex\Core\Traits\Hookable</namespace-alias>
     <namespace-alias name="Container">\Illuminate\Contracts\Container\Container</namespace-alias>
     <namespace-alias name="Filesystem">\Illuminate\Contracts\Filesystem\Filesystem</namespace-alias>
@@ -365,8 +365,8 @@
         </docblock>
       </property>
       <property static="false" visibility="protected" namespace="Codex\Core" line="62" package="Codex\Core">
-        <name>$factory</name>
-        <full_name>\Codex\Core\Project::factory</full_name>
+        <name>$codex</name>
+        <full_name>\Codex\Core\Project::codex</full_name>
         <default></default>
         <docblock line="62">
           <description>The codex factory instance</description>
@@ -490,7 +490,7 @@
         <docblock line="127">
           <description></description>
           <long-description></long-description>
-          <tag name="param" line="127" description="" type="\Codex\Core\Factory" variable="$factory">
+          <tag name="param" line="127" description="" type="\Codex\Core\Factory" variable="$codex">
             <type>\Codex\Core\Factory</type>
           </tag>
           <tag name="param" line="127" description="" type="\Illuminate\Contracts\Filesystem\Filesystem" variable="$files">
@@ -507,7 +507,7 @@
           </tag>
         </docblock>
         <argument line="0" by_reference="false">
-          <name>$factory</name>
+          <name>$codex</name>
           <default></default>
           <type>\Codex\Core\Factory</type>
         </argument>
@@ -851,8 +851,8 @@
         </argument>
       </method>
       <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="517" package="Codex\Core">
-        <name>getFactory</name>
-        <full_name>\Codex\Core\Project::getFactory()</full_name>
+        <name>getCodex</name>
+        <full_name>\Codex\Core\Project::getCodex()</full_name>
         <docblock line="517">
           <description>Get factory.</description>
           <long-description></long-description>
@@ -862,12 +862,12 @@
         </docblock>
       </method>
       <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="529" package="Codex\Core">
-        <name>setFactory</name>
-        <full_name>\Codex\Core\Project::setFactory()</full_name>
+        <name>setCodex</name>
+        <full_name>\Codex\Core\Project::setCodex()</full_name>
         <docblock line="529">
           <description>Set factory.</description>
           <long-description></long-description>
-          <tag name="param" line="529" description="" type="\Codex\Core\Factory" variable="$factory">
+          <tag name="param" line="529" description="" type="\Codex\Core\Factory" variable="$codex">
             <type>\Codex\Core\Factory</type>
           </tag>
           <tag name="return" line="529" description="" type="\Codex\Core\Project">
@@ -875,7 +875,7 @@
           </tag>
         </docblock>
         <argument line="0" by_reference="false">
-          <name>$factory</name>
+          <name>$codex</name>
           <default></default>
           <type>\Codex\Core\Factory</type>
         </argument>
@@ -911,15 +911,15 @@
       <error line="98" code="PPC:ERR-50007">No summary for property $versions</error>
       <error line="118" code="PPC:ERR-50007">No summary for property $container</error>
     </parse_markers>
-    <source>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</source>
+    <source>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</source>
   </file>
-  <file path="Factory.php" generated-path="Factory.html" hash="5d1c24b51a76225848067d9275f9305e" package="Default">
+  <file path="Factory.php" generated-path="Factory.html" hash="4472431f4d115cca7a7aa2139bb94cb8" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
       <tag name="package" line="0" description="Default"/>
     </docblock>
-    <namespace-alias name="FactoryContract">\Codex\Core\Contracts\Factory</namespace-alias>
+    <namespace-alias name="Codex">\Codex\Core\Contracts\Codex</namespace-alias>
     <namespace-alias name="Log">\Codex\Core\Contracts\Log</namespace-alias>
     <namespace-alias name="MenuFactory">\Codex\Core\Contracts\Menus\MenuFactory</namespace-alias>
     <namespace-alias name="Hookable">\Codex\Core\Traits\Hookable</namespace-alias>
@@ -932,7 +932,7 @@
     <namespace-alias name="Finder">\Symfony\Component\Finder\Finder</namespace-alias>
     <class final="false" abstract="false" namespace="Codex\Core" line="29" package="Codex\Core">
       <extends/>
-      <implements>\Codex\Core\Contracts\Factory</implements>
+      <implements>\Codex\Core\Contracts\Codex</implements>
       <name>Factory</name>
       <full_name>\Codex\Core\Factory</full_name>
       <docblock line="29">
@@ -1467,27 +1467,7 @@
     <parse_markers>
       <error line="98" code="PPC:ERR-50008">No summary for method __construct()</error>
     </parse_markers>
-    <source>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</source>
-  </file>
-  <file path="Contracts/Factory.php" generated-path="Contracts.Factory.html" hash="81ad00ee77982b38c54aabb9d51eae5a" package="Default">
-    <docblock line="0">
-      <description>Part of the Codex PHP packages.</description>
-      <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
-      <tag name="package" line="0" description="Default"/>
-    </docblock>
-    <interface namespace="Codex\Core\Contracts" line="17" package="Codex\Core">
-      <name>Factory</name>
-      <full_name>\Codex\Core\Contracts\Factory</full_name>
-      <docblock line="17">
-        <description>This is the Factory.</description>
-        <long-description></long-description>
-        <tag name="package" line="17" description="Codex\Core"/>
-        <tag name="author" line="17" description="Codex Dev Team"/>
-        <tag name="copyright" line="17" description="Copyright (c) 2015, Codex"/>
-        <tag name="license" line="17" description="MIT License" link="https://tldrlegal.com/license/mit-license"/>
-      </docblock>
-    </interface>
-    <source>eJxVkMFKBDEMhu99ihzdQbcqeFFBYVxxYZUB5+iltplp2U47tFl1Ed/dztiyayiFkC9/8uf2btQj41XFoIJGBALfAWmE2iv8guapgVHIregxLhMyUc/rFjZGoosIwimQftwH02sC4zofBkHGO3jfOWVRwachnQRNLDqJmgds1vXq5XUFnbGYZDlzYsCYoDz7rfYB0+coCEnxhpUt20ksvUnkMZV82JfV7suMHAehuSp2pH2Af1V4wA9oUQwzcfCSiZKeyAVcnl9cnf51zbDNR8ihicZ4zTlZFSz2wi6lH3iG+GDorDQcXXB2bhxh6Cbn2Q/7ZuyH/QJ83n/P</source>
+    <source>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</source>
   </file>
   <file path="Contracts/Log.php" generated-path="Contracts.Log.html" hash="ed17a9e0c87d10a4f6f3d5b6fce65540" package="Default">
     <docblock line="0">
@@ -1864,6 +1844,27 @@
     </parse_markers>
     <source>eJxVUE1LAzEQvedXzKGHdqlGBS+2oNAiCAoeevQyZmc30XyRTMQi/nez212wl+Ex7735eNv7qKPw6ChHVAS70NL32y4kqsVzQsV5I0TJZ9Q+qOLIc2Vk0who4NFYpgRq8tTW0H2oMz+xJ4B/7pHAwjokmAl4TeGDFMOevuBA6EaRCvGYTK+5ima0VCu4ubq+XZ8bR701inwetmnmmO+kZNsmSz3aSxWcnHjpDF/M2penAzyfcJ0hhfH1j26I4vSS+BHDlbG8Vwd0xSs2wYNG31pazkHAop3QGjAlPMKiRtGZfrURv+IP4z11zg==</source>
   </file>
+  <file path="Contracts/Codex.php" generated-path="Contracts.Codex.html" hash="46e0d86fc4041dbecfb8ffaf6a7f50b6" package="Default">
+    <docblock line="0">
+      <description>Part of the Codex PHP packages.</description>
+      <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
+      <tag name="package" line="0" description="Default"/>
+    </docblock>
+    <interface namespace="Codex\Core\Contracts" line="18" package="Codex\Core">
+      <name>Codex</name>
+      <full_name>\Codex\Core\Contracts\Codex</full_name>
+      <docblock line="18">
+        <description>This is the Factory.</description>
+        <long-description></long-description>
+        <tag name="package" line="18" description="Codex\Core"/>
+        <tag name="author" line="18" description="Codex Dev Team"/>
+        <tag name="copyright" line="18" description="Copyright (c) 2015, Codex"/>
+        <tag name="license" line="18" description="MIT License" link="https://tldrlegal.com/license/mit-license"/>
+        <tag name="mixin" line="18" description="\Codex\Core\Factory"/>
+      </docblock>
+    </interface>
+    <source>eJxVkE1LAzEQhu/5FXPURRsVvKigsFYsVFmwx15idnYTzMeSTLVF/O9mY7atQwgM88w7M+/d/aAGxquKQQWNCAS+A1IItW9xC81zA4OQH6LHOEvISL0sVrDUEl1EEK4F6Ydd0L0i0K7zwQrS3sH7xrUGW/jSpJKgjpNOovKA5aKev77NodMGkyxnTliMCSqz17UPmD5HQUiKt2zacjWKpTeKPKWSD7tptYdpRomDUK6KDSkf4F8VHvETVihsJg63FGJKT+QpXF1cXp/9dWXYFBNKKKIh3nBOpg0Ge2Fm0lteIG41nU8NRw5mIau3yZT10dnlruyLdoSh2/vCvhn7Yb8YY4lL</source>
+  </file>
   <file path="Contracts/Menus/MenuFactory.php" generated-path="Contracts.Menus.MenuFactory.html" hash="aaa949a8b79e6606b015bb802a710a7f" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
@@ -1884,23 +1885,24 @@
     </interface>
     <source>eJxVkFFLwzAQx9/zKe7RFV1U8EUFhTpxsEnBPu4lptcmLE1KclWH+N1Na8LmEQLH/e5/d//7h0ENjBcFgwIq4QlcC6QQStfgF1QvFQxC7kWHYRmRidqua9hoiTYgCNuAdMPB604RaNs63wvSzsL7aBuDDXxqUlFQh6wTqXnAZl2uXt9W0GqDUZYzK3oMEUqzd6XzGD9LXkgKuy3aMdyxvGs9ScY3SU2l5wg5f8hLPuZpKY6Sc1WMpJyHf1V4wg+oUfQzcbwqETk9kwu4vry6Of/rmmGT7EihiIZwyzmZxhvshFlK1/ME8V7TRW448XL2QFtC304enNzEvhn7Yb+S9oVd</source>
   </file>
-  <file path="Http/Controllers/CodexController.php" generated-path="Http.Controllers.CodexController.html" hash="5ac44dfd60c7949467fe564af26edcd4" package="Default">
+  <file path="Http/Controllers/CodexController.php" generated-path="Http.Controllers.CodexController.html" hash="2c2002e3ee19a63f346ada96af44a485" package="Default">
     <docblock line="0">
       <description></description>
       <long-description></long-description>
       <tag name="package" line="0" description="Default"/>
     </docblock>
-    <class final="false" abstract="false" namespace="Codex\Core\Http\Controllers" line="12" package="Codex\Core">
+    <namespace-alias name="Hookable">\Codex\Core\Traits\Hookable</namespace-alias>
+    <class final="false" abstract="false" namespace="Codex\Core\Http\Controllers" line="14" package="Codex\Core">
       <extends>\Codex\Core\Http\Controllers\Controller</extends>
       <name>CodexController</name>
       <full_name>\Codex\Core\Http\Controllers\CodexController</full_name>
-      <docblock line="12">
+      <docblock line="14">
         <description>This is the CodexController.</description>
         <long-description></long-description>
-        <tag name="package" line="12" description="Codex\Core"/>
-        <tag name="author" line="12" description="Codex Dev Team"/>
-        <tag name="copyright" line="12" description="Copyright (c) 2015, Codex"/>
-        <tag name="license" line="12" description="MIT License" link="https://tldrlegal.com/license/mit-license"/>
+        <tag name="package" line="14" description="Codex\Core"/>
+        <tag name="author" line="14" description="Codex Dev Team"/>
+        <tag name="copyright" line="14" description="Copyright (c) 2015, Codex"/>
+        <tag name="license" line="14" description="MIT License" link="https://tldrlegal.com/license/mit-license"/>
         <tag name="inherited_from" description="\Codex\Core\Http\Controllers\Controller" refers="\Codex\Core\Http\Controllers\Controller" link="/classes/Codex.Core.Http.Controllers.Controller.html"/>
       </docblock>
       <property static="false" visibility="protected" namespace="Codex\Core\Http\Controllers" line="22" package="Codex\Core">
@@ -1910,8 +1912,8 @@
         <docblock line="22">
           <description></description>
           <long-description></long-description>
-          <tag name="var" line="22" description="" type="\Codex\Core\Contracts\Factory|\Codex\Core\Factory" variable="">
-            <type>\Codex\Core\Contracts\Factory</type>
+          <tag name="var" line="22" description="" type="\Codex\Core\Contracts\Codex|\Codex\Core\Factory" variable="">
+            <type>\Codex\Core\Contracts\Codex</type>
             <type>\Codex\Core\Factory</type>
           </tag>
         </docblock>
@@ -1941,34 +1943,34 @@
           </tag>
         </docblock>
       </property>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Http\Controllers" line="19" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Http\Controllers" line="23" package="Codex\Core">
         <name>index</name>
         <full_name>\Codex\Core\Http\Controllers\CodexController::index()</full_name>
-        <docblock line="19">
+        <docblock line="23">
           <description>Redirect to the default project and version.</description>
           <long-description></long-description>
-          <tag name="return" line="19" description="" type="\Codex\Core\Http\Controllers\Redirect">
+          <tag name="return" line="23" description="" type="\Codex\Core\Http\Controllers\Redirect">
             <type>\Codex\Core\Http\Controllers\Redirect</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Http\Controllers" line="34" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Http\Controllers" line="40" package="Codex\Core">
         <name>document</name>
         <full_name>\Codex\Core\Http\Controllers\CodexController::document()</full_name>
-        <docblock line="34">
+        <docblock line="40">
           <description>Render the documentation page for the given project and version.</description>
           <long-description></long-description>
-          <tag name="param" line="34" description="" type="string" variable="$projectSlug">
+          <tag name="param" line="40" description="" type="string" variable="$projectSlug">
             <type>string</type>
           </tag>
-          <tag name="param" line="34" description="" type="string|null" variable="$ref">
+          <tag name="param" line="40" description="" type="string|null" variable="$ref">
             <type>string</type>
             <type>null</type>
           </tag>
-          <tag name="param" line="34" description="" type="string" variable="$path">
+          <tag name="param" line="40" description="" type="string" variable="$path">
             <type>string</type>
           </tag>
-          <tag name="return" line="34" description="" type="\Codex\Core\Http\Controllers\CodexController">
+          <tag name="return" line="40" description="" type="\Codex\Core\Http\Controllers\CodexController">
             <type>\Codex\Core\Http\Controllers\CodexController</type>
           </tag>
           <tag name="fluent" description="This method is part of a fluent interface and will return the same instance"/>
@@ -1989,14 +1991,37 @@
           <type>string</type>
         </argument>
       </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core\Http\Controllers" line="30" package="Codex\Core">
+        <name>runHook</name>
+        <full_name>\Codex\Core\Traits\Hookable::runHook()</full_name>
+        <docblock line="30">
+          <description>Run a hook</description>
+          <long-description></long-description>
+          <tag name="param" line="30" description="" type="" variable="$name"/>
+          <tag name="param" line="30" description="" type="array" variable="$params">
+            <type>array</type>
+          </tag>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$name</name>
+          <default></default>
+          <type/>
+        </argument>
+        <argument line="0" by_reference="false">
+          <name>$params</name>
+          <default>array()</default>
+          <type>array</type>
+        </argument>
+        <inherited_from>\Codex\Core\Traits\Hookable</inherited_from>
+      </method>
       <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Http\Controllers" line="39" package="Codex\Core">
         <name>__construct</name>
         <full_name>\Codex\Core\Http\Controllers\Controller::__construct()</full_name>
         <docblock line="39">
           <description></description>
           <long-description></long-description>
-          <tag name="param" line="39" description="" type="\Codex\Core\Contracts\Factory" variable="$factory">
-            <type>\Codex\Core\Contracts\Factory</type>
+          <tag name="param" line="39" description="" type="\Codex\Core\Contracts\Codex" variable="$factory">
+            <type>\Codex\Core\Contracts\Codex</type>
           </tag>
           <tag name="param" line="39" description="" type="\Codex\Core\Contracts\Menus\MenuFactory" variable="$menus">
             <type>\Codex\Core\Contracts\Menus\MenuFactory</type>
@@ -2008,7 +2033,7 @@
         <argument line="0" by_reference="false">
           <name>$factory</name>
           <default></default>
-          <type>\Codex\Core\Contracts\Factory</type>
+          <type>\Codex\Core\Contracts\Codex</type>
         </argument>
         <argument line="0" by_reference="false">
           <name>$menus</name>
@@ -2026,15 +2051,15 @@
     <parse_markers>
       <error line="0" code="PPC:ERR-50000">No summary was found for this file</error>
     </parse_markers>
-    <source>eJyNU11v0zAUfc+vuA+VnFRtA0i8MFYmtgeQQEKjbwxVnnOTmCV2ZDtlE+y/46+kaWATVqU6vvece+659tt3Xd0lgraoO8oQLmWB9zeXUuHNB2M6uxNGyaZBpc+SJF8uE1jCruYa7M/UEXDM2ti4S7mwbHe0QojryOujtDe1VHAShSs8wA5p6zOY7B4Ur2ozZAyfKcvg1YuXr1cB5ZMbzlDosVhtles3eW6aQjVY0WbDZJvHpLzlZj0APn/cwaewt0R5whqq9bwnwHuDonDnw1HyK3GFvB9uLeEaC66QGTDS+1JgSfvGQKfkD3dMRQEH6yKXYhMxA/RCoemVGCniee7/u/7WioWyF8xYLHBhtaWZjwURbkUGFRlSJXuDKWGukU0hWd+iMGQF30aEWySK+9r0FYHzLSyMnex6W1JmpHpYb5kUJa9SEpvZx3ySjTTfs+zMfzwmfztipapgRlRAfQuduxelDKGKH1D8l0sdVbQFbRQXVSi+mOj/Z9pv0TcNLBSWz7JQU89n4Z14dhBDT+lUxcoXg3NwhVeB2n4RMh/YALLBuekVmi8heEJtfR7RvISU670rkrqCWTah9vRBxYD3pFdhiNdYpnFmYW5zSeutRp/lmSdVF0PLdj/nPpphO57QL+wVMgHiMAPDeqv87ZgqWdwqpAVTfXt7mmr5348hh5hICt4dOP50t7XtpLakEyw1RqXExUm2evJ+x1b03oJ6vXfp+4GNZFMP4vU4LdzSO3y6qCOyBccq9hmSyZMk0SG3PTpAju/qMfkDQ+qzqg==</source>
+    <source>eJyVU11v0zAUfc+v8EMlJ1XbABIvg5WJ7WFIIKHRNzpVbnKTmCZ25I+yCfbf8Wealm4Cq1Id33POPff6+v2HvukTRjqQPSkAXfMSHtbXXMD6Vqne7JgSvG1ByHdJouURYiUIVXJ9y/mObFswgHw6TdAUrRoqkfmpJuAPMgsTt5Ark25HakBhHWRdlGjVcIGOougG9mgFpHOIgvePgtaNioj4mRYZevPq9duZZzlwSwtgckjWmNLkRZ6rthQt1KRdFLzLAyjvqJpHwpdPK/TZ741QnhQtkfK0JgQPClhpz+NR8iuxiWzDRu2xR65Fdk3RHZRUQKGQ4q5VJVREtwr1gv+wx4SVaG86TzlbBE6kXglQWrBBIpzn7r/XW+MfVZoVynARZcZumrmY92XXRJlbmi+FZtZhiovB/IUj4Bn67kHoPgvm7QqZRcicCq4VWLrhLEpe6A6YsuSBYRcORX1rdY3R5TKmr0ihuHicL036itYpDk3YBDzOBpn7zNiwm6cznTSOhW9icEBc6b0dsYr7UE33wP6puz0RpENSCcrq0K2R/7Ow30y3LZoIqF5UIao5vUPXiRcvMNaUjl3MXDJ0iWzimZc2Xxj/x0WPr8vjZujvHFH8aAwizKQ8vcoa1FcfPDI8ZtMKpVRurPXUpsiykWEn72uLfCd640fjDqo0TIKfhlNL86UEh3LKY8+xXrM/1T602JQ6kp/YdnmK5UQF0083c2Mnk60AUhZCd9tjqNH/OIQsIzm9nD2Fn/YNdD2XRnTEJUqJFNs4zmbPvppQitwYkpYbC99ENZydeb7HiTuyg+eTWiGTcMhipgWPJgeHDtntoQP48Fqfkj8jxfCo</source>
   </file>
-  <file path="Http/Controllers/Controller.php" generated-path="Http.Controllers.Controller.html" hash="6fd9ec1c5adb8be0458cd5b1dbc1bc1b" package="Default">
+  <file path="Http/Controllers/Controller.php" generated-path="Http.Controllers.Controller.html" hash="d3ef82daf524a4b4822fc83ce8afc9fa" package="Default">
     <docblock line="0">
       <description></description>
       <long-description></long-description>
       <tag name="package" line="0" description="Default"/>
     </docblock>
-    <namespace-alias name="Factory">\Codex\Core\Contracts\Factory</namespace-alias>
+    <namespace-alias name="Codex">\Codex\Core\Contracts\Codex</namespace-alias>
     <namespace-alias name="MenuFactory">\Codex\Core\Contracts\Menus\MenuFactory</namespace-alias>
     <namespace-alias name="ViewFactory">\Illuminate\Contracts\View\Factory</namespace-alias>
     <namespace-alias name="BaseController">\Illuminate\Routing\Controller</namespace-alias>
@@ -2057,8 +2082,8 @@
         <docblock line="22">
           <description></description>
           <long-description></long-description>
-          <tag name="var" line="22" description="" type="\Codex\Core\Contracts\Factory|\Codex\Core\Factory" variable="">
-            <type>\Codex\Core\Contracts\Factory</type>
+          <tag name="var" line="22" description="" type="\Codex\Core\Contracts\Codex|\Codex\Core\Factory" variable="">
+            <type>\Codex\Core\Contracts\Codex</type>
             <type>\Codex\Core\Factory</type>
           </tag>
         </docblock>
@@ -2094,8 +2119,8 @@
         <docblock line="39">
           <description></description>
           <long-description></long-description>
-          <tag name="param" line="39" description="" type="\Codex\Core\Contracts\Factory" variable="$factory">
-            <type>\Codex\Core\Contracts\Factory</type>
+          <tag name="param" line="39" description="" type="\Codex\Core\Contracts\Codex" variable="$factory">
+            <type>\Codex\Core\Contracts\Codex</type>
           </tag>
           <tag name="param" line="39" description="" type="\Codex\Core\Contracts\Menus\MenuFactory" variable="$menus">
             <type>\Codex\Core\Contracts\Menus\MenuFactory</type>
@@ -2107,7 +2132,7 @@
         <argument line="0" by_reference="false">
           <name>$factory</name>
           <default></default>
-          <type>\Codex\Core\Contracts\Factory</type>
+          <type>\Codex\Core\Contracts\Codex</type>
         </argument>
         <argument line="0" by_reference="false">
           <name>$menus</name>
@@ -2128,7 +2153,7 @@
       <error line="27" code="PPC:ERR-50007">No summary for property $menus</error>
       <error line="32" code="PPC:ERR-50007">No summary for property $view</error>
     </parse_markers>
-    <source>eJyVU8tOwzAQvPsr9sABqkIAiQvlJYoQleCCKk6VkHGXJsKxI3tTioB/x3YcmrSkgBXlNbMzu+v1yXmRFkzxHG3BBcJQT3ExGWqDkxuiwr0pMlpKNHbAWGlbjAByQXZy7e7avA26GXeoyure4o6kLPNMcWpyHzJ8rSWBW/DfXVH3uqRMzRqJ+ohLbnH5x2We9HoMejBOMwvuojSmuSTtOdxTLlwfXvgMIa5lNQHlJaXaQAuFK5zDGHkeGEIXbyabpVQz6s9tsQOH+wdH/SoqkGUmUNlvs9T13B4nCcmpkTjjck/oPImkJM9otw64G43htnp3QgkTklsLjS7gglBNV1vB3pn3Ce3wy6Uw5wYmm3b1o4nGfzE6Cc/CaEJBOIWt53qb/mGzNhotwzW0yzr3xC7jxsQ0p6tLa+44P0gV3PB8c7Nguepm/Cl8rcxY0Grw7wem8vYVtKsrn9zswHOpBGVaweOj0MqSKQVtf1vGjPuwnki/eQwr/Z0gXE1UMCV3vHbPogicNsZhhRIUPSFu2grsxT1abYMHPtkn+wKKToAu</source>
+    <source>eJyVU01P4zAQvftXzIEDVIUAEhfKLggQAgkuq2pPkZBxhybCsSN7UkDAf19/Zeu2G2CtKLHz3rz59MlpW7VM8QZtywXChZ7hS3mhDZbXRK3bKTJaSjR2wlhnVxgB5IJsGX5OhvE7VF18X7mzNq+ReyNl19SKU879XeNzmWjALfjzkNUv3VGt5lmY3uKcW1z+cXEXoxGDEUyr2oJ7qEphLkl7DveUM1eFJz5HSGuZTUB5R5U2sILCJS5girwJDKHbV1PPK+oZ/XFb7MDh/sHROFoFsqwFKvvXWeUqbo+LguTMSJxzuSd0UyRS0dS02xvc3UzhNu6dUMGE5NZCVgV8IVSz9VKwN+b9hHL45UJYcAPlcE/fcyx1IdkW4dsaTSgIZ7D12DfpP5xsDMaKww10yHXjiUOOs3nJZ2tIa+E4/5BqueHNZ6WCfPXF+Jb5RpopoXXjr69L9O0zWM2ue3CTA4+dElRrBff3QitLphO0HWPv4x3DZhjj/ApG9Z0gG6cpuCR3tXZ/JhH4kQ3DGiUoekJq2RrsxT0am+CBD/bB/gCnjnza</source>
   </file>
   <file path="Http/ViewComposers/ProjectMenusComposer.php" generated-path="Http.ViewComposers.ProjectMenusComposer.html" hash="d03bc8255f0e95c8c08448ed389b14e2" package="Default">
     <docblock line="0">
@@ -2378,7 +2403,7 @@ file. In addition, it is set as the URL generator's root namespace.</description
     </parse_markers>
     <source>eJx9kl1LwzAUhu/zK86FUB1zVcEb51ScAwdTCt2d8yJLT9ewtAlJOififzdpG6oyDb1IeJ/z9Z5e36pCkXgwIDCAhGoLMgdbIExlhntIHhNQlG3pBs3IIZ56mi9hwRlWBoFWGTCp3jXfFBZ4lUtdUstlBeu6ygRm8MZt4RJyE/I4qimwmE9nz+kMci7QpY1JRUs0Dupqr6ZS4yrRcscz1GZMSO0Kprh2GXGV1kpJbR1UGSkwRb1zLQUaqIF7avCw6lJ1Ay99X+5rBz7EhqHvQvfd6VtsVFrbQmr4ocID7mCJtGyI3qWOCM9jdgIXZ+eXwzaqgUVnb3cKa5W5imMrMi1wQ8WIyTLuoLjk9jQEfNtN4ykT1Jg/RgPcW6yy/5wiH8TXV1paZNZt86hf0gSi1oR2UWETkXP3V4zSmPO9D2A+wDdfuh/HjA6wQXP0CwnzRyXdYgSTG4ie/G3YK4Ib2yoLf2uE1zH5JF9P6OkM</source>
   </file>
-  <file path="CodexServiceProvider.php" generated-path="CodexServiceProvider.html" hash="e50a9e7ee0a31a167a19ef4ecb09b6d8" package="Default">
+  <file path="CodexServiceProvider.php" generated-path="CodexServiceProvider.html" hash="862615cb59f95dac69f3ba0c35373473" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -2490,7 +2515,7 @@ file. In addition, it is set as the URL generator's root namespace.</description
       <property static="false" visibility="protected" namespace="Codex\Core" line="78" package="Codex\Core">
         <name>$aliases</name>
         <full_name>\Codex\Core\CodexServiceProvider::aliases</full_name>
-        <default>array('codex' =&gt; \Codex\Core\Contracts\Factory::class, 'codex.log' =&gt; \Codex\Core\Contracts\Log::class, 'codex.menus' =&gt; \Codex\Core\Contracts\Menus\MenuFactory::class)</default>
+        <default>array('codex' =&gt; \Codex\Core\Contracts\Codex::class, 'codex.log' =&gt; \Codex\Core\Contracts\Log::class, 'codex.menus' =&gt; \Codex\Core\Contracts\Menus\MenuFactory::class)</default>
         <docblock line="78">
           <description></description>
           <long-description></long-description>
@@ -2625,15 +2650,15 @@ file. In addition, it is set as the URL generator's root namespace.</description
       <error line="70" code="PPC:ERR-50007">No summary for property $singletons</error>
       <error line="78" code="PPC:ERR-50007">No summary for property $aliases</error>
     </parse_markers>
-    <source>eJytVt1v0zAQf+9fcQ+Tmk7dCki8dGyAOiombWhaJ/FApspNrq3BsSPb6TZN/O+c7bgf6UphkIc28f3ud74vn9+9L+dlq3d42IJDuGbagpqCnSMMVI4PcP35GkqW/WAzNMcEcairi1u45BlKg8BkDpkqHzWfzS1wOVW6YJYrCZNK5gJzuOd2ToTcRB5CeQOXF4NPX0afYMoFEm2vJVmBhkC17XSgNJ60WpVZX0iHXFjUJh1qJe0Vs/QRlk52Ickrg7m6lztwl2qWftX8OdGtZtwSg1YLnqPxkgC6EKIquGQWCSmtZhnhhoqc9u6nH8tS8My/B4UrJZUgS2RthhqYiStBPMIJRQrTUVWWStt0hHpBMa4t085ijkJeTBBDWctjbj7EIMOaG17AKjtXGqIAiPk7ZhbOcQG3yAoPWqVysHxLsg68efX6bXdT0eNFXQYAc2tL0+/1rMi1wBkTx5kqerW8V3B7FLFr5ePTnglmTOBuOA34YFHmBhrrraeW88OFrZEZv+4D5R7a4IJpMFZzOauXev6fwmbJByrPg5xrOIXx+PziZjzeZhgoIQjpKpoaI1NyymeVDiXuKtd1hUdumGRas8ddFgPJ0CmT5W/Qztzm23C3z/rElRe1j7FMZi+xXFfLXrP7mRYc78+5rpncl2nD6dm/kVIdoF2x+s//QBt7xNMGED3pVseF/0at9fu+PrtLvSgwru+NEvjnCjeqsjvgHv0i7wzVtkBLe9lwL0YsPBTCIZ1QSj9ubS8AjwuUVYj1lXtL3e+mysu3yARnBvfsb+0U/f1O6chsN1XoUN3v2Ar+ty7e4Iwbmg8w4TKneJs4w6iVLePSn78eugyKRltpCWtjYDM61YTWYVrJ0N26tpB0vPhp6cUBK0sKXMk0Stvvr3AnK4ibrkdnURQGTOIUd4Pq2Rhpfu52Obip0Z12TmWXpwvF8x0FsOXl0nrT2bBJluf+PA+wpD11o35c+Fnf7sLW5K+zt+1tk6iMNwFiadwKNjm247EZXSiQpmneDAXxswLSv7gb+PxGmsMYy/TZ28mfRrcugKaV5yrr6CxOk2Stu7pwQH9UdRLvIdhOlmrucev17SUJNCgXnNJCzWaTTqe7gXYIOs5xQULqxLulsLOeMeI6OqOR7udiUuuEUUk639a6/7hkdk5rnbpR3VMH7sDfp0IGf7Z+AXobRbU=</source>
+    <source>eJytVt1v0zAQf+9fcQ+Tmk7dCki8dDBAHRWTNjRtk3ggU+Um19bg2JHtdJsQ/ztnO+5HuqhjkIc28f3ud74vn999KBdlZ3B42IFDuGLagpqBXSCMVI4PcPXlCkqW/WRzNMcEcajL81u44BlKg8BkDpkqHzWfLyxwOVO6YJYrCdNK5gJzuOd2QYTcRB5CeQMX56PPX28+w4wLJNpBR7ICDYFq2+lIaTzpdCqzuZCOubCoTTrWStpLZukjLJ20Ickrg7m6ly24CzVPv2n+lOhWM26JQaslz9F4SQCdC1EVXDKLhJRWs4xwY0VOe/fTT2UpeObfg8KlkkqQJbI2Rw3MxJUgvsEpRQrTm6oslbbpDeolxbi2TDuLOQp5MUEMZS2PufkYgwwbbngBq+xCaYgCIOYfmFk4wyXcIis8aJ3K0eotyXrw5tXrt/1tRY8XdRkALKwtzXAwsCLXAudMHGeqGNTyQcHtUcRulI9PeyaYMYG74TTgg0WZG2isd351nB8ubI3M+HUfKPfQBpdMg7Gay3m9NPD/FDZLPlB5HuRcw3uYTM7OryeTXYaREoKQrqKpMTIlZ3xe6VDirnJdV3jklkmmNXtssxhIxk6ZLH+HbuY234W7fdanrryofYxlMnuJ5bpa9prdz7TkeH/Gdc3kvkwX3p/+GynVAdo1q//8D7SxRzxtANGT7nRc+G/U2nDo67O/0osC4/reKIHPV7hWlW2Be/SLvDNU2wIt7WXLvRix8FAIx3RCKf24s70APC5QViHWl+4tdb/bKi/fIhOcGdyzv/Up6nu5bZ90YHabCnSk7ndrDf9bB69xzg1NB5hymVO0TZxg1MiWcelPXw9dhUSjrbSEjSGwHZtqSuswq2TobV1bSHpe/GvlxQErSwpbyTRKOxyucSdriJutR6dRFMZL4hTbQfVkjDS/210Obmp0Z51TafN0qXjekv4dL1fWm86GTbI89xUQYEl35gb9pPCTvtuHnblfZ2/X2yZRGe8BxNK4E2xz7MZjO7pQIM3SvBkK4mcFpH9xM/D5jTSHMZbpk3eT50a3LoCmlacq6+g0zpJko7v6cEB/VHUS7yHYTlZq7nHr9d0lCTQol5zSQs1mk16vv4V2CDrMcUlC6sS7lbC3mTHiOjqlge6nYlLrhEFJOt83uv+4ZHZBa726Ud1TB+7A36ZCBn93/gCiBUTQ</source>
   </file>
-  <file path="Document.php" generated-path="Document.html" hash="79e080b18daa5361d7008353c7208a52" package="Default">
+  <file path="Document.php" generated-path="Document.html" hash="722d95957f8fa03cc348845fd537cf97" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
       <tag name="package" line="0" description="Default"/>
     </docblock>
-    <namespace-alias name="Factory">\Codex\Core\Contracts\Factory</namespace-alias>
+    <namespace-alias name="Codex">\Codex\Core\Contracts\Codex</namespace-alias>
     <namespace-alias name="Hookable">\Codex\Core\Traits\Hookable</namespace-alias>
     <namespace-alias name="Container">\Illuminate\Contracts\Container\Container</namespace-alias>
     <namespace-alias name="Filesystem">\Illuminate\Contracts\Filesystem\Filesystem</namespace-alias>
@@ -2751,8 +2776,8 @@ file. In addition, it is set as the URL generator's root namespace.</description
         <docblock line="88">
           <description>Creates a new Document class</description>
           <long-description></long-description>
-          <tag name="param" line="88" description="&lt;p&gt;The factory class&lt;/p&gt;" type="\Codex\Core\Contracts\Factory" variable="$codex">
-            <type>\Codex\Core\Contracts\Factory</type>
+          <tag name="param" line="88" description="&lt;p&gt;The factory class&lt;/p&gt;" type="\Codex\Core\Contracts\Codex" variable="$codex">
+            <type>\Codex\Core\Contracts\Codex</type>
           </tag>
           <tag name="param" line="88" description="&lt;p&gt;The filesystem&lt;/p&gt;" type="\Illuminate\Contracts\Filesystem\Filesystem" variable="$files">
             <type>\Illuminate\Contracts\Filesystem\Filesystem</type>
@@ -2773,7 +2798,7 @@ file. In addition, it is set as the URL generator's root namespace.</description
         <argument line="0" by_reference="false">
           <name>$codex</name>
           <default></default>
-          <type>\Codex\Core\Contracts\Factory</type>
+          <type>\Codex\Core\Contracts\Codex</type>
         </argument>
         <argument line="0" by_reference="false">
           <name>$files</name>
@@ -3044,7 +3069,7 @@ output. Should be called within a view.</long-description>
       <error line="36" code="PPC:ERR-50007">No summary for property $content</error>
       <error line="76" code="PPC:ERR-50007">No summary for property $container</error>
     </parse_markers>
-    <source>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</source>
+    <source>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</source>
   </file>
   <file path="Filters/ParsedownFilter.php" generated-path="Filters.ParsedownFilter.html" hash="f79fe665970294f89e0be7ac77fb1856" package="Default">
     <docblock line="0">
@@ -3300,7 +3325,7 @@ output. Should be called within a view.</long-description>
         <argument line="0" by_reference="false">
           <name>$factory</name>
           <default></default>
-          <type>\Codex\Core\Contracts\Factory</type>
+          <type>\Codex\Core\Contracts\Codex</type>
         </argument>
         <argument line="0" by_reference="false">
           <name>$generator</name>
@@ -3367,13 +3392,13 @@ output. Should be called within a view.</long-description>
     </parse_markers>
     <source>eJx9k11v2jAUhu/zK86kSgFEk23SbujoPmilVWorJLgbuzDJSeLh2JHtrEWI/95jE0Og0iyElJznPR/vcb5+a6omSkejCEYwZ9qCKsBWCDOV4yvMf82hYdmGlWgSQhz19LCER56hNAhM5pCpZqt5WVngslC6ZpYrCetW5gJzeOG2ooTchDxE+QKPD7P758U9FFwgpU0jyWo0BHW1VzOlkf6kUQJvoqilcgtcUz5cLdqmUdquFlZTpOt+6YrQ79j9E9vgTNU1NRl6/x6a6M6pko+y1lZKw1kU7vAfLJHVnjgN2xHhcZAN4fPHT1/GB5WHRedSdyprGzNJUytyLbBkIslUnXZQWnN7HQQ9i701mWDGQG8ewFeLMjfwk5nwLtpFrkqjlcXMkvVXhpeS2VYjTCHOXFuTmnLE5NkFmaPJNG/85oidaWSWtgsSX8ALHfyXYKc9iNs1dQtFKzOvqpjb92Dog4dO3LlyWw0PU7hyN+H6lpnNIL7jmhIqvQXHxMObkyjnphFs++y0lyIfeS85r0MXYzIxoi15sR342LAb2sOHhCVK1DTnARjD7yPgDhkmC14m9H0kxrbrGKa3/Zfx+BznkmxK6ryDweO7XR6m3O/TgFxKa5Rtsq3Ff6QBiY/KP+8a7rnmm+3beJINwwZ7TtA9pAJ2EP8QAnIlEQzV/hAM3kf76A3i+Dxi</source>
   </file>
-  <file path="Console/BaseCommand.php" generated-path="Console.BaseCommand.html" hash="f90db01f9e242f4412fadb7bdab2b94b" package="Default">
+  <file path="Console/BaseCommand.php" generated-path="Console.BaseCommand.html" hash="3bd0ca337934feb632f7ad889ede039e" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
       <tag name="package" line="0" description="Default"/>
     </docblock>
-    <namespace-alias name="Factory">\Codex\Core\Contracts\Factory</namespace-alias>
+    <namespace-alias name="Codex">\Codex\Core\Contracts\Codex</namespace-alias>
     <namespace-alias name="Command">\Sebwite\Support\Command</namespace-alias>
     <namespace-alias name="StubGenerator">\Sebwite\Support\StubGenerator</namespace-alias>
     <class final="false" abstract="true" namespace="Codex\Core\Console" line="21" package="Codex\Core">
@@ -3419,7 +3444,7 @@ output. Should be called within a view.</long-description>
         <argument line="0" by_reference="false">
           <name>$factory</name>
           <default></default>
-          <type>\Codex\Core\Contracts\Factory</type>
+          <type>\Codex\Core\Contracts\Codex</type>
         </argument>
         <argument line="0" by_reference="false">
           <name>$generator</name>
@@ -3484,7 +3509,7 @@ output. Should be called within a view.</long-description>
       <error line="26" code="PPC:ERR-50007">No summary for property $codex</error>
       <error line="28" code="PPC:ERR-50007">No summary for property $generator</error>
     </parse_markers>
-    <source>eJyVVW1r2zAQ/u5fcbCA45LW22Bf+rZ1adYV2i4koTCWEhT7EpvakpHkrmX0v+8ky67tZSsTQZZ0j+7lec7O8cciKbxwb8+DPZgyqUFsQCcIYxHjI0y/TqFg0T3bojogiEFdXy7gKo2QKwTGY4hE8STTbaIh5Rshc6ZTwWFd8jjDGH6mOiGHqar9EMoGuLocT27mE9ikGZLb0OMsR0UgF3s5FhJp4kpkeOR5peobtGSRVssvNAv5dGQRc1xTRFzOy6IQUhMszynJ3ca5LtcXyFEyckAhHA0Lky39Ghqu2T06RzUJn+pq3HjJzFpZqRMhoWOFc3yABbLcIl5Yc4h6O4wCeP/23YdRdcuCM0e3G4nWhToMQ53FMsMtyw4ikYcOFOap3q8vtLSyHLO1sqxBlDGl4DNTdWGAjxp5rMDtvV+eCWUpMYOyeGASli0JHPHOHtpnIYXGSJPwg8ggidXe8bZFuDWVa8oWNiWPbOOsVhFprmUZ6aGLAINNtRhBR7KWs8D6qnK2XplErg8P296Co8Y8MB25f2pTtAcnTYw/QE0MA2plbyDPVQ1vqhkuJjeT2dni28zrk+fuods3nFKeLAcmJTNV0qugdpuIe9UlukdbHWA4iFOJjq22X8r+B9yN2g6roz51/bKbJQ4bTJ9D8+CbdDv0FQmkVgXTiR+M/oHfop4Joc9TOQzgAM4vZ5MxEfd9NZ9MzyyHdNqqpevKVtQ9s3WtJBYZfULoGZVSpQ/ER12Obvrmlmpv8RSMKjqCxl/QUbcjo759UaInFS+zDAbuw3BDX7PGLlGXklcpvqLi37Psy2SYJvpMV76qRKupY1R617X/FMS9vdZl3UsdPfwqD9+sT06dPLHQw53ZBr1m8UWB3K/WdNs/Nv9Tfg/jGPArTE1ID+TqrUFu2wfVZfkVqN42qLtWvU5NW3bdKM/ebzJnIKM=</source>
+    <source>eJyVVe9r2zAQ/e6/4mABxyVttsG+9NfWpVlXaLuQhMJYSlDsS2JqS0Y6dy2j//vOsuzaXrYyE2JL93T37r2Lc/wx22becG/Pgz2YCE2g1kBbhJGK8BEmXyeQifBebNAcMKRAXV/O4SoOURoEISMIVfak482WIJZrpVNBsZKwymWUYAQ/Y9pywthUeRhlC1xdjsY3szGs4wQ57dCTIkXDIFd7MVIa+UsaleCR5+WmGyAtQjILu3lk4zNccT1czPIsU5o4lKZMcXdwRvnqAiVqQUpzASfCvODKn1qEa3GPLlElwaeqF3e98LJRkdNWaWhF4RwfYI4itYgXzRyiWvbDAN6/ffdhUJ6y4MSJ7a4tUWYOh0NKIp3gRiQHoUqHDjRMY9qvDjScsgqLlbGaQZgIY+CzMFVjgI+EMjLg1t4vryhlJSkuZvEgNCwaBnzhREo/ufjQ3jOtCENi23th6Up3e9MQ3IbyFbOFdS5DOzbLZciOk85D6pe69dZloQG0DGukCmymkrHNKTRKOjxs5gqO6nCvmMb9U0vQbpzUNf4A1TUKUIN7AXkuO3hTfsPF+GY8PZt/m3pd6dw5dOtaUeYpUhBaiydmwD8DszvEypu2zB3RqgL9XhRrdGo18zL7H3A3aCYst7rSdduuH7FfY7oaFje5jjd937BBZpkJ2vrB4B/4DdJUKTqPdT+AAzi/nI5HLNz35Ww8ObMa8m6jl3Yq21F7z/a11Jgl/Prge5hrEz+wHlU7VM/NLffe0CkYlHIEdb6g5W7LRrp9caJjlcyTBHrutXDDb7I6rpFyLUuKr7j4d5ZdmwqlWb5iKl91ojHUERradew/DXG/XZuymqWWH37Jwy+eT06dPZGi/k62QWdYfJWh9MtnPu0fF/9RfgfjFPBLTCVIB+T6rUBu2QVVbfklqFrWqLtGv85N23Y1KM/ebwAOHtk=</source>
   </file>
   <file path="Console/ListCommand.php" generated-path="Console.ListCommand.html" hash="4e2bf7c9675b6c220e8a6ba311243579" package="Default">
     <docblock line="0">
@@ -3562,7 +3587,7 @@ output. Should be called within a view.</long-description>
         <argument line="0" by_reference="false">
           <name>$factory</name>
           <default></default>
-          <type>\Codex\Core\Contracts\Factory</type>
+          <type>\Codex\Core\Contracts\Codex</type>
         </argument>
         <argument line="0" by_reference="false">
           <name>$generator</name>

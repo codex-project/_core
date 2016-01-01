@@ -1,6 +1,8 @@
 <?php
 namespace Codex\Core\Http\Controllers;
 
+use Codex\Core\Traits\Hookable;
+
 /**
  * This is the CodexController.
  *
@@ -11,6 +13,8 @@ namespace Codex\Core\Http\Controllers;
  */
 class CodexController extends Controller
 {
+    use Hookable;
+
     /**
      * Redirect to the default project and version.
      *
@@ -18,6 +22,8 @@ class CodexController extends Controller
      */
     public function index()
     {
+        $this->runHook('controller:index', [ $this ]);
+
         return redirect(route('codex.document', [
             'projectSlug' => $this->factory->config('default_project')
         ]));
@@ -33,6 +39,8 @@ class CodexController extends Controller
      */
     public function document($projectSlug, $ref = null, $path = '')
     {
+        $this->runHook('controller:document', [ $this, $projectSlug, $ref, $path ]);
+
         $project = $this->factory->getProject($projectSlug);
 
         if (is_null($ref)) {

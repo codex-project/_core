@@ -76,7 +76,7 @@ class CodexServiceProvider extends ServiceProvider
      * @var array
      */
     protected $aliases = [
-        'codex'       => Contracts\Factory::class,
+        'codex'       => Contracts\Codex::class,
         'codex.log'   => Contracts\Log::class,
         'codex.menus' => Contracts\Menus\MenuFactory::class
     ];

@@ -6,7 +6,7 @@
  */
 namespace Codex\Core;
 
-use Codex\Core\Contracts\Factory;
+use Codex\Core\Contracts\Codex;
 use Codex\Core\Traits\Hookable;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -78,14 +78,14 @@ class Document
     /**
      * Creates a new Document class
      *
-     * @param \Codex\Core\Contracts\Factory               $codex     The factory class
+     * @param \Codex\Core\Contracts\Codex                 $codex     The factory class
      * @param \Illuminate\Contracts\Filesystem\Filesystem $files     The filesystem
      * @param \Codex\Core\Project                         $project   The project instance
      * @param \Illuminate\Contracts\Container\Container   $container The container class
      * @param string                                      $path      The absolute path to the document
      * @param string                                      $pathName  The relative path to the document
      */
-    public function __construct(Factory $codex, Filesystem $files, Project $project, Container $container, $path, $pathName)
+    public function __construct(Codex $codex, Filesystem $files, Project $project, Container $container, $path, $pathName)
     {
         $this->container = $container;
         $this->codex     = $codex;

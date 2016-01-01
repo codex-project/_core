@@ -6,7 +6,7 @@
  */
 namespace Codex\Core\Console;
 
-use Codex\Core\Contracts\Factory;
+use Codex\Core\Contracts\Codex;
 use Sebwite\Support\Command;
 use Sebwite\Support\StubGenerator;
 
@@ -27,7 +27,7 @@ abstract class BaseCommand extends Command
 
     protected $generator;
 
-    public function __construct(Factory $factory, StubGenerator $generator)
+    public function __construct(Codex $factory, StubGenerator $generator)
     {
         parent::__construct();
         $this->codex     = $factory;
