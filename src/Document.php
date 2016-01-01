@@ -36,11 +36,15 @@ class Document
     protected $content;
 
     /**
+     * The codex factory instance
+     *
      * @var \Codex\Core\Factory
      */
     protected $codex;
 
     /**
+     * The filesystem instance
+     *
      * @var \Illuminate\Filesystem\Filesystem
      */
     protected $files;
@@ -166,7 +170,7 @@ class Document
      *
      * @return string
      */
-    public function getPath()
+    public function sgetPath()
     {
         return $this->path;
     }

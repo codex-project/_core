@@ -1,8 +1,8 @@
 <?php
 /**
-* Part of the Codex PHP packages.
-*
-* MIT License and copyright information bundled with this package in the LICENSE file
+ * Part of the Codex PHP packages.
+ *
+ * MIT License and copyright information bundled with this package in the LICENSE file
  */
 
 namespace Codex\Core;
@@ -28,42 +28,56 @@ class Project
 {
     use Hookable;
 
-    const SHOW_MASTER_BRANCH = 0;
-    const SHOW_LAST_VERSION = 1;
+    const SHOW_MASTER_BRANCH                        = 0;
+    const SHOW_LAST_VERSION                         = 1;
     const SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH = 2;
-    const SHOW_CUSTOM = 3;
+    const SHOW_CUSTOM                               = 3;
 
     /**
+     * A collection of branches in this project
+     *
      * @var array
      */
     protected $branches;
 
     /**
+     * The projects config.php array
+     *
      * @var array
      */
     protected $config;
 
     /**
+     * The default ref/version/branch for this project
+     *
      * @var string
      */
     protected $defaultRef;
 
     /**
+     * The codex factory instance
+     *
      * @var \Codex\Core\Factory
      */
     protected $factory;
 
     /**
+     * The filesystem instance
+     *
      * @var \Illuminate\Filesystem\Filesystem
      */
     protected $files;
 
     /**
+     * The name of the project
+     *
      * @var string
      */
     protected $name;
 
     /**
+     * The absolute path to this project
+     *
      * @var string
      */
     protected $path;
@@ -94,7 +108,7 @@ class Project
      * The menu instance, getMenu will first check if this property is set and if so returns it.
      * Otherwise it will instanciate a new Menu and set this property
      *
-     * @var Menu
+     * @var \Codex\Core\Menus\Menu
      */
     protected $menu;
 
@@ -128,16 +142,18 @@ class Project
         $branches    = [ ];
         $this->refs  = [ ];
 
-        $this->versions = array_filter(array_map(function ($dirPath) use ($path, $name, &$branches) {
-
-
+        $this->versions = array_filter(array_map(function ($dirPath) use ($path, $name, &$branches)
+        {
             $version      = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft($path)->removeLeft(DIRECTORY_SEPARATOR);
             $version      = (string)$version->removeLeft($name . '/');
             $this->refs[] = $version;
 
-            try {
+            try
+            {
                 return new version($version);
-            } catch (\RuntimeException $e) {
+            }
+            catch (\RuntimeException $e)
+            {
                 $branches[] = $version;
             }
         }, $directories), 'is_object');
@@ -147,21 +163,21 @@ class Project
         // check which version/branch to show by default
         $defaultRef = count($this->versions) > 0 ? head($this->versions) : head($branches);
 
-        switch ($this->config[ 'default' ]) {
+        switch ( $this->config[ 'default' ] )
+        {
             case Project::SHOW_LAST_VERSION:
-                usort($this->versions, function (version $v1, version $v2) {
-
-
+                usort($this->versions, function (version $v1, version $v2)
+                {
                     return version::gt($v1, $v2) ? -1 : 1;
                 });
 
                 $defaultRef = head($this->versions);
                 break;
             case Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH:
-                if (count($this->versions) > 0) {
-                    usort($this->versions, function (version $v1, version $v2) {
-
-
+                if ( count($this->versions) > 0 )
+                {
+                    usort($this->versions, function (version $v1, version $v2)
+                    {
                         return version::gt($v1, $v2) ? -1 : 1;
                     });
                 }
@@ -186,6 +202,7 @@ class Project
      * Get the absolute path to a file in the project using the current ref
      *
      * @param null|string $path
+     *
      * @return string
      */
     public function path($path = null)
@@ -194,10 +211,11 @@ class Project
     }
 
     /**
-     * url
+     * Generate a URL to the specified document. A shorthand for the factory's url method
      *
-     * @param string $doc
-     * @param null|string   $ref
+     * @param string      $doc
+     * @param null|string $ref
+     *
      * @return string
      */
     public function url($doc = 'index', $ref = null)
@@ -206,19 +224,21 @@ class Project
     }
 
     /**
-     * getDocument
+     * Get a document by path. Returns an instance of document
      *
      * @param string $pathName
      *
-*@return \Codex\Core\Document
+     * @return \Codex\Core\Document
      */
     public function getDocument($pathName = '')
     {
-        if ($pathName === '') {
+        if ( $pathName === '' )
+        {
             $pathName = 'index';
         }
 
-        if (! isset($this->documents[ $pathName ])) {
+        if ( !isset($this->documents[ $pathName ]) )
+        {
             $path = Path::join($this->path, $this->ref, $pathName . '.md');
 
             $this->documents[ $pathName ] = $this->container->make(Document::class, [
@@ -261,10 +281,10 @@ class Project
     /**
      * Resolves and creates the documents menu from the parsed menu.yml
      *
-     * @param array       $items The array converted from yaml
+     * @param array  $items The array converted from yaml
      * @param string $parentId
      *
-*@return \Codex\Core\Menus\Menu
+     * @return \Codex\Core\Menus\Menu
      */
     protected function resolveDocumentsMenu($items, $parentId = 'root')
     {
@@ -273,13 +293,17 @@ class Project
          */
         $menu = $this->factory->getMenus()->add('project_sidebar_menu');
 
-        foreach ($items as $item) {
+        foreach ( $items as $item )
+        {
             $link = '#';
-            if (array_key_exists('document', $item)) {
-            // remove .md extension if present
+            if ( array_key_exists('document', $item) )
+            {
+                // remove .md extension if present
                 $path = Str::endsWith($item[ 'document' ], '.md', false) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
                 $link = $this->factory->url($this, $this->ref, $path);
-            } elseif (array_key_exists('href', $item)) {
+            }
+            elseif ( array_key_exists('href', $item) )
+            {
                 $link = $item[ 'href' ];
             }
 
@@ -289,11 +313,13 @@ class Project
             $node->setAttribute('href', $link);
             $node->setAttribute('id', $id);
 
-            if (isset($item[ 'icon' ])) {
+            if ( isset($item[ 'icon' ]) )
+            {
                 $node->setMeta('icon', $item[ 'icon' ]);
             }
 
-            if (isset($item[ 'children' ])) {
+            if ( isset($item[ 'children' ]) )
+            {
                 $this->resolveDocumentsMenu($item[ 'children' ], $id);
             }
         }
@@ -309,12 +335,14 @@ class Project
      * Get a configuration item of the project using dot notation
      *
      * @param null|string $key
-     * @param null|mixed $default
+     * @param null|mixed  $default
+     *
      * @return array|mixed
      */
     public function config($key = null, $default = null)
     {
-        if (is_null($key)) {
+        if ( is_null($key) )
+        {
             return $this->config;
         }
 
@@ -339,7 +367,7 @@ class Project
      *
      * @param  string $name
      *
-*@return \Codex\Core\Project
+     * @return \Codex\Core\Project
      */
     public function setRef($name)
     {
@@ -387,13 +415,15 @@ class Project
     {
         $versions = $this->versions;
 
-        usort($versions, function (version $v1, version $v2) {
+        usort($versions, function (version $v1, version $v2)
+        {
 
 
             return version::gt($v1, $v2) ? -1 : 1;
         });
 
-        $versions = array_map(function (version $v) {
+        $versions = array_map(function (version $v)
+        {
 
 
             return $v->getVersion();
@@ -420,7 +450,7 @@ class Project
      *
      * @param  \Illuminate\Contracts\Filesystem\Filesystem $files
      *
-*@return \Codex\Core\Project
+     * @return \Codex\Core\Project
      */
     public function setFiles($files)
     {

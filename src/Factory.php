@@ -31,12 +31,29 @@ class Factory implements FactoryContract
     use Hookable;
 
     /**
+     * The codex menu factory instance
+     *
+     * @var \Codex\Core\Menus\MenuFactory
+     */
+    protected $menus;
+
+    /**
+     * The codex log writer instance
+     *
+     * @var \Codex\Core\Contracts\Log
+     */
+    protected $log;
+
+
+    /**
+     * The cache repository instance
+     *
      * @var \Illuminate\Contracts\Cache\Repository
      */
     protected $cache;
 
     /**
-     * The codex configuration
+     * The codex configuration array
      *
      * @var array
      */
@@ -57,25 +74,18 @@ class Factory implements FactoryContract
     protected $rootDir;
 
     /**
+     * The container instance
+     *
      * @var \Illuminate\Contracts\Container\Container
      */
     protected $container;
 
     /**
-     * @var \Codex\Core\Menus\MenuFactory
-     */
-    protected $menus;
-
-    /**
+     * A collection of resolved projects
+     *
      * @var \Illuminate\Support\Collection
      */
     protected $projects;
-
-    /**
-     * @var \Codex\Core\Contracts\Log
-     */
-    protected $log;
-
 
     /**
      * @param \Illuminate\Contracts\Container\Container   $container
@@ -106,13 +116,13 @@ class Factory implements FactoryContract
     }
 
     /**
-     * resolveProjects
+     * Scans the configured documentation root directory for projects and resolves them and puts them into the projects collection
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function resolveProjects()
     {
-        if ( ! $this->projects->isEmpty() )
+        if ( !$this->projects->isEmpty() )
         {
             return;
         }
@@ -149,15 +159,15 @@ class Factory implements FactoryContract
     # Projects
 
     /**
-     * project
+     * Returns a project instance for the given name
      *
      * @param $name
      *
-*@return \Codex\Core\Project
+     * @return \Codex\Core\Project
      */
     public function getProject($name)
     {
-        if ( ! $this->hasProject($name) )
+        if ( !$this->hasProject($name) )
         {
             throw new \InvalidArgumentException("Project [$name] could not be found in [{$this->rootDir}]");
         }
@@ -169,6 +179,7 @@ class Factory implements FactoryContract
      * Check if the given project exists.
      *
      * @param  string $name
+     *
      * @return bool
      */
     public function hasProject($name)
@@ -193,6 +204,7 @@ class Factory implements FactoryContract
      *
      * @param  null|string $key
      * @param  null|string $default
+     *
      * @return array|mixed
      */
     public function config($key = null, $default = null)
@@ -219,6 +231,7 @@ class Factory implements FactoryContract
      * Set the config.
      *
      * @param  array $config
+     *
      * @return void
      */
     public function setConfig(array $config)
@@ -235,22 +248,23 @@ class Factory implements FactoryContract
      * @param  Project|string $project A Project instance or projectName, will auto-resolve
      * @param  null|string    $ref
      * @param  null|string    $doc
+     *
      * @return string
      */
     public function url($project = null, $ref = null, $doc = null)
     {
         $uri = $this->config('base_route');
 
-        if ( ! is_null($project) )
+        if ( !is_null($project) )
         {
-            if ( ! $project instanceof Project )
+            if ( !$project instanceof Project )
             {
                 $project = $this->getProject($project);
             }
             $uri .= '/' . $project->getName();
 
 
-            if ( ! is_null($ref) )
+            if ( !is_null($ref) )
             {
                 $uri .= '/' . $ref;
             }
@@ -260,7 +274,7 @@ class Factory implements FactoryContract
             }
 
 
-            if ( ! is_null($doc) )
+            if ( !is_null($doc) )
             {
                 $uri .= '/' . $doc;
             }
@@ -270,13 +284,13 @@ class Factory implements FactoryContract
     }
 
     /**
-     * log method
+     * Writes a log message to the codex log file
      *
      * @param       $level
      * @param       $message
      * @param array $context
      */
-    public function log($level, $message, $context = [])
+    public function log($level, $message, $context = [ ])
     {
         return $this->log->log($level, $message, $context);
     }
@@ -308,6 +322,7 @@ class Factory implements FactoryContract
      * Set files.
      *
      * @param  mixed $files
+     *
      * @return Factory
      */
     public function setFiles($files)
@@ -331,6 +346,7 @@ class Factory implements FactoryContract
      * Set cache.
      *
      * @param  \Illuminate\Cache\CacheManager $cache
+     *
      * @return Factory
      */
     public function setCache($cache)
@@ -354,6 +370,7 @@ class Factory implements FactoryContract
      * Set the app value
      *
      * @param \Illuminate\Contracts\Container\Container $app
+     *
      * @return Factory
      */
     public function setApp($app)
@@ -377,6 +394,7 @@ class Factory implements FactoryContract
      * Set the menus value
      *
      * @param Menus\MenuFactory $menus
+     *
      * @return Factory
      */
     public function setMenus($menus)
@@ -400,6 +418,7 @@ class Factory implements FactoryContract
      * Set the log value
      *
      * @param Log $log
+     *
      * @return Factory
      */
     public function setLog($log)
