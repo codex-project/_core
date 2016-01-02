@@ -29,6 +29,20 @@ trait Hookable
      */
     protected function runHook($name, array $params = [ ])
     {
-        Extensions::runHook($name, $params);
+        return Extensions::runHook($name, $params);
+    }
+
+    protected function isResponse(&$val)
+    {
+        if (!is_array($val)) {
+            $val = [ $val ];
+        }
+        foreach ($val as $value) {
+            if ($value instanceof \Symfony\Component\HttpFoundation\Response) {
+                return $val = $value;
+            }
+        }
+
+        return false;
     }
 }

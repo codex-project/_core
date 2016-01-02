@@ -35,12 +35,11 @@ class CodexController extends Controller
      * @param string      $projectSlug
      * @param string|null $ref
      * @param string      $path
+     *
      * @return $this
      */
     public function document($projectSlug, $ref = null, $path = '')
     {
-        $this->runHook('controller:document', [ $this, $projectSlug, $ref, $path ]);
-
         $project = $this->factory->getProject($projectSlug);
 
         if (is_null($ref)) {
@@ -48,13 +47,20 @@ class CodexController extends Controller
         }
         $project->setRef($ref);
 
-        $document   = $project->getDocument($path);
+        $document = $project->getDocument($path);
+
+        $res = $this->runHook('controller:document', [ $this, $project, $document ]);
+        if ($this->isResponse($res)) {
+            return $res;
+        }
+
         $content    = $document->render();
         $breadcrumb = $document->getBreadcrumb();
 
-
         $this->view->composer($document->attr('view'), $this->factory->config('projects_menus_view_composer'));
 
-        return  $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
+        //app('debugbar')->add
+
+        return $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
     }
 }

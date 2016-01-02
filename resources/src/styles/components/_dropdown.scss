@@ -75,11 +75,11 @@ $dropdown-inverse-notifications-item-border-color:          #484848 !default;
 .dropdown-menu {
 
     & {
-        font-family: $font-family-base;
+        font-family: $font-family-code;
         text-transform: uppercase;
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 500;
-        letter-spacing: 1px;
+        //letter-spacing: 1px;
         line-height: 20px;
         //padding-bottom: 0;
         padding: 2px 0 0 0;
@@ -258,6 +258,58 @@ $dropdown-inverse-notifications-item-border-color:          #484848 !default;
         }
         + a {
             border-left-color: $dropdown-footer-border-color;
+        }
+
+    }
+}
+
+.dropdown-menu-inverse,
+.dropdown-menu.dropdown-menu-inverse .dropdown-submenu > .dropdown-menu {
+    background: $dropdown-inverse-bg;
+    @include box-shadow($dropdown-box-shadow-size $dropdown-box-shadow-size $dropdown-inverse-box-shadow-color);
+
+    .dropdown-item:not(.dropdown-header) + .dropdown-item:not(.dropdown-header) {
+        border-top-color: 1px solid $dropdown-inverse-item-border-color;
+    }
+
+    > .dropdown-item {
+        color: $dropdown-inverse-item-color;
+        > .badge,
+        > .label {
+        }
+        &:hover {
+            background: $dropdown-inverse-item-bg-hover;
+            color: $dropdown-inverse-item-color-hover;
+        }
+    }
+
+    > .dropdown-header {
+        background: $dropdown-inverse-header-bg;
+        h1, h2, h3, h4, h5, h6 {
+            color: $dropdown-inverse-header-color;
+        }
+        & {
+            color: $dropdown-inverse-header-link-color;
+            &:hover {
+                color: $dropdown-inverse-header-link-color-hover;
+            }
+        }
+    }
+
+    > .dropdown-submenu:after {
+        border-left-color: $dropdown-inverse-item-arrow-color;
+    }
+
+    > .dropdown-footer a {
+        border-top-color: $dropdown-inverse-footer-border-color;
+        background: $dropdown-inverse-footer-bg;
+        color: $dropdown-inverse-footer-color;
+        &:hover {
+            background: $dropdown-inverse-footer-bg-hover;
+            color: $dropdown-inverse-footer-color-hover;
+        }
+        + a {
+            border-left-color: $dropdown-inverse-footer-border-color;
         }
 
     }

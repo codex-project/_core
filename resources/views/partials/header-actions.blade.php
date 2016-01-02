@@ -6,7 +6,7 @@
                 @yield('projectName', last(explode(' :: ', $project->config('display_name'))))
             </a>
 
-            <div class="dropdown-menu">
+            <div class="dropdown-menu dropdown-menu-packadic dropdown-menu-inverse">
                 @include('codex::partials/header-actions-item', ['item' => $projectsList])
             </div>
         </div>
@@ -18,7 +18,7 @@
                 @yield('projectRef', $projectRef)
             </a>
 
-            <div class="dropdown-menu">
+            <div class="dropdown-menu dropdown-menu-packadic dropdown-menu-inverse">
                 @foreach($projectRefList as $ref => $url)
                     <a href="{{ $url }}" class="dropdown-item">{{ $ref }}</a>
                 @endforeach

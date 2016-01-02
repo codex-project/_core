@@ -22,6 +22,250 @@ body {
 
         }
     }
+    .top-menu {
+        .navbar-nav {
+            > li.dropdown {
+                .dropdown-toggle {
+                    &:hover {
+                        background-color: $header-top-menu-bg-hover-color;
+                    }
+
+                    > i {
+                        color: $header-top-menu-icon-font-color;
+                    }
+
+                    .badge.badge-default {
+                        background-color: $header-top-menu-badge-bg-color;
+                        color: $header-top-menu-badge-font-color;
+                    }
+                }
+
+                &.open {
+                    .dropdown-toggle {
+                        background-color: $header-top-menu-bg-hover-color-on-dropdown-open;
+                    }
+                }
+
+                .dropdown-menu {
+                    &:before {
+                        border-bottom-color: $header-top-menu-extended-dropdown-border-color;
+                    }
+                }
+            }
+
+            > li.separator {
+                background: $header-top-menu-extended-separator-bg-color;
+            }
+
+            /* Extended Dropdowns */
+            > li.dropdown-extended {
+
+                .dropdown-menu {
+                    border: 1px solid $header-top-menu-extended-dropdown-border-color;
+
+                    &:before {
+                        border-bottom-color: darken($header-top-menu-extended-dropdown-border-color, 5%);
+                    }
+
+                    &:after {
+                        border-bottom-color: $header-top-menu-extended-dropdown-header-bg-color;
+                    }
+
+                    > li.external {
+                        background: $header-top-menu-extended-dropdown-header-bg-color;
+
+                        > h3 {
+                            color: $header-top-menu-extended-dropdown-header-font-color;
+                        }
+
+                        > a {
+                            color: $link-color;
+
+                            &:hover {
+                                color: $link-hover-color;
+                                text-decoration: none;
+                            }
+                        }
+                    }
+
+                    .dropdown-menu-list {
+                        > li {
+                            > a {
+                                border-bottom: 1px solid $header-top-menu-extended-dropdown-item-border-color !important;
+                                color: $header-top-menu-extended-dropdown-item-font-color;
+
+                                &:hover {
+                                    background: $header-top-menu-extended-dropdown-item-bg-color-on-hover;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* Notification */
+            > li.dropdown-notification {
+                .dropdown-menu {
+                    .dropdown-menu-list {
+                        > li {
+                            > a {
+                                .time {
+                                    background: $header-top-menu-notification-time-bg-color;
+                                }
+
+                                &:hover {
+                                    .time {
+                                        background: darken($header-top-menu-notification-time-bg-color, 5%);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* Inbox */
+            > li.dropdown-inbox {
+                > .dropdown-toggle {
+                    > .circle {
+                        background-color: $brand-color-inversed;
+                        color: $brand-color;
+                    }
+
+                    > .corner {
+                        border-color: transparent transparent transparent $brand-color;
+                    }
+                }
+
+                .dropdown-menu {
+                    .dropdown-menu-list {
+                        .subject {
+                            .from {
+                                color: $header-top-menu-inbox-dropdown-from-font-color;
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* Tasks */
+            > li.dropdown-tasks {
+
+                .dropdown-menu {
+                    .dropdown-menu-list {
+                        .progress {
+                            background-color: $header-top-menu-task-dropdown-progress-bg-color;
+                        }
+                    }
+                }
+            }
+
+            /* User */
+            > li.dropdown-user {
+                > .dropdown-toggle {
+
+                    > .username {
+                        color: $header-top-menu-user-font-color;
+                    }
+
+                    > i {
+                        color: $header-top-menu-user-font-color;
+                    }
+                }
+
+                > .dropdown-menu {
+                    width: 195px;
+                }
+            }
+
+            /* Language */
+            > li.dropdown-language {
+
+                > .dropdown-toggle {
+                    > .langname {
+                        color: $header-top-menu-user-font-color;
+                    }
+                }
+            }
+
+            /* Dark version */
+            > li.dropdown-dark {
+                .dropdown-menu {
+                    background: $header-top-menu-dropdown-dark-bg-color;
+                    border: 0;
+
+                    &:after {
+                        border-bottom-color: $header-top-menu-dropdown-dark-bg-color;
+                    }
+
+                    > li.external {
+                        background: $header-top-menu-dropdown-dark-header-bg-color;
+
+                        > h3 {
+                            color: $header-top-menu-dropdown-dark-header-font-color;
+                        }
+
+                        > a {
+                            &:hover {
+                                color: lighten($link-color, 11%);
+                            }
+                        }
+                    }
+
+                    &.dropdown-menu-default,
+                    .dropdown-menu-list {
+                        > li {
+                            a {
+                                color: $header-top-menu-dropdown-dark-item-font-color;
+                                border-bottom: 1px solid $header-top-menu-dropdown-dark-item-border-color !important;
+
+                                > i {
+                                    color: $header-top-menu-dropdown-dark-item-icon-color;
+                                }
+
+                                &:hover {
+                                    background: $header-top-menu-dropdown-dark-item-bg-color-on-hover;
+                                }
+                            }
+                        }
+                    }
+
+                    &.dropdown-menu-default {
+                        > li {
+                            a {
+                                border-bottom: 0 !important;
+                            }
+
+                            &.divider {
+                                background: $header-top-menu-dropdown-dark-default-menu-divider;
+                            }
+                        }
+                    }
+                }
+            }
+
+            > li.dropdown-notification.dropdown-dark {
+                .dropdown-menu {
+                    .dropdown-menu-list {
+                        > li {
+                            > a {
+                                .time {
+                                    background: $header-top-menu-dropdown-dark-notification-time-bg-color;
+                                }
+
+                                &:hover {
+                                    .time {
+                                        background: darken($header-top-menu-dropdown-dark-notification-time-bg-color, 5%);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
 .page-content-wrapper {
     background: $content-wrapper-bg;

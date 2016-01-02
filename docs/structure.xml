@@ -289,7 +289,7 @@
     </parse_markers>
     <source>eJylUslOwzAQvfsr5tBDW0ELSJzYFYpAqlAleszFdSaJRWpHXgoV9N+xHYemRe0FK1KUeTNvGef6ri5rMh4OCQxhRpUBmYMpER4l4wZmzzOoKXunBeqRa/FdU85QaAQqMmCyXitelAa4yKVaUsOlgIUVWYUZfHBTOjKuWw7XFcinL8nk9W0COa/QUY6JoEvUrgkhkRl+polUmM4V5UZfEWL1Tj2RwijKjE5D0TVE/3Mv5R4vwSqqtZsSOS8CUWv/vvUSz5Y4oNSaUqoWbNYQgG3UONZ+9tkALs7OL0+a5hE8VBUESINCjWqFWQhpvI1GLzgiX8QzBfP+OJEVVZAejvrdxZ5cXap1nB2Hd62kQWbc7nss7mZPokADAYIVrSzG8q8BhcYq8T8PdlFxBrkVLPwNTjFM9AcBbkL7E7V6/g85vY1+PbD54/rNuQ63eth5TRVdHjMeV3IgcedajoXRbZgu5X6wbiK42b2K/eBt4g35AVTaDsY=</source>
   </file>
-  <file path="Traits/Hookable.php" generated-path="Traits.Hookable.html" hash="c4856ac4ff31a96b642f87b8cc72ba26" package="Default">
+  <file path="Traits/Hookable.php" generated-path="Traits.Hookable.html" hash="b863f7662ebff68469b6b5bcab4bc04e" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -330,8 +330,25 @@
           <type>array</type>
         </argument>
       </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core\Traits" line="35" package="Codex\Core">
+        <name>isResponse</name>
+        <full_name>\Codex\Core\Traits\Hookable::isResponse()</full_name>
+        <docblock line="35">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+        <argument line="0" by_reference="true">
+          <name>$val</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
     </trait>
-    <source>eJxdUk1vwjAMvedX+LADIEa3SbvApk1iSCDBhEZv6w6mTWlEmlSpu4Em/vuSkI4PK1KVvPfsZ7tPL1VRsajXY9CDJRoCnQMVHMY64ztYTpdQYbrFDa8HluJYi1kMc5FyVXNAlUGqq70Rm4JAqFybEkloBetGZZJn8COosAlF3eaxLF9gPhtP3lcTyIXkNm3EFJa8tqRQOxlrw5PYoKB6xFhTX7xPdmQN2EIWc9BMyqYUCoknq6aqtKEgTRaYGo1ryW2S0Gfs7NjjbEy13jq07e61tRniVNOj2FChDVyg8Ma/IeZYesZpHIHRXjtpFx7u7h/7R5UnyzDHEAVRVQ+jiGRmJN+gHKS6jAIpKgXdtoKzJfjhkWv2vxn2y1w6N5jz9t2bH4GLHnw0ChAKqwkvLWBnYLAMnm7cXq4QNAb3cOMvdcAi/62MJp6SXXzeqNT/CaZRzlfHJ+pfauEZPuGr66VHzy5Oyx0Or9RB1x158oEd2B90QNZG</source>
+    <parse_markers>
+      <error line="35" code="PPC:ERR-50015">Argument $val is missing from the Docblock of isResponse</error>
+      <error line="35" code="PPC:ERR-50008">No summary for method isResponse()</error>
+    </parse_markers>
+    <source>eJx1U2Fr2zAQ/e5fcYMwktDV22Bfko0NsowE2hGafJvLuNrnWFSWjCR3DSP/fSdFThzDhMG23rt3706nz1+bqknS6TSBKWzQONAluIpgoQt6hc1qAw3mz7gne8sUz7pf7+BO5KQsAaoCct0cjNhXDoQqtanRCa3gqVWFpAL+CFexoLCdDrNCgrv1Yvlzu4RSSGLZNFFYk2VSzJ0ttKFsZ1A4O0+S1l7tL18dG+BEjHloLWVbC4WOsm3bNNq4GJrdY240PklikVjnztvhx9tYaf3s0a66b53NuC45A4qtq7SBKxS+0wvsCOvAuLQjMrrfcT6Bj+8/fLo5RQWyjH2Mq3KusbM0dbIwkvYob3Ndp5GU1sK96wJ6hxCa53yx52KSv4mX843pl+/3Qgv8msJDqwCh4pi40wHcA4N19DTy5zJA0Bg8wCj82Iil4d0Y7Sh3fPBlq/IwCaZV3tc4CN1cx8IX+AWPkxB68uyXIdcaBZczns0GIjF8Mg8xx+R/uYV94JliBRq/Hb2gHGYSJYzfCPs7mBoHxqQHh/p5M9gMH4/zM3g8f/HUE+YVBAFAG6gtDZV8shPCd8A6VDnxZcu2h7rU6sAzVrNTUi5b8Rj80HyBwlXKuhKGer1WRZMn9fkV69gzPOxwidJS18Nj8g/e0zB/</source>
   </file>
   <file path="Traits/ConfigTrait.php" generated-path="Traits.ConfigTrait.html" hash="a0198650e92900ecb4aa2e613d99d64b" package="Default">
     <docblock line="0">
@@ -1095,6 +1112,20 @@
         </argument>
         <inherited_from>\Codex\Core\Traits\Hookable</inherited_from>
       </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="35" package="Codex\Core">
+        <name>isResponse</name>
+        <full_name>\Codex\Core\Traits\Hookable::isResponse()</full_name>
+        <docblock line="35">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+        <argument line="0" by_reference="true">
+          <name>$val</name>
+          <default></default>
+          <type/>
+        </argument>
+        <inherited_from>\Codex\Core\Traits\Hookable</inherited_from>
+      </method>
       <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="28" package="Codex\Core">
         <name>config</name>
         <full_name>\Codex\Core\Traits\ConfigTrait::config()</full_name>
@@ -1273,7 +1304,7 @@
     </parse_markers>
     <source>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</source>
   </file>
-  <file path="Factory.php" generated-path="Factory.html" hash="d6a6acfa7141aa6ff589ad7cb3823a62" package="Default">
+  <file path="Factory.php" generated-path="Factory.html" hash="9be7be1487e099f3edcaff5673472854" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -1764,6 +1795,20 @@
         </argument>
         <inherited_from>\Codex\Core\Traits\Hookable</inherited_from>
       </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="35" package="Codex\Core">
+        <name>isResponse</name>
+        <full_name>\Codex\Core\Traits\Hookable::isResponse()</full_name>
+        <docblock line="35">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+        <argument line="0" by_reference="true">
+          <name>$val</name>
+          <default></default>
+          <type/>
+        </argument>
+        <inherited_from>\Codex\Core\Traits\Hookable</inherited_from>
+      </method>
       <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="28" package="Codex\Core">
         <name>config</name>
         <full_name>\Codex\Core\Traits\ConfigTrait::config()</full_name>
@@ -1906,7 +1951,7 @@
       <error line="193" code="PPC:ERR-50015">Argument $config is missing from the Docblock of mergeDefaultProjectConfig</error>
       <error line="193" code="PPC:ERR-50008">No summary for method mergeDefaultProjectConfig()</error>
     </parse_markers>
-    <source>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</source>
+    <source>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</source>
   </file>
   <file path="Contracts/Log.php" generated-path="Contracts.Log.html" hash="ed17a9e0c87d10a4f6f3d5b6fce65540" package="Default">
     <docblock line="0">
@@ -2324,7 +2369,7 @@
     </interface>
     <source>eJxVkFFLwzAQx9/zKe7RFV1U8EUFhTpxsEnBPu4lptcmLE1KclWH+N1Na8LmEQLH/e5/d//7h0ENjBcFgwIq4QlcC6QQStfgF1QvFQxC7kWHYRmRidqua9hoiTYgCNuAdMPB604RaNs63wvSzsL7aBuDDXxqUlFQh6wTqXnAZl2uXt9W0GqDUZYzK3oMEUqzd6XzGD9LXkgKuy3aMdyxvGs9ScY3SU2l5wg5f8hLPuZpKY6Sc1WMpJyHf1V4wg+oUfQzcbwqETk9kwu4vry6Of/rmmGT7EihiIZwyzmZxhvshFlK1/ME8V7TRW448XL2QFtC304enNzEvhn7Yb+S9oVd</source>
   </file>
-  <file path="Http/Controllers/CodexController.php" generated-path="Http.Controllers.CodexController.html" hash="2c2002e3ee19a63f346ada96af44a485" package="Default">
+  <file path="Http/Controllers/CodexController.php" generated-path="Http.Controllers.CodexController.html" hash="dbfb168e48a1924c729c0fef7521c45b" package="Default">
     <docblock line="0">
       <description></description>
       <long-description></long-description>
@@ -2393,23 +2438,23 @@
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Http\Controllers" line="40" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Http\Controllers" line="41" package="Codex\Core">
         <name>document</name>
         <full_name>\Codex\Core\Http\Controllers\CodexController::document()</full_name>
-        <docblock line="40">
+        <docblock line="41">
           <description>Render the documentation page for the given project and version.</description>
           <long-description></long-description>
-          <tag name="param" line="40" description="" type="string" variable="$projectSlug">
+          <tag name="param" line="41" description="" type="string" variable="$projectSlug">
             <type>string</type>
           </tag>
-          <tag name="param" line="40" description="" type="string|null" variable="$ref">
+          <tag name="param" line="41" description="" type="string|null" variable="$ref">
             <type>string</type>
             <type>null</type>
           </tag>
-          <tag name="param" line="40" description="" type="string" variable="$path">
+          <tag name="param" line="41" description="" type="string" variable="$path">
             <type>string</type>
           </tag>
-          <tag name="return" line="40" description="" type="\Codex\Core\Http\Controllers\CodexController">
+          <tag name="return" line="41" description="" type="\Codex\Core\Http\Controllers\CodexController">
             <type>\Codex\Core\Http\Controllers\CodexController</type>
           </tag>
           <tag name="fluent" description="This method is part of a fluent interface and will return the same instance"/>
@@ -2453,6 +2498,20 @@
         </argument>
         <inherited_from>\Codex\Core\Traits\Hookable</inherited_from>
       </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core\Http\Controllers" line="35" package="Codex\Core">
+        <name>isResponse</name>
+        <full_name>\Codex\Core\Traits\Hookable::isResponse()</full_name>
+        <docblock line="35">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+        <argument line="0" by_reference="true">
+          <name>$val</name>
+          <default></default>
+          <type/>
+        </argument>
+        <inherited_from>\Codex\Core\Traits\Hookable</inherited_from>
+      </method>
       <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Http\Controllers" line="39" package="Codex\Core">
         <name>__construct</name>
         <full_name>\Codex\Core\Http\Controllers\Controller::__construct()</full_name>
@@ -2490,7 +2549,7 @@
     <parse_markers>
       <error line="0" code="PPC:ERR-50000">No summary was found for this file</error>
     </parse_markers>
-    <source>eJyVU11v0zAUfc+v8EMlJ1XbABIvg5WJ7WFIIKHRNzpVbnKTmCZ25I+yCfbf8Wealm4Cq1Id33POPff6+v2HvukTRjqQPSkAXfMSHtbXXMD6Vqne7JgSvG1ByHdJouURYiUIVXJ9y/mObFswgHw6TdAUrRoqkfmpJuAPMgsTt5Ark25HakBhHWRdlGjVcIGOougG9mgFpHOIgvePgtaNioj4mRYZevPq9duZZzlwSwtgckjWmNLkRZ6rthQt1KRdFLzLAyjvqJpHwpdPK/TZ741QnhQtkfK0JgQPClhpz+NR8iuxiWzDRu2xR65Fdk3RHZRUQKGQ4q5VJVREtwr1gv+wx4SVaG86TzlbBE6kXglQWrBBIpzn7r/XW+MfVZoVynARZcZumrmY92XXRJlbmi+FZtZhiovB/IUj4Bn67kHoPgvm7QqZRcicCq4VWLrhLEpe6A6YsuSBYRcORX1rdY3R5TKmr0ihuHicL036itYpDk3YBDzOBpn7zNiwm6cznTSOhW9icEBc6b0dsYr7UE33wP6puz0RpENSCcrq0K2R/7Ow30y3LZoIqF5UIao5vUPXiRcvMNaUjl3MXDJ0iWzimZc2Xxj/x0WPr8vjZujvHFH8aAwizKQ8vcoa1FcfPDI8ZtMKpVRurPXUpsiykWEn72uLfCd640fjDqo0TIKfhlNL86UEh3LKY8+xXrM/1T602JQ6kp/YdnmK5UQF0083c2Mnk60AUhZCd9tjqNH/OIQsIzm9nD2Fn/YNdD2XRnTEJUqJFNs4zmbPvppQitwYkpYbC99ENZydeb7HiTuyg+eTWiGTcMhipgWPJgeHDtntoQP48Fqfkj8jxfCo</source>
+    <source>eJyNVF1vmzAUfedX+CGSISJhm7SXbsmqtQ+dtElTl7e1ihww4BVs5I+s1db/vmtjwDRtNStSjO+955x7ruHjp67uIk5aqjqSU3QhCnp/cyEkvbnSuoMd11I0DZXqQxQZNcvYScK0urkS4o4cGgoJ2XIZoSXa1Uwh+Ona508wa4jblHOguyMVRX5NsC5KjK6FRLMouqRHtKOkdRm56B4kq2o9ZAyPcZ6gd2/evk/7KpfcsJxyNZLV0Jo6yzLdFLKhFWnWuWgzn5S1TK+Ggm9fduhrvwegLMobotTTnhC915QX9nw4iv5ElsgaFthjj5xFdi3RNS2YpLlGWjirCloS02jUSfHLHhNeoCM4zwRf+5qh9FxSbSQfIfx55v47cwD9qDQ811CLGAe5ceJivS67FhqmtNpKw63CGOej+DNXgFP0s09Ct4kXb5dnlp45lsJoasuhZl2I3LSUa1s8VtiFfVM/GlNhtNkO9CXJtZAPqy3Ql6yKsTdh7/NxMsLcJiDDbh6fcRIUy95Er4C41jt7xUrRhyp2pPy/3O2IJC1SWjJeebcC/c+m/eWmadBC0vJVFKLrF0bpDHl1jkNrcSgmdZxogyx/2jPAE8Yn8x4a35x4X1H9vQ/OoMOpsxLFTO0tSWwJkySAdvC9iqHegV72s7ymZexH14/vqaTVVlGX5ZAD1sXQ8gnyZAX0OyuRVE0tPne7wzva56UjeBpQ3gaabfsekqlr+FgK+CJYuerEiGGcEAt7ngRaKRYf1maiA63uEodOLQ6SkiKXpj3MU8GBz2MonrXfizwy+tu+U20nFGAGpURrGWMbx0n64lvo7VB7KDJqb9P3AxpOQsIsI11nX9uDqQ4EgkBRFCefi5multzRlzVZHtAzioA54WBm2Ptnt5M/ePo4PEb/AMOhDDI=</source>
   </file>
   <file path="Http/Controllers/Controller.php" generated-path="Http.Controllers.Controller.html" hash="d3ef82daf524a4b4822fc83ce8afc9fa" package="Default">
     <docblock line="0">
@@ -3468,6 +3527,20 @@ output. Should be called within a view.</long-description>
           <name>$params</name>
           <default>array()</default>
           <type>array</type>
+        </argument>
+        <inherited_from>\Codex\Core\Traits\Hookable</inherited_from>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="35" package="Codex\Core">
+        <name>isResponse</name>
+        <full_name>\Codex\Core\Traits\Hookable::isResponse()</full_name>
+        <docblock line="35">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+        <argument line="0" by_reference="true">
+          <name>$val</name>
+          <default></default>
+          <type/>
         </argument>
         <inherited_from>\Codex\Core\Traits\Hookable</inherited_from>
       </method>
@@ -4756,6 +4829,20 @@ output. Should be called within a view.</long-description>
         </argument>
         <inherited_from>\Codex\Core\Traits\Hookable</inherited_from>
       </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core\Menus" line="35" package="Codex\Core">
+        <name>isResponse</name>
+        <full_name>\Codex\Core\Traits\Hookable::isResponse()</full_name>
+        <docblock line="35">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+        <argument line="0" by_reference="true">
+          <name>$val</name>
+          <default></default>
+          <type/>
+        </argument>
+        <inherited_from>\Codex\Core\Traits\Hookable</inherited_from>
+      </method>
       <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="25" package="Default">
         <name>getContainer</name>
         <full_name>\Codex\Core\Traits\ContainerTrait::getContainer()</full_name>
@@ -5243,6 +5330,20 @@ output. Should be called within a view.</long-description>
         </argument>
         <inherited_from>\Codex\Core\Traits\Hookable</inherited_from>
       </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core\Menus" line="35" package="Codex\Core">
+        <name>isResponse</name>
+        <full_name>\Codex\Core\Traits\Hookable::isResponse()</full_name>
+        <docblock line="35">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+        <argument line="0" by_reference="true">
+          <name>$val</name>
+          <default></default>
+          <type/>
+        </argument>
+        <inherited_from>\Codex\Core\Traits\Hookable</inherited_from>
+      </method>
     </class>
     <parse_markers>
       <error line="0" code="PPC:ERR-50000">No summary was found for this file</error>
@@ -5306,7 +5407,7 @@ output. Should be called within a view.</long-description>
     </parse_markers>
     <source>eJxVUV1LwzAUfc+vuA8+bGNsKvgyBT/qwMGUwQRfCiNNbttgmpQknRPZfzdJW1tLH5qcez7u6d19XdZkOZsRmMGOGgc6B1ci7DH7Eg5h97KDmrJPWqBd+KEwtxUMlUWgigPT9bcRRelAqFybijqhFWSN4hI5eInSywnba/ipKL/dJOu3/RpyIdFLLomiFVo/hJBojqc00QbTrS5uCWnsv8tEK2coc7aFA7qRsqmEoi5S0g/jkxugFp6oxfbkdbot30Mc/4YYTFJrwXMKNP12D33U7hmsI0obV2rTg31PERq66Ij9ccKmcH15dTPvxxfwKCVE0IJBi+aIPPbQJuo2wJNDxcdrgKhqiRUqF2OTHxKc6iaTgkHeKBbrPxyYVtaZhrlJ+qqVlr6Vdku4qNrzHNJRbUOp62MQT5+F/xuOlYHB/76n0a41jcbU+OnVamw4GIyJvv9AOJMz+QVxMs6P</source>
   </file>
-  <file path="Extensions.php" generated-path="Extensions.html" hash="aba8f8b8a1e758b7a3aa6720753a7855" package="Default">
+  <file path="Extensions.php" generated-path="Extensions.html" hash="aefb010e68dfeb682bfe4bf06cabcd59" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -5540,7 +5641,7 @@ output. Should be called within a view.</long-description>
       <error line="31" code="PPC:ERR-50007">No summary for property $excludedProjectNames</error>
       <error line="36" code="PPC:ERR-50007">No summary for property $filters</error>
     </parse_markers>
-    <source>eJy9V1tv2zYUftevOOsCRA7ceBuwF2dZV2QuGqAtgiZvtmGwEm1rkSiBpBwHSf77zuHF1tVJu2BEYMfi4bl8/M5Ff7wr1kUwOjkJ4ASumNSQL0GvOVzkMd/C1ccrKFh0y1ZcnaIISX2+vIFPScSF4sBEDFFe3MtktdaQiGUuM6aTXMC3UsQpj+Eu0WtUmCivB6WMgU+XF5Mv1xNYJilHtaNAsIwrFHK2Zxe55GdBUKrqA/wQWrJIq9mHJNVcnvULfMzzW1TggrshH/CPbE+2Gt1HNxVEKVO70P7yPrq1V2t2WanXuYTaLvzNN3DDWWYk9lg4Cf8zjAbw2y+//j60p4xw6kB0a611ocajkU5jmfIVS0+jPBs5oVGW6Lf+QOUGDHImhkpQwUMQkEYTOS00tmESmJTs3j0Zme9C5ppHGu9Jaby3CI7WCJqCc5jC/OzHtfBtlJYxj69k/g/ufKGr/c9Kl+bC93qM2M9A16xaWidClZJDkSdCn7qHO4sFkywDVCwTsYIjYt5uT3JdSgGbPIkP+7MsRWSozo0pcuOKrIVG38Acegj87SZLCH9C/imuQ6tgPLZgT60DMB8MKvK0euQ8AF7sKbCfTQi+8lWiEDFgQAow8VChiPgzcOzWkQGvW+pxdpHmBuGjNaNMl88DWH5DArfQY3FM0IXW2nCnrxtAv7sLBsvVzhWqRoixWBg2haR2PDbJMbR5vkiyIuUZF1qFOztDWLJU8Rb6ei3zOxD8DmaXYsPSJH4vVyUdnmwjXpDz4ZsPLKEqh0EQdATzKSDpNwmSH7yvWBVh+mADfJpTERK5BqPyFCZYIFGmsIfosma7gPCc8btgpogyLLFZwVMTAImZ8rT/8oXPVL43gypDdv96TrVIa7yrnGmRzwjAfEr88+Cd9VGvtEV+lWy4sLB8Tw66PXONxEP6qX6UYLIUlmBkYuiUOp02lZpU68XIJPbZHky8WM6iNfRlNDC153ODXsTnQ2xuytOKWJousN/JBUXnaO6VDH1QlUs0twMc6U3mbA7wLVaFCv+7DB15hxAgVhTh4O2fGbvl+0MVEA46N92rGsKxPX0M815f20XNVfmveak5ZYnvJ2B6jO13Lf6tuIbOHoRJV/ImFR2hOnpQN6NQ+6RDeUgxKYLMFpQGq5wVL3R+DlqWHN5RTqeYwuHx4/Fwn3Zd7g9gfFigLx+xPnV53J2TrsL7RGnLP1fPe8CpBtLTHT2la7JNgtZ2TQbXn7RaI62DsBHLyfAi43LFw4Oyw7q1QR/k10hBKoEvp6FF38HedaxJWJMT11xucBZ0TUe+5IpUD38PmO4rkX1wHmany2k7wXek7/sYW6ppvXbmA50bLKWbaLC3+mEwxQcvHWi6V2fr8VX4cXbg3aM5+wQn39ubbBS+Nb3e6GP9+3+HH2uzf/yhGFvTz+dSYaWujUCvMgFZZ56ZgfwbRXWyfm6yoc7iufdazcTlQej88TkkyjTtLZS0WTvQusJmTT0ka/Kgbn1afzBvNuraz2rQi1yk92ET42FNXfVezHjS8Mfpayppv/M8Bf8CIogBBA==</source>
+    <source>eJy9V1tP20gUfvevONsi4aCUbFfqSyjbrdhURWorVHhLomhqTxIv9tiaGQcQ8N/3nLkkvgbaRWshkthnzuU737n4/YdiXQSjo6MAjuCCSQ35EvSaw1ke81u4+HwBBYuu2YqrYxQhqa/nV/AlibhQHJiIIcqLO5ms1hoSscxlxnSSC/hRijjlMdwkeo0KE+X1oJQx8OX8bPLtcgLLJOWodhQIlnGFQs727CyX/CQISlW9gf+ElizSavYpSTWXJ/0Cn/P8GhW44K7IB/wj25Nbje6jmwqilKltaH95H921U2ueslKvcwm1p/A338AVZ5mR2GHhJPzPMBrAH7+/fTe0p4xw6kB011rrQo1HI53GMuUrlh5HeTZyQqMs0W/8gUoGDHImhkpQwX0QkEYTOV1obMMkMCnZnbszMp+FzDWPNOZJacxbBAdrBE3BKUxhfvLrWvhtlJYxjy9k/g8++Uap/c9KlybhOz1G7DVQmlVL60SoUnIo8kToY3dza7FgkmWAimUiVnBAzNs+k1yXUsAmT+L9/ixLERmqc2OK3Lgga6HRNzCH7gOf3WQJ4W/IP8V1aBWMxxbsqXUA5oNBRZ6uHjkPgBd7DOz/JgTf+SpRiBgwIAVYeKhQRPwJOLbXgQGvW+phdpbmBuGDNaNKl08DWP5AArfQY3FM0IXW2nCrrxtA/3QbDLarrSvUjRBjsTBsCknteGyKY2jrfJFkRcozLrQKt3aGsGSp4i309VrmNyD4DczOxYalSfxRrko6PLmNeEHOh68+sYS6HAZB0BHMx4Ck3yRIfvC+YleE6b0N8HFOTUjkGozKY5hgg0SZwh6iZM22AeE543fBTBNl2GKzgqcmABIz7Wn34Ruf6XyvBlWGbL96TrVIa7yrnGmRzwjAfEr88+Cd9FGvtE1+lWy4sLD8TA26ZyaNxEP6qX6VYLIUlmBkYuiUOp22lJpU68XIFPbJDswD64pRUylIzDdn0Rr6Ch2Y2tG8wTqi+T6SN+WrbpjURCxNFzgT5YIQcKXgNQ594JVEmwwCxxIg27ZO+C12jkqNdFr13qFRVhTh4M2fGbvmu0MVoJ7v6XSndwiHVtUhzHsdD9rfHD+8rRpHX8P3vNScys0PJjDDyg7OJo9XXEPnLMPiLXmT0s5wxyzrZiZqn3QoDylURbDaxtRgpw/PCZ2egpYlhw/UG1JsBeHhw+FwV75d7g9gvF+gr66xz3V53F3bblL4gmvLPzUXesCpBtIzZT3ta7JNEteemk5Qv9MasXTthY0qgQwvMi5XPNwrO6xbG/RBfokUpFb6fBpa9B3sXceahDUlccnlBndKN7zkc1Kkevi7x3Rfq+2Dcz87XUnbNwEVtLD7GONoNiPc7o6gc4OldJsRzmi/VKZ447mLUffVOcJ8236Y7XmHae5QwdHPzjgbhR9xL7dCWf/+3yXK2uxfoyjG1hb1tVTYqWur1ItsUtaZJ3Yp/2ZS3dCf2pBosnjuvdQwcXUQOn98DYkyTXsbJT2sHWilsNlT98maOqhbn9ZvzJvzu/azGvQiF+ld2MR4WFNXzYtZYRr+OH1NJe13p8fgX2kXFrU=</source>
   </file>
   <package name="Codex" full_name="Codex">
     <package name="Core" full_name="Codex\Core"/>

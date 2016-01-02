@@ -23,9 +23,14 @@
                     @stack('header-actions')
                 </div>
 
-                <div class="page-actions pull-right ml-lg">
-                    @stack('header-actions-right')
+                <div class="page-top">
+                    <div class="top-menu">
+                        <ul class="nav navbar-nav pull-right">
+                            @stack('header-top-menu')
+                        </ul>
+                    </div>
                 </div>
+
             @show
 
             <div class="pull-right">
@@ -56,6 +61,15 @@
         @section('page-content-wrapper')
         <div class="page-content-wrapper">
             <div class="page-content">
+
+                @section('page-errors')
+                    @if (count($errors) > 0)
+                    <div class="page-alerts page-alerts-top">
+                        @include('codex::partials/errors')
+                    </div>
+                    @endif
+                @show
+
                 @section('page-head')
                 <div class="page-head">
                     <div class="page-title">

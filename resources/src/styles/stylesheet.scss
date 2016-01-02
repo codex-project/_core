@@ -146,3 +146,17 @@
 .page-content-inner p {
     font-size: 14px;
 }
+
+.page-alerts {
+    .alert {
+        ul {
+            list-style-type: none;
+            padding-left: 10px;
+        }
+    }
+}
+
+.page-alerts.page-alerts-top {
+    margin-left: -20px;
+    margin-top: -10px;
+}

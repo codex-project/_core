@@ -79,20 +79,20 @@ class Extensions
     {
         static::ensureHookPoint($name);
 
+        $returns = [];
         foreach (static::$hooks[ $name ] as $handler) {
             if ($handler instanceof \Closure) {
-                call_user_func_array($handler, $params);
+                $returns[] = call_user_func_array($handler, $params);
             } elseif (class_exists($handler)) {
                 $instance = app()->make($handler);
 
-                call_user_func_array([ $instance, 'handle' ], $params);
+                $returns[] = call_user_func_array([ $instance, 'handle' ], $params);
             }
         }
+        return $returns;
     }
 
-
     # Route projectName exclusions
-
 
     /**
      * get excludedProjectNames value

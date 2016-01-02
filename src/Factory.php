@@ -97,7 +97,7 @@ class Factory implements Codex
     public function appendSectionsView($viewName, $data = null, $appendTo = 'codex::layouts.default')
     {
         $this->container->make('events')->listen('composing: ' . $appendTo, function (View $view) use ($viewName, $data) {
-        
+
             if ($data instanceof \Closure) {
                 $data = call_user_func_array($data, [ $this->container, $this ]);
             } elseif ($data === null) {
