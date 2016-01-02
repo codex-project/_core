@@ -7,7 +7,7 @@
 namespace Codex\Core;
 
 use Codex\Core\Contracts\Codex;
-use Codex\Core\Traits\Hookable;
+use Codex\Core\Traits;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
 
@@ -21,7 +21,7 @@ use Illuminate\Contracts\Filesystem\Filesystem;
  */
 class Document
 {
-    use Hookable;
+    use Traits\Hookable, Traits\FilesTrait, Traits\CodexTrait, Traits\ContainerTrait;
 
     /**
      * The document attributes. Defaults can be set in the config, documents can use frontmatter to customize it.
@@ -34,20 +34,6 @@ class Document
      * @var string
      */
     protected $content;
-
-    /**
-     * The codex factory instance
-     *
-     * @var \Codex\Core\Factory
-     */
-    protected $codex;
-
-    /**
-     * The filesystem instance
-     *
-     * @var \Illuminate\Filesystem\Filesystem
-     */
-    protected $files;
 
     /**
      * Absolute path to this document
@@ -71,11 +57,6 @@ class Document
     protected $pathName;
 
     /**
-     * @var \Illuminate\Contracts\Container\Container
-     */
-    protected $container;
-
-    /**
      * Creates a new Document class
      *
      * @param \Codex\Core\Contracts\Codex                 $codex     The factory class
@@ -87,10 +68,11 @@ class Document
      */
     public function __construct(Codex $codex, Filesystem $files, Project $project, Container $container, $path, $pathName)
     {
-        $this->container = $container;
-        $this->codex     = $codex;
+        $this->setContainer($container);
+        $this->setCodex($codex);
+        $this->setFiles($files);
+
         $this->project   = $project;
-        $this->files     = $files;
         $this->path      = $path;
         $this->pathName  = $pathName;
 
@@ -115,8 +97,8 @@ class Document
     {
         $this->runHook('document:render', [ $this ]);
 
-        $fsettings = $this->project->config('filters_settings');
-        $filters   = Extensions::getFilters($this->getProject()->config('filters'));
+        $fsettings = $this->project->config('filters');
+        $filters   = Extensions::getFilters($this->project->config('filters.enabled'));
 
         if (count($filters) > 0) {
             foreach ($filters as $name => $filter) {
@@ -242,29 +224,6 @@ class Document
     public function getProject()
     {
         return $this->project;
-    }
-
-    /**
-     * Get all files for the given project.
-     *
-     * @return \Illuminate\Filesystem\Filesystem
-     */
-    public function getFiles()
-    {
-        return $this->files;
-    }
-
-    /**
-     * Set the project files value.
-     *
-     * @param  Filesystem $files
-     * @return Document
-     */
-    public function setFiles($files)
-    {
-        $this->files = $files;
-
-        return $this;
     }
 
     /**

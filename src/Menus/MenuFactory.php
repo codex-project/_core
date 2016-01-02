@@ -7,7 +7,7 @@
 namespace Codex\Core\Menus;
 
 use Codex\Core\Contracts\Menus\MenuFactory as MenuFactoryContract;
-use Codex\Core\Traits\Hookable;
+use Codex\Core\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -26,17 +26,7 @@ use Illuminate\Support\Collection;
  */
 class MenuFactory implements MenuFactoryContract
 {
-    use Hookable;
-
-    /**
-     * @var \Illuminate\Contracts\Container\Container
-     */
-    protected $container;
-
-    /**
-     * @var \Illuminate\Contracts\Filesystem\Filesystem
-     */
-    protected $files;
+    use Traits\Hookable, Traits\ContainerTrait, Traits\FilesTrait;
 
     /**
      * @var \Illuminate\Contracts\Cache\Repository
@@ -73,15 +63,15 @@ class MenuFactory implements MenuFactoryContract
      */
     public function __construct(Container $container, Filesystem $files, Cache $cache, Router $router, UrlGenerator $url, View $view)
     {
-        $this->container = $container;
-        $this->files     = $files;
-        $this->cache     = $cache;
-        $this->router    = $router;
-        $this->url       = $url;
-        $this->view      = $view;
-        $this->menus     = new Collection();
+        $this->setContainer($container);
+        $this->setFiles($files);
+        $this->cache  = $cache;
+        $this->router = $router;
+        $this->url    = $url;
+        $this->view   = $view;
+        $this->menus  = new Collection();
 
-        $this->runHook('menu-factory:ready', [$this]);
+        $this->runHook('menu-factory:ready', [ $this ]);
     }
 
 
@@ -90,7 +80,7 @@ class MenuFactory implements MenuFactoryContract
      *
      * @param string $id
      *
-*@return \Codex\Core\Menus\Menu
+     * @return \Codex\Core\Menus\Menu
      */
     public function add($id)
     {
@@ -98,11 +88,12 @@ class MenuFactory implements MenuFactoryContract
             return $this->get($id);
         }
 
-        $menu = $this->container->make(Menu::class, [
+        $menu = $this->getContainer()->make(Menu::class, [
             'menuFactory' => $this
         ]);
-        $this->runHook('menu-factory:add', [$this, $menu]);
+        $this->runHook('menu-factory:add', [ $this, $menu ]);
         $this->menus->put($id, $menu);
+
         return $menu;
     }
 
@@ -111,9 +102,9 @@ class MenuFactory implements MenuFactoryContract
      * Returns a menu
      *
      * @param string $id
-     * @param null $default
+     * @param null   $default
      *
-*@return \Codex\Core\Menus\Menu
+     * @return \Codex\Core\Menus\Menu
      */
     public function get($id, $default = null)
     {
@@ -124,6 +115,7 @@ class MenuFactory implements MenuFactoryContract
      * has
      *
      * @param $id
+     *
      * @return bool
      */
     public function has($id)
@@ -135,12 +127,14 @@ class MenuFactory implements MenuFactoryContract
      * Removes a menu
      *
      * @param $id
+     *
      * @return MenuFactory
      */
     public function forget($id)
     {
-        $this->runHook('menu-factory:forget', [$this, $id]);
+        $this->runHook('menu-factory:forget', [ $this, $id ]);
         $this->menus->forget($id);
+
         return $this;
     }
 }

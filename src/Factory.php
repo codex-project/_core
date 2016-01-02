@@ -9,7 +9,7 @@ namespace Codex\Core;
 use Codex\Core\Contracts\Codex;
 use Codex\Core\Contracts\Log;
 use Codex\Core\Contracts\Menus\MenuFactory;
-use Codex\Core\Traits\Hookable;
+use Codex\Core\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
@@ -28,7 +28,7 @@ use Symfony\Component\Finder\Finder;
  */
 class Factory implements Codex
 {
-    use Hookable;
+    use Traits\Hookable, Traits\ConfigTrait, Traits\FilesTrait, Traits\ContainerTrait;
 
     /**
      * The codex menu factory instance
@@ -44,7 +44,6 @@ class Factory implements Codex
      */
     protected $log;
 
-
     /**
      * The cache repository instance
      *
@@ -53,32 +52,11 @@ class Factory implements Codex
     protected $cache;
 
     /**
-     * The codex configuration array
-     *
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * The filesystem instance
-     *
-     * @var \Illuminate\Contracts\Filesystem\Filesystem
-     */
-    protected $files;
-
-    /**
      * Path to the directory containing all docs
      *
      * @var string
      */
     protected $rootDir;
-
-    /**
-     * The container instance
-     *
-     * @var \Illuminate\Contracts\Container\Container
-     */
-    protected $container;
 
     /**
      * A collection of resolved projects
@@ -97,10 +75,10 @@ class Factory implements Codex
      */
     public function __construct(Container $container, Filesystem $files, Repository $config, Cache $cache, Log $log, MenuFactory $menus)
     {
-        $this->container = $container;
+        $this->setContainer($container);
+        $this->setConfig($config->get('codex'));
+        $this->setFiles($files);
         $this->cache     = $cache;
-        $this->config    = $config->get('codex');
-        $this->files     = $files;
         $this->rootDir   = config('codex.root_dir');
         $this->menus     = $menus;
         $this->log       = $log;
@@ -114,6 +92,8 @@ class Factory implements Codex
         // 'factory:done' called after all factory operations have completed.
         $this->runHook('factory:done', [ $this ]);
     }
+
+    # Projects
 
     /**
      * Scans the configured documentation root directory for projects and resolves them and puts them into the projects collection
@@ -139,9 +119,9 @@ class Factory implements Codex
             $config  = $this->container->make('fs')->getRequire($projectDir->getRealPath());
             $config  = array_replace_recursive($this->config('default_project_config'), $config);
             $project = $this->container->make(Project::class, [
-                'codex' => $this,
-                'name'    => $name,
-                'config'  => $config
+                'codex'  => $this,
+                'name'   => $name,
+                'config' => $config
             ]);
 
             $this->runHook('project:make', [ $this, $project ]);
@@ -152,9 +132,6 @@ class Factory implements Codex
             ]);
         }
     }
-
-
-    # Projects
 
     /**
      * Returns a project instance for the given name
@@ -196,43 +173,15 @@ class Factory implements Codex
 
     # Config
 
-    /**
-     * Retreive codex config using a dot notated key.
-     *
-     * @param  null|string $key
-     * @param  null|string $default
-     *
-     * @return array|mixed
-     */
-    public function config($key = null, $default = null)
+    public function mergeDefaultProjectConfig($config)
     {
-        if (is_null($key)) {
-            return $this->config;
-        }
-
-        return array_get($this->config, $key, $default);
-    }
-
-    /**
-     * Get config.
-     *
-     * @return array
-     */
-    public function getConfig()
-    {
-        return $this->config;
-    }
-
-    /**
-     * Set the config.
-     *
-     * @param  array $config
-     *
-     * @return void
-     */
-    public function setConfig(array $config)
-    {
-        $this->config = $config;
+        $this->setConfig(
+            'default_project_config',
+            array_replace_recursive(
+                $this->config('default_project_config'),
+                is_array($config) ? $config : config($config)
+            )
+        );
     }
 
 
@@ -295,31 +244,6 @@ class Factory implements Codex
     public function getRootDir()
     {
         return $this->rootDir;
-    }
-
-
-    /**
-     * Get files.
-     *
-     * @return mixed
-     */
-    public function getFiles()
-    {
-        return $this->files;
-    }
-
-    /**
-     * Set files.
-     *
-     * @param  mixed $files
-     *
-     * @return Factory
-     */
-    public function setFiles($files)
-    {
-        $this->files = $files;
-
-        return $this;
     }
 
     /**

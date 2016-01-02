@@ -8,7 +8,7 @@
 namespace Codex\Core;
 
 use Codex\Core\Contracts\Codex;
-use Codex\Core\Traits\Hookable;
+use Codex\Core\Traits;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Sebwite\Support\Path;
@@ -26,7 +26,7 @@ use vierbergenlars\SemVer\version;
  */
 class Project
 {
-    use Hookable;
+    use Traits\Hookable, Traits\ConfigTrait, Traits\FilesTrait, Traits\CodexTrait, Traits\ContainerTrait;
 
     const SHOW_MASTER_BRANCH                        = 0;
     const SHOW_LAST_VERSION                         = 1;
@@ -41,32 +41,11 @@ class Project
     protected $branches;
 
     /**
-     * The projects config.php array
-     *
-     * @var array
-     */
-    protected $config;
-
-    /**
      * The default ref/version/branch for this project
      *
      * @var string
      */
     protected $defaultRef;
-
-    /**
-     * The codex factory instance
-     *
-     * @var \Codex\Core\Factory
-     */
-    protected $codex;
-
-    /**
-     * The filesystem instance
-     *
-     * @var \Illuminate\Filesystem\Filesystem
-     */
-    protected $files;
 
     /**
      * The name of the project
@@ -113,11 +92,6 @@ class Project
     protected $menu;
 
     /**
-     * @var \Illuminate\Contracts\Container\Container
-     */
-    protected $container;
-
-    /**
      * @param \Codex\Core\Factory                         $codex
      * @param \Illuminate\Contracts\Filesystem\Filesystem $files
      * @param \Illuminate\Contracts\Container\Container   $container
@@ -126,13 +100,12 @@ class Project
      */
     public function __construct(Codex $codex, Filesystem $files, Container $container, $name, $config)
     {
-        $this->container = $container;
-        $this->codex     = $codex;
-        $this->files     = $files;
-        $this->name      = $name;
-        $this->config    = $config;
-        $this->path      = $path = Path::join($codex->getRootDir(), $name);
-
+        $this->setContainer($container);
+        $this->setCodex($codex);
+        $this->setConfig($config);
+        $this->setFiles($files);
+        $this->name = $name;
+        $this->path = $path = Path::join($codex->getRootDir(), $name);
 
         $this->runHook('project:ready', [ $this ]);
 
@@ -144,6 +117,7 @@ class Project
 
         $this->versions = array_filter(array_map(function ($dirPath) use ($path, $name, &$branches) {
         
+
             $version      = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft($path)->removeLeft(DIRECTORY_SEPARATOR);
             $version      = (string)$version->removeLeft($name . '/');
             $this->refs[] = $version;
@@ -164,6 +138,7 @@ class Project
             case Project::SHOW_LAST_VERSION:
                 usort($this->versions, function (version $v1, version $v2) {
                 
+
                     return version::gt($v1, $v2) ? -1 : 1;
                 });
 
@@ -173,6 +148,7 @@ class Project
                 if (count($this->versions) > 0) {
                     usort($this->versions, function (version $v1, version $v2) {
                     
+
                         return version::gt($v1, $v2) ? -1 : 1;
                     });
                 }
@@ -314,35 +290,14 @@ class Project
         return $menu;
     }
 
-
-
-    # Config
-
-    /**
-     * Get a configuration item of the project using dot notation
-     *
-     * @param null|string $key
-     * @param null|mixed  $default
-     *
-     * @return array|mixed
-     */
-    public function config($key = null, $default = null)
+    public function hasEnabledFilter($filter)
     {
-        if (is_null($key)) {
-            return $this->config;
-        }
-
-        return array_get($this->config, $key, $default);
+        return in_array($filter, $this->config('filters.enabled', [ ]), true);
     }
 
-    /**
-     * setConfig
-     *
-     * @param array $config
-     */
-    public function setConfig(array $config)
+    public function hasEnabledHook($hook)
     {
-        $this->config = $config;
+        return in_array($hook, $this->config('hooks.enabled', [ ]), true);
     }
 
 
@@ -403,15 +358,11 @@ class Project
 
         usort($versions, function (version $v1, version $v2) {
         
-
-
             return version::gt($v1, $v2) ? -1 : 1;
         });
 
         $versions = array_map(function (version $v) {
         
-
-
             return $v->getVersion();
         }, $versions);
 
@@ -421,29 +372,6 @@ class Project
 
     # Getters / setters
 
-    /**
-     * Get project files.
-     *
-     * @return \Illuminate\Contracts\Filesystem\Filesystem
-     */
-    public function getFiles()
-    {
-        return $this->files;
-    }
-
-    /**
-     * Set project files.
-     *
-     * @param  \Illuminate\Contracts\Filesystem\Filesystem $files
-     *
-     * @return \Codex\Core\Project
-     */
-    public function setFiles($files)
-    {
-        $this->files = $files;
-
-        return $this;
-    }
 
     /**
      * Get name.
@@ -463,16 +391,6 @@ class Project
     public function getPath()
     {
         return $this->path;
-    }
-
-    /**
-     * Get config.
-     *
-     * @return array
-     */
-    public function getConfig()
-    {
-        return $this->config;
     }
 
     /**
@@ -505,30 +423,6 @@ class Project
     public function setPath($path)
     {
         $this->path = $path;
-
-        return $this;
-    }
-
-    /**
-     * Get factory.
-     *
-     * @return \Codex\Core\Factory
-     */
-    public function getCodex()
-    {
-        return $this->codex;
-    }
-
-    /**
-     * Set factory.
-     *
-     * @param  \Codex\Core\Factory $codex
-     *
-     * @return \Codex\Core\Project
-     */
-    public function setCodex($codex)
-    {
-        $this->codex = $codex;
 
         return $this;
     }

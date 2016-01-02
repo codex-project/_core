@@ -77,12 +77,16 @@ return [
         'description'      => '',
         'default'          => Codex\Core\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
         'custom'           => null,
-        'filters'          => ['front_matter', 'parsedown'],
-        'filters_settings' => [
+        'filters'          => [
+            'enabled' => ['front_matter', 'parsedown' ],
             'front_matter' => [],
             'parsedown' => [
                 'fenced_code_lang_class' => 'hljs lang-{LANG}'//'prettyprint lang-{LANG}'
-            ]
+             ]
+        ],
+        'hooks' => [
+            'enabled' => [],
+            // '{hookName}' => [ hookSettings ]
         ]
     ],
 
