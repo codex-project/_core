@@ -15,6 +15,7 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
+use Illuminate\View\View;
 use Sebwite\Support\Path;
 use Symfony\Component\Finder\Finder;
 
@@ -78,11 +79,11 @@ class Factory implements Codex
         $this->setContainer($container);
         $this->setConfig($config->get('codex'));
         $this->setFiles($files);
-        $this->cache     = $cache;
-        $this->rootDir   = config('codex.root_dir');
-        $this->menus     = $menus;
-        $this->log       = $log;
-        $this->projects  = new Collection();
+        $this->cache    = $cache;
+        $this->rootDir  = config('codex.root_dir');
+        $this->menus    = $menus;
+        $this->log      = $log;
+        $this->projects = new Collection();
 
         // 'factory:ready' is called after parameters have been set as class properties.
         $this->runHook('factory:ready', [ $this ]);
@@ -91,6 +92,22 @@ class Factory implements Codex
 
         // 'factory:done' called after all factory operations have completed.
         $this->runHook('factory:done', [ $this ]);
+    }
+
+    public function appendSectionsView($viewName, $data = null, $appendTo = 'codex::layouts.default')
+    {
+        $this->container->make('events')->listen('composing: ' . $appendTo, function (View $view) use ($viewName, $data) {
+        
+            if ($data instanceof \Closure) {
+                $data = call_user_func_array($data, [ $this->container, $this ]);
+            } elseif ($data === null) {
+                $data = [ ];
+            }
+            if (!is_array($data)) {
+                throw new \InvalidArgumentException("appendSectionsView data is not a array");
+            }
+            $view->getFactory()->make($viewName, $data)->render();
+        });
     }
 
     # Projects

@@ -1,0 +1,264 @@
+/// @todo: sort out!!
+
+$dropdown-menu-head-color:                  #cbd2d9;
+$dropdown-menu-bg-color:                    #2c3137;
+$dropdown-menu-box-shadow:                  none;
+$dropdown-menu-border:                      0;
+$dropdown-menu-separator-color:             #434951;
+$dropdown-menu-item-color:                  #7d8691;
+$dropdown-menu-item-color-active:           #ff6b57;
+$dropdown-menu-item-bg-color-on-active:     #292e33;
+$dropdown-menu-footer-border-color:         $dropdown-menu-separator-color;
+$dropdown-menu-footer-bg-color:             lighten($dropdown-menu-bg-color, 5);
+$dropdown-menu-footer-item-color:           #7d8691;
+$dropdown-menu-footer-item-color-active:    lighten($dropdown-menu-footer-item-color, 10);
+$dropdown-menu-footer-bg-color-on-active:   lighten($dropdown-menu-footer-bg-color, 10);
+$dropdown-base-font-weight:                                 300 !default;
+$dropdown-box-shadow-size:                                  5px !default;
+$dropdown-wide-min-width:                                   300px !default;
+$dropdown-header-font-size:                                 13px !default;
+$dropdown-tasklist-task-font-size:                          12px !default;
+$dropdown-footer-font-size:                                 12px !default;
+
+// dropdown
+$dropdown-bg:                                               #ffffff !default;
+$dropdown-box-shadow-color:                                 rgba(#222, 0.2) !default;
+$dropdown-header-bg:                                        #e4e4e4 !default;
+$dropdown-header-font:                                      $headings-font-family !default;
+$dropdown-header-color:                                     #838383 !default;
+$dropdown-header-link-color:                                #000000 !default;
+$dropdown-header-link-color-hover:                          lighten($dropdown-header-link-color, 20) !default;
+$dropdown-item-border-color:                                transparent !default;
+$dropdown-item-bg-hover:                                    #f5f5f5 !default;
+$dropdown-item-color:                                       #888888 !default;
+$dropdown-item-color-hover:                                 $dropdown-item-color !default;
+$dropdown-item-arrow-color:                                 #cccccc !default;
+$dropdown-footer-bg:                                        #f2f0f0 !default;
+$dropdown-footer-color:                                     #888888 !default;
+$dropdown-footer-bg-hover:                                  darken($dropdown-footer-bg, 5) !default;
+$dropdown-footer-color-hover:                               $dropdown-footer-color !default;
+$dropdown-footer-border-color:                              darken($dropdown-footer-bg, 5) !default;
+
+// dropdown inverse (dark)
+$dropdown-inverse-bg:                                       #333333 !default;
+$dropdown-inverse-box-shadow-color:                         rgba(#000, 0.2) !default;
+$dropdown-inverse-header-bg:                                #454545 !default;
+$dropdown-inverse-header-color:                             #b3b3b3 !default;
+$dropdown-inverse-header-link-color:                        #000000 !default;
+$dropdown-inverse-header-link-color-hover:                  lighten($dropdown-inverse-header-link-color, 20) !default;
+$dropdown-inverse-item-border-color:                        #484848 !default;
+$dropdown-inverse-item-bg-hover:                            #222222 !default;
+$dropdown-inverse-item-color:                               #888888 !default;
+$dropdown-inverse-item-color-hover:                         $dropdown-inverse-item-color !default;
+$dropdown-inverse-item-arrow-color:                         #cccccc !default;
+$dropdown-inverse-footer-bg:                                #454545 !default;
+$dropdown-inverse-footer-bg-hover:                          lighten($dropdown-inverse-footer-bg, 5) !default;
+$dropdown-inverse-footer-color:                             #888888 !default;
+$dropdown-inverse-footer-color-hover:                       $dropdown-inverse-footer-color !default;
+$dropdown-inverse-footer-border-color:                      lighten($dropdown-inverse-footer-bg, 5) !default;
+
+// dropdown task list
+$dropdown-tasklist-task-color:                              #888888 !default;
+$dropdown-tasklist-progress-bg:                             #dfdfdf !default;
+$dropdown-tasklist-item-border-color:                       #e4e4e4 !default;
+
+$dropdown-inverse-tasklist-task-color:                      #b3b3b3 !default;
+$dropdown-inverse-tasklist-progress-bg:                     #c8c8c8 !default;
+$dropdown-inverse-tasklist-item-border-color:               #484848 !default;
+
+// dropdown notifications
+$dropdown-notifications-icon-color:                         #ffffff !default;
+$dropdown-notifications-item-border-color:                  #e4e4e4 !default;
+$dropdown-inverse-notifications-icon-color:                 #d8d1d1 !default;
+$dropdown-inverse-notifications-item-border-color:          #484848 !default;
+
+.dropdown-menu {
+
+    & {
+        font-family: $font-family-base;
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        line-height: 20px;
+        //padding-bottom: 0;
+        padding: 2px 0 0 0;
+    }
+
+    .dropdown-item {
+
+        &:last-child {
+          //  padding-bottom: 5px;
+        }
+    }
+    .dropdown-submenu {
+        position: relative;
+        > .dropdown-item {
+            &:after {
+                display: block;
+                content: " ";
+                float: right;
+                width: 0;
+                height: 0;
+                border-color: transparent;
+                border-style: solid;
+                border-width: 5px 0 5px 5px;
+                margin-top: 5px;
+                margin-right: -10px;
+            }
+        }
+
+        > .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: 0;
+            margin-left: 0;
+        }
+
+        &:hover > .dropdown-menu {
+            display: block;
+        }
+
+        &.pull-left {
+            float: none;
+            > .dropdown-menu {
+                left: -100%;
+                margin-left: 10px;
+
+            }
+        }
+
+        &.submenu-left {
+            > .dropdown-menu {
+                left: -100%;
+                right: 100%;
+            }
+        }
+    }
+
+    .dropdown-footer {
+        border-top: 1px solid transparent;
+        display: table;
+        table-layout: fixed;
+        //width: inherit;
+        a {
+            display: table-cell;
+            width: 25%; // http://stackoverflow.com/questions/10525744/css-table-cell-equal-width
+            text-align: center;
+            font-size: 11px;
+            padding: 3px 3px 4px 3px;
+        }
+        a + a {
+            border-left: 1px solid transparent;
+        }
+    }
+
+    .dropdown-divider {
+        margin: em(2px) 0;
+    }
+}
+
+.dropdown-menu.dropdown-menu-packadic,
+.dropdown-menu-packadic .dropdown-submenu > .dropdown-menu {
+    background-color: $dropdown-menu-bg-color;
+    border: $dropdown-menu-border;
+
+    .dropdown-header {
+        margin: 0;
+        color: $dropdown-menu-head-color;
+    }
+
+    .dropdown-divider {
+        background-color: $dropdown-menu-separator-color;
+    }
+
+    .dropdown-item {
+        color: $dropdown-menu-item-color;
+        &:active,
+        &.active,
+        &:hover {
+            &:not(&.disabled) {
+                color: $dropdown-menu-item-color-active;
+                background-color: $dropdown-menu-item-bg-color-on-active;
+            }
+        }
+        &.disabled {
+            color: darken($dropdown-menu-item-color, 15);
+        }
+    }
+
+    .dropdown-footer a {
+        border-top-color: $dropdown-menu-footer-border-color;
+        background-color: $dropdown-menu-footer-bg-color;
+        color: $dropdown-menu-footer-item-color;
+        &:hover {
+            background: $dropdown-menu-footer-bg-color-on-active;
+            color: $dropdown-menu-footer-item-color-active;
+            text-decoration: none;
+        }
+        + a {
+            border-left-color: $dropdown-menu-footer-border-color;
+        }
+
+    }
+
+}
+// #4E5D6C
+// #2B3E50
+// BASE
+.dropdown-menu {
+
+    background: $dropdown-bg;
+
+    @include box-shadow($dropdown-box-shadow-size $dropdown-box-shadow-size $dropdown-box-shadow-color);
+
+    .dropdown-item:not(.dropdown-header) + li:not(.dropdown-header) {
+        border-top-color: 1px solid $dropdown-item-border-color;
+    }
+
+    > .dropdown-item {
+        color: $dropdown-item-color;
+        font-weight: $dropdown-base-font-weight;
+        > .badge,
+        > .label {
+            font-weight: $dropdown-base-font-weight;
+        }
+        &:hover {
+            background: $dropdown-item-bg-hover;
+            color: $dropdown-item-color-hover;
+        }
+    }
+
+    > .dropdown-header {
+        background: $dropdown-header-bg;
+        h1, h2, h3, h4, h5, h6 {
+            color: $dropdown-header-color;
+        }
+        & {
+            color: $dropdown-header-link-color;
+            &:hover {
+                color: $dropdown-header-link-color-hover;
+            }
+        }
+    }
+
+    > .dropdown-submenu:after {
+        border-left-color: $dropdown-item-arrow-color;
+        margin-top: 5px;
+        margin-right: -10px;
+    }
+
+    > .dropdown-footer a {
+        border-top-color: $dropdown-footer-border-color;
+        background: $dropdown-footer-bg;
+        color: $dropdown-footer-color;
+        &:hover {
+            background: $dropdown-footer-bg-hover;
+            color: $dropdown-footer-color-hover;
+        }
+        + a {
+            border-left-color: $dropdown-footer-border-color;
+        }
+
+    }
+}

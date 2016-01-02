@@ -1,0 +1,130 @@
+// Typography
+//
+// Fonts etc
+$web-font:                          "http://fonts.googleapis.com/css?family=";
+$material-font-path:                "../bower_components/bootstrap-material-design/dist/fonts" ;
+$font-path:                         '../bower_components/bootstrap-sass-offical/assets/fonts/bootstrap';
+$fa-font-path:                      '../bower_components/font-awesome/fonts';
+
+
+$web-font-primary:                  "Nunito:300"; //"Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,800,700";
+$font-family-primary:  	  		 	"Nunito", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$web-font-heading:                  "Montserrat:400,700";
+$font-family-heading:               "Montserrat", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+$web-font-sub-heading:              "Karla:400,700italic,700,400italic";
+$font-family-sub-heading:           "Karla", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;;
+
+$web-font-code:                     "Source+Code+Pro:400";
+$font-family-code:                  "Source Code Pro", Consolas, "Courier New", monospace;
+
+$web-font:                          $web-font + $web-font-primary + "|" + $web-font-heading  + "|" + $web-font-sub-heading + "|" + $web-font-code;
+
+$base-font-weight: 300;
+
+
+
+
+
+$page-loader-size:                  100px !default;
+$page-loader-margin:                150px auto !default;
+$page-loader-color:                 #b0bec5 !default;
+$page-loader-speed:                 2.0s !default;
+
+
+$color-primary:         		 	#426DB0 !default;
+
+$prefix-header:         ".page-header";
+$prefix-container:      ".page-container";
+$prefix-sidebar:        ".page-sidebar";
+$prefix-content:        ".page-content";
+$prefix-footer:         ".page-footer";
+
+
+
+// positioning
+$header-height:             				            				74px !default; // header height on table and desktop view. default: 42px
+$header-height-xs:             											($header-height * 2) !default; // header height on mobile view
+$header-height-mobile:                                                  46px  !default;
+
+$header-logo-height:                                    				35px !default;
+$header-logo-mini-height:                                               35px !default;
+$header-menu-toggler-width:                             				24px;
+$header-menu-toggler-height:                            				24px;
+$header-sidebar-toggler-margin:                         				($header-height - $header-menu-toggler-height - 1px) / 2 0 0 0 !default;
+$header-responsive-toggler-margin:                      				($header-height - $header-menu-toggler-height) / 2 14px 0 6px !default;
+$header-logo-margin:                                					($header-height - $header-logo-height) / 2 10px 0 10px !default;  // adjsut logo's margin top. default: -1px
+
+$header-page-actions-margin:                                            17px 0 15px 10px;
+
+// Sidebar
+$sidebar-width:             											235px !default; // sidebar width. default:235px
+$sidebar-collapsed-width:   											54px  !default; // minimized/collapsed sidebar width. default:35px
+$sidebar-collapsed-submenu-width-on-hover:								($sidebar-width - 1) !default; // sub menu width displayed on hover in collapsed sidebar mode. default:210px
+$sidebar-logo-container-width:  										($sidebar-width + 30) !default; // logo container width. Normally same with sidebar-width.
+$sidebar-logo-container-width-xs: 										110px !default; // logo container width in mobile portrait view. default:110px.
+$sidebar-logo-container-width-xxs: 										100px !default; // logo container width in mobile landspace view. default:100px.
+
+$sidebar-menu-link-font-size:                                           14px !default;
+$sidebar-menu-link-font-weight:                                         300 !default;
+$sidebar-menu-link-icon-font-size:                                      15px !default;
+$sidebar-menu-link-arrow-font-size:                                     13px !default;
+$sidebar-menu-sub-menu-link-icon-font-size:                             16px !default;
+
+// Page content
+$page-content-min-height:                   							600px !default; // default page content's min height. default:600px.
+
+// Page footer
+$page-footer-height:                                                    33px !default;
+
+// Z-index master list
+$zindex-header-fixed:                                                   9995 !default;
+$zindex-header-static:                                                  9995 !default;
+$zindex-sidebar-fixed:     												10000 !default;
+$zindex-footer-fixed:      												10000 !default;
+$zindex-sidebar-submenu:   												2000 !default;
+$zindex-go-to-top:   												    9990 !default;
+$zindex-quick-sidebar:                                                  10001 !default;
+$zindex-navbar:            			9995 !default;
+$zindex-navbar-above:      			9999 !default;
+$zindex-dropdown:          			1000 !default;
+$zindex-popover:           			1010 !default;
+$zindex-tooltip:           			10001 !default;
+$zindex-navbar-fixed:      			1030 !default;
+$zindex-modal-background:  			10049 !default;
+$zindex-modal:             			10050 !default;
+$zindex-top:						10100 !default;
+
+$general-border-radius:             0px !default;
+
+$bootstrap-switch-base: "bootstrap-switch";
+
+
+// @todo migrate to boostrap 4
+$screen-xs-min:              		480px !default;
+$screen-sm-min:              		768px !default;
+$screen-md-min:              		992px !default;
+$screen-lg-min:             	 	1200px !default;
+$screen-lg-med:                     1260px !default;
+
+$screen-xs-max:              		($screen-sm-min - 1) !default;
+$screen-sm-max:              		($screen-md-min - 1) !default;
+$screen-md-max:              		($screen-lg-min - 1) !default;
+
+
+// dropdown
+$dropdown-class-prefix:                                     'dropdown';
+
+$dropdown-include-inversed:                                 true !default;
+$dropdown-include-utilities:                                true !default;
+$dropdown-include-notifications:                            true !default;
+$dropdown-include-task-list:                                true !default;
+$dropdown-include-scrollable:                               true !default;
+
+$dropdown-header-font:                                      $font-family-heading !default;
+$dropdown-base-font-weight:                                 300 !default;
+$dropdown-box-shadow-size:                                  5px !default;
+$dropdown-wide-min-width:                                   300px !default;
+$dropdown-header-font-size:                                 13px !default;
+$dropdown-tasklist-task-font-size:                          12px !default;
+$dropdown-footer-font-size:                                 12px !default;

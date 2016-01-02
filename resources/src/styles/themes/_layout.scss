@@ -1,0 +1,40 @@
+body {
+    background: $bg;
+}
+.page-header {
+    background: $header-bg;
+
+    .page-logo {
+        > .logo-packadic,
+        > .logo-default,
+        > .logo-text {
+            color: $header-logo-color;
+        }
+    }
+    .page-actions .btn.btn-primary {
+        color: $header-action-button-color !important;
+        background-color: $header-action-button-bg-color !important;
+        border-color: $header-action-button-border-color !important;
+        &:hover {
+            color: $header-action-button-color-hover !important;
+            background-color: $header-action-button-bg-color-hover !important;
+            border-color: $header-action-button-border-color-hover !important;
+
+        }
+    }
+}
+.page-content-wrapper {
+    background: $content-wrapper-bg;
+}
+.page-content {
+    background: $content-bg;
+}
+
+.page-header.navbar .menu-toggler {
+    color: $header-sidebar-toggler-color;
+}
+
+.page-footer {
+    background: $footer-bg;
+    color: $footer-font-color;
+}

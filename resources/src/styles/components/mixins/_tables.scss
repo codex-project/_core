@@ -1,0 +1,39 @@
+////
+/// @author Robin Radic
+/// @group Components
+////
+
+
+/// Create a table row variant
+/// @param {String} $state - The state (class name)
+/// @param {Background} $background - The background property value
+/// @param {Color} $test - The color of the text
+@mixin table-row-variant($state, $background, $text: false) {
+    // Exact selectors below required to override `.table-striped` and prevent
+    // inheritance to nested tables.
+
+    .table > thead > tr,
+    .table > tbody > tr,
+    .table > tfoot > tr {
+        > td.#{$state},
+        > th.#{$state},
+        &.#{$state} > td,
+        &.#{$state} > th {
+            background: $background;
+            @if $text != false {
+                color: $text;
+            }
+        }
+    }
+
+    // Hover states for `.table-hover`
+    // Note: this is not available for cells or rows within `thead` or `tfoot`.
+    .table-hover > tbody > tr {
+        > td.#{$state}:hover,
+        > th.#{$state}:hover,
+        &.#{$state}:hover > td,
+        &.#{$state}:hover > th {
+            background: darken($background, 5%);
+        }
+    }
+}

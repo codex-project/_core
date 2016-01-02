@@ -1,0 +1,86 @@
+$bg-color:                                          material-color('blue-grey', '800') !default;
+$bg:                                                $bg-color  !default;
+$header-bg-color:                                   material-color('blue-grey', '900') !default;
+$header-bg:                                         $header-bg-color !default;
+$content-bg-color:                                  material-color('grey', '50') !default;
+$content-bg:                                        $content-bg-color !default;
+
+
+$brand-color:                                       #ed6626 !default;
+$brand-color-alt:                                   #e7461a !default;
+$brand-color-inversed:                              #56565f !default;
+$brand-color-inversed-alt:                          #3a3a3f !default;
+
+
+$header-logo-color:                                 $brand-color !default;
+$header-sidebar-toggler-color:                      material-color('blue-grey', '200') !default;
+$header-action-button-color:                        material-color('blue-grey', '200') !default;
+$header-action-button-bg-color:                     material-color('blue-grey', '800') !default;
+$header-action-button-border-color:                 material-color('blue-grey', '800') !default;
+$header-action-button-color-hover:                  material-color('blue-grey', '800') !default;
+$header-action-button-bg-color-hover:               material-color('blue-grey', '200') !default;
+$header-action-button-border-color-hover:           material-color('blue-grey', '900') !default;
+
+
+// Sidebar menu
+$sidebar-bg-color:                                                      material-color('blue-grey', '200') !default;
+$content-wrapper-bg-color:                                              $sidebar-bg-color !default;
+$content-wrapper-bg:                                                    $content-wrapper-bg-color !default;
+
+$sidebar-menu-active-color:                                             material-color('blue-grey', '600') !default;
+
+$sidebar-menu-link-font-color:                                  		material-color('blue-grey', '500') !default;
+$sidebar-menu-link-font-color-on-hover:                         		material-color('blue-grey', '100') !default;
+$sidebar-menu-link-font-color-on-active:                                $brand-color !default;
+
+$sidebar-menu-link-icon-font-color:                                     $brand-color-inversed !default;
+$sidebar-menu-link-icon-font-color-on-active:                           $brand-color-inversed-alt !default;
+$sidebar-menu-link-icon-font-color-on-hover:                            material-color('blue-grey', '50') !default;
+
+$sidebar-menu-link-bg-color:                                            $sidebar-bg-color !default;
+$sidebar-menu-link-bg-color-on-hover:                           		material-color('blue-grey', '300') !default;
+$sidebar-menu-link-bg-color-on-active:                          		material-color('blue-grey', '100') !default;
+
+$sidebar-menu-arrow-color:                                      		lighten($sidebar-menu-link-icon-font-color, 3%) !default;
+$sidebar-menu-arrow-color-on-active:                            		lighten($sidebar-menu-link-icon-font-color-on-active, 3%) !default;
+$sidebar-menu-arrow-color-on-hover:                                     lighten($sidebar-menu-link-icon-font-color-on-hover, 3%) !default;
+
+$sidebar-menu-sub-menu-link-font-color:                         		$sidebar-menu-link-font-color !default;
+$sidebar-menu-sub-menu-link-icon-font-color:                    		$sidebar-menu-link-icon-font-color !default;
+$sidebar-menu-sub-menu-link-bg-color-on-hover:                  		$sidebar-menu-link-bg-color-on-hover !default;
+$sidebar-menu-sub-menu-link-font-color-on-hover:                  		$sidebar-menu-link-font-color-on-hover !default;
+$sidebar-menu-sub-menu-link-icon-font-color-on-hover:                   $sidebar-menu-link-icon-font-color-on-hover !default;
+
+$sidebar-menu-sub-menu-link-bg-color-on-active:                         $sidebar-menu-link-bg-color-on-active !default;
+$sidebar-menu-sub-menu-link-font-color-on-active:                       $sidebar-menu-link-font-color-on-active !default;
+$sidebar-menu-sub-menu-link-icon-font-color-on-active:                  $sidebar-menu-link-icon-font-color-on-active !default;
+
+$sidebar-menu-sub-menu-box-shadow:                                      4px 4px 0px rgba(#000000, 0.1) !default;
+$sidebar-menu-hover-sub-menu-bg-color:									#FFFFFF !default;
+
+$sidebar-menu-hover-box-shadow-header:                                  6px 5px 0px rgba(94, 109, 116, 0.8);
+$sidebar-menu-hover-box-shadow-sub-menu:                                6px 5px 0px rgba(176, 168, 168, 0.8);
+
+// Sidebar for mobile
+$mobile-sidebar-menu-bg-color:                           				darken($bg-color, 7%) !default;
+$mobile-sidebar-menu-link-bg-color-on-hover:             				darken($bg-color, 4%) !default;
+
+// Footer
+$footer-font-color:                                                     material-color('blue-grey', '200');
+$footer-bg-color: 												        material-color('blue-grey', '900') !default;
+$footer-bg:                                                             $footer-bg-color !default;
+
+// Form controls
+$input-md-label-color:        		#888888;
+$input-md-input-border:        		#e5e5e5;
+$input-md-label-opacity:      		1;
+$input-md-label-font-size: 			13px;
+$input-md-placeholder:	 			#999;
+$input-md-color:		 			#333;
+$input-md-focus-border:				$brand-success;
+$input-md-checkbox-box-color:  		#666;
+$input-md-checkbox-disabled-opacity:0.7;
+
+$input-icon-color:               	#999 !default;
+
+

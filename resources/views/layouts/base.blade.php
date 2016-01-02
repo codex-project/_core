@@ -16,7 +16,7 @@
     <link href="{{ asset('vendor/codex/styles/stylesheet.css') }}" type="text/css" rel="stylesheet">
     <link href="{{ asset('vendor/codex/styles/themes/theme-codex.css') }}" type="text/css" rel="stylesheet" id="theme-style">
 
-    @stack('stylesheets')
+    @stack('styles')
 
 </head>
 

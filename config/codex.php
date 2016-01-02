@@ -60,7 +60,7 @@ return [
         'author' => 'John Doe',
         'title' => 'Documentation',
         'subtitle' => '',
-        'layout' => 'codex::layouts/default',
+        'layout' => 'codex::layouts.document',
         'view' => 'codex::document'
     ],
 

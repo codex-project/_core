@@ -1,0 +1,87 @@
+.preferences {
+
+    position: fixed !important;
+    right: -330px;
+    width: 330px;
+    top: $header-height + 10px;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    @include transition (right 0.2s ease 0s);
+    //border-left: 1px solid $box-border-color !important;
+    //border-bottom: 1px solid $box-border-color !important;
+    z-index: 1050;
+
+    &.active {
+        right: 0;
+    }
+
+    > .btn {
+        background: #c4c4c4 !important;
+        border-color: #c4c4c4 !important;
+        border-right-width: 0;
+        left: -44px;
+        padding: 10px 14px;
+        position: absolute;
+        top: 0px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+
+        &:hover, &:active, &:focus {
+            box-shadow: none !important;
+            outline: 0 !important;
+        }
+        > i.fa {
+            color: #000000;
+            font-size: 20px;
+        }
+    }
+
+
+
+    &.panel {
+        border-radius: 0 !important;
+        border-top: none;
+        border-right: none;
+        background: #FFF;
+        border-color: #c4c4c4 !important;
+
+        .panel-heading {
+            border-top-width: 1px;
+            border-top-style: solid;
+            padding: 11px 15px;
+            background: lighten($grey, 15%);
+            border-color: #c4c4c4;
+            border-radius: 0 !important;
+        }
+
+        .panel-body {
+            padding: 10px;
+        }
+
+        .preference-box {
+            border-bottom: 1px solid #c4c4c4;
+            padding: 11px 10px 10px;
+
+            .preference-title {
+                padding: 5px 0;
+                > label {
+                    font-size: 10px;
+                    font-weight: normal;
+                }
+            }
+
+            .preference-control {
+                width: 140px;
+                select.form-control {
+                    padding: 0 6px;
+                    height: 23px;
+
+                }
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+}

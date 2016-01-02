@@ -1,0 +1,79 @@
+nav(v-el='quick-sidebar').quick-sidebar#quick-sidebar
+    .qs-header
+        .pull-left
+            button.btn.blue-grey.qs-prev(type='button', data-layout-api='qs-prev', title='Previous tab')
+                i.fa.fa-arrow-left
+            button.btn.blue-grey.qs-next(type='button', data-layout-api='qs-next', title='Next tab')
+                i.fa.fa-arrow-right
+
+        .pull-left.middle.hidden-xs-down.hidden-md-up
+
+        .pull-right
+            button.btn.blue-grey-dark.hidden-md-down.qs-pin(type='button', data-layout-api='qs-togglepin', title='Pin/unpin the quick sidebar')
+                i.fa.fa-thumb-tack
+            button.btn.blue-grey.qs-close(type='button', data-layout-api='qs-close', title='Close')
+                i.fa.fa-times
+
+    .qs-tabs-wrapper
+        .qs-tabs
+
+    .qs-seperator
+
+    .qs-content#qs-layout(data-name='Layout')
+        .qs-section
+            h3 Layout API
+            p The layout API provides easy interaction with the layout with either HTML5 data-attributes or pure Javascript.
+            .row
+                .col-xs-6.pr-n.text-center
+                    h4 Core
+                    each action, i in ['page-boxed', 'page-edged', 'header-fixed','footer-fixed', 'sidebar-toggle', 'sidebar-fixed','sidebar-close-submenus','sidebar-close','sidebar-open','sidebar-hide','sidebar-show','sidebar-condensed','sidebar-hover','sidebar-reversed']
+                        +abtn.btn-xs(data-layout-api=action, block, class=i % 2 ? 'blue-grey' : 'blue-grey-light')=action
+
+                .col-xs-6.pl-n.text-center
+                    h4 Quick Sidebar
+                    each action, i in ['qs-toggle', 'qs-show', 'qs-hide', 'qs-open', 'qs-next', 'qs-prev', 'qs-pin', 'qs-unpin', 'qs-togglepin']
+                        +abtn.btn-xs(data-layout-api=action, block, class=i % 2 ? 'blue-grey' : 'blue-grey-light')=action
+
+                    h4 Styles
+                    each theme in ['default', 'dark-sidebar']
+                        +abtn.btn-xs(data-layout-api='theme', data-layout-api-args=theme, block, class=i % 2 ? 'blue-grey' : 'blue-grey-light')=theme
+
+                    h4 Presets
+                    +abtn.btn-xs.blue-grey(data-layout-api='preset' data-layout-api-args='default', block) Default
+                    +abtn.btn-xs.blue-grey(data-layout-api='preset' data-layout-api-args='condensed-dark', block) Condensed Dark
+
+
+    .qs-content#qs-random(data-name='Random')
+        .qs-section
+            h3 Random
+            - var n = 0;
+            while n < 30
+                p asdf #{n ++}
+
+    .qs-content#qs-extras(data-name='Extras')
+        .qs-section
+            h3 Extras
+            - var n = 0;
+            while n < 30
+                p Line #{n ++}
+
+    .qs-content#qs-another(data-name='Another')
+        .qs-section
+            h3 Another
+            - var n = 0;
+            while n < 30
+                p Anotherf #{n ++}
+
+    .qs-content#qs-makeifythis(data-name='Makeifythis')
+        .qs-section
+            h3 Other
+            - var n = 0;
+            while n < 30
+                p Line #{n ++}
+
+    .qs-content#qs-nevertheless(data-name='Nevertheless')
+        .qs-section
+            h3 Other
+            - var n = 0;
+            while n < 30
+                p Line #{n ++}

@@ -1,5 +1,10 @@
 @extends('codex::layouts.base')
 
+@push('styles')
+    <style type="text/css">
+
+    </style>
+@endpush
 
 @section('body')
 
@@ -14,10 +19,13 @@
             </div><a href="javascript:;" data-toggle="collapse" data-target=".navbar-collapse" class="menu-toggler responsive-toggler"></a>
 
             @section('page-header-actions')
-            <div class="page-actions">
-                @section('header-actions')
-                @show
-            </div>
+                <div class="page-actions">
+                    @stack('header-actions')
+                </div>
+
+                <div class="page-actions pull-right ml-lg">
+                    @stack('header-actions-right')
+                </div>
             @show
 
             <div class="pull-right">
@@ -51,7 +59,7 @@
                 @section('page-head')
                 <div class="page-head">
                     <div class="page-title">
-                        <h1>@yield('pageTitle')<small> @yield('pageSubtitle', '')</small></h1>
+                        <h1>@yield('page-title')<small> @yield('page-subtitle', '')</small></h1>
                     </div>
                 </div>
                 @show
@@ -59,7 +67,7 @@
                 @section('page-breadcrumb')
                 <ul class="page-breadcrumb breadcrumb">
                     @section('breadcrumb')
-                        <li><a href="index.html">Home</a><i class="fa fa-arrow-right"></i></li>
+                        <li><a href="{{ route('codex.index') }}">Home</a><i class="fa fa-arrow-right"></i></li>
                     @show
                 </ul>
                 @show

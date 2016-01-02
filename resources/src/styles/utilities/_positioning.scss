@@ -1,0 +1,182 @@
+// utility config
+$util-pos-properties:
+(name: 'margin(dir)', selector: 'm', base-value: 4, negatives: true),
+(name: 'padding(dir)', selector: 'p', base-value: 4, negatives: true),
+(name: 'border(dir)-width', selector: 'bd', base-value: 1, negatives: false)
+;
+$util-pos-direction-selectors: '', 't', 'r', 'b', 'l';
+$util-pos-direction-properties: '', 'top', 'right', 'bottom', 'left';
+$util-pos-size-selectors: 'n', 'xs', 'sm', '', 'md', 'lg', 'xl', 'xxl';
+$util-pos-selector-seperator: '-';
+
+
+@mixin thumb-size($size){
+    img.thumb#{$size} {
+        height: #{$size}px;
+        width: #{$size}px;
+    }
+}
+@include thumb-size(128);
+@include thumb-size(96);
+
+@each $pos-property in $util-pos-properties {
+    $property-name: map-get($pos-property, 'name');
+    $property-selector: map-get($pos-property, 'selector');
+    $property-base-value: map-get($pos-property, 'base-value');
+    $negatives: map-get($pos-property, 'negatives');
+
+    @each $direction-selector in $util-pos-direction-selectors {
+
+        $direction-property: nth($util-pos-direction-properties, index($util-pos-direction-selectors, $direction-selector));
+
+        @if $direction-selector != '' {
+            $direction-property: '-' + $direction-property;
+        }
+
+        @each $size-selector in $util-pos-size-selectors {
+            $i: index($util-pos-size-selectors, $size-selector);
+
+            $selector-seperator: '';
+            @if $size-selector != '' {
+                $selector-seperator: $util-pos-selector-seperator;
+            }
+
+            $selector: $property-selector + $direction-selector + $selector-seperator + $size-selector;
+            $property: unquote(str-replace( unquote($property-name),  unquote('(dir)'), unquote($direction-property)));
+            $size: $property-base-value * ($i - 1);
+
+            .#{$selector} {
+                &:not(.n) {
+                    #{$property}: #{$size}px !important;
+                }
+                @if $negatives == true {
+                    &.n {
+                        @if $size != 0 {
+                            #{$property}: #{0-$size}px !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.b-b { border-bottom: 1px solid #dee5e7 !important; }
+.pull-in { margin-right: -15px; margin-left: -15px; }
+.show{visibility: visible;}
+.line {width: 100%;height: 2px;margin: 10px 0;font-size:0;overflow: hidden;}
+.line-xs{margin: 0}
+.line-lg{margin-top:15px;margin-bottom: 15px}
+.line-dashed{border-style: dashed !important;background-color: transparent;border-width:0;}
+.no-line{border-width: 0}
+.no-border, .no-borders{border-color:transparent;border-width:0}
+.no-radius{border-radius: 0}
+.block{display:block;}
+.block.hide{display: none;}
+.inline{display:inline-block !important;}
+.none{display: none;}
+.pull-none{float: none;}
+.rounded{border-radius: 500px;}
+.clear{display:block;overflow: hidden;}
+.no-bg{background-color: transparent; color: inherit;}
+.no-select{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+/* deprecated, remove soon from this line until... */
+.with-padding {
+    padding: 20px !important;
+}
+
+.with-mid-padding {
+    padding: 10px !important;
+}
+
+.with-small-padding {
+    padding: 5px !important;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.no-margin {
+    margin: 0px !important;
+}
+
+
+// OLD REMOVE OLD REMOVE:
+
+@mixin position-utility($name, $prefix, $size) {
+    $directions: 'top', 'bottom', 'left', 'right';
+
+    $thisprefix: '';
+    @if $prefix != '' {
+        $thisprefix: $prefix + '-';
+    } @else {
+        $thisprefix: '';
+    }
+
+    @each $direction in $directions {
+        .#{$thisprefix}#{$name}-#{$direction} {
+            #{$name}-#{$direction}: $size !important;
+        }
+    }
+    .#{$thisprefix}margin {
+        #{$name}: $size !important;
+    }
+}
+
+@each $attr in 'margin', 'padding' {
+    @include position-utility($attr, 'no', 0);
+    @include position-utility($attr, 'small', 4px);
+    @include position-utility($attr, '', 16px);
+    @include position-utility($attr, 'mid', 8px);
+    @include position-utility($attr, 'large', 30px);
+    @include position-utility($attr, 'extra-large', 60px);
+    @include position-utility($attr, 'super-large', 90px);
+}
+/* this line. end deprecated stuff */
+
+
+/* Absolute positioning */
+.relative {
+    position: relative;
+}
+
+.absolute-left,
+.absolute-right {
+    position: absolute;
+    top: 50%;
+    margin-top: -8px;
+}
+
+.absolute-left {
+    left: 0;
+}
+
+.absolute-right {
+    right: 0;
+}
+
+/* This class disables mouse events on compatible browsers, a polyfill is provded in setup.js for others */
+.no-pointer-events {
+    pointer-events: none;
+}
+
+/* IE7 vertically aligned images fix */
+.vert-align {
+    display: inline;
+    width: 0;
+    margin-right: -4px;
+}
+
+.no-bg {
+    background: none !important;
+}

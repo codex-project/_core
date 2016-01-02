@@ -1,0 +1,265 @@
+extends layouts/default
+
+block vars
+    //- includeHighlightJs = true;
+
+block page-title
+    | Notifications
+
+block page-subtitle
+    | using jquery.noty.js
+
+block breadcrumb
+    +breadcrumb('index.html') Home
+    +breadcrumb('noty.html', true) Noty
+
+block append styles
+    style(type='text/css').
+        .runner {
+            padding-left: 5px;
+        }
+
+block append script
+    script.
+        (function(){
+            var app = packadic.app;
+            app.booted(function(){
+                /** @type {NotifyExtension} */
+                var notify = app.extensions.get('notify');
+                ['success', 'error', 'warning', 'info'].forEach(function(type){
+                    notify.footer('You have posted the issue', type);
+                    notify.topRight('You have posted the issue', type);
+                })
+            })
+        }.call())
+        window.anim = {};
+        window.anim.open = 'flipInX';
+        window.anim.close = 'flipOutX';
+
+        $('#anim-open').on('change', function (e) {
+            window.anim.open = $(this).val();
+        });
+
+        $('#anim-close').on('change', function (e) {
+            window.anim.close = $(this).val();
+        });
+
+        $('.runner').on('click', function (e) {
+
+            var notes = [];
+
+            notes['alert'] = 'Best check yo self, you\'re not looking too good.';
+            notes['error'] = 'Change a few things up and try submitting again.';
+            notes['success'] = 'You successfully read this important alert message.';
+            notes['information'] = 'This alert needs your attention, but it\'s not super important.';
+            notes['warning'] = '<strong>Warning!</strong> <br /> Best check yo self, you\'re not looking too good.';
+            notes['confirm'] = 'Do you want to continue?';
+
+            e.preventDefault();
+
+            var self = $(this);
+
+            if ( self.data('layout') == 'inline' ) {
+                $(self.data('custom')).noty($.extend({}, app.config('vendor.noty'), {
+                    text        : notes[self.data('type')],
+                    type        : self.data('type'),
+                    dismissQueue: true,
+                    animation   : {
+                        open : 'animated bounceInRight',
+                        close: 'animated bounceOutRight'
+                    },
+                    buttons     : (self.data('type') != 'confirm') ? false : [
+                        {
+                            addClass: 'btn btn-primary', text: 'Ok', onClick: function ($noty) {
+
+                            // this = button element
+                            // $noty = $noty element
+
+                            $noty.close();
+                            $(self.data('custom')).noty({force: true, text: 'You clicked "Ok" button', type: 'success'});
+                        }
+                        },
+                        {
+                            addClass: 'btn btn-danger', text: 'Cancel', onClick: function ($noty) {
+                            $noty.close();
+                            $(self.data('custom')).noty({force: true, text: 'You clicked "Cancel" button', type: 'error'});
+                        }
+                        }
+                    ]
+                }));
+                return false;
+            }
+
+            packadic.app.notify.create({
+                text        : notes[self.data('type')],
+                type        : self.data('type'),
+                dismissQueue: true,
+                layout      : self.data('layout'),
+                animation   : {
+                    open : 'animated ' + window.anim.open,
+                    close: 'animated ' + window.anim.close
+                },
+                buttons: (self.data('type') != 'confirm') ? false : [
+                    {
+                        addClass: 'btn btn-primary', text: 'Ok', onClick: function ($noty) {
+
+                        $noty.close();
+                        packadic.app.notify.create({
+                            force  : true, animation: {
+                                open : 'animated ' + window.anim.open,
+                                close: 'animated ' + window.anim.close
+                            }, text: 'You clicked "Ok" button', type: 'success', layout: self.data('layout')
+                        });
+                    }
+                    },
+                    {
+                        addClass: 'btn btn-danger', text: 'Cancel', onClick: function ($noty) {
+                        $noty.close();
+                        packadic.app.notify.create({
+                            force  : true,
+                            animation: {
+                                open : 'animated bounceIn',
+                                close: 'animated bounceOut'
+                            }, text: 'You clicked "Cancel" button', type: 'error', layout: self.data('layout')
+                        });
+                    }
+                    }
+                ]
+            });
+            return false;
+        });
+
+mixin anim-select()
+    select&attributes(attributes)
+        optgroup(label='Attention Seekers')
+            option(value='bounce') bounce
+            option(value='flash') flash
+            option(value='pulse') pulse
+            option(value='rubberBand') rubberBand
+            option(value='shake') shake
+            option(value='swing') swing
+            option(value='tada') tada
+            option(value='wobble') wobble
+        optgroup(label='Bouncing Entrances')
+            option(value='bounceIn') bounceIn
+            option(value='bounceInDown') bounceInDown
+            option(value='bounceInLeft') bounceInLeft
+            option(value='bounceInRight') bounceInRight
+            option(value='bounceInUp') bounceInUp
+        optgroup(label='Bouncing Exits')
+            option(value='bounceOut') bounceOut
+            option(value='bounceOutDown') bounceOutDown
+            option(value='bounceOutLeft') bounceOutLeft
+            option(value='bounceOutRight') bounceOutRight
+            option(value='bounceOutUp') bounceOutUp
+        optgroup(label='Fading Entrances')
+            option(value='fadeIn') fadeIn
+            option(value='fadeInDown') fadeInDown
+            option(value='fadeInDownBig') fadeInDownBig
+            option(value='fadeInLeft') fadeInLeft
+            option(value='fadeInLeftBig') fadeInLeftBig
+            option(value='fadeInRight') fadeInRight
+            option(value='fadeInRightBig') fadeInRightBig
+            option(value='fadeInUp') fadeInUp
+            option(value='fadeInUpBig') fadeInUpBig
+        optgroup(label='Fading Exits')
+            option(value='fadeOut') fadeOut
+            option(value='fadeOutDown') fadeOutDown
+            option(value='fadeOutDownBig') fadeOutDownBig
+            option(value='fadeOutLeft') fadeOutLeft
+            option(value='fadeOutLeftBig') fadeOutLeftBig
+            option(value='fadeOutRight') fadeOutRight
+            option(value='fadeOutRightBig') fadeOutRightBig
+            option(value='fadeOutUp') fadeOutUp
+            option(value='fadeOutUpBig') fadeOutUpBig
+        optgroup(label='Flippers')
+            option(value='flip') flip
+            option(value='flipInX', selected='selected') flipInX
+            option(value='flipInY') flipInY
+            option(value='flipOutX') flipOutX
+            option(value='flipOutY') flipOutY
+        optgroup(label='Lightspeed')
+            option(value='lightSpeedIn') lightSpeedIn
+            option(value='lightSpeedOut') lightSpeedOut
+        optgroup(label='Rotating Entrances')
+            option(value='rotateIn') rotateIn
+            option(value='rotateInDownLeft') rotateInDownLeft
+            option(value='rotateInDownRight') rotateInDownRight
+            option(value='rotateInUpLeft') rotateInUpLeft
+            option(value='rotateInUpRight') rotateInUpRight
+        optgroup(label='Rotating Exits')
+            option(value='rotateOut') rotateOut
+            option(value='rotateOutDownLeft') rotateOutDownLeft
+            option(value='rotateOutDownRight') rotateOutDownRight
+            option(value='rotateOutUpLeft') rotateOutUpLeft
+            option(value='rotateOutUpRight') rotateOutUpRight
+        optgroup(label='Specials')
+            option(value='hinge') hinge
+            option(value='rollIn') rollIn
+            option(value='rollOut') rollOut
+        optgroup(label='Zoom Entrances')
+            option(value='zoomIn') zoomIn
+            option(value='zoomInDown') zoomInDown
+            option(value='zoomInLeft') zoomInLeft
+            option(value='zoomInRight') zoomInRight
+            option(value='zoomInUp') zoomInUp
+        optgroup(label='Zoom Exits')
+            option(value='zoomOut') zoomOut
+            option(value='zoomOutDown') zoomOutDown
+            option(value='zoomOutLeft') zoomOutLeft
+            option(value='zoomOutRight') zoomOutRight
+            option(value='zoomOutUp') zoomOutUp
+
+mixin layout-actions(layout)
+    .col-xs-12.col-md-4.col-lg-4
+        h5.mt-n=_s.capitalize(layout)
+        a.runner(href='', data-layout=layout, data-type='alert') Alert
+        | ,
+        a.runner(href='', data-layout=layout, data-type='success') Success
+        | ,
+        a.runner(href='', data-layout=layout, data-type='error') Error
+        | ,
+        a.runner(href='', data-layout=layout, data-type='warning') Warning
+        | ,
+        a.runner(href='', data-layout=layout, data-type='information') Information
+        | ,
+        a.runner(href='', data-layout=layout, data-type='confirm') Confirm
+        hr.mt-n
+block content
+    #layouts
+        .row
+            .col-xs-12.col-md-4.col-lg-4
+                p.excerpt
+                    strong NOTY
+                    |  has
+                    strong 11
+                    |  layouts and also you can create custom layouts.
+            +layout-actions('top')
+            .col-xs-12.col-md-4.col-lg-4
+                label(for='anim-open') Open Animation (Animate.css)
+                #uniform-anim-open.selector(style='width: 281.56px;')
+                    span(style='width: 257.4px; -webkit-user-select: none;') flipInX
+                    +anim-select#anim-open(name='anim-open')
+                label(for="anim-close") Close Animation (Animate.css)
+                #uniform-anim-close.selector(style='width: 281.56px;')
+                    span(style='width: 257.4px; -webkit-user-select: none;') flipOutX
+                    +anim-select#anim-close(name='anim-close')
+
+        .row
+            +layout-actions('topLeft')
+            +layout-actions('topCenter')
+            +layout-actions('topRight')
+        .row
+            +layout-actions('centerLeft')
+            +layout-actions('center')
+            +layout-actions('centerRight')
+        .row
+            +layout-actions('bottomLeft')
+            +layout-actions('bottomCenter')
+            +layout-actions('bottomRight')
+        .row
+            +layout-actions('footerLeft')
+            +layout-actions('bottom')
+            +layout-actions('footerRight')
+
+        .row

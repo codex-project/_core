@@ -1,0 +1,18 @@
+//-
+    jade-bootstrap
+    https://github.com/metalshark/jade-bootstrap
+
+    Copyright (c) 2013 'Metalshark' Beech Horn
+    Licensed under the LGPL v3 license.
+
+//- http://getbootstrap.com/css/#overview-mobile
+
+mixin viewport
+    - attributes.name = attributes.name || 'viewport'
+    - if (attributes.noUserScalable) {
+    -     attributes.noUserScalable = null
+    -     attributes.content = attributes.content || 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+    - } else {
+    -     attributes.content = attributes.content || 'width=device-width, initial-scale=1.0'
+    - }
+    meta&attributes(attributes)

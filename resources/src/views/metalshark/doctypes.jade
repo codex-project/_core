@@ -1,0 +1,14 @@
+//-
+    jade-bootstrap
+    https://github.com/metalshark/jade-bootstrap
+
+    Copyright (c) 2013 'Metalshark' Beech Horn
+    Licensed under the LGPL v3 license.
+
+//- http://getbootstrap.com/css/#overview-doctype
+
+mixin doctype
+    - attributes.lang = attributes.lang || 'en'
+    doctype html
+    html&attributes(attributes)
+        block

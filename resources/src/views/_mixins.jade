@@ -1,0 +1,142 @@
+mixin stylesheet(name, bower)
+    - name = _s.endsWith(name, '.css') ? name : name + '.css';
+    - var path = bower === true ? assetPath + 'bower_components/' : assetPath + 'styles/';
+    link(href=path + name, rel='stylesheet', type='text/css')&attributes(attributes)
+
+mixin javascript(name, bower)
+    - name = _s.endsWith(name, '.js') ? name : name + '.js';
+    - var path = bower === true ? assetPath + 'bower_components/' : assetPath + 'scripts/';
+    script(src=path + name)
+
+mixin javascript2(name, devName, bower, devBower)
+    - name = _s.endsWith(name, '.js') ? name : name + '.js';
+    - bower = _.isBoolean(devName) ? devName : bower || false;
+    - devBower = _.isBoolean(devBower) ? devBower : bower || false;
+    - var path = assetPath;
+    - if(_.isString(devName)){
+    -   devName = _s.endsWith(devName, '.js') ? devName : devName + '.js';
+    -   name = _target === 'dist' ? name : devName;
+    -   bower = _target === 'dist' ? bower : devBower;
+    - }
+    - path += (bower === true ? 'bower_components/' : 'scripts/');
+    script(src=path + name)
+
+mixin sb-item(title, href, icon, hasChildren)
+    - href = href || '#';
+    - var attr = {};
+    - attr[ href[0] === '[' ? 'bind-router-link' : 'href'] = href;
+    li&attributes(attributes)
+        a&attributes(attr)
+            if icon
+                i(class=icon)
+            span.title= title
+            if hasChildren
+                span.arrow
+        block
+
+mixin sb-submenu()
+    ul.sub-menu&attributes(attributes)
+        block
+
+mixin sb-recurse(items, level)
+    - level = typeof level !== 'undefined' ? level : 0
+    each item, i in items
+        if item.type == 'heading'
+            li.heading: h3= item.name
+        else
+            - var hasChildren = (typeof item.children !== 'undefined' && item.children.length > 0);
+            - var href = item.href;
+            - if(item.type != 'parent' && item.type != 'href') href = rootPath + href;
+            +sb-item(item.name, href, item.icon, hasChildren)
+                if hasChildren
+                    +sb-submenu
+                        +sb-recurse(item.children, level++)
+
+mixin alert(type, dismissible, fade)
+    - var cls='alert-' + type + (dismissible ? ' alert-dismissible' : '') + (fade ? ' fade in' : '')
+    .alert(role='alert', class=cls)&attributes(attributes)
+        if dismissible
+            button.close(type='button', data-dismiss='alert', aria-label='Close')
+                span(aria-hidden='true') ×
+                span.sr-only Close
+        block
+
+mixin lia(href)
+    li: +a(href)
+        block
+
+mixin dropdown-button(text, color, size, caret)
+    - caret = caret || false
+    - color = color || 'btn-primary';
+    - size = size || 'xs';
+    .btn-group
+        a.btn.dropdown-toggle(href='javscript:;', type='button', data-toggle='dropdown', aria-expanded='false', class=color + ' btn-' + size)
+            | #{text}&nbsp;
+            if caret == true
+                span.caret
+        +dropdown-menu&attributes(attributes)
+            block
+
+mixin breadcrumb(link, last)
+    - last = last || false;
+    - link = link || 'javascript:;'
+    li
+        a(href=link)
+            block
+        if last == false
+            i.fa.fa-arrow-right
+
+mixin _dump(val)
+    pre: code=_inspect(val, { colors: false, hidden: true })
+
+
+mixin progressbar(min, max, val, textDisplay, format)
+    - if(textDisplay){
+    -   attributes['data-bar-text-display'] = textDisplay;
+    - }
+    - if(format) {
+    -   attributes['data-bar-text-format'] = format;
+    - }
+    -     if (attributes.primary) {
+    -         _addClassAttribute('primary', 'progress-primary', attributes)
+    -     } else if (attributes.success) {
+    -         _addClassAttribute('success', 'progress-success', attributes)
+    -     } else if (attributes.info) {
+    -         _addClassAttribute('info', 'progress-info', attributes)
+    -     } else if (attributes.warning) {
+    -         _addClassAttribute('warning', 'progress-warning', attributes)
+    -     } else if (attributes.danger) {
+    -         _addClassAttribute('danger', 'progress-danger', attributes)
+    -     }
+    - _addClassAttribute('striped', 'progress-striped', attributes)
+    - _addClassAttribute('active', 'active', attributes)
+    progress.progress(value=val, max=max)&attributes(attributes)=val+'%'
+
+
+
+mixin dd-item(href)
+    - href = href || '#'
+    a(href=href).dropdown-item&attributes(attributes)
+        block
+
+mixin dd-menu
+    .dropdown-menu
+        block
+
+
+mixin dd-submenu(name)
+    .dropdown-submenu
+        +dd-item #{name}
+        .dropdown-menu
+            block
+
+mixin dd-footer
+    .dropdown-footer
+        block
+
+mixin dd-divider
+    .dropdown-divider.bg-color-grey-300
+
+mixin dd-toggler
+    a(href='#', type='button', data-toggle='dropdown', aria-expanded='false').dropdown-toggle&attributes(attributes)
+        block

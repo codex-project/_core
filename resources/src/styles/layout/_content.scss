@@ -1,0 +1,208 @@
+.page-head {
+
+    @include clearfix();
+
+    .page-title {
+        display: inline-block;
+        float: left;
+        padding: 5px 0 10px 0;
+
+        > h1 {
+            color: #697882;
+            font-size: 22px;
+            font-weight: 400;
+            margin: 0;
+            padding: 0;
+
+            > small {
+                color: #9eacb4;
+                font-size: 13px;
+                font-weight: 400;
+                padding-left: 10px;
+            }
+        }
+    }
+
+    $page-breadcrumb-toolbar-main-color: lighten(#eff2f4, 3%);
+
+    .page-toolbar {
+        display: inline-block;
+        float: right;
+    }
+
+
+}
+.page-head.page-head-compact .page-title {
+    padding: 0 !important;
+}
+.page-head.page-head-compact + .page-breadcrumb {
+    padding: 0 !important;
+}
+
+.page-content-inner {
+    @include make-row();
+    margin: 8px 0 0 -20px !important;
+    padding: 10px 20px 20px 20px !important;
+    @include make-col-span(12);
+    float: none !important;
+    width: auto !important;
+}
+
+.page-content-seperator {
+    background: material-color('blue-grey', '200');
+    height: 1px;
+    width: auto;
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-top: 8px;
+}
+
+.breadcrumb {
+    background: none;
+    padding: 0 0 5px 0;
+    margin: 0;
+    color: #c5ccd5;
+    font-size: 11px;
+}
+
+.breadcrumb > li + li:before {
+    display: none;
+}
+
+.breadcrumb .fa {
+    font-size: 8px;
+    margin: 0 6px 0 4px;
+    position: relative;
+    top: -1px;
+}
+
+.breadcrumb > .active {
+    color: #9eacb4;
+}
+
+.page-content {
+    margin-top: 0px;
+    padding: 0px;
+
+    .page-full-width & {
+        margin-left: 0px !important;
+    }
+}
+
+//@media (min-width: $screen-md-min) {
+@include media-breakpoint-up(lg){
+    .page-content-wrapper {
+        float: left;
+        width: 100%;
+
+        .page-content {
+            margin-left: $sidebar-width;
+            margin-top: 0px;
+            min-height: $page-content-min-height;
+            padding: 10px 0 0 20px;
+
+            .page-content-seperator {
+                margin-right: 0;
+
+                .page-sidebar-reversed & {
+                    margin-right: -20px;
+                }
+            }
+
+            &.no-min-height {
+                min-height: auto;
+            }
+
+            .page-sidebar-fixed.page-sidebar-hover-on & {
+                margin-left: $sidebar-collapsed-width;
+            }
+
+            .page-sidebar-reversed & {
+                margin-left: 0 !important;
+                margin-right: $sidebar-width !important;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .page-sidebar-reversed.page-sidebar-fixed.page-sidebar-hover-on & {
+                margin-left: 0;
+                margin-right: $sidebar-collapsed-width;
+            }
+
+            .page-sidebar-reversed.page-sidebar-closed & {
+                margin-left: 0 !important;
+                margin-right: $sidebar-collapsed-width !important;
+            }
+
+            .page-sidebar-closed & {
+                margin-left: $sidebar-collapsed-width !important;
+            }
+
+            .page-sidebar-closed.page-sidebar-hide & {
+                margin-left: 0 !important;
+            }
+
+            .page-sidebar-closed.page-sidebar-reversed.page-sidebar-hide & {
+                margin-right: 0 !important;
+            }
+
+            .page-full-width & {
+                margin-left: 0px !important;
+            }
+        }
+    }
+}
+
+//@media (max-width: $screen-sm-max) {
+@include media-breakpoint-down(md){
+    .page-boxed > .container {
+        width: 100%;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .page-content-wrapper {
+        .page-content {
+            margin: 0px !important;
+            padding: 20px !important;
+            min-height: 280px;
+        }
+    }
+}
+
+//@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+@include media-breakpoint-only(sm){
+    .page-boxed > .container {
+        margin: auto !important;
+    }
+}
+
+//@media (max-width: $screen-xs-max) {
+@include media-breakpoint-down(xs){
+    .page-content-wrapper .page-content {
+        padding: 20px 10px 10px 10px !important;
+        overflow: hidden;
+
+        .page-title {
+            margin-bottom: 15px;
+            font-size: 20px;
+
+            small {
+                font-size: 13px;
+                padding-top: 3px;
+            }
+        }
+    }
+
+}
+
+@media (max-width: $screen-xs-min) {
+    .page-content-wrapper {
+        .page-content .page-title small {
+            display: block;
+            clear: both;
+
+        }
+    }
+}

@@ -1,0 +1,3 @@
+body.page-loading {
+    @include createLoader(page, $page-loader-color, $page-loader-size, $page-loader-margin, $page-loader-speed);
+}
