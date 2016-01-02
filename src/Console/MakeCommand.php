@@ -30,9 +30,7 @@ class MakeCommand extends BaseCommand
         $name        = Str::slugify($name);
 
         $this->generate($name, [
-            'config.php.stub' => 'config.php',
-            'index.md.stub'   => '{{directory}}/index.md',
-            'menu.yml.stub'   => '{{directory}}/menu.yml'
+            'config.php.stub' => 'config.php'
         ], [
             'displayName' => $displayName
         ]);

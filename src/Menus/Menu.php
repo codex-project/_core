@@ -133,6 +133,7 @@ class Menu
         if (! is_null($parent) and $this->items->has($parent)) {
             $parentNode = $this->items->get($parent);
             $parentNode->addChild($node);
+            $node->setParent($parentNode);
             $node->setMeta('data-parent', $parent);
         }
 

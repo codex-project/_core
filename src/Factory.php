@@ -34,7 +34,7 @@ class Factory implements Codex
     /**
      * The codex menu factory instance
      *
-     * @var \Codex\Core\Menus\MenuFactory
+     * @var \Codex\Core\Contracts\Menus\MenuFactory|\Codex\Core\Menus\MenuFactory
      */
     protected $menus;
 
@@ -72,7 +72,7 @@ class Factory implements Codex
      * @param \Illuminate\Contracts\Config\Repository     $config
      * @param \Illuminate\Contracts\Cache\Repository      $cache
      * @param \Codex\Core\Contracts\Log                   $log
-     * @param \Codex\Core\Contracts\Menus\MenuFactory     $menus The menu factory
+     * @param \Codex\Core\Contracts\Menus\MenuFactory|\Codex\Core\Menus\MenuFactory     $menus The menu factory
      */
     public function __construct(Container $container, Filesystem $files, Repository $config, Cache $cache, Log $log, MenuFactory $menus)
     {
@@ -89,6 +89,7 @@ class Factory implements Codex
         $this->runHook('factory:ready', [ $this ]);
 
         $this->resolveProjects();
+        $this->resolveProjectsMenu();
 
         // 'factory:done' called after all factory operations have completed.
         $this->runHook('factory:done', [ $this ]);
@@ -126,7 +127,7 @@ class Factory implements Codex
         /**
          * @var \Codex\Core\Menus\Node $projectsMenu
          */
-        $projectsMenu = $this->menus->add('projects_menu');
+        #$projectsMenu = $this->menus->add('projects_menu');
         $finder       = new Finder();
         $projects     = $finder->in($this->rootDir)->files()->name('config.php')->depth('<= 1')->followLinks();
 
@@ -144,9 +145,39 @@ class Factory implements Codex
             $this->runHook('project:make', [ $this, $project ]);
 
             $this->projects->put($name, $project);
-            $projectsMenu->add($name, $name, 'root', [ ], [
-                'href' => $this->url($project)
-            ]);
+//            $projectsMenu->add($name, $name, 'root', [ ], [
+//                'href' => $this->url($project)
+//            ]);
+        }
+    }
+
+    protected function resolveProjectsMenu()
+    {
+        /** @var \Codex\Core\Menus\Menu $menu */
+        $menu = $this->menus->add('projects');
+
+        foreach ($this->getProjects() as $project) {
+            $name  = (string)$project->config('display_name');
+            $names = [ ];
+            if (strpos($name, ' :: ') !== false) {
+                $names = explode(' :: ', $name);
+                $name  = array_shift($names);
+            }
+            $href = $project->url();
+            if (!$menu->has($name)) {
+                $menu->add($name, $name, 'root', [ ], count($names) === 0 ? compact('href') : [ ]);
+            }
+
+            $parentId = $name;
+            $id = $name;
+            while (count($names) > 0) {
+                $name = array_shift($names);
+                $id .= '::' . $name;
+                if (!$menu->has($id)) {
+                    $menu->add($id, $name, $parentId, [ ], count($names) === 0 ? compact('href') : [ ]);
+                }
+                $parentId = $id;
+            }
         }
     }
 

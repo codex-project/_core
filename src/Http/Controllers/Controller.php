@@ -2,7 +2,6 @@
 namespace Codex\Core\Http\Controllers;
 
 use Codex\Core\Contracts\Codex;
-use Codex\Core\Contracts\Menus\MenuFactory;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -19,12 +18,7 @@ class Controller extends BaseController
     /**
      * @var \Codex\Core\Contracts\Codex|\Codex\Core\Factory
      */
-    protected $factory;
-
-    /**
-     * @var \Codex\Core\Contracts\Menus\MenuFactory|\Codex\Core\Menus\MenuFactory
-     */
-    protected $menus;
+    protected $codex;
 
     /**
      * @var \Illuminate\View\Factory
@@ -36,10 +30,10 @@ class Controller extends BaseController
      * @param \Codex\Core\Contracts\Menus\MenuFactory $menus
      * @param \Illuminate\Contracts\View\Factory      $view
      */
-    public function __construct(Codex $factory, MenuFactory $menus, ViewFactory $view)
+    public function __construct(Codex $codex, ViewFactory $view)
     {
-        $this->factory = $factory;
-        $this->menus = $menus;
-        $this->view = $view;
+        $this->codex = $codex;
+        $this->view  = $view;
+        $view->share('codex', $codex);
     }
 }

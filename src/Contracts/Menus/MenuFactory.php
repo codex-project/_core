@@ -17,4 +17,12 @@ namespace Codex\Core\Contracts\Menus;
 interface MenuFactory
 {
 
+    /**
+     * Creates a new menu or returns an existing
+     *
+     * @param string $id
+     *
+     * @return \Codex\Core\Menus\Menu
+     */
+    public function add($id);
 }

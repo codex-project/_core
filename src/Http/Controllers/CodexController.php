@@ -25,7 +25,7 @@ class CodexController extends Controller
         $this->runHook('controller:index', [ $this ]);
 
         return redirect(route('codex.document', [
-            'projectSlug' => $this->factory->config('default_project')
+            'projectSlug' => $this->codex->config('default_project')
         ]));
     }
 
@@ -40,7 +40,7 @@ class CodexController extends Controller
      */
     public function document($projectSlug, $ref = null, $path = '')
     {
-        $project = $this->factory->getProject($projectSlug);
+        $project = $this->codex->getProject($projectSlug);
 
         if (is_null($ref)) {
             $ref = $project->getDefaultRef();
@@ -57,9 +57,9 @@ class CodexController extends Controller
         $content    = $document->render();
         $breadcrumb = $document->getBreadcrumb();
 
-        $this->view->composer($document->attr('view'), $this->factory->config('projects_menus_view_composer'));
+        $this->view->composer($document->attr('view'), $this->codex->config('projects_menus_view_composer'));
 
-        //app('debugbar')->add
+        $codex = $this->codex;
 
         return $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
     }
