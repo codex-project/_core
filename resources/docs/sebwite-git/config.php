@@ -21,7 +21,8 @@ return [
                 ],
                 'paths'       => [
                     'docs' => 'docs',
-                    'menu' => 'docs/menu.yml'
+                    'menu' => 'docs/menu.yml',
+                    'index' => 'README.md'
                 ]
             ],
             'webhook'    => [
