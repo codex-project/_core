@@ -1,0 +1,63 @@
+
+@for $i from 9 through 30 {
+    .font-size-#{$i}, .fs-#{$i} {
+        font-size: #{$i}px !important;;
+    }
+}
+
+$font-weights: 100 200 300 400 500 600 700 800 900 bold bolder lighter normal;
+@each $weight in $font-weights {
+    .fw-#{$weight} {
+        font-weight: $weight !important;
+    }
+}
+
+body {
+    font-family: $font-family-base;
+    font-weight: $base-font-weight;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 25px;
+    margin-bottom:5px;
+    color: #697882;
+    font-weight: 400;
+}
+
+h1 { font-size: 25px }
+h2 { font-size: 20px }
+h3 { font-size: 18px }
+h4 { font-size: 16px; color: #697882; }
+h5 { font-size: 15px; color: #697882; }
+h6 { font-size: 14px; color: #697882; }
+
+h1, h2, h3, h4, h5, h6 {
+    a.anchor {
+        display: none;
+        float: left;
+        padding-top: 8px;
+        padding-right: 2px;
+        font-size: 12px;
+        margin-left: -15px;
+        .header-link {
+            @include fa-icon;
+            &:before {
+                content: $fa-var-link;
+            }
+        }
+        &:hover {
+            display: block;
+        }
+    }
+
+    &:hover {
+        a.anchor {
+            display: block;
+        }
+    }
+}
+
+h2, h3 { a.anchor {  padding-top: 5px; } }
+h4 { a.anchor {  padding-top: 3px; } }
+h5, h6 { a.anchor {  padding-top: 2px; } }
+

@@ -1,0 +1,16 @@
+
+.progress {
+    margin: 10px;
+
+    // fix bs progressbar https://github.com/minddust/bootstrap-progressbar/issues/32
+    .progressbar-back-text {
+        display: block;
+
+        z-index: 2;
+        font-family: $font-family-sub-heading;
+        font-weight: 700;
+    }
+    .progressbar-front-text {
+        display: none;
+    }
+}

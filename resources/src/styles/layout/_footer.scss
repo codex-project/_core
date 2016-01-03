@@ -1,0 +1,220 @@
+
+.page-footer {
+    padding: 5px 20px 10px 20px;
+    font-size: 13px;
+    height: $page-footer-height;
+
+    @include clearfix();
+
+    .page-footer-inner {
+        float: left;
+        display: inline-block;
+        padding-left: 10px;
+    }
+
+    .page-footer-tools {
+        float: right;
+        display: inline-block;
+
+        .go-top {
+            display: block;
+            text-decoration: none;
+            cursor: pointer;
+            margin-top: -2px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+            font-size: 16px;
+            padding: 0px 6px 0px 6px;
+
+            i {
+                font-size: 22px;
+                margin-bottom: 5px;
+            }
+        }
+    }
+
+    .page-footer-fixed.page-footer-fixed-mobile & {
+        position: fixed;
+        left: 0;
+        right: 0;
+        z-index: $zindex-footer-fixed;
+        bottom: 0;
+    }
+
+    .page-footer-fixed.page-footer-fixed-mobile.page-sidebar-fixed & {
+        margin-left: 0 !important;
+    }
+}
+
+//@media (min-width: $screen-md-min) {
+@include media-breakpoint-up(lg){
+    .page-footer {
+        clear: left;
+
+        .page-boxed & {
+
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+    }
+
+    .page-footer-fixed {
+        &.page-boxed {
+            .page-footer {
+                margin-left: 0;
+                margin-right: 0;
+
+                .container {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+
+                @include media-breakpoint-up(sm) {
+                    .container {
+                        @include make-container();
+                    }
+                    .page-footer-inner {
+                        padding-left: 20px !important;
+                        padding-right: 20px !important;
+                    }
+                }
+            }
+        }
+
+        .page-footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            z-index: $zindex-footer-fixed;
+            bottom: 0;
+        }
+    }
+
+    .page-sidebar-fixed {
+        &.page-sidebar-closed {
+            .page-footer {
+                margin-left: $sidebar-collapsed-width;
+            }
+        }
+
+        &.page-footer-fixed {
+            .page-footer {
+                margin-left: 0 !important;
+                padding: 8px 20px 5px 20px;
+            }
+        }
+    }
+
+    .page-sidebar-fixed {
+        .page-footer {
+            margin-left: $sidebar-width;
+            padding: 8px 20px 5px 40px;
+        }
+    }
+
+    .page-boxed {
+        .page-footer {
+            padding: 8px 0 5px 0;
+        }
+
+        &.page-sidebar-fixed .page-footer {
+            padding-right: 20px;
+            padding-left: 20px;
+        }
+    }
+
+    .page-sidebar-reversed.page-sidebar-fixed {
+        .page-footer {
+            margin-left: 0;
+            margin-right: $sidebar-width;
+            padding: 8px 20px 5px 20px;
+        }
+
+        &.page-footer-fixed {
+            .page-footer {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+
+        &.page-sidebar-closed {
+            .page-footer {
+                margin-right: $sidebar-collapsed-width;
+            }
+        }
+    }
+}
+
+//@media (max-width: $screen-sm-max) {
+@include media-breakpoint-down(md){
+    .page-footer {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+//@media (max-width: $screen-xs-max) {
+@include media-breakpoint-down(sm){
+    .page-footer,
+    .page-boxed .page-footer {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .page-footer-fixed {
+        .page-footer {
+            .container {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    }
+}
+
+
+
+
+
+.scroll-to-top {
+    display: inline-block;
+    padding: 2px;
+    text-align: center;
+    position: fixed;
+    z-index: $zindex-go-to-top;
+    bottom: 35px;
+    display: none;
+    right: 30px;
+
+    > i {
+        display: inline-block;
+        color: darken(#94a0b2, 15%);
+        font-size: 40px;
+        @include opacity(0.7);
+    }
+
+    &:hover {
+        cursor: pointer;
+
+        > i {
+            @include opacity(1);
+        }
+    }
+
+}
+
+//@media (min-width: $screen-md-min) {
+@include media-breakpoint-up(md){
+    .scroll-to-top {
+        right: 30px;
+    }
+}
+
+
+
+//@media (max-width: $screen-sm-max) {
+@include media-breakpoint-down(sm){
+    .scroll-to-top {
+        bottom: 30px;
+        right: 5px;
+    }
+}

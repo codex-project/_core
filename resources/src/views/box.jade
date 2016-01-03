@@ -1,0 +1,73 @@
+extends layouts/default
+
+
+block page-title
+    | Box
+
+// block breadcrumb
+    +breadcrumb('index.html') Home
+    +breadcrumb('code-block.html', true) Code Block
+mixin ibox-ctrl(title, btnClass, icon)
+    a(href='javascript:;', rel='tooltip', title=title, data-placement='bottom', class='ibox-' + btnClass + '-btn').button-icon&attributes(attributes)
+        i.fa(class='fa-' + icon)
+block content
+
+    .row
+        .col-md-12
+            button.btn.btn-primary(v-on='click: showModal = true') Modal
+            modal(show="{{@showModal}}")
+                .modal-body
+                    p Helloo
+
+            button.btn.btn-primary(v-popover='This is the popover') Popover
+
+            button.btn.btn-primary(v-popover='Title :: This is the popover') Popover
+
+            color-selector(target="'.page-footer'")
+                a.btn.btn-primary(v-color-selector) .page-footer
+
+    .row(v-ibox-grid='.ibox-grid-column')
+        .col-md-6.ibox-grid-column
+            ibox#ibox-one
+                | Hercle, gluten primus!. As i have forgotten you, so you must witness one another.
+            ibox#ibox-two
+                | Eheu, pius amor! As i have forgotten you, so you must witness one another.
+
+        .col-md-6.ibox-grid-column
+            .ibox
+                header
+                    .ibox-ctrls(role='menus')
+                        +ibox-ctrl('Collapse', 'toggle', 'minus')
+                        +ibox-ctrl('Fullscreen', 'fullscreen', 'expand')
+                        +ibox-ctrl('Delete', 'delete', 'times')
+
+                    h2 Ibox title
+                    .ibox-toolbar
+                div
+                    .ibox-body
+                        p body
+                    .ibox-footer
+                        p footer
+block append scripts
+    +javascript('jquery-ui/ui/core', true)
+    +javascript('jquery-ui/ui/mouse', true)
+    +javascript('jquery-ui/ui/sortable', true)
+    //+javascript('html.sortable/dist/html.sortable.min', true)
+    //+javascript('jquery-sortable/source/js/jquery-sortable-min', true)
+
+block append script
+    script.
+        (function () {
+            var app = packadic.Application.instance;
+            app.mergeData({
+                breadcrumbs: {
+                    items: [
+                        {title: 'Components'},
+                        {title: 'Box', href: location.href}
+                    ]
+                },
+                showModal: false,
+                showPopover: false
+            })
+
+        }.call())

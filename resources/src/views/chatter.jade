@@ -1,0 +1,44 @@
+extends layouts/default
+
+block vars
+    - bodyClass += ' page-sidebar-closed page-sidebar-hide';
+
+block page-title
+    | Chatter
+
+// block breadcrumb
+    +breadcrumb('index.html') Home
+    +breadcrumb('code-block.html', true) Code Block
+
+block content
+    .row
+        .col-md-12
+            .chatter
+                .chatter-messages
+                .chatter-form
+                    form.well
+                        textarea.form-control.chatter-input(rows=3)
+
+block append styles
+    style(type='text/css').
+        .chatter {
+        }
+        .chatter-messages {
+            height: 80%;
+        }
+
+
+block append script
+    script.
+        (function () {
+            var app = packadic.Application.instance;
+            app.mergeData({
+                breadcrumbs: {
+                    items: [
+                        {title: 'Components'},
+                        {title: 'Box', href: location.href}
+                    ]
+                }
+            });
+
+        }.call())

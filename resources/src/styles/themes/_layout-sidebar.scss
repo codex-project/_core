@@ -1,0 +1,146 @@
+@mixin sidebar-arrow-color($arrow-color: $sidebar-menu-arrow-color) {
+    > .arrow {
+        &:before,
+        &.open:before {
+            color: $arrow-color;
+        }
+    }
+}
+
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover,
+.page-sidebar {
+    background-color: $sidebar-bg-color;
+
+    .page-sidebar-menu {
+
+        > li {
+
+            &.heading > h3 {
+                color: $sidebar-menu-active-color;
+            }
+
+            > a {
+                color: $sidebar-menu-link-font-color;
+                background: $sidebar-menu-link-bg-color;
+
+                @media (max-width: $screen-sm-max) { /* 991px */
+                    border-top: 1px solid lighten($sidebar-bg-color, 8%);
+                }
+
+                > i {
+                    color: $sidebar-menu-link-icon-font-color;
+                }
+
+                @include sidebar-arrow-color($sidebar-menu-arrow-color)
+            }
+
+            &:hover,
+            &.open {
+                > a {
+                    background: $sidebar-menu-link-bg-color-on-hover;
+                    color: $sidebar-menu-link-font-color-on-hover;
+
+                    > i {
+                        color: $sidebar-menu-link-icon-font-color-on-hover;
+                    }
+                    @include sidebar-arrow-color($sidebar-menu-arrow-color-on-hover);
+                }
+            }
+
+            &.active,
+            &.active.open {
+                > a {
+                    background: $sidebar-menu-link-bg-color-on-active;
+                    color: $sidebar-menu-link-font-color-on-active;
+
+                    &:hover {
+                        background: $sidebar-menu-link-bg-color-on-active;;
+                    }
+
+                    > i {
+                        color: $sidebar-menu-link-icon-font-color-on-active;
+                    }
+
+                    @include sidebar-arrow-color($sidebar-menu-arrow-color-on-active);
+
+                }
+            }
+
+            &.active > a {
+                border-left: 3px solid $sidebar-menu-active-color !important;
+                margin-left: -3px;
+            }
+        }
+
+        li {
+            > a {
+                @include sidebar-arrow-color($sidebar-menu-arrow-color)
+            }
+
+            &:hover > a {
+                @include sidebar-arrow-color($sidebar-menu-arrow-color-on-hover)
+
+            }
+
+            &.active > a {
+                @include sidebar-arrow-color($sidebar-menu-arrow-color-on-active)
+
+            }
+        }
+
+        .page-sidebar-closed &:hover .sub-menu {
+            background: $sidebar-menu-hover-sub-menu-bg-color;
+        }
+
+        .sub-menu > li {
+            > a {
+                color: $sidebar-menu-sub-menu-link-font-color;
+
+                > i {
+                    color: $sidebar-menu-sub-menu-link-icon-font-color;
+                }
+
+                @include sidebar-arrow-color($sidebar-menu-arrow-color);
+            }
+
+            &:hover,
+            &.open,
+            &.active {
+                > a {
+                    color: $sidebar-menu-sub-menu-link-font-color-on-hover;
+
+                    background: $sidebar-menu-sub-menu-link-bg-color-on-hover;
+
+                    > i {
+                        color: $sidebar-menu-sub-menu-link-icon-font-color-on-hover;
+                    }
+
+                    @include sidebar-arrow-color($sidebar-menu-arrow-color-on-hover);
+                }
+            }
+
+            &.active > a {
+                color: $sidebar-menu-sub-menu-link-font-color-on-active;
+                background: $sidebar-menu-sub-menu-link-bg-color-on-active;
+
+                &:hover {
+                    background: $sidebar-menu-sub-menu-link-bg-color-on-active;;
+                }
+
+                > i {
+                    color: $sidebar-menu-sub-menu-link-icon-font-color-on-active;
+                }
+
+            }
+        }
+    }
+}
+
+.page-sidebar-closed .page-sidebar-menu.page-sidebar-menu-closed > li:hover {
+    > a {
+        @include box-shadow($sidebar-menu-sub-menu-box-shadow);
+    }
+    > .sub-menu {
+        @include box-shadow($sidebar-menu-sub-menu-box-shadow);
+    }
+}

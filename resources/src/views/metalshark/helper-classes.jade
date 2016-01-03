@@ -1,0 +1,37 @@
+//-
+    jade-bootstrap
+    https://github.com/metalshark/jade-bootstrap
+
+    Copyright (c) 2013 'Metalshark' Beech Horn
+    Licensed under the LGPL v3 license.
+
+//- http://getbootstrap.com/css/#helper-classes
+
+mixin center-block
+    .center-block&attributes(attributes)
+        block
+
+mixin clearfix
+    - _responsiveMeta(attributes)
+    .clearfix&attributes(attributes)
+        block
+
+mixin close
+    button.close(aria-hidden='true', type='button')
+        | &times;
+
+mixin hidden
+    .hidden&attributes(attributes)
+        block
+
+mixin pull-left
+    .pull-left&attributes(attributes)
+        block
+
+mixin pull-right
+    .pull-right&attributes(attributes)
+        block
+
+mixin show
+    .show&attributes(attributes)
+        block

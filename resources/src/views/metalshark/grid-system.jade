@@ -1,0 +1,30 @@
+//-
+    jade-bootstrap
+    https://github.com/metalshark/jade-bootstrap
+
+    Copyright (c) 2013 'Metalshark' Beech Horn
+    Licensed under the LGPL v3 license.
+
+//- http://getbootstrap.com/css/#grid
+
+- function _colMeta(attributes) {
+-     var COLSIZES = ['xs', 'sm', 'md', 'lg']
+-     for (var s = 0; s != COLSIZES.length; s++) {
+-         var size = COLSIZES[s]
+-         for (var i = 0; i <= 12; i++) {
+-             _addClassAttribute(size + '-' + i, 'col-' + size + '-' + i, attributes)
+-             _addClassAttribute(size + '-offset-' + i, 'col-' + size + '-offset-' + i, attributes)
+-             _addClassAttribute(size + '-pull-' + i, 'col-' + size + '-pull-' + i, attributes)
+-             _addClassAttribute(size + '-push-' + i, 'col-' + size + '-push-' + i, attributes)
+-         }
+-     }
+- }
+
+mixin col
+    - _colMeta(attributes)
+    div&attributes(attributes)
+        block
+
+mixin row
+    .row&attributes(attributes)
+        block

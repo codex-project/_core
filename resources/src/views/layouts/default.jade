@@ -1,0 +1,164 @@
+include ../_base
+- var bodyClass = 'page-header-fixed page-footer-fixed page-edged page-sidebar-condensed'
+- var sidebarClass = ''
+- var pageHeadClass = ''
+- var pageHeaderClass = 'navbar-fixed-top';
+- rootPath = rootPath || '';
+- var assetPath = rootPath + 'assets/';
+- var themeStyle = 'docit';
+block vars
+doctype html
+<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html lang="en" class="ie9"><![endif]-->
+<!--[if !IE]><!-->
+html(lang="en")
+    <!--<![endif]-->
+    head
+        block head
+            title
+                block title
+                    |  !{typeof config !== 'undefined' ? config.title : 'Default'}
+            block meta
+                meta(charset="UTF-8")
+                meta(name="viewport", content="width=device-width, initial-scale=1")
+                meta(http-equiv="X-UA-Compatible", content="IE=edge")
+            block styles
+                +stylesheet('stylesheet')
+                +stylesheet('themes/theme-' +themeStyle)(id='theme-style')
+
+    block body
+        body.page-loading(class=bodyClass)
+            #page-loader
+                .loader.loader-page
+
+            block page-header
+                .page-header.navbar(class=pageHeaderClass)
+                    block page-header-inner
+                        .page-header-inner
+                            block header-logo
+                                .page-logo
+                                    .logo-packadic.pull-left
+                                        block header-logo-inner
+                                            | Index
+                                    block header-sidebar-toggler
+                                        .menu-toggler.sidebar-toggler(data-toggle='tooltip', title='Toggle the sidebar menu', data-layout-api='sidebar-toggle', data-placement='right')
+
+                                .page-actions
+                                    .btn-group
+                                        .btn-group
+                                            +dd-toggler.btn.btn-primary.btn-sm Actions
+                                            +dd-menu
+                                                +dd-item('#') First
+                                                +dd-divider
+                                                +dd-item('#') Second
+                                                +dd-item('#') Third
+                                                +dd-item('#') Fourth
+                                                +dd-footer
+                                                    +a Left
+                                                    +a Right
+                                        .btn-group
+                                            +dd-toggler.btn.btn-primary.btn-sm Options
+                                            +dd-menu
+                                                +dd-item('#') First
+                                                +dd-item('#') Second
+                                                +dd-submenu('Submenu')
+                                                    +dd-item('#') First
+                                                    +dd-item('#') Second
+                                                    +dd-footer
+                                                        +a Left
+                                                        +a Right
+                                                +dd-item('#') Third
+                                                +dd-divider
+                                                +dd-item('#') Fourth
+                                                +dd-item('#') Second 3
+                                                    +dd-submenu('Submenu')
+                                                        +dd-item('#') First
+                                                        +dd-item('#') Second
+                                                        +dd-item('#') First
+                                                        +dd-item('#') Second
+                                                        +dd-footer
+                                                            +a Left
+                                                            +a Right
+                                                    +dd-item('#') Third
+                                                +dd-footer
+                                                    +a Left
+                                                    +a Right
+
+
+                            block header-responsive-toggler
+                                a(href='javascript:;', data-toggle='collapse', data-target='.navbar-collapse').menu-toggler.responsive-toggler
+
+                            .pull-right
+                                block header-right
+                                    .nav-link.quick-sidebar-toggler(data-layout-api='qs-toggle', data-toggle='tooltip', title='Toggle the quick sidebar menu', data-placement='left', data-offset='0 10px')
+
+                .clearfix
+
+
+            block page-container
+                .page-container
+                    .page-sidebar-wrapper
+                        .page-sidebar.navbar-collapse.collapse
+                            block page-sidebar
+                                ul.page-sidebar-menu(class=sidebarClass)
+                                    block page-sidebar-menu
+                                        include ../partials/sidebar-items
+
+
+                    .page-content-wrapper
+                        block page-content-wrapper
+                            .page-content
+                                .page-head(class=pageHeadClass)
+                                    .page-title
+                                        h1
+                                            block page-title
+                                ul.page-breadcrumb.breadcrumb
+                                    block breadcrumb
+                                .page-content-seperator
+                                block page-content
+                                    .page-content-inner
+                                        block content
+
+
+            block page-footer
+                .page-footer
+                    .page-footer-inner
+                        block page-footer-inner
+                            - var year = (new Date()).getFullYear()
+                            | Copyright &copy; P #{year}
+                    block scroll-to-top
+                        .scroll-to-top
+                            i.fa.fa-level-up
+
+
+            block scripts
+                    +javascript('vendor')
+                    +javascript('packadic')
+                    +javascript('addons')
+
+
+            block init-script
+                script.
+                    (function(){
+                        var app = packadic.Application.instance;
+                        app.DEBUG = true;
+                    }.call())
+
+
+            block boot-script
+                script.
+                    (function() {
+                        var app = packadic.Application.instance;
+                        if ( ! app.isInitialised ) {
+                            app.init();
+                        }
+                        app.boot().then(function (app) {
+                            app.debug.log('BOOTED FROM boot-script');
+                        });
+                    }.call())
+
+            block script
+
+
+            block quick-sidebar
+                include ../partials/quick-sidebar

@@ -1,0 +1,13 @@
+@import "../base";
+
+$sidebar-bg-color:                                                      material-color('blue-grey', '900');
+$content-wrapper-bg-color:                                              #2D3A41;
+$sidebar-menu-link-bg-color-on-hover:                           		#37474f; //rgba(material-color('blue-grey', '800'), 0.4);
+$sidebar-menu-link-bg-color-on-active:                          		#37474f; //rgba(material-color('blue-grey', '800'), 0.6);
+$sidebar-menu-link-icon-font-color:                                     material-color('teal', '800');
+$sidebar-menu-link-icon-font-color-on-active:                           material-color('teal', '600');
+$sidebar-menu-link-icon-font-color-on-hover:                            material-color('blue-grey', '50') !default;
+$sidebar-menu-link-bg-color:                                            rgba(material-color('blue-grey', '800'), 0.4);
+$sidebar-menu-link-bg-color-on-active:                                  rgba(30, 70, 100, 0.5);
+
+@import "theme";

@@ -1,0 +1,49 @@
+$scss-json: (
+    breakpoints: (),
+    states: (),
+    containers: (),
+    fonts: (
+        primary: $font-family-primary,
+        heading: $font-family-heading,
+        sub-heading: $font-family-sub-heading,
+        code: $font-family-code
+    ),
+    em-base: $em-base,
+    options: (
+        flex: $enable-flex,
+        rounded: $enable-rounded,
+        shadows: $enable-shadows,
+        gradients: $enable-gradients,
+        transitions: $enable-transitions,
+        hover-media-query: $enable-hover-media-query,
+    )
+);
+
+// Breakpoints
+@each $breakpoint in map-keys($grid-breakpoints){
+    $scss-json: map-deep-set($scss-json, ('breakpoints', $breakpoint), em2px(map_get($grid-breakpoints, $breakpoint)));
+}
+
+// Breakpoints
+@each $container in map-keys($container-max-widths){
+    $scss-json: map-deep-set($scss-json, ('containers', $container), em2px(map_get($container-max-widths, $container)));
+}
+
+
+// States
+@function scss-json-add-state($name, $text, $bg, $border){
+    @return map-deep-set($scss-json, ('states', $name), (
+        text: $text,
+        bg: $bg,
+        border: $border
+    ));
+}
+
+
+
+$scss-json: scss-json-add-state('success', $state-success-text,$state-success-bg, $state-success-border);
+$scss-json: scss-json-add-state('info', $state-info-text,$state-info-bg, $state-info-border);
+$scss-json: scss-json-add-state('warning', $state-warning-text,$state-warning-bg, $state-warning-border);
+$scss-json: scss-json-add-state('danger', $state-danger-text,$state-danger-bg, $state-danger-border);
+$scss-json: (style: $scss-json);
+@include json-encode($scss-json);
