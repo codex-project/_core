@@ -118,6 +118,7 @@ class Project
         $this->versions = array_filter(array_map(function ($dirPath) use ($path, $name, &$branches) {
         
 
+
             $version      = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft($path)->removeLeft(DIRECTORY_SEPARATOR);
             $version      = (string)$version->removeLeft($name . '/');
             $this->refs[] = $version;
@@ -139,6 +140,7 @@ class Project
                 usort($this->versions, function (version $v1, version $v2) {
                 
 
+
                     return version::gt($v1, $v2) ? -1 : 1;
                 });
 
@@ -148,6 +150,7 @@ class Project
                 if (count($this->versions) > 0) {
                     usort($this->versions, function (version $v1, version $v2) {
                     
+
 
                         return version::gt($v1, $v2) ? -1 : 1;
                     });
@@ -210,7 +213,7 @@ class Project
         if (!isset($this->documents[ $pathName ])) {
             $path = Path::join($this->path, $this->ref, $pathName . '.md');
 
-            $this->documents[ $pathName ] = $this->container->make(Document::class, [
+            $this->documents[ $pathName ] = $this->container->make('codex.builder.document', [
                 'factory'  => $this->codex,
                 'project'  => $this,
                 'path'     => $path,
@@ -225,6 +228,15 @@ class Project
         return $this->documents[ $pathName ];
     }
 
+    public function hasEnabledFilter($filter)
+    {
+        return in_array($filter, $this->config('filters.enabled', [ ]), true);
+    }
+
+    public function hasEnabledHook($hook)
+    {
+        return in_array($hook, $this->config('hooks.enabled', [ ]), true);
+    }
 
     # Menu
 
@@ -233,15 +245,15 @@ class Project
      *
      * @return \Codex\Core\Menus\Menu
      */
-    public function getDocumentsMenu()
+    public function getSidebarMenu()
     {
 
-        $yaml  = $this->files->get(Path::join($this->path, $this->ref, 'menu.yml'));
+        $path  = Path::join($this->getPath(), $this->getRef(), 'menu.yml');
+        $yaml  = $this->files->get($path);
         $array = Yaml::parse($yaml);
-        $this->codex->getMenus()->forget('project_sidebar_menu');
+        $this->codex->getMenus()->forget('sidebar');
 
-        $menu = $this->resolveDocumentsMenu($array[ 'menu' ]);
-        $menu->setView('codex::menus/project-sidebar');
+        $menu = $this->setupSidebarMenu($array[ 'menu' ]);
         $this->runHook('project:documents-menu', [ $this, $menu ]);
 
         return $menu;
@@ -255,19 +267,19 @@ class Project
      *
      * @return \Codex\Core\Menus\Menu
      */
-    protected function resolveDocumentsMenu($items, $parentId = 'root')
+    protected function setupSidebarMenu($items, $parentId = 'root')
     {
         /**
          * @var Menus\Menu $menu
          */
-        $menu = $this->codex->getMenus()->add('project_sidebar_menu');
+        $menu = $this->getCodex()->getMenus()->add('sidebar');
 
         foreach ($items as $item) {
             $link = '#';
             if (array_key_exists('document', $item)) {
             // remove .md extension if present
                 $path = Str::endsWith($item[ 'document' ], '.md', false) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
-                $link = $this->codex->url($this, $this->ref, $path);
+                $link = $this->codex->url($this, $this->getRef(), $path);
             } elseif (array_key_exists('href', $item)) {
                 $link = $item[ 'href' ];
             }
@@ -283,22 +295,13 @@ class Project
             }
 
             if (isset($item[ 'children' ])) {
-                $this->resolveDocumentsMenu($item[ 'children' ], $id);
+                $this->setupSidebarMenu($item[ 'children' ], $id);
             }
         }
 
         return $menu;
     }
 
-    public function hasEnabledFilter($filter)
-    {
-        return in_array($filter, $this->config('filters.enabled', [ ]), true);
-    }
-
-    public function hasEnabledHook($hook)
-    {
-        return in_array($hook, $this->config('hooks.enabled', [ ]), true);
-    }
 
 
     # Refs / versions
@@ -358,11 +361,13 @@ class Project
 
         usort($versions, function (version $v1, version $v2) {
         
+
             return version::gt($v1, $v2) ? -1 : 1;
         });
 
         $versions = array_map(function (version $v) {
         
+
             return $v->getVersion();
         }, $versions);
 

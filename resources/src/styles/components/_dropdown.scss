@@ -13,6 +13,7 @@ $dropdown-menu-footer-bg-color:             lighten($dropdown-menu-bg-color, 5);
 $dropdown-menu-footer-item-color:           #7d8691;
 $dropdown-menu-footer-item-color-active:    lighten($dropdown-menu-footer-item-color, 10);
 $dropdown-menu-footer-bg-color-on-active:   lighten($dropdown-menu-footer-bg-color, 10);
+
 $dropdown-base-font-weight:                                 300 !default;
 $dropdown-box-shadow-size:                                  5px !default;
 $dropdown-wide-min-width:                                   300px !default;
@@ -95,16 +96,14 @@ $dropdown-inverse-notifications-item-border-color:          #484848 !default;
         position: relative;
         > .dropdown-item {
             &:after {
+                @include fa-icon;
                 display: block;
-                content: " ";
+                content: $fa-var-chevron-right;
                 float: right;
-                width: 0;
-                height: 0;
-                border-color: transparent;
-                border-style: solid;
-                border-width: 5px 0 5px 5px;
+                font-size: 10px;
                 margin-top: 5px;
                 margin-right: -10px;
+                color: #56676F;
             }
         }
 
@@ -158,51 +157,6 @@ $dropdown-inverse-notifications-item-border-color:          #484848 !default;
     }
 }
 
-.dropdown-menu.dropdown-menu-packadic,
-.dropdown-menu-packadic .dropdown-submenu > .dropdown-menu {
-    background-color: $dropdown-menu-bg-color;
-    border: $dropdown-menu-border;
-
-    .dropdown-header {
-        margin: 0;
-        color: $dropdown-menu-head-color;
-    }
-
-    .dropdown-divider {
-        background-color: $dropdown-menu-separator-color;
-    }
-
-    .dropdown-item {
-        color: $dropdown-menu-item-color;
-        &:active,
-        &.active,
-        &:hover {
-            &:not(&.disabled) {
-                color: $dropdown-menu-item-color-active;
-                background-color: $dropdown-menu-item-bg-color-on-active;
-            }
-        }
-        &.disabled {
-            color: darken($dropdown-menu-item-color, 15);
-        }
-    }
-
-    .dropdown-footer a {
-        border-top-color: $dropdown-menu-footer-border-color;
-        background-color: $dropdown-menu-footer-bg-color;
-        color: $dropdown-menu-footer-item-color;
-        &:hover {
-            background: $dropdown-menu-footer-bg-color-on-active;
-            color: $dropdown-menu-footer-item-color-active;
-            text-decoration: none;
-        }
-        + a {
-            border-left-color: $dropdown-menu-footer-border-color;
-        }
-
-    }
-
-}
 // #4E5D6C
 // #2B3E50
 // BASE
@@ -263,6 +217,50 @@ $dropdown-inverse-notifications-item-border-color:          #484848 !default;
     }
 }
 
+.dropdown-menu.dropdown-menu-packadic,
+.dropdown-menu-packadic .dropdown-submenu > .dropdown-menu {
+    background-color: $dropdown-menu-bg-color;
+    border: $dropdown-menu-border;
+
+    .dropdown-header {
+        margin: 0;
+        color: $dropdown-menu-head-color;
+    }
+
+    .dropdown-divider {
+        background-color: $dropdown-menu-separator-color;
+    }
+
+    .dropdown-item {
+        color: $dropdown-menu-item-color;
+        &:active,
+        &.active,
+        &:hover {
+            color: $dropdown-menu-item-color-active;
+            background-color: $dropdown-menu-item-bg-color-on-active;
+
+        }
+        &.disabled {
+            color: darken($dropdown-menu-item-color, 15);
+        }
+    }
+
+    .dropdown-footer a {
+        border-top-color: $dropdown-menu-footer-border-color;
+        background-color: $dropdown-menu-footer-bg-color;
+        color: $dropdown-menu-footer-item-color;
+        &:hover {
+            background: $dropdown-menu-footer-bg-color-on-active;
+            color: $dropdown-menu-footer-item-color-active;
+            text-decoration: none;
+        }
+        + a {
+            border-left-color: $dropdown-menu-footer-border-color;
+        }
+
+    }
+
+}
 .dropdown-menu-inverse,
 .dropdown-menu.dropdown-menu-inverse .dropdown-submenu > .dropdown-menu {
     background: $dropdown-inverse-bg;

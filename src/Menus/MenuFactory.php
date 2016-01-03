@@ -88,8 +88,9 @@ class MenuFactory implements MenuFactoryContract
             return $this->get($id);
         }
 
-        $menu = $this->getContainer()->make(Menu::class, [
-            'menuFactory' => $this
+        $menu = $this->getContainer()->make('codex.builder.menu', [
+            'menuFactory' => $this,
+            'id' => $id
         ]);
         $this->runHook('menu-factory:add', [ $this, $menu ]);
         $this->menus->put($id, $menu);

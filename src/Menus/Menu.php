@@ -80,7 +80,7 @@ class Menu
      * @param \Illuminate\Contracts\Routing\UrlGenerator  $url
      * @param \Illuminate\Contracts\View\Factory          $viewFactory
      */
-    public function __construct(MenuFactoryContract $menus, Filesystem $files, Cache $cache, Router $router, UrlGenerator $url, ViewFactory $viewFactory)
+    public function __construct(MenuFactoryContract $menus, Filesystem $files, Cache $cache, Router $router, UrlGenerator $url, ViewFactory $viewFactory, $id = '')
     {
         $this->menus       = $menus;
         $this->cache       = $cache;
@@ -88,7 +88,7 @@ class Menu
         $this->url         = $url;
         $this->files       = $files;
         $this->viewFactory = $viewFactory;
-        $this->view        = 'codex::partials/menu';
+        $this->view        = 'codex::menus.' . $id;
         $this->items       = new Collection();
 
         $this->runHook('menu:ready', [ $this ]);
@@ -128,7 +128,9 @@ class Menu
      */
     public function add($id, $value, $parent = 'root', array $meta = [ ], array $attributes = [ ])
     {
-        $node = new Node($id, $this, $value, $meta, $attributes);
+        $node = new Node($id, $this, $value);
+        $node->setMeta($meta);
+        $node->setAttribute($attributes);
 
         if (! is_null($parent) and $this->items->has($parent)) {
             $parentNode = $this->items->get($parent);

@@ -144,7 +144,7 @@ class Document
      */
     public function getBreadcrumb()
     {
-        return $this->project->getDocumentsMenu()->getBreadcrumbToHref($this->url());
+        return $this->project->getSidebarMenu()->getBreadcrumbToHref($this->url());
     }
 
     /**

@@ -20,7 +20,7 @@
 
             @section('page-header-actions')
                 <div class="page-actions">
-                    @stack('header-actions')
+                    @stack('page-actions')
                 </div>
 
                 <div class="page-top">

@@ -57,9 +57,7 @@ class CodexController extends Controller
         $content    = $document->render();
         $breadcrumb = $document->getBreadcrumb();
 
-        $this->view->composer($document->attr('view'), $this->codex->config('projects_menus_view_composer'));
-
-        $codex = $this->codex;
+        $this->view->share('project', $project);
 
         return $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
     }

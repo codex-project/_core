@@ -95,9 +95,11 @@ class Factory implements Codex
         $this->runHook('factory:done', [ $this ]);
     }
 
-    public function appendSectionsView($viewName, $data = null, $appendTo = 'codex::layouts.default')
+
+    public function stack($viewName, $data = null, $appendTo = 'codex::layouts.default')
     {
         $this->container->make('events')->listen('composing: ' . $appendTo, function (View $view) use ($viewName, $data) {
+        
 
             if ($data instanceof \Closure) {
                 $data = call_user_func_array($data, [ $this->container, $this ]);
@@ -109,8 +111,9 @@ class Factory implements Codex
             }
             $view->getFactory()->make($viewName, $data)->render();
         });
-    }
 
+        return $this;
+    }
     # Projects
 
     /**
@@ -134,9 +137,9 @@ class Factory implements Codex
         foreach ($projects as $projectDir) {
         /** @var \SplFileInfo $projectDir */
             $name    = Path::getDirectoryName($projectDir->getPath());
-            $config  = $this->container->make('fs')->getRequire($projectDir->getRealPath());
+            $config  = $this->getContainer()->make('fs')->getRequire($projectDir->getRealPath());
             $config  = array_replace_recursive($this->config('default_project_config'), $config);
-            $project = $this->container->make(Project::class, [
+            $project = $this->getContainer()->make(Project::class, [
                 'codex'  => $this,
                 'name'   => $name,
                 'config' => $config
@@ -154,7 +157,7 @@ class Factory implements Codex
     protected function resolveProjectsMenu()
     {
         /** @var \Codex\Core\Menus\Menu $menu */
-        $menu = $this->menus->add('projects');
+        $menu = $this->getMenus()->add('projects');
 
         foreach ($this->getProjects() as $project) {
             $name  = (string)$project->config('display_name');

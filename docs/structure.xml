@@ -571,7 +571,7 @@
     </parse_markers>
     <source>eJyVkc1OwzAQhO9+ij30AJFoH4BfKVSiUoUq2mMvW2fTWCR2ZG/4Eeq745i0DU4B4UssezL7zfjqti5qMUkSAQks0DKYHLgguDdSMSweFlCjfMYtubGXtKq5kqQdAeoMpKnfrdoWDErnxlbIymjYNDorKYNXxYU3U27v4VXBfD5Lp4/LKeSqJG85ERorcl5EkJqM3tapsbReWVTsLoVo/LRZWTaV0sjkLzVblOzCDpUme9x5Obf/weEk2IgPAX6FoO1KYOU5Zib1ETqdh3OMWtK4k+yVdy9oYR0BRGM77SR8a2uYJPsGRrLHFQE8ETdWu1DIN5DBfBuU/0NoNqWSkDdahifZEh+EZ+dB8tVIuzr/UftUFzc95PZyNwBfEp+g/rm+Gi1W8Bc+9MqKkweyX/O5fr6j59EyzhyHhevhY8Xd7AvZiU9hr/yt</source>
   </file>
-  <file path="Project.php" generated-path="Project.html" hash="1cfb5f1778ea9a71f81c75a52bd5767a" package="Default">
+  <file path="Project.php" generated-path="Project.html" hash="d0ca301164590dd07841c87132894107" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -832,17 +832,17 @@
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="179" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="182" package="Codex\Core">
         <name>path</name>
         <full_name>\Codex\Core\Project::path()</full_name>
-        <docblock line="179">
+        <docblock line="182">
           <description>Get the absolute path to a file in the project using the current ref</description>
           <long-description></long-description>
-          <tag name="param" line="179" description="" type="null|string" variable="$path">
+          <tag name="param" line="182" description="" type="null|string" variable="$path">
             <type>null</type>
             <type>string</type>
           </tag>
-          <tag name="return" line="179" description="" type="string">
+          <tag name="return" line="182" description="" type="string">
             <type>string</type>
           </tag>
         </docblock>
@@ -852,20 +852,20 @@
           <type>null|string</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="192" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="195" package="Codex\Core">
         <name>url</name>
         <full_name>\Codex\Core\Project::url()</full_name>
-        <docblock line="192">
+        <docblock line="195">
           <description>Generate a URL to the specified document. A shorthand for the factory's url method</description>
           <long-description></long-description>
-          <tag name="param" line="192" description="" type="string" variable="$doc">
+          <tag name="param" line="195" description="" type="string" variable="$doc">
             <type>string</type>
           </tag>
-          <tag name="param" line="192" description="" type="null|string" variable="$ref">
+          <tag name="param" line="195" description="" type="null|string" variable="$ref">
             <type>null</type>
             <type>string</type>
           </tag>
-          <tag name="return" line="192" description="" type="string">
+          <tag name="return" line="195" description="" type="string">
             <type>string</type>
           </tag>
         </docblock>
@@ -880,16 +880,16 @@
           <type>null|string</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="204" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="207" package="Codex\Core">
         <name>getDocument</name>
         <full_name>\Codex\Core\Project::getDocument()</full_name>
-        <docblock line="204">
+        <docblock line="207">
           <description>Get a document by path. Returns an instance of document</description>
           <long-description></long-description>
-          <tag name="param" line="204" description="" type="string" variable="$pathName">
+          <tag name="param" line="207" description="" type="string" variable="$pathName">
             <type>string</type>
           </tag>
-          <tag name="return" line="204" description="" type="\Codex\Core\Document">
+          <tag name="return" line="207" description="" type="\Codex\Core\Document">
             <type>\Codex\Core\Document</type>
           </tag>
         </docblock>
@@ -899,30 +899,56 @@
           <type>string</type>
         </argument>
       </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="231" package="Codex\Core">
+        <name>hasEnabledFilter</name>
+        <full_name>\Codex\Core\Project::hasEnabledFilter()</full_name>
+        <docblock line="231">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$filter</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
       <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="236" package="Codex\Core">
-        <name>getDocumentsMenu</name>
-        <full_name>\Codex\Core\Project::getDocumentsMenu()</full_name>
+        <name>hasEnabledHook</name>
+        <full_name>\Codex\Core\Project::hasEnabledHook()</full_name>
         <docblock line="236">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$hook</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="248" package="Codex\Core">
+        <name>getSidebarMenu</name>
+        <full_name>\Codex\Core\Project::getSidebarMenu()</full_name>
+        <docblock line="248">
           <description>Returns the menu for this project</description>
           <long-description></long-description>
-          <tag name="return" line="236" description="" type="\Codex\Core\Menus\Menu">
+          <tag name="return" line="248" description="" type="\Codex\Core\Menus\Menu">
             <type>\Codex\Core\Menus\Menu</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="258" package="Codex\Core">
-        <name>resolveDocumentsMenu</name>
-        <full_name>\Codex\Core\Project::resolveDocumentsMenu()</full_name>
-        <docblock line="258">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="270" package="Codex\Core">
+        <name>setupSidebarMenu</name>
+        <full_name>\Codex\Core\Project::setupSidebarMenu()</full_name>
+        <docblock line="270">
           <description>Resolves and creates the documents menu from the parsed menu.yml</description>
           <long-description></long-description>
-          <tag name="param" line="258" description="&lt;p&gt;The array converted from yaml&lt;/p&gt;" type="array" variable="$items">
+          <tag name="param" line="270" description="&lt;p&gt;The array converted from yaml&lt;/p&gt;" type="array" variable="$items">
             <type>array</type>
           </tag>
-          <tag name="param" line="258" description="" type="string" variable="$parentId">
+          <tag name="param" line="270" description="" type="string" variable="$parentId">
             <type>string</type>
           </tag>
-          <tag name="return" line="258" description="" type="\Codex\Core\Menus\Menu">
+          <tag name="return" line="270" description="" type="\Codex\Core\Menus\Menu">
             <type>\Codex\Core\Menus\Menu</type>
           </tag>
         </docblock>
@@ -937,42 +963,16 @@
           <type>string</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="293" package="Codex\Core">
-        <name>hasEnabledFilter</name>
-        <full_name>\Codex\Core\Project::hasEnabledFilter()</full_name>
-        <docblock line="293">
-          <description></description>
-          <long-description></long-description>
-        </docblock>
-        <argument line="0" by_reference="false">
-          <name>$filter</name>
-          <default></default>
-          <type/>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="298" package="Codex\Core">
-        <name>hasEnabledHook</name>
-        <full_name>\Codex\Core\Project::hasEnabledHook()</full_name>
-        <docblock line="298">
-          <description></description>
-          <long-description></long-description>
-        </docblock>
-        <argument line="0" by_reference="false">
-          <name>$hook</name>
-          <default></default>
-          <type/>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="313" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="316" package="Codex\Core">
         <name>setRef</name>
         <full_name>\Codex\Core\Project::setRef()</full_name>
-        <docblock line="313">
+        <docblock line="316">
           <description>Set the ref (version/branch) you want to use. getDocument will be getting stuff using the ref</description>
           <long-description></long-description>
-          <tag name="param" line="313" description="" type="string" variable="$name">
+          <tag name="param" line="316" description="" type="string" variable="$name">
             <type>string</type>
           </tag>
-          <tag name="return" line="313" description="" type="\Codex\Core\Project">
+          <tag name="return" line="316" description="" type="\Codex\Core\Project">
             <type>\Codex\Core\Project</type>
           </tag>
         </docblock>
@@ -982,104 +982,104 @@
           <type>string</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="325" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="328" package="Codex\Core">
         <name>getRef</name>
         <full_name>\Codex\Core\Project::getRef()</full_name>
-        <docblock line="325">
+        <docblock line="328">
           <description>Get ref.</description>
           <long-description></long-description>
-          <tag name="return" line="325" description="" type="string">
+          <tag name="return" line="328" description="" type="string">
             <type>string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="335" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="338" package="Codex\Core">
         <name>getDefaultRef</name>
         <full_name>\Codex\Core\Project::getDefaultRef()</full_name>
-        <docblock line="335">
+        <docblock line="338">
           <description>Get default ref.</description>
           <long-description></long-description>
-          <tag name="return" line="335" description="" type="string">
+          <tag name="return" line="338" description="" type="string">
             <type>string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="345" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="348" package="Codex\Core">
         <name>getRefs</name>
         <full_name>\Codex\Core\Project::getRefs()</full_name>
-        <docblock line="345">
+        <docblock line="348">
           <description>Get refs.</description>
           <long-description></long-description>
-          <tag name="return" line="345" description="" type="array">
+          <tag name="return" line="348" description="" type="array">
             <type>array</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="355" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="358" package="Codex\Core">
         <name>getSortedRefs</name>
         <full_name>\Codex\Core\Project::getSortedRefs()</full_name>
-        <docblock line="355">
+        <docblock line="358">
           <description>Get refs sorted by the configured order.</description>
           <long-description></long-description>
-          <tag name="return" line="355" description="" type="array">
+          <tag name="return" line="358" description="" type="array">
             <type>array</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="381" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="386" package="Codex\Core">
         <name>getName</name>
         <full_name>\Codex\Core\Project::getName()</full_name>
-        <docblock line="381">
+        <docblock line="386">
           <description>Get name.</description>
           <long-description></long-description>
-          <tag name="return" line="381" description="" type="string">
+          <tag name="return" line="386" description="" type="string">
             <type>string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="391" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="396" package="Codex\Core">
         <name>getPath</name>
         <full_name>\Codex\Core\Project::getPath()</full_name>
-        <docblock line="391">
+        <docblock line="396">
           <description>Get path.</description>
           <long-description></long-description>
-          <tag name="return" line="391" description="" type="string">
+          <tag name="return" line="396" description="" type="string">
             <type>string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="401" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="406" package="Codex\Core">
         <name>getBranches</name>
         <full_name>\Codex\Core\Project::getBranches()</full_name>
-        <docblock line="401">
+        <docblock line="406">
           <description>Get branches.</description>
           <long-description></long-description>
-          <tag name="return" line="401" description="" type="array">
+          <tag name="return" line="406" description="" type="array">
             <type>array</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="411" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="416" package="Codex\Core">
         <name>getVersions</name>
         <full_name>\Codex\Core\Project::getVersions()</full_name>
-        <docblock line="411">
+        <docblock line="416">
           <description>Get versions.</description>
           <long-description></long-description>
-          <tag name="return" line="411" description="" type="array">
+          <tag name="return" line="416" description="" type="array">
             <type>array</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="423" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="428" package="Codex\Core">
         <name>setPath</name>
         <full_name>\Codex\Core\Project::setPath()</full_name>
-        <docblock line="423">
+        <docblock line="428">
           <description>Set path.</description>
           <long-description></long-description>
-          <tag name="param" line="423" description="" type="string" variable="$path">
+          <tag name="param" line="428" description="" type="string" variable="$path">
             <type>string</type>
           </tag>
-          <tag name="return" line="423" description="" type="\Codex\Core\Project">
+          <tag name="return" line="428" description="" type="\Codex\Core\Project">
             <type>\Codex\Core\Project</type>
           </tag>
         </docblock>
@@ -1294,17 +1294,17 @@
     </class>
     <parse_markers>
       <error line="101" code="PPC:ERR-50008">No summary for method __construct()</error>
-      <error line="293" code="PPC:ERR-50015">Argument $filter is missing from the Docblock of hasEnabledFilter</error>
-      <error line="293" code="PPC:ERR-50008">No summary for method hasEnabledFilter()</error>
-      <error line="298" code="PPC:ERR-50015">Argument $hook is missing from the Docblock of hasEnabledHook</error>
-      <error line="298" code="PPC:ERR-50008">No summary for method hasEnabledHook()</error>
+      <error line="231" code="PPC:ERR-50015">Argument $filter is missing from the Docblock of hasEnabledFilter</error>
+      <error line="231" code="PPC:ERR-50008">No summary for method hasEnabledFilter()</error>
+      <error line="236" code="PPC:ERR-50015">Argument $hook is missing from the Docblock of hasEnabledHook</error>
+      <error line="236" code="PPC:ERR-50008">No summary for method hasEnabledHook()</error>
       <error line="67" code="PPC:ERR-50007">No summary for property $ref</error>
       <error line="72" code="PPC:ERR-50007">No summary for property $refs</error>
       <error line="77" code="PPC:ERR-50007">No summary for property $versions</error>
     </parse_markers>
-    <source>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</source>
+    <source>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</source>
   </file>
-  <file path="Factory.php" generated-path="Factory.html" hash="94d6426ddc1190e4c04135aa32289a85" package="Default">
+  <file path="Factory.php" generated-path="Factory.html" hash="32240347c92ae44e84b99e942fb5b1cb" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -1483,10 +1483,10 @@
           <type>\Codex\Core\Contracts\Menus\MenuFactory|\Codex\Core\Menus\MenuFactory</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="98" package="Codex\Core">
-        <name>appendSectionsView</name>
-        <full_name>\Codex\Core\Factory::appendSectionsView()</full_name>
-        <docblock line="98">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="99" package="Codex\Core">
+        <name>stack</name>
+        <full_name>\Codex\Core\Factory::stack()</full_name>
+        <docblock line="99">
           <description></description>
           <long-description></long-description>
         </docblock>
@@ -1506,33 +1506,33 @@
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="121" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="124" package="Codex\Core">
         <name>resolveProjects</name>
         <full_name>\Codex\Core\Factory::resolveProjects()</full_name>
-        <docblock line="121">
+        <docblock line="124">
           <description>Scans the configured documentation root directory for projects and resolves them and puts them into the projects collection</description>
           <long-description></long-description>
-          <tag name="throws" line="121" description="" type="\Illuminate\Contracts\Filesystem\FileNotFoundException">
+          <tag name="throws" line="124" description="" type="\Illuminate\Contracts\Filesystem\FileNotFoundException">
             <type>\Illuminate\Contracts\Filesystem\FileNotFoundException</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="154" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="157" package="Codex\Core">
         <name>resolveProjectsMenu</name>
         <full_name>\Codex\Core\Factory::resolveProjectsMenu()</full_name>
-        <docblock line="154">
+        <docblock line="157">
           <description></description>
           <long-description></long-description>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="191" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="194" package="Codex\Core">
         <name>getProject</name>
         <full_name>\Codex\Core\Factory::getProject()</full_name>
-        <docblock line="191">
+        <docblock line="194">
           <description>Returns a project instance for the given name</description>
           <long-description></long-description>
-          <tag name="param" line="191" description="" type="" variable="$name"/>
-          <tag name="return" line="191" description="" type="\Codex\Core\Project">
+          <tag name="param" line="194" description="" type="" variable="$name"/>
+          <tag name="return" line="194" description="" type="\Codex\Core\Project">
             <type>\Codex\Core\Project</type>
           </tag>
         </docblock>
@@ -1542,16 +1542,16 @@
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="207" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="210" package="Codex\Core">
         <name>hasProject</name>
         <full_name>\Codex\Core\Factory::hasProject()</full_name>
-        <docblock line="207">
+        <docblock line="210">
           <description>Check if the given project exists.</description>
           <long-description></long-description>
-          <tag name="param" line="207" description="" type="string" variable="$name">
+          <tag name="param" line="210" description="" type="string" variable="$name">
             <type>string</type>
           </tag>
-          <tag name="return" line="207" description="" type="boolean">
+          <tag name="return" line="210" description="" type="boolean">
             <type>boolean</type>
           </tag>
         </docblock>
@@ -1561,21 +1561,21 @@
           <type>string</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="217" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="220" package="Codex\Core">
         <name>getProjects</name>
         <full_name>\Codex\Core\Factory::getProjects()</full_name>
-        <docblock line="217">
+        <docblock line="220">
           <description>Return all found projects.</description>
           <long-description></long-description>
-          <tag name="return" line="217" description="" type="array&lt;mixed,\Codex\Core\Project&gt;">
+          <tag name="return" line="220" description="" type="array&lt;mixed,\Codex\Core\Project&gt;">
             <type>array&lt;mixed,\Codex\Core\Project&gt;</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="224" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="227" package="Codex\Core">
         <name>mergeDefaultProjectConfig</name>
         <full_name>\Codex\Core\Factory::mergeDefaultProjectConfig()</full_name>
-        <docblock line="224">
+        <docblock line="227">
           <description></description>
           <long-description></long-description>
         </docblock>
@@ -1585,25 +1585,25 @@
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="247" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="250" package="Codex\Core">
         <name>url</name>
         <full_name>\Codex\Core\Factory::url()</full_name>
-        <docblock line="247">
+        <docblock line="250">
           <description>Generate a URL to a project's default page and version.</description>
           <long-description></long-description>
-          <tag name="param" line="247" description="&lt;p&gt;A Project instance or projectName, will auto-resolve&lt;/p&gt;" type="\Codex\Core\Project|string" variable="$project">
+          <tag name="param" line="250" description="&lt;p&gt;A Project instance or projectName, will auto-resolve&lt;/p&gt;" type="\Codex\Core\Project|string" variable="$project">
             <type>\Codex\Core\Project</type>
             <type>string</type>
           </tag>
-          <tag name="param" line="247" description="" type="null|string" variable="$ref">
+          <tag name="param" line="250" description="" type="null|string" variable="$ref">
             <type>null</type>
             <type>string</type>
           </tag>
-          <tag name="param" line="247" description="" type="null|string" variable="$doc">
+          <tag name="param" line="250" description="" type="null|string" variable="$doc">
             <type>null</type>
             <type>string</type>
           </tag>
-          <tag name="return" line="247" description="" type="string">
+          <tag name="return" line="250" description="" type="string">
             <type>string</type>
           </tag>
         </docblock>
@@ -1623,15 +1623,15 @@
           <type>null|string</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="280" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="283" package="Codex\Core">
         <name>log</name>
         <full_name>\Codex\Core\Factory::log()</full_name>
-        <docblock line="280">
+        <docblock line="283">
           <description>Writes a log message to the codex log file</description>
           <long-description></long-description>
-          <tag name="param" line="280" description="" type="" variable="$level"/>
-          <tag name="param" line="280" description="" type="" variable="$message"/>
-          <tag name="param" line="280" description="" type="array" variable="$context">
+          <tag name="param" line="283" description="" type="" variable="$level"/>
+          <tag name="param" line="283" description="" type="" variable="$message"/>
+          <tag name="param" line="283" description="" type="array" variable="$context">
             <type>array</type>
           </tag>
         </docblock>
@@ -1651,38 +1651,38 @@
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="292" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="295" package="Codex\Core">
         <name>getRootDir</name>
         <full_name>\Codex\Core\Factory::getRootDir()</full_name>
-        <docblock line="292">
+        <docblock line="295">
           <description>Get root directory.</description>
           <long-description></long-description>
-          <tag name="return" line="292" description="" type="string">
+          <tag name="return" line="295" description="" type="string">
             <type>string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="302" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="305" package="Codex\Core">
         <name>getCache</name>
         <full_name>\Codex\Core\Factory::getCache()</full_name>
-        <docblock line="302">
+        <docblock line="305">
           <description>Get cache.</description>
           <long-description></long-description>
-          <tag name="return" line="302" description="" type="\Illuminate\Contracts\Cache\Repository">
+          <tag name="return" line="305" description="" type="\Illuminate\Contracts\Cache\Repository">
             <type>\Illuminate\Contracts\Cache\Repository</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="314" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="317" package="Codex\Core">
         <name>setCache</name>
         <full_name>\Codex\Core\Factory::setCache()</full_name>
-        <docblock line="314">
+        <docblock line="317">
           <description>Set cache.</description>
           <long-description></long-description>
-          <tag name="param" line="314" description="" type="\Illuminate\Cache\CacheManager" variable="$cache">
+          <tag name="param" line="317" description="" type="\Illuminate\Cache\CacheManager" variable="$cache">
             <type>\Illuminate\Cache\CacheManager</type>
           </tag>
-          <tag name="return" line="314" description="" type="\Codex\Core\Factory">
+          <tag name="return" line="317" description="" type="\Codex\Core\Factory">
             <type>\Codex\Core\Factory</type>
           </tag>
         </docblock>
@@ -1692,27 +1692,27 @@
           <type>\Illuminate\Cache\CacheManager</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="326" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="329" package="Codex\Core">
         <name>getApp</name>
         <full_name>\Codex\Core\Factory::getApp()</full_name>
-        <docblock line="326">
+        <docblock line="329">
           <description>get app value</description>
           <long-description></long-description>
-          <tag name="return" line="326" description="" type="\Illuminate\Contracts\Container\Container">
+          <tag name="return" line="329" description="" type="\Illuminate\Contracts\Container\Container">
             <type>\Illuminate\Contracts\Container\Container</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="338" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="341" package="Codex\Core">
         <name>setApp</name>
         <full_name>\Codex\Core\Factory::setApp()</full_name>
-        <docblock line="338">
+        <docblock line="341">
           <description>Set the app value</description>
           <long-description></long-description>
-          <tag name="param" line="338" description="" type="\Illuminate\Contracts\Container\Container" variable="$app">
+          <tag name="param" line="341" description="" type="\Illuminate\Contracts\Container\Container" variable="$app">
             <type>\Illuminate\Contracts\Container\Container</type>
           </tag>
-          <tag name="return" line="338" description="" type="\Codex\Core\Factory">
+          <tag name="return" line="341" description="" type="\Codex\Core\Factory">
             <type>\Codex\Core\Factory</type>
           </tag>
         </docblock>
@@ -1722,27 +1722,27 @@
           <type>\Illuminate\Contracts\Container\Container</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="350" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="353" package="Codex\Core">
         <name>getMenus</name>
         <full_name>\Codex\Core\Factory::getMenus()</full_name>
-        <docblock line="350">
+        <docblock line="353">
           <description>get menus value</description>
           <long-description></long-description>
-          <tag name="return" line="350" description="" type="\Codex\Core\Menus\MenuFactory">
+          <tag name="return" line="353" description="" type="\Codex\Core\Menus\MenuFactory">
             <type>\Codex\Core\Menus\MenuFactory</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="362" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="365" package="Codex\Core">
         <name>setMenus</name>
         <full_name>\Codex\Core\Factory::setMenus()</full_name>
-        <docblock line="362">
+        <docblock line="365">
           <description>Set the menus value</description>
           <long-description></long-description>
-          <tag name="param" line="362" description="" type="\Codex\Core\Menus\MenuFactory" variable="$menus">
+          <tag name="param" line="365" description="" type="\Codex\Core\Menus\MenuFactory" variable="$menus">
             <type>\Codex\Core\Menus\MenuFactory</type>
           </tag>
-          <tag name="return" line="362" description="" type="\Codex\Core\Factory">
+          <tag name="return" line="365" description="" type="\Codex\Core\Factory">
             <type>\Codex\Core\Factory</type>
           </tag>
         </docblock>
@@ -1752,27 +1752,27 @@
           <type>\Codex\Core\Menus\MenuFactory</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="374" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="377" package="Codex\Core">
         <name>getLog</name>
         <full_name>\Codex\Core\Factory::getLog()</full_name>
-        <docblock line="374">
+        <docblock line="377">
           <description>get log value</description>
           <long-description></long-description>
-          <tag name="return" line="374" description="" type="\Codex\Core\Contracts\Log">
+          <tag name="return" line="377" description="" type="\Codex\Core\Contracts\Log">
             <type>\Codex\Core\Contracts\Log</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="386" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="389" package="Codex\Core">
         <name>setLog</name>
         <full_name>\Codex\Core\Factory::setLog()</full_name>
-        <docblock line="386">
+        <docblock line="389">
           <description>Set the log value</description>
           <long-description></long-description>
-          <tag name="param" line="386" description="" type="\Codex\Core\Contracts\Log" variable="$log">
+          <tag name="param" line="389" description="" type="\Codex\Core\Contracts\Log" variable="$log">
             <type>\Codex\Core\Contracts\Log</type>
           </tag>
-          <tag name="return" line="386" description="" type="\Codex\Core\Factory">
+          <tag name="return" line="389" description="" type="\Codex\Core\Factory">
             <type>\Codex\Core\Factory</type>
           </tag>
         </docblock>
@@ -1954,15 +1954,15 @@
     </class>
     <parse_markers>
       <error line="77" code="PPC:ERR-50008">No summary for method __construct()</error>
-      <error line="98" code="PPC:ERR-50015">Argument $viewName is missing from the Docblock of appendSectionsView</error>
-      <error line="98" code="PPC:ERR-50015">Argument $data is missing from the Docblock of appendSectionsView</error>
-      <error line="98" code="PPC:ERR-50015">Argument $appendTo is missing from the Docblock of appendSectionsView</error>
-      <error line="98" code="PPC:ERR-50008">No summary for method appendSectionsView()</error>
-      <error line="154" code="PPC:ERR-50008">No summary for method resolveProjectsMenu()</error>
-      <error line="224" code="PPC:ERR-50015">Argument $config is missing from the Docblock of mergeDefaultProjectConfig</error>
-      <error line="224" code="PPC:ERR-50008">No summary for method mergeDefaultProjectConfig()</error>
+      <error line="99" code="PPC:ERR-50015">Argument $viewName is missing from the Docblock of stack</error>
+      <error line="99" code="PPC:ERR-50015">Argument $data is missing from the Docblock of stack</error>
+      <error line="99" code="PPC:ERR-50015">Argument $appendTo is missing from the Docblock of stack</error>
+      <error line="99" code="PPC:ERR-50008">No summary for method stack()</error>
+      <error line="157" code="PPC:ERR-50008">No summary for method resolveProjectsMenu()</error>
+      <error line="227" code="PPC:ERR-50015">Argument $config is missing from the Docblock of mergeDefaultProjectConfig</error>
+      <error line="227" code="PPC:ERR-50008">No summary for method mergeDefaultProjectConfig()</error>
     </parse_markers>
-    <source>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</source>
+    <source>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</source>
   </file>
   <file path="Contracts/Log.php" generated-path="Contracts.Log.html" hash="ed17a9e0c87d10a4f6f3d5b6fce65540" package="Default">
     <docblock line="0">
@@ -2399,7 +2399,7 @@
     </interface>
     <source>eJxdkVFLwzAQx9/zKe7Bh63oqoIvTlCoEwebDNzjXrLm2gbbpCRXtyF+d69ZyjaPkNLc7/6X++fpua1akSaJgARW0hHYAqhCyKzCPazeV9DK/EuW6CeM9NRyvoaFztF4BGkU5LY9OF1WBNoU1jWStDWw7YyqUcFOU8WC2g86TIUGi3k2+/icQaFrZNlUGNmgZyj23mTWIW+GnMzJb5ZoOj8Vw13XvSSvXqpPvTFk3WG45MvQLcZJMmRlR5V1cJGFV/yGNcomEKepIjH8jvIx3N/ePVwfqwJcRztiVEStf0xTqpWrsZT1JLdNGqG00XQzFJx5GTzQhtAVvQdnM4kfIXrZMHkfCWQOJaEHCQZ30DALPI5D6pzhUwO41560KWPBUMe2ONmAJ8c5uNLqf/4oAZuzJwjGhz1Safi23ZangKIzeXhwqdSIBcdT8Sv+AEVDth0=</source>
   </file>
-  <file path="Http/Controllers/CodexController.php" generated-path="Http.Controllers.CodexController.html" hash="88ca29e77b413b1e3bee378b14f82362" package="Default">
+  <file path="Http/Controllers/CodexController.php" generated-path="Http.Controllers.CodexController.html" hash="5dd0897b4dfe6d4f9b86db21c543f05e" package="Default">
     <docblock line="0">
       <description></description>
       <long-description></long-description>
@@ -2561,7 +2561,7 @@
     <parse_markers>
       <error line="0" code="PPC:ERR-50000">No summary was found for this file</error>
     </parse_markers>
-    <source>eJyNVF1v0zAUfc+v8EMlJ1XWABIvg46J7WFIIKHRNzpVbnKTmCV2ZDtlCPbf5+s4X+02YVWK43vvOeee6+bjp6ZsAsFq0A1LgVzJDB62V1LB9saYxu6EUbKqQOkPQdDqWcZGMW709kbKe7avwCYky2VAlmRTck3sz5Q+f4RZ2TimXFq6e1YA8WuEdVHWmlIqMouSaziQDbDaZaSy+aN4UZo+o38N04i8e/P2fdxVueSKpyD0QFba1vR5kpgqUxUUrFqlsk58UlJzc9YXfPuyIV+7vQVKgrRiWh/3RODBgMjwvD8K/gZIhIZN7MEjZxGuJbmFjCtIDTHSWZVBztrKkEbJX3jMREYO1nkuxcrX9KWXCkyrxADhzxP3bNq91U/yVqTG1hIurNwwcrFOF66FsVM6u1CtQIUhTQfx566AxuRnl0TuIi8el2dWnjlUsjWA5bZmlcm0rUEYLB4qcFHf1I+qLShZX/T0rgwfIudFSL0FO59NowHkLrIicPP4jI9Wr+os9PzMNd7gBctlFyr4AcR/edswxWqijeKi8F5N1D+b9k+0VUUWCvJXUZgpXxiks+PVKfathVMxseMka4L8ccdg3yg9mXbf+PrI+QLM9y40A55OnOck5HqHFCHSRdEE2IF3Gvp6B3rdTfIW8tAPrhvesaCzCw0uyyFPWBd9wyfIoxG221mJAj02+NzNnt7PLi8ewOMJ5d1EM7bvIbm+tR9Kab8GKFefGNEP08amPY8CUQri27Ue6axWd4WnTi32CliWqrbez1OtA5+HUDhrvxN54PAbx1s3UlvMSSkzRoUU4zSKX/gHejP0zpa0eofJux6LRjM6V3l0oU4/FDNVNbuHlxUhD7MXsRdhp0QnE6PePdyO7tDxw/AYPAFAdwm+</source>
+    <source>eJyNVMFunDAQvfMVPqxkWJGlrdRL2k2jJodUaqUq3VsTRV4YwA3YyDbbVG3+vWNjwCTbqNZKazwz7715A37/oau7SLAWdMdyIBeygIebC6ng5sqYDnfCKNk0oPS7KOr1ImOnGDf65krKe7ZvABOy9Toia7KruSb4M7XPn2E2GLcp50h3zyogfs2wLsp6U0tFFlFyCQeyA9a6jFx2vxSvajNmjI9xnpA3r16/TYcql9zwHISeyGpsTZ9mmWkK1UDFmk0u28wnZS03J2PBl0878nnYI1AW5Q3T+mlPBB4MiMKej0fR78gSWcMCe+yRs8iuNbmGgivIDTHSWVVAyfrGkE7JH/aYiYIc0HkuxcbXjKXnCkyvxAThzzP33/V71E/KXuQGawkXKDdOXGzQZdfK4JROzlQvrMKY5pP4U1dAU/J9SCK3iRdvl2dWnjlWsjdgy7FmU8i8b0EYWzxV2EV9U9+avqJkezbSuzL7J0pexdRbcOezaTKB3CYowm4ej/iIetVgoednrvHOvmClHEIVP4D4L287plhLtFFcVN6rQP3RtD+ibxqyUlC+iMJM/Y9BOjtenOLYWhyKSR0n2RLLnw4M+ETps2mPjW+fOF+B+TqEFsDhxHlJYq7vLEVs6ZIkAHbgg4ax3oFeDpO8hjL2gxuG91TQyZkGl+WQA9bV2PAz5NkI7HZRokDPDR57s8P3c8hLJ/A0oLwNNNv2PSTX13hRSrwNrFz9zIhxmBgLe54FWikWH9d2pkOt7hUOnVrtFbAiV327X6aiAx+nULxofxB54PATXa2Zws9y/JDmNo98y4vClt1jdzMfM0bF1MZokhK8KPHmNiEwDUylvkG7nRug87f7GP0F22Pqrg==</source>
   </file>
   <file path="Http/Controllers/Controller.php" generated-path="Http.Controllers.Controller.html" hash="f38c73c0645fc7f18b35f0360fd3853c" package="Default">
     <docblock line="0">
@@ -2645,100 +2645,6 @@
       <error line="26" code="PPC:ERR-50007">No summary for property $view</error>
     </parse_markers>
     <source>eJyFUstOAjEU3fcr7oKER8BREzfiK2qMJroxxNUkpJYLM7HTTto7KFH/3T4GGFCwIUxvzzn3fXZZZiVTvEBbcoFwoyf4kd5og+k9UeluioyWEo0dMlbZDUYAuSCbhsdhwB+krIpccWriLzm+p3fuqs0CuAVv1+Yv1bOuKFezRmivuOYW1y8ul6TXY9CDUZZbcD/K6tTWpAOHe8qVq+yNzxDqs64goLyiTBvYQOEW5zBCXgSG0OXC5LOMloyl2RFdOD48OulHVSDLXKCyq2CZ66I9TRKSEyNxxuWB0EVSk5Iip8FS8PQwgsd4d44SJiS3FhpdwA9CNdluBftkPk5ohz8uhTk3kO6e01cTq6dQa5PwLY0mFIQTaIk42L9DNIbWHPAuX3PH+cNVyQ0v9uULzdOabgTZL39CVcX/5e61Cv+0Lf5/Z2NsX8FmddWrGx9MKyUo1wrGY6GVJVMJ6sTcYwf7zY2PfrrBQRxecE5ukwcXgQ7nq85vwV4JHo7NXKHeHFzYjBvstIO03a99dCPtm32zHz8XPNo=</source>
-  </file>
-  <file path="Http/ViewComposers/ProjectMenusComposer.php" generated-path="Http.ViewComposers.ProjectMenusComposer.html" hash="d03bc8255f0e95c8c08448ed389b14e2" package="Default">
-    <docblock line="0">
-      <description></description>
-      <long-description></long-description>
-      <tag name="package" line="0" description="Default"/>
-    </docblock>
-    <namespace-alias name="Factory">\Codex\Core\Factory</namespace-alias>
-    <namespace-alias name="Project">\Codex\Core\Project</namespace-alias>
-    <namespace-alias name="View">\Illuminate\Contracts\View\View</namespace-alias>
-    <class final="false" abstract="false" namespace="Codex\Core\Http\ViewComposers" line="16" package="Codex\Core">
-      <extends/>
-      <name>ProjectMenusComposer</name>
-      <full_name>\Codex\Core\Http\ViewComposers\ProjectMenusComposer</full_name>
-      <docblock line="16">
-        <description>This is the ProjectsMenus.</description>
-        <long-description></long-description>
-        <tag name="package" line="16" description="Codex\Core"/>
-        <tag name="author" line="16" description="Codex Dev Team"/>
-        <tag name="copyright" line="16" description="Copyright (c) 2015, Codex"/>
-        <tag name="license" line="16" description="MIT License" link="https://tldrlegal.com/license/mit-license"/>
-      </docblock>
-      <property static="false" visibility="protected" namespace="Codex\Core\Http\ViewComposers" line="18" package="Codex\Core">
-        <name>$factory</name>
-        <full_name>\Codex\Core\Http\ViewComposers\ProjectMenusComposer::factory</full_name>
-        <default></default>
-        <docblock line="18">
-          <description></description>
-          <long-description></long-description>
-        </docblock>
-      </property>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Http\ViewComposers" line="24" package="Codex\Core">
-        <name>__construct</name>
-        <full_name>\Codex\Core\Http\ViewComposers\ProjectMenusComposer::__construct()</full_name>
-        <docblock line="24">
-          <description>Instantiates the class</description>
-          <long-description></long-description>
-          <tag name="param" line="24" description="" type="\Codex\Core\Factory" variable="$factory">
-            <type>\Codex\Core\Factory</type>
-          </tag>
-        </docblock>
-        <argument line="0" by_reference="false">
-          <name>$factory</name>
-          <default></default>
-          <type>\Codex\Core\Factory</type>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Http\ViewComposers" line="34" package="Codex\Core">
-        <name>compose</name>
-        <full_name>\Codex\Core\Http\ViewComposers\ProjectMenusComposer::compose()</full_name>
-        <docblock line="34">
-          <description>compose</description>
-          <long-description></long-description>
-          <tag name="param" line="34" description="" type="\Illuminate\Contracts\View\View|\Illuminate\View\View" variable="$view">
-            <type>\Illuminate\Contracts\View\View</type>
-            <type>\Illuminate\View\View</type>
-          </tag>
-        </docblock>
-        <argument line="0" by_reference="false">
-          <name>$view</name>
-          <default></default>
-          <type>\Illuminate\Contracts\View\View|\Illuminate\View\View</type>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core\Http\ViewComposers" line="45" package="Codex\Core">
-        <name>getRefList</name>
-        <full_name>\Codex\Core\Http\ViewComposers\ProjectMenusComposer::getRefList()</full_name>
-        <docblock line="45">
-          <description></description>
-          <long-description></long-description>
-        </docblock>
-        <argument line="0" by_reference="false">
-          <name>$project</name>
-          <default></default>
-          <type>\Codex\Core\Project</type>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core\Http\ViewComposers" line="55" package="Codex\Core">
-        <name>getProjectList</name>
-        <full_name>\Codex\Core\Http\ViewComposers\ProjectMenusComposer::getProjectList()</full_name>
-        <docblock line="55">
-          <description></description>
-          <long-description></long-description>
-        </docblock>
-      </method>
-    </class>
-    <parse_markers>
-      <error line="0" code="PPC:ERR-50000">No summary was found for this file</error>
-      <error line="45" code="PPC:ERR-50015">Argument $project is missing from the Docblock of getRefList</error>
-      <error line="45" code="PPC:ERR-50008">No summary for method getRefList()</error>
-      <error line="55" code="PPC:ERR-50008">No summary for method getProjectList()</error>
-      <error line="18" code="PPC:ERR-50007">No summary for property $factory</error>
-    </parse_markers>
-    <source>eJyVVF1r2zAUffevuCsBy8WNt8Fe2qUbtIwV2jK2spckFM2RY22yZSS5H3T577uS/BWnKZ0ITqJ77jn33Cv546cqr4KSFkxXNGVwJlfsYXEmFVt8NaZa/OTs/kwWldRM6ZMgqPUW5gtNjVSPJ+P9b0r+Zqnx+xdC1AUvqWEYLI3CHO2I3QNJk8PDAA7hJuca8GNyBg2BvmJlracYtYDPWOIfumbQrF7QRWltcqlgKwrn7A5uGC0cIpXVo+Lr3LSI9i9JI3j/9t2H2Gc5sOApK3UnlmM79HGSGLFSgq2pmKaySBpQUnBz1CZcXdzApf+NREmQCqp168gZajsaPAWWulLSYIitYJK1DXUBbAxclNrQ0nBsn2+No3Nh2xX3ZTujaAGL3dF0lA008Yr1L6wWsrpMDZcl3N6mEnVUnRoyToxchq/UronBOR2dNlGYDYq24U1Xeltc6t3uKfnl0/F3GO92YXKHzxcdNaKkh+/4WFFDbfk2eHS6ZuYcN0h00iN85J6bnMy7XbvCyk/zO8suuTYhzE7bviBPs0ucwrwDh7CM4mdptCeBbZrmxDiqPYnXeHFtnkvcUXMsFrIvHQsNh/v7WRBJoo5jGW3Nuj+/XfsHXWhswKSh3JmDQBTOYQ7LvvUZHmGa5kDaLFfFD6lQBYk1iYBqmCiWRQOqjm7uQrC04+0IaiVIWQsR+7xerLFhl2KmVqUneYXHrRH9n6+tWzScd+utbdfYn31ZIy3B68rLddT7wyuc8TUJV1xXgj7eWmA4sGkXz1wiXg3iiGII4fgYwgjezGaQUaHZWLAT1ajKHiqB7xjis2IfGGkMq6RKYSU655nxgvoZcANiCLE9i+HgyWE304Mp8KJRnLZyOopHU41GpBtgaOQ5H+5wOJbdszEmCV57QDbBPzPjFlI=</source>
   </file>
   <file path="Http/routes.php" generated-path="Http.routes.html" hash="dd238f3c2eeebc040fbec4507c54a38c" package="Default">
     <docblock line="0">
@@ -2894,7 +2800,7 @@ file. In addition, it is set as the URL generator's root namespace.</description
     </parse_markers>
     <source>eJx9kl1LwzAUhu/zK86FUB1zVcEb51ScAwdTCt2d8yJLT9ewtAlJOififzdpG6oyDb1IeJ/z9Z5e36pCkXgwIDCAhGoLMgdbIExlhntIHhNQlG3pBs3IIZ56mi9hwRlWBoFWGTCp3jXfFBZ4lUtdUstlBeu6ygRm8MZt4RJyE/I4qimwmE9nz+kMci7QpY1JRUs0Dupqr6ZS4yrRcscz1GZMSO0Kprh2GXGV1kpJbR1UGSkwRb1zLQUaqIF7avCw6lJ1Ay99X+5rBz7EhqHvQvfd6VtsVFrbQmr4ocID7mCJtGyI3qWOCM9jdgIXZ+eXwzaqgUVnb3cKa5W5imMrMi1wQ8WIyTLuoLjk9jQEfNtN4ykT1Jg/RgPcW6yy/5wiH8TXV1paZNZt86hf0gSi1oR2UWETkXP3V4zSmPO9D2A+wDdfuh/HjA6wQXP0CwnzRyXdYgSTG4ie/G3YK4Ib2yoLf2uE1zH5JF9P6OkM</source>
   </file>
-  <file path="CodexServiceProvider.php" generated-path="CodexServiceProvider.html" hash="862615cb59f95dac69f3ba0c35373473" package="Default">
+  <file path="CodexServiceProvider.php" generated-path="CodexServiceProvider.html" hash="fbf9283ba07498ecd1e9d953183a3f9e" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -2991,62 +2897,79 @@ file. In addition, it is set as the URL generator's root namespace.</description
           </tag>
         </docblock>
       </property>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="70" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="67" package="Codex\Core">
+        <name>$bindings</name>
+        <full_name>\Codex\Core\CodexServiceProvider::bindings</full_name>
+        <default>array('codex.builder.project' =&gt; \Codex\Core\Project::class, 'codex.builder.document' =&gt; \Codex\Core\Document::class, 'codex.builder.menu' =&gt; \Codex\Core\Menus\Menu::class)</default>
+        <docblock line="67">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+      </property>
+      <property static="false" visibility="protected" namespace="Codex\Core" line="76" package="Codex\Core">
         <name>$singletons</name>
         <full_name>\Codex\Core\CodexServiceProvider::singletons</full_name>
         <default>array('codex' =&gt; \Codex\Core\Factory::class, 'codex.menus' =&gt; \Codex\Core\Menus\MenuFactory::class)</default>
-        <docblock line="70">
+        <docblock line="76">
           <description></description>
           <long-description></long-description>
-          <tag name="var" line="70" description="" type="array" variable="">
+          <tag name="var" line="76" description="" type="array" variable="">
             <type>array</type>
           </tag>
         </docblock>
       </property>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="78" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="84" package="Codex\Core">
         <name>$aliases</name>
         <full_name>\Codex\Core\CodexServiceProvider::aliases</full_name>
         <default>array('codex' =&gt; \Codex\Core\Contracts\Codex::class, 'codex.log' =&gt; \Codex\Core\Contracts\Log::class, 'codex.menus' =&gt; \Codex\Core\Contracts\Menus\MenuFactory::class)</default>
-        <docblock line="78">
+        <docblock line="84">
           <description></description>
           <long-description></long-description>
-          <tag name="var" line="78" description="" type="array" variable="">
+          <tag name="var" line="84" description="" type="array" variable="">
             <type>array</type>
           </tag>
         </docblock>
       </property>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="89" package="Codex\Core">
-        <name>register</name>
-        <full_name>\Codex\Core\CodexServiceProvider::register()</full_name>
-        <docblock line="89">
-          <description>Register bindings in the container.</description>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="90" package="Codex\Core">
+        <name>boot</name>
+        <full_name>\Codex\Core\CodexServiceProvider::boot()</full_name>
+        <docblock line="90">
+          <description></description>
           <long-description></long-description>
-          <tag name="return" line="89" description="" type="\Illuminate\Contracts\Foundation\Application">
-            <type>\Illuminate\Contracts\Foundation\Application</type>
-          </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="101" package="Codex\Core">
-        <name>registerFilters</name>
-        <full_name>\Codex\Core\CodexServiceProvider::registerFilters()</full_name>
-        <docblock line="101">
-          <description>Register the core filters.</description>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="102" package="Codex\Core">
+        <name>register</name>
+        <full_name>\Codex\Core\CodexServiceProvider::register()</full_name>
+        <docblock line="102">
+          <description>Register bindings in the container.</description>
           <long-description></long-description>
-          <tag name="return" line="101" description="" type="void">
-            <type>void</type>
+          <tag name="return" line="102" description="" type="\Illuminate\Contracts\Foundation\Application">
+            <type>\Illuminate\Contracts\Foundation\Application</type>
           </tag>
         </docblock>
       </method>
       <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="114" package="Codex\Core">
+        <name>registerFilters</name>
+        <full_name>\Codex\Core\CodexServiceProvider::registerFilters()</full_name>
+        <docblock line="114">
+          <description>Register the core filters.</description>
+          <long-description></long-description>
+          <tag name="return" line="114" description="" type="void">
+            <type>void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="127" package="Codex\Core">
         <name>registerLogger</name>
         <full_name>\Codex\Core\CodexServiceProvider::registerLogger()</full_name>
-        <docblock line="114">
+        <docblock line="127">
           <description>registerLogger method</description>
           <long-description></long-description>
-          <tag name="param" line="114" description="" type="\Illuminate\Contracts\Foundation\Application" variable="$app">
+          <tag name="param" line="127" description="" type="\Illuminate\Contracts\Foundation\Application" variable="$app">
             <type>\Illuminate\Contracts\Foundation\Application</type>
           </tag>
-          <tag name="return" line="114" description="" type="\Codex\Core\Log\Writer">
+          <tag name="return" line="127" description="" type="\Codex\Core\Log\Writer">
             <type>\Codex\Core\Log\Writer</type>
           </tag>
         </docblock>
@@ -3133,17 +3056,22 @@ file. In addition, it is set as the URL generator's root namespace.</description
         <inherited_from>\Codex\Core\Traits\ProvidesCodex</inherited_from>
       </method>
     </class>
+    <markers>
+      <todo line="92">Change the autogenerated stub</todo>
+    </markers>
     <parse_markers>
+      <error line="90" code="PPC:ERR-50008">No summary for method boot()</error>
       <error line="32" code="PPC:ERR-50007">No summary for property $dir</error>
       <error line="51" code="PPC:ERR-50007">No summary for property $viewDirs</error>
       <error line="56" code="PPC:ERR-50007">No summary for property $assetDirs</error>
       <error line="61" code="PPC:ERR-50007">No summary for property $providers</error>
-      <error line="70" code="PPC:ERR-50007">No summary for property $singletons</error>
-      <error line="78" code="PPC:ERR-50007">No summary for property $aliases</error>
+      <error line="67" code="PPC:ERR-50007">No summary for property $bindings</error>
+      <error line="76" code="PPC:ERR-50007">No summary for property $singletons</error>
+      <error line="84" code="PPC:ERR-50007">No summary for property $aliases</error>
     </parse_markers>
-    <source>eJytVt1v0zAQf+9fcQ+Tmk7dCki8dDBAHRWTNjRtk3ggU+Um19bg2JHtdJsQ/ztnO+5HuqhjkIc28f3ud74vn999KBdlZ3B42IFDuGLagpqBXSCMVI4PcPXlCkqW/WRzNMcEcajL81u44BlKg8BkDpkqHzWfLyxwOVO6YJYrCdNK5gJzuOd2QYTcRB5CeQMX56PPX28+w4wLJNpBR7ICDYFq2+lIaTzpdCqzuZCOubCoTTrWStpLZukjLJ20Ickrg7m6ly24CzVPv2n+lOhWM26JQaslz9F4SQCdC1EVXDKLhJRWs4xwY0VOe/fTT2UpeObfg8KlkkqQJbI2Rw3MxJUgvsEpRQrTm6oslbbpDeolxbi2TDuLOQp5MUEMZS2PufkYgwwbbngBq+xCaYgCIOYfmFk4wyXcIis8aJ3K0eotyXrw5tXrt/1tRY8XdRkALKwtzXAwsCLXAudMHGeqGNTyQcHtUcRulI9PeyaYMYG74TTgg0WZG2isd351nB8ubI3M+HUfKPfQBpdMg7Gay3m9NPD/FDZLPlB5HuRcw3uYTM7OryeTXYaREoKQrqKpMTIlZ3xe6VDirnJdV3jklkmmNXtssxhIxk6ZLH+HbuY234W7fdanrryofYxlMnuJ5bpa9prdz7TkeH/Gdc3kvkwX3p/+GynVAdo1q//8D7SxRzxtANGT7nRc+G/U2nDo67O/0osC4/reKIHPV7hWlW2Be/SLvDNU2wIt7WXLvRix8FAIx3RCKf24s70APC5QViHWl+4tdb/bKi/fIhOcGdyzv/Up6nu5bZ90YHabCnSk7ndrDf9bB69xzg1NB5hymVO0TZxg1MiWcelPXw9dhUSjrbSEjSGwHZtqSuswq2TobV1bSHpe/GvlxQErSwpbyTRKOxyucSdriJutR6dRFMZL4hTbQfVkjDS/210Obmp0Z51TafN0qXjekv4dL1fWm86GTbI89xUQYEl35gb9pPCTvtuHnblfZ2/X2yZRGe8BxNK4E2xz7MZjO7pQIM3SvBkK4mcFpH9xM/D5jTSHMZbpk3eT50a3LoCmlacq6+g0zpJko7v6cEB/VHUS7yHYTlZq7nHr9d0lCTQol5zSQs1mk16vv4V2CDrMcUlC6sS7lbC3mTHiOjqlge6nYlLrhEFJOt83uv+4ZHZBa726Ud1TB+7A36ZCBn93/gCiBUTQ</source>
+    <source>eJytVktv2zgQvvtXzCGA5MCOdxfYi916W9g1NkDSBkmAPVSFQUtjmxuJFEjKaVD0v3f4kB+yBafd1SEOOd+8hzPz5q9yXXYGl5cduIQ7pgzIJZg1wkRm+BXu/r6DkqVPbIX6iiAWdXv9CDc8RaERmMggleWL4qu1AS6WUhXMcClgUYksxwyeuVmTQK5rOYRyCm6uJx8+PnyAJc+RxA46ghWoCRR0JxOpcNTpVHr/Ipnx3KDSyUxJYW6ZoYO/GrUhySuNmXwWLbgbuUr+UfwU6VExbkiCkhueoXYUD7rO86rgghkkpDCKpYSbSXLauZ+8L8ucp+5/z3ArhcxJE2lboQKm6xtPfsAFRQqTh6ospTLJA6oNxThoJsvqHPm8aE+GMtDr3Lyrgwx7bjgCq8xaKqgJQJL/xdTAFDfwiKxwoF0qJ9v/4rQLf/z2+5+9Q0aHz0MZAKyNKfVwMDB5pnJcsfwqlcUg0AcFN/0au1c+Lu1pzrT2shtOA341KDINjfvOt471w4atkRl37wJlPzJwwxRoo7hYhauB+6WwGfKByvMi4wrewnw+vb6fz48lTGSeE9JWND2MVIolX1XKl7itXPsqHPJAJVOKvbRp9EJmlpk0f4YotcZH8OWc9oUtL3o+2jCR/ormUC1n1Z6XtOH4POUqSLInHcHb8X8TSnWAZifVHf8HsfUbcWI9iL7k6MX530atDYeuPntbvpqg7bvXMsfXM9zLyrTAHbr2bs/2BRcZFe+h6T4aV4uK5/bpl/5BRmAjFV7nkRUNnkymVYHCuOhOw+EcE2GqyBGI6ZYOOrF/T7nwUwnS5GGOhsJ5ws0onEjljJqsVC9tZlrzfLnsbDtk+XUTWc6ZxjP27QaBa0dtdlLPj5oMNBXOu7WDv8rBslpQz4VlJXwHWUhp4q4jfdsquWBlSV6VTLkC8JgRDAbw+Gn6aQiTNRM0TuzApgkiVyiQuh+FRJtqcSClPy7YE8YhKt3+mNpU+hTOw6E76auShlOfOYN01B05Cd87Rxm5xxXXNJFh+wDC1kDN0zAu3MRz0G0OFZpKCdgbvIfJbERDBQ3nIrLDjXYQu8/0xzXJj/TYMraDwjYS73xuc9m7qdDOF8vS5ulG8qylXo+83GpvOuuNZFnmStbD4mhpl6t54barqAdHu1Yot2Nvm4LKevciKY097FDGcTwOowsF0v6SNUNB8lkByU9sYy6/LRFNTm6Fr41xKIOmrlP11R/XUzzeawo9uKAfqj2Bz+B1x1s2+9n7sDXGXgyKDafk2O4dd7u9A7RF0BjFDRGpgXzZErv7eSNZ/TGtUm4fiQOPX1GI5/Ne06K3a9Z01w39xX4hcBduj/V5/N75AZwKtRw=</source>
   </file>
-  <file path="Document.php" generated-path="Document.html" hash="ed99be387b39ce95f01624b67e4390a3" package="Default">
+  <file path="Document.php" generated-path="Document.html" hash="a7ad5cefc90e870821aca18b540da131" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -3638,7 +3566,7 @@ output. Should be called within a view.</long-description>
     <parse_markers>
       <error line="36" code="PPC:ERR-50007">No summary for property $content</error>
     </parse_markers>
-    <source>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</source>
+    <source>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</source>
   </file>
   <file path="Filters/ParsedownFilter.php" generated-path="Filters.ParsedownFilter.html" hash="f79fe665970294f89e0be7ac77fb1856" package="Default">
     <docblock line="0">
@@ -4554,7 +4482,7 @@ output. Should be called within a view.</long-description>
     </parse_markers>
     <source>eJy9V2tP2zAU/Z5fccUQbVGh26R9YSvb1KENiSIk+m2dKpO4jUUele0wEOt/37XjvJxHodUWoVY05x6fcx+O8+nz2l87o+NjB47hhnAJ8RKkT2ESe/QRbn7cwJq492RFxSlCFGp6OYMr5tJIUCCRB268fuJs5Utg0TLmIZEsjuAuibyAevCbSR8Jmch4EKUXuLqcXFzfXsCSBRRpR05EQioQZNaeT2JO51MaJeKjkymcKSL8UwTXiMo0fcnIzVUw6LskkX7MoXIXvtEHmFESakRhwiCyf/vuAN6/ffdhmEZpcGDcm8uXci3ORiMZeDygKxKcunE4MqBRyORJFlBKnbbsBkQIbQToo6SRJ2A+45TO1U/6w3l21BLavrpw9QfCIWSP1PsTJUFgfh7p7zWPJXUlpv2QeZi1ptC5ld02ghDvtVAQzslTe5wku8QRKTm7SyQVDdFrwklYcg3lC71aQNuj0J+pJwtaYzOcDyRIqIXV+huwrs+w9DSqWkvusOywTCJXD8Ri4caRkDxxZR8VD6GQNDTLwVjLGZqFcl78/Sf8GmjatB/0AgRvybOzCrHmGRahA5NMrVON4ck583Ll47RPLICSVADSPqhBJMkhqK0GKKqpAT2f02UPxufQe9PL4JtanX0iJtVc5hXgVCYct5U4DjrTXKLo2xkzHG6cRJiqVOiKygI/gHN42yYut2RLS5sjdX9Pn5oa7NCjS5IE0rajO7rTT75qX3EPcybTKy0WdQMt0Fu/Vo8hVIkGbX5Vjf+rVbXgfi4Vw4v9CSq/7lPS6g5hJGkhnS7Ly2Zuy9Nve2VL6DOx0F41fgBHR/gMXCiwGXhs3CJAi26YQhVbzOkGaIBPpGpYmlDR2TbpgiUixy6Lju3I+nTHxto94dNSZ/2rXOstcbcsV9p2z/zi/tee30pqX7Gj5vnrHEQE1h21jh+OrZ54KJfVFtdwYrDUrUx1W5SV9HQJKQ3K3nLy6RZbRJVPPM3SsGqCFnwtqvDZz6JVpyyLqCbsUAM87N9er2g9PM1T4vpQ3w2ACF1d9URXHVubCcN3OoYDeFbIzXh+8Kygm/nBQWd3p6Ed/b1l1961yau78ks73d4hW/v9O7aZem1J9x98y8pPrY1PyobDfb3VLr0tLcZa83hLpdimp3bqLp+0X7P/ok4MrTVdfh4dl95XbBOZgY3zFxNf8vw=</source>
   </file>
-  <file path="Menus/MenuFactory.php" generated-path="Menus.MenuFactory.html" hash="d66be7236186f9bdd48c8e0c8c5be919" package="Default">
+  <file path="Menus/MenuFactory.php" generated-path="Menus.MenuFactory.html" hash="3cce8207b5cb4374a9dde8c6d2fa4ca6" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -4739,19 +4667,19 @@ output. Should be called within a view.</long-description>
           <type>string</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="109" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="110" package="Codex\Core">
         <name>get</name>
         <full_name>\Codex\Core\Menus\MenuFactory::get()</full_name>
-        <docblock line="109">
+        <docblock line="110">
           <description>Returns a menu</description>
           <long-description></long-description>
-          <tag name="param" line="109" description="" type="string" variable="$id">
+          <tag name="param" line="110" description="" type="string" variable="$id">
             <type>string</type>
           </tag>
-          <tag name="param" line="109" description="" type="null" variable="$default">
+          <tag name="param" line="110" description="" type="null" variable="$default">
             <type>null</type>
           </tag>
-          <tag name="return" line="109" description="" type="\Codex\Core\Menus\Menu">
+          <tag name="return" line="110" description="" type="\Codex\Core\Menus\Menu">
             <type>\Codex\Core\Menus\Menu</type>
           </tag>
         </docblock>
@@ -4766,14 +4694,14 @@ output. Should be called within a view.</long-description>
           <type>null</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="121" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="122" package="Codex\Core">
         <name>has</name>
         <full_name>\Codex\Core\Menus\MenuFactory::has()</full_name>
-        <docblock line="121">
+        <docblock line="122">
           <description>has</description>
           <long-description></long-description>
-          <tag name="param" line="121" description="" type="" variable="$id"/>
-          <tag name="return" line="121" description="" type="boolean">
+          <tag name="param" line="122" description="" type="" variable="$id"/>
+          <tag name="return" line="122" description="" type="boolean">
             <type>boolean</type>
           </tag>
         </docblock>
@@ -4783,14 +4711,14 @@ output. Should be called within a view.</long-description>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="133" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="134" package="Codex\Core">
         <name>forget</name>
         <full_name>\Codex\Core\Menus\MenuFactory::forget()</full_name>
-        <docblock line="133">
+        <docblock line="134">
           <description>Removes a menu</description>
           <long-description></long-description>
-          <tag name="param" line="133" description="" type="" variable="$id"/>
-          <tag name="return" line="133" description="" type="\Codex\Core\Menus\MenuFactory">
+          <tag name="param" line="134" description="" type="" variable="$id"/>
+          <tag name="return" line="134" description="" type="\Codex\Core\Menus\MenuFactory">
             <type>\Codex\Core\Menus\MenuFactory</type>
           </tag>
         </docblock>
@@ -4910,9 +4838,9 @@ output. Should be called within a view.</long-description>
       <error line="49" code="PPC:ERR-50007">No summary for property $view</error>
       <error line="54" code="PPC:ERR-50007">No summary for property $menus</error>
     </parse_markers>
-    <source>eJytV11v2zYUfdevuA8GIgdK3Q3YS9JkA9x2DdAOQZr1pS4KRqJtIhQpkFTaYMh/3+WX9a26QAnDFsnDw3vvOaTtV39W+ypZnZ4mcAo3RBmQWzB7CmtZ0O9w8+4GKpI/kB3VLxBiUR+u7+A9y6nQFIgoIJfVk2K7vQEmtlKVxDAp4L4WBacFfGNmj4RMRx5EuQ3eX6/f/PPxDWwZp0i7SgQpqUZQ2HuzlopuPlBR64skqXVneC2FUSQ32gPc+1vsS/UEREOrG5EXfYo7RZjRfvia87pkgpg285rke7q5pZXULBK7sbk1+ESYoKp5mkG/xdT1kza0bD3O4G9lbZjYbf5V/G+K1ATDmoF/YvTbplUV2x/AI6f9HAn2Y11VUhlk5ZzmVlkUI9jlzqqKL6tmq+LRJ39FwUNrau9mSW32UkFnFl7TR7ijpHSIxlgBEbtpvoTfX/72R+ZXOTAPjgxtb0ylz1crwwvF6Y7wF7ksVwG0Kpk5iwtadnY2zDnRHQcBKytOSyrMqLGS/xK7oa2bt9TmnZQP5J7TLA4cvOD6h2GnuXvGmloOV1fbMJ9HomBzlC/DkpX7rJQ0qBMevEXuvfpD5q4DpthU8MdPBDpm1yn6WvGf4m57e4rz0fn9h6RDi08RluEy6jNWRJFySq3hjYCLFnnsHEUyelHAwl6d+rgo+neZa94iMwRda8CgBVccFcKYG8AJf9TyzmXWBGA17spV3+PJhm0tnJTw9SuWWhtV5yZtFGjqn8Ggopm/5kN5MgjZh2Qz6GRgE8jc1eqDWboo/J3gIrTffWdXmprD7mmz+/JiBOgCSn0sQ4ALCuDycMB78z5KOx+PbA+AAdveZTh0vVmbg5/1x6c37Y6AnRYIa05MugzHoh1ILexNmJ7YNWdbL925oqR4Osngs4fBl5DhczI4V2vEGqqBuM0sC2DBFTW1EjgqgH5n2noqLOj5CEXHOViwoj/vKWDT/53h3mfdRIoiRcK+yGwLach6T7RDLFvTtoU9A2pHjUM19X1u1c+letnCNtZZogTkgaY20vNz912Ftezs5OodTsoJXF55ngPky9BS40phro1OWYhqZLWzxNlVVbuUArDth5i6HZ8U+zbK6oQ+UtE4IWpuPb0o6JbU3Pw6vYNO2YHaOh836xugq26oyGBxY/Ve8mia8YynzXsvJZ8NPRrxmEgjdiq+W1rKRzovznSorR9NsxHjn4d4LsYv0XGf+mUdq7JixqitbUZMaqGxDM/J//kq+jI=</source>
+    <source>eJytV1tv2zYUftevOA8GIgdKvA3YS7NkA7x2DdAOQZruZS4KWqJtIhQpkFTaYMh/7+HNuqsuMMKwRZ6PH8/lO7T92+/VoUpW5+cJnMMdUQbkDsyBwloW9Cvcvb2DiuSPZE/1JUIs6v3tA7xjORWaAhEF5LJ6Vmx/MMDETqqSGCYFbGtRcFrAF2YOSMh05EGUO+Dd7fr13x9ew45xirSrRJCSagSFszdrqejmPRW1vkqSWneW11IYRXKjPcC9v8G5VM9ANLSmEXnVp3hQhBntl285r0smiGkzr0l+oJt7WknNIrFbm9uDT4QJqpqnGfQbDF0/a0PL1uMM/l7Whon95qPif1GkJujWDPwfRr9sWlmx8wE8ctrPEWc/1FUllUFWzmluK4vFCHJ5sFXFl61mK+NRJ3/EgofR5N5ZSW0OUkHHCn/SJ3igpHSIRlgBEadpvoRffvr518zvcmAeFBnGwZhKv1qtDC8Up3vCL3NZrgJoVTJzETe05OxkmHOiOwoCVlacllSYUWEl/yX2QJs3L6nNWykfyZbTLC4cteDmx2VXc/eMObUcLq92YDxPRMHmJF2GLSv3WSlpsE7YeIvca/W7zF0FTLGpoI8fcHRMrlP0teI/xN3W9hTnk9P7d0mHEp8iLMNl1GesiCLlVLWGNwJuWuRxchLJ6EUBC3t16tO86N9lbniJzBB0pQGDEVRxkgtjagBX+JO2dy6zxgFb42656i12Nuxq4UoJnz9jqrVRdW7SpgJN/jMYZDTz13xITwYh+hBsBp0IbACZu1q9M0vnhb8TnIf2u+/iRlNzPD1tTl9ejQCdQ6n3ZQhwTgFcHxu8Z/deWnts2R4AHbaz69B0PauNwVt9+/TMrgWsWSCs6Zh0Gdqi7Ugt7E2Yntk9FztfuleKkuL5LIN/PQw+hQhfkkFfrRFrqAbiDrMsgAlX1NRK4KoA+pVpq6mwoacjLDraYMGKvt1TwKb/O8O9z6qJFEWKhP0isx2kIeoD0Q6xbJntCGcG1J4ah2ry+9LKnwv1uoVtpLPEEpBHmp7l1vfLbc14QdWl3WGT2jnSJT60zBlc33jCrIthhTfFLOH4NBTdeC0xG00ls+D3yG4nmoubqnZBB2BbMTE5dn1SDvex8E4KJ9Y8GkTNreoXBd2Rmpv/TxGhktmR2vYGHtaXSLf+ISODzU0z9IJHWY1HPC3vrZR81vUo1VM8jdgp/+5pKZ/ofHGmXW39rJr1GP9exM4Zv2bHdeq3daTKihmhto4ZEamFxjS8JN8A4isB+A==</source>
   </file>
-  <file path="Menus/Menu.php" generated-path="Menus.Menu.html" hash="ceb20ebfc6be6fff9f3399b72298365c" package="Default">
+  <file path="Menus/Menu.php" generated-path="Menus.Menu.html" hash="6060e60e7f8d1d230e1cb3c606b8672f" package="Default">
     <docblock line="0">
       <description></description>
       <long-description></long-description>
@@ -5113,6 +5041,11 @@ output. Should be called within a view.</long-description>
           <default></default>
           <type>\Illuminate\Contracts\View\Factory</type>
         </argument>
+        <argument line="0" by_reference="false">
+          <name>$id</name>
+          <default>''</default>
+          <type/>
+        </argument>
       </method>
       <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="106" package="Codex\Core">
         <name>render</name>
@@ -5172,14 +5105,14 @@ output. Should be called within a view.</long-description>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="151" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="153" package="Codex\Core">
         <name>has</name>
         <full_name>\Codex\Core\Menus\Menu::has()</full_name>
-        <docblock line="151">
+        <docblock line="153">
           <description>Checks if a menu item exists</description>
           <long-description></long-description>
-          <tag name="param" line="151" description="" type="" variable="$id"/>
-          <tag name="return" line="151" description="" type="boolean">
+          <tag name="param" line="153" description="" type="" variable="$id"/>
+          <tag name="return" line="153" description="" type="boolean">
             <type>boolean</type>
           </tag>
         </docblock>
@@ -5189,20 +5122,20 @@ output. Should be called within a view.</long-description>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="164" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="166" package="Codex\Core">
         <name>get</name>
         <full_name>\Codex\Core\Menus\Menu::get()</full_name>
-        <docblock line="164">
+        <docblock line="166">
           <description>Get a menu item</description>
           <long-description></long-description>
-          <tag name="param" line="164" description="" type="string" variable="$id">
+          <tag name="param" line="166" description="" type="string" variable="$id">
             <type>string</type>
           </tag>
-          <tag name="param" line="164" description="" type="null|mixed" variable="$default">
+          <tag name="param" line="166" description="" type="null|mixed" variable="$default">
             <type>null</type>
             <type>mixed</type>
           </tag>
-          <tag name="return" line="164" description="" type="\Codex\Core\Menus\Node">
+          <tag name="return" line="166" description="" type="\Codex\Core\Menus\Node">
             <type>\Codex\Core\Menus\Node</type>
           </tag>
         </docblock>
@@ -5217,27 +5150,27 @@ output. Should be called within a view.</long-description>
           <type>null|mixed</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="174" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="176" package="Codex\Core">
         <name>getView</name>
         <full_name>\Codex\Core\Menus\Menu::getView()</full_name>
-        <docblock line="174">
+        <docblock line="176">
           <description>get view value</description>
           <long-description></long-description>
-          <tag name="return" line="174" description="" type="mixed">
+          <tag name="return" line="176" description="" type="mixed">
             <type>mixed</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="185" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="187" package="Codex\Core">
         <name>setView</name>
         <full_name>\Codex\Core\Menus\Menu::setView()</full_name>
-        <docblock line="185">
+        <docblock line="187">
           <description>Set the view value</description>
           <long-description></long-description>
-          <tag name="param" line="185" description="" type="mixed" variable="$view">
+          <tag name="param" line="187" description="" type="mixed" variable="$view">
             <type>mixed</type>
           </tag>
-          <tag name="return" line="185" description="" type="\Codex\Core\Menus\Menu">
+          <tag name="return" line="187" description="" type="\Codex\Core\Menus\Menu">
             <type>\Codex\Core\Menus\Menu</type>
           </tag>
         </docblock>
@@ -5247,16 +5180,16 @@ output. Should be called within a view.</long-description>
           <type>mixed</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="200" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="202" package="Codex\Core">
         <name>getBreadcrumbTo</name>
         <full_name>\Codex\Core\Menus\Menu::getBreadcrumbTo()</full_name>
-        <docblock line="200">
+        <docblock line="202">
           <description>Get breadcrumbs to the given Node</description>
           <long-description></long-description>
-          <tag name="param" line="200" description="" type="\Codex\Core\Menus\Node" variable="$item">
+          <tag name="param" line="202" description="" type="\Codex\Core\Menus\Node" variable="$item">
             <type>\Codex\Core\Menus\Node</type>
           </tag>
-          <tag name="return" line="200" description="" type="array">
+          <tag name="return" line="202" description="" type="array">
             <type>array</type>
           </tag>
         </docblock>
@@ -5266,14 +5199,14 @@ output. Should be called within a view.</long-description>
           <type>\Codex\Core\Menus\Node</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="211" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="213" package="Codex\Core">
         <name>getBreadcrumbToHref</name>
         <full_name>\Codex\Core\Menus\Menu::getBreadcrumbToHref()</full_name>
-        <docblock line="211">
+        <docblock line="213">
           <description>Get breadcrumbs to the Node that has the href</description>
           <long-description></long-description>
-          <tag name="param" line="211" description="" type="" variable="$href"/>
-          <tag name="return" line="211" description="" type="array">
+          <tag name="param" line="213" description="" type="" variable="$href"/>
+          <tag name="return" line="213" description="" type="array">
             <type>array</type>
           </tag>
         </docblock>
@@ -5283,14 +5216,14 @@ output. Should be called within a view.</long-description>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="228" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Menus" line="230" package="Codex\Core">
         <name>findItemByHref</name>
         <full_name>\Codex\Core\Menus\Menu::findItemByHref()</full_name>
-        <docblock line="228">
+        <docblock line="230">
           <description>findItemByHref</description>
           <long-description></long-description>
-          <tag name="param" line="228" description="" type="" variable="$href"/>
-          <tag name="return" line="228" description="" type="\Codex\Core\Menus\Node|null">
+          <tag name="param" line="230" description="" type="" variable="$href"/>
+          <tag name="return" line="230" description="" type="\Codex\Core\Menus\Node|null">
             <type>\Codex\Core\Menus\Node</type>
             <type>null</type>
           </tag>
@@ -5341,6 +5274,7 @@ output. Should be called within a view.</long-description>
     </class>
     <parse_markers>
       <error line="0" code="PPC:ERR-50000">No summary was found for this file</error>
+      <error line="83" code="PPC:ERR-50015">Argument $id is missing from the Docblock of __construct</error>
       <error line="83" code="PPC:ERR-50008">No summary for method __construct()</error>
       <error line="28" code="PPC:ERR-50007">No summary for property $cache</error>
       <error line="33" code="PPC:ERR-50007">No summary for property $files</error>
@@ -5353,7 +5287,7 @@ output. Should be called within a view.</long-description>
       <error line="68" code="PPC:ERR-50007">No summary for property $viewFactory</error>
       <error line="73" code="PPC:ERR-50007">No summary for property $menus</error>
     </parse_markers>
-    <source>eJytWFtv2zYUfvev4IChlgO73gbsJZmzpd7SBliKIsn2EgcBLdEWF5kSSCqNsea/7/CQkqir3WJ+iC3yXL7znQup/PJrFmcjQXdMZTRkZJlG7GW1TCVbXTORq7PRKFe15WUqtKShVlYA/17Ccyr3hCriPRaSZ00Td5Jy0P+Qpk90nTC7f5Uk+Y4Lqn0XSxrGbHXDslTxwgOuDehc8oSpvdJs5/0ckL9Jc83FdvWXTN4zwSQFRwPif3P2eeUFbJ7dY0urMG2+WdvobZ5lqdRgPElYqHkqgO75ycmInCCPJEyoUm/h0az8Bgl6oltGiMclbtBcx6kkxQb5JNN/wB75nT2TO0Z3KBSm2V7ybaxBqPgVhBPy0w8//jytK6J8wkMmlPEWa52p0/lcJ5FM2JYmb8N0N3f78x3Xs0L2+uqO/Gl/g435CPFjKKN/RwafIaBKOy5hvOYDPp+pJKujCsGpzPE7k6kG2Cwi34e2OA5a7iySPqMbI9FjVGkJGe7TzKiOj0DTLoQ+gxxg9kFZeS3mKrI3oqJgD0Krl3CfPekK/Csy2tV2feZzmXwT/c/Qm18Fym/uIaOXw/wdNy77HOzc4G2azqiku2ONo5I11TRw/NR0pX+UgdaotgiwIQcM1OuLtD6utI6C0FVSBKvnKPXaZK8AePmuZyxfw9wjm1xgx5LHxzAVUI95qIOOU9AlY0pa9E7tkea4mhJHhYt8SmrhmGim/qFTAzhBZHbWIngdczU7R89uaVEWWEMIvVdCbpI2hKSXpkXV9w0pwFjyt3Dt2xDByCsRN2IbQl5kRqjWeR2ilctxaJrk9BTSrTlN1NyEPG4p4TQtlQRYqCZwMHEt6EefC3N6BWNj7lQyGu3HU3Jvt8lDhwZ6mJ1nuQ7GMk01iBs3HwFeuYCiU2IfJwfdRqlgDa9G9rU1MG6YiJhURENajSacvtAd+BixDRcwawxrTrxsEcl0LkXnZG1UvEQHQavoYAYq4PO+XDEfBD8Gns9dwPVdJGpc7s7Ot6ygbIIPy5jD/YMJ5858HnyqLBiIadFRPdAC9IkF3gYY/cx1HCBYeChi8Uw6IkrLfTxfRBGhlmFe3SIaI6eAyaOejWea5M1BaXNgrhGAQTc2qZR0jzNe054tqsHAGlq0GOGjkyK9q+ZNf2VqcjDdNIoCwD91WKcFLtNvrpStY4RkCoA8lEsVFLvRKhoB7l0TYndYT7Y1SofG8NQ35ueLb0jwHeHqUeRJEjhwE0JF1OjGmKpye+JhQBx2/aNFU9czJVnonfVpzc6BJyzWAGNqSgqUUUx/QpXAU+0VvYawg3FENZ1Z6XFJvqfzOjR9LJ0OUKvEzXpfeS9jFj4pw65X5IS9cKVVd637Re48rNM0GSwuzAmPmmVRAGznD2T7EL9n+nBDut5CtlpNaSroy46/mOsYzEqaJ/r/6CAsIEyEM2oKHlwdFXVLuTd+kMTJTvyZ0swIRncIrblntOZ7HZ29Y3cDuQUg5rjpB2Ppdkx7p1EJE18eh1AqhxK1e+4/6H9Rex9oBlKG0FVMa3PUhzLfreE0TTGkLX9mgngZH7imV9VhX+BapYQz8lAu3pUg7tKgMtaXHbOHRXMhQqbgEFQXIrplySYY7JuOUNGXjqk2TYorsWSbntb3tsg3h/cBjARoqpVQHD6L6hYpoitYebf3VKqJaE4ES1JjytdLuEmuVfEGK2GJYt0m7s0tpBTsIbYO8zBzh4bMFzM0BgntJMZxWZG5SXMRtY45uIvDpT4obfnFhv/BceY8QkY1akracVRfFId1MDZq4wl586YoT9raWywWpGW+wTm8Y7H6UflapaCZfowRYlN/7DK9D1oHvrNpGG0m0mXRvtRbEvCW4jhHCt21pXCz4VLpzlukf8S+jv4DtZI1yQ==</source>
+    <source>eJytWFtv2zYUfvev4IChkgM73gbsJZm9pdnaBliKIsn2EgcBI9GRFpkUSCqNsea/7/CQkqir3WJ+SCzyXL7znQsp//JrnuQTTrdM5TRi5FzE7GV9LiRbXzJeqNPJpFCN5XPBtaSRVlYA/76DZyF3hCriPZaSp20TN5KmoP9BiCf6kDG7f5FlxTblVPsuzmmUsPUVy4VKSw+4NqLzLs2Y2inNtt7XEfkrUeiUP67/ktl7xpmk4GhE/O+UfV57AZtn99jRKk2b/6xr9LrIcyE1GM8yFulUcKB7cXQ0IUfII4kyqtQxPJqV3yBBT/SREeJxiRu00ImQpNwgn6T4B+yR39kzuWF0i0KRyHcyfUw0CJXfwmhKfvrhx59nTUWUz9KIcWW8JVrn6mSx0FksM/ZIs+NIbBduf7FN9byUvby4IX/a72BjMUH8GMrk34nBZwio045LGK/5gM9nKsn6oEJwKgv8n0uhATaLyfeRLY69lnuLZMjoxkgMGFVaQoaHNHOqkwPQdAthyGAKMIegrL0WcxU5GFFZsHuhNUt4yJ50Bf4VGe1ruyHzhcy+if5n6M2vAuU395jRd+P8HTYuhxxs3eBtm86ppNtDjaOSNdU2cPjUdKV/kIHOqLYIsCFHDDTri3Q+rrQOgtBXUgSr5yD1xmSvAXj5bmaseIC5RzYFx44l9/eR4FCPRaTDnlPQJWNGOvTO7JHmuJoRR4WLfEYa4ZhoZv6h0wA4gwkRkyUJgilitFMXw9BJquYrxOCWllWptYQQRy3kZmpLSHoJW9YToCUFaCsml66RWyLIQS3ihm1LyIvRCDV6sEe0dhlEpl1OTjDS44AcG4Y6OjhWKx0OBupRHE5dL/rBF9wcY2FgzJ5IRuNdMCO3dpvc9Wigh/kqL3QYSCE0iBs3HwFdtYCiM2Ifp3vdxoKzllcj+9qZHFeMx0wqoiGrRhOOYWgTfIzZJuUwdAxpTrzqFcl0IXnviG2VvkQHYafmYBgq4PO2WjEfBB8AzysXcHMXiQqq3fnqkZWUTfHhPEnhIsK4c2c+dz5VFgwzbdAtHugA+sRCbwOMfk51EiJYeChj8Uw6IirLQzyfxTGhluG0vk60Zk8JM40HNp5pVrQnps2BuU8ABt3apFLSHQ57TQe2qAYDD9Ch5SyfHJXpXbev/GtTk6PppnEcAv6ZwzorcZl2c6VsHSMkUwDkrlqqodiNTtFwcO+aELvDerKtYR1OT5vS85Vi+hJcheiwd/usdBt6CPwkpxsSfkdSdc+LLAtdRFNCedxq4YSqanvqAUd/dv2jDaGpZ+q41Dsd0pqvgFys8BCxtyWreD6hSuipDooiM0FMNZ1b6aDKmKfzOjaybA4coE5fmPWhnjhPWPSkDLteZxD2kiqt+hvE7wzn4UGIbLQiMSdp3K6lEmA3fyA7hPg90/u72DUkstXpZFNBX7bpi7nMwYClRab/j7bDAsJEOKOmS8DVQVF3lAfjB0k8Dog/iNoZwej2oTW3lM6h0ERnb+j9QK4BiDmjhsFYuh3T3hFWwcRXzzGUyqFE7YE7E/pfNt4m2oFUIfQV04O5H0Sy2D7AESwwpMf0mXHiZXzkkl9Xh33965QSDtZ9uXhbgbgRYW1sKDtmD4vmjEdMwcmpznh8zbJNONo3PaGiL51QbZoUVxLJNgOt722Rbw7vAxgJ0VQnoTh8lvXNk8cXsPJ256nUE9GcCJak1pRvlnCbXKviDVbCMsX6Tdyaq0slOEBsE+Z+5vYNmS9maIwS2kuM47ImcyMKHneOObi/w4tAWNnyiw1//3HmPEImDWoq2nFU1+d2YNSCKXnzpixP2tlbLpekY77FObyhseZR+VqnoJ1+jBFiU39sc70LOwe+s2kYbSfSZdH+JGBJwKuN4xwpdHed0s0mlUr3Xj39I/Z18h/TNUUT</source>
   </file>
   <file path="Log/Writer.php" generated-path="Log.Writer.html" hash="fec81d47235b42f6fc682d316bd720d1" package="Default">
     <docblock line="0">
@@ -5652,7 +5586,6 @@ output. Should be called within a view.</long-description>
       <namespace name="Filters" full_name="Codex\Core\Filters"/>
       <namespace name="Http" full_name="Codex\Core\Http">
         <namespace name="Controllers" full_name="Codex\Core\Http\Controllers"/>
-        <namespace name="ViewComposers" full_name="Codex\Core\Http\ViewComposers"/>
       </namespace>
       <namespace name="Log" full_name="Codex\Core\Log"/>
       <namespace name="Menus" full_name="Codex\Core\Menus"/>

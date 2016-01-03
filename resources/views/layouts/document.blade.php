@@ -21,12 +21,8 @@
 @stop
 
 @section('sidebar-menu')
-    {!! $project->getDocumentsMenu()->render() !!}
+    {!! $project->getSidebarMenu()->render() !!}
 @stop
-
-@push('header-actions')
-    @include('codex::partials/header-actions')
-@endpush
 
 @push('init-scripts')
 <script src="{{ asset('vendor/codex/bower_components/highlightjs/highlight.pack.js') }}"></script>
