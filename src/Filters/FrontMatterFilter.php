@@ -25,11 +25,16 @@ class FrontMatterFilter implements Filter
      */
     public function handle(Document $document, array $config)
     {
+        $this->pattern($document, '/<!---([\w\W]*?)-->/')
+            ->pattern($document, '/---([\w\W]*?)---/');
+    }
+
+    protected function pattern(Document $document, $pattern)
+    {
         $content = $document->getContent();
 
-        $pattern = '/<!---([\w\W]*?)-->/';
         if (preg_match($pattern, $content, $matches) === 1) {
-        // not really required when using html doc tags. But in case it's frontmatter, it should be removed
+            // not really required when using html doc tags. But in case it's frontmatter, it should be removed
             $content    = preg_replace($pattern, '', $content);
             $attributes = array_replace_recursive($document->getAttributes(), Yaml::parse($matches[1]));
 
@@ -37,5 +42,7 @@ class FrontMatterFilter implements Filter
         }
 
         $document->setContent($content);
+
+        return $this;
     }
 }

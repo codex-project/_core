@@ -3653,7 +3653,7 @@ output. Should be called within a view.</long-description>
     </parse_markers>
     <source>eJyNUk1Lw0AQvedXzKGHJNhGBS9Wq5AqCgo9eCzIupkmq8lu2J3UivS/u/nYxjaK7iXDzJv35j1ycVVmpSdZgaZkHCFWCW6WsdK4vBU5oTZTz6vM3iBWkjTjZDrI9BAwV7wqUNJgsGDaWMr2m6h3ebOxTFYhCkMPQtj1YdUw217dvranvbEUAb6RNQNWUaY0uAEstHpFTjDHNTwhKxoQV+WHFmlGFuQqnwdwenxydrS/2OBzwVGaWi0jKs15FFGe6BxTlk+4KqJuHhWCxg77eP8ED21tOSKP58yY3k8bFIiizLFOxkDb8T69+vhSK7LqmMCodCs2lXrUJFO/EGKNjBAYSHwfUktDTHKcdGi3ZLPTrADYjxy+Ce2QGqnSEtZKJF0vaq+rXqxNWFWSk1ASnp+5smq64uQf0PasQbPa2qvfiDJhxrPdHC73vNaQ7cDxHZNJjkAZdj/Eb+6WP/x9MEq66hDNtGYfcPBG1tRKpE4g/HccWXOkP5Q96oQ65r8SGc8MUtxAfbcy7dGO1cHI1v6Qg3Bj2z047cFBELigt94Xzg4+zg==</source>
   </file>
-  <file path="Filters/FrontMatterFilter.php" generated-path="Filters.FrontMatterFilter.html" hash="d94209b1115bc61941308ffe46691b10" package="Default">
+  <file path="Filters/FrontMatterFilter.php" generated-path="Filters.FrontMatterFilter.html" hash="a33278eed1850f3e76834007cbb1fbf8" package="Default">
     <docblock line="0">
       <description></description>
       <long-description></long-description>
@@ -3703,11 +3703,32 @@ output. Should be called within a view.</long-description>
           <type>array</type>
         </argument>
       </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core\Filters" line="32" package="Codex\Core">
+        <name>pattern</name>
+        <full_name>\Codex\Core\Filters\FrontMatterFilter::pattern()</full_name>
+        <docblock line="32">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$document</name>
+          <default></default>
+          <type>\Codex\Core\Document</type>
+        </argument>
+        <argument line="0" by_reference="false">
+          <name>$pattern</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
     </class>
     <parse_markers>
       <error line="0" code="PPC:ERR-50000">No summary was found for this file</error>
+      <error line="32" code="PPC:ERR-50015">Argument $document is missing from the Docblock of pattern</error>
+      <error line="32" code="PPC:ERR-50015">Argument $pattern is missing from the Docblock of pattern</error>
+      <error line="32" code="PPC:ERR-50008">No summary for method pattern()</error>
     </parse_markers>
-    <source>eJxtU+9r2zAQ/e6/4gaF2CGO18G+NE3bLaVssMJghTGaMlT5YmvTD0+S04WR/31n2U7sbPpgibt37949yZfXVVlFmil0FeMIK5Pj7/XKWFzfCenRukUU1W6UWBntLePedZDFKeDW8Fqh9m3iy05tjN5RSlVGU3j9jSkZPsSdTacRTOHOEqlinuhgE1gp2iRuSNZPViDAoENIsNqXxkKfgM/W/EDu4Ra38IBMBRA31c6KovQE6k8xT+DN6/O3s3FhwEvBUbumW+l95S6yzMvcSiyYnHOjsi6fKeHTHnv/8QE+tWfiyCIumXPtRPdhotYmEKqS2PhCyXbEP1EjP1jQrCl8YDqXCL7EzoV5l+kBZIdlCtb/cRvO8u50AmbWsh2crDNu9EYUPf30xqKvrYatEXkXzMJe1c80KGxqzb0wGsogMf6366xr1DEnobqdsG/om4LlsSS9KtCv2nic0Gs4gKtgnCbwJLt8laZp/Lh+WX99ml4naXqVTRYHqNhAXFksvtPr4WXcV84ODekUUugSWC6XcJ4MVGUZaOPBIpNyR9uvWljM4aVEDbUTuqB3oCSQYPCscHN4X3sQGjijixd+4mBzfLkzioArTS1zeEZiU2aL+aHXyAVaSwi6LVaSfr2B8snkqD5ZjOsJY8Vz7dFRfTC8J6Cd19aJLVGNDH53KImTGTT/3cUFvQxHuM6Yx/OnZGh/6HTkcCOOgYSBuP3g8kaV/fWeDLSP9tFf96xlUw==</source>
+    <source>eJx1VO9r2zAQ/e6/4gaB2CGu18G+tE3bLaVssMJghTGaMhT5YmvTD0+S04aR/31n2U6ctNMHS+jee/fufPbFVVVWkWYKXcU4wtzk+LyYG4uLWyE9WnceRbU7CMyN9pZx7zrI+THgxvBaofZt4NtGrYzeUEhVRtP14gdTMjxIO5tMIpjArSVRxTzJwSqo0m0TuCZbv1mBAIMMIcBqXxoLfQC+WvMLuYcbXMM9MhVA3FQbK4rSE6g/xTyBd29P308PiQEvBUftmmyl95U7yzIvcyuxYPKEG5V18UwJn/bYu8/38KU9k0YWccmcayu6CxW1bQKhKolNXyjYlvg3auyHFjRrAp+YziWCL7HrwkkX6QHUDssULF7pNozy7nQEZtayDRytETd6JYpefnJt0ddWw9qIvLvMwl7VSyoUVrXmXhgNZbAYv8w67RJ1yklgtxWGhL4ULr2sQkd0PKCNs4s3aZrGD4unxffHyVWSppfZOImGdv9DPKKlRDsPvG3UmrfG06vFfO+/13mtgFEXfOGdSvINdrZHp5cF+nl7H1PWHVisIK4sFj9pnHkZ95rTnQqdQghdArPZDE6TQaowEBlo48Eik3JD259aWCrhqUQNtRO6oOFUEsgJeFa4E/hYexAaOKNpFH7sYLX/nKZ0A640tcxhiaSmzBrzg3y78mjNIHi3WEn6Hwzcj8f7Crom7/iEsWJZe3TED1PQC9DOa+vEGuPDzn3YUeJkCs3P4OyMxtURrmvOw+ljMuxryLTXcAcaAwsDc9s9+5DZv7dBQTtk9yGEee2HaRv9A6tblvg=</source>
   </file>
   <file path="Facades/Codex.php" generated-path="Facades.Codex.html" hash="a2885177019cf54378af9df3831dc5ce" package="Default">
     <docblock line="0">
