@@ -11,7 +11,8 @@
         "erusev/parsedown-extra": "~0.7",
         "symfony/yaml": "~2.7",
         "vierbergenlars/php-semver": "3.0.*",
-        "nicmart/tree": "0.2.*"
+        "nicmart/tree": "0.2.*",
+        "sebwite/assets": "1.0.*"
     },
     "autoload": {
         "psr-4": {
