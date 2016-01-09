@@ -168,7 +168,8 @@ class Factory implements Codex
             }
             $href = $project->url();
             if (!$menu->has($name)) {
-                $menu->add($name, $name, 'root', [ ], count($names) === 0 ? compact('href') : [ ]);
+                $menu->add($name, $name, 'root', [ ], count($names) === 0 ? compact('href') : [ ])
+                    ->setMeta('project', $project);
             }
 
             $parentId = $name;
@@ -177,7 +178,8 @@ class Factory implements Codex
                 $name = array_shift($names);
                 $id .= '::' . $name;
                 if (!$menu->has($id)) {
-                    $menu->add($id, $name, $parentId, [ ], count($names) === 0 ? compact('href') : [ ]);
+                    $menu->add($id, $name, $parentId, [ ], count($names) === 0 ? compact('href') : [ ])
+                        ->setMeta('project', $project);
                 }
                 $parentId = $id;
             }

@@ -13,7 +13,6 @@ use Illuminate\Support\Collection;
 /**
  * Menu class.
  *
- * @package   Codex\Core
  * @author    Codex Project Dev Team
  * @copyright Copyright (c) 2015, Codex Project
  * @license   https://tldrlegal.com/license/mit-license MIT License
@@ -166,6 +165,16 @@ class Menu
     public function get($id, $default = null)
     {
         return $this->items->get($id, $default);
+    }
+
+    /**
+     * all method
+     *
+     * @return Node[]
+     */
+    public function all()
+    {
+        return $this->items->all();
     }
 
     /**

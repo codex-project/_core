@@ -160,3 +160,36 @@
     margin-left: -20px;
     margin-top: -10px;
 }
+
+.dropdown-auth {
+    > a.dropdown-toggle {
+        > i {
+            font-size: 30px !important;
+        }
+        &:hover {
+            background: transparent !important;
+            > i {
+                color: $color-primary !important;
+            }
+        }
+        &:after {
+            display: none;
+        }
+    }
+    > ul.dropdown-menu {
+        margin-top: 5px !important;
+        margin-right: 5px !important;;
+        &:before, &:after {
+            border-bottom-color: #263238 !important;;
+        }
+    }
+    .dropdown-item {
+        padding-right: 40px;
+    }
+    .avatar {
+        right: 11px;
+        position: absolute;
+        top: 7px;
+        width: 17px;
+    }
+}

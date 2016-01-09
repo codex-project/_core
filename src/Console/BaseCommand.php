@@ -7,7 +7,7 @@
 namespace Codex\Core\Console;
 
 use Codex\Core\Contracts\Codex;
-use Sebwite\Support\Command;
+use Sebwite\Support\Console\Command;
 use Sebwite\Support\StubGenerator;
 
 /**

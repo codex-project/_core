@@ -45,10 +45,10 @@ module packadic {
                 tooltip: {
                     container: 'body',
                     template: '<div class="tooltip tooltip-packadic" role="tooltip"><div class="tooltip-inner"></div></div>',
-                    selector: '*[data-toggle="tooltip"]'
+                    selector: '*[data-toggle="tooltip"], .tooltip-toggle'
                 },
                 popover: {
-                    selector: '*[data-toggle="popover"]'
+                    selector: '*[data-toggle="popover"], .popover-toggle'
                 }
             }
         }
