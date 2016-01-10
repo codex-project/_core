@@ -6,7 +6,7 @@
  */
 namespace Codex\Core\Traits;
 
-use Codex\Core\Extensions;
+use Codex\Core\Extensions\Extender;
 
 /**
  * This is the Hookable.
@@ -27,7 +27,7 @@ trait Hookable
      */
     protected function runHook($name, array $params = [ ])
     {
-        return Extensions::runHook($name, $params);
+        return Extender::runHook($name, $params);
     }
 
     protected function isResponse(&$val)

@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Core\Filters;
+namespace Codex\Core\Extensions\Filters;
 
 use Codex\Core\Contracts\Filter;
 use Codex\Core\Document;

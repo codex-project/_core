@@ -6,10 +6,10 @@
  */
 namespace Codex\Core;
 
-use Codex\Core\Filters\FrontMatterFilter;
-use Codex\Core\Filters\ParsedownFilter;
+use Codex\Core\Extensions\Filters\FrontMatterFilter;
+use Codex\Core\Extensions\Filters\ParsedownFilter;
 use Codex\Core\Log\Writer;
-use Codex\Core\Traits\ProvidesCodex;
+use Codex\Core\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application;
 use Monolog\Logger as Monolog;
 use Sebwite\Support\ServiceProvider;
@@ -24,7 +24,7 @@ use Sebwite\Support\ServiceProvider;
  */
 class CodexServiceProvider extends ServiceProvider
 {
-    use ProvidesCodex;
+    use CodexProviderTrait;
 
     /**
      * @var string
@@ -120,8 +120,8 @@ class CodexServiceProvider extends ServiceProvider
      */
     protected function registerFilters()
     {
-        $this->addCodexFilter('front_matter', FrontMatterFilter::class);
-        $this->addCodexFilter('parsedown', ParsedownFilter::class);
+        $this->codexFilter('front_matter', FrontMatterFilter::class);
+        $this->codexFilter('parsedown', ParsedownFilter::class);
     }
 
     /**

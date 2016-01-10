@@ -34,7 +34,12 @@ class Projects extends FactoryComponent
         parent::__construct($parent);
         $this->fs    = $fs;
         $this->items = collect();
+
+        $this->runHook('projects:ready', [$this]);
+
         $this->resolve();
+
+        $this->runHook('projects:done', [$this]);
     }
 
     public function create()
@@ -51,7 +56,7 @@ class Projects extends FactoryComponent
         if (!$this->items->isEmpty()) {
             return;
         }
-
+        $this->runHook('projects:resolve', [$this]);
         /** @var \Codex\Core\Menu $menu */
         $menu     = $this->codex->menus->add('projects');
         $finder   = new Finder();
@@ -88,8 +93,7 @@ class Projects extends FactoryComponent
             $metas = compact('project');
             $id    = Str::slugify($name, '_');
             if (!$menu->has($id)) {
-                $menu->add($id, $name, 'root', $metas, $attrs)
-                    ->setMeta('project', $project);
+                $menu->add($id, $name, 'root', [], $attrs);
             }
 
             $parentId = $id;
@@ -103,6 +107,12 @@ class Projects extends FactoryComponent
                 $parentId = $id;
             }
         }
+        $this->runHook('projects:resolved', [$this]);
+    }
+
+    public function menu()
+    {
+        return $this->codex->menus->get('projects');
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Core\Parsers;
+namespace Codex\Core\Extensions\Parsers;
 
 use ParsedownExtra as BaseParsedownExtra;
 

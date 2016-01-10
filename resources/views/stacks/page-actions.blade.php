@@ -6,8 +6,7 @@
     </a>
 
     <div class="dropdown-menu dropdown-menu-packadic">
-
-        {!! $codex->menus->get('projects')->render() !!}
+        {!! $codex->projects->menu()->render() !!}
     </div>
 </div>
 

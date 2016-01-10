@@ -134,19 +134,9 @@ class Factory implements Codex
             if (!$project instanceof Project) {
                 $project = $this->projects->get($project);
             }
-            $uri .= '/' . $project->getName();
-
-
-            if (!is_null($ref)) {
-                $uri .= '/' . $ref;
-            } else {
-                $uri .= '/' . $project->getDefaultRef();
-            }
-
-
-            if (!is_null($doc)) {
-                $uri .= '/' . $doc;
-            }
+            $ref = $ref === null ? $project->getDefaultRef() : $ref;
+            $doc = $doc === null ? '' : "/{$doc}";
+            $uri = "{$uri}/{$ref}{$doc}";
         }
 
         return url($uri);

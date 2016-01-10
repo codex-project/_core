@@ -9,6 +9,7 @@
 namespace Codex\Core;
 
 use Codex\Core\Contracts\Codex;
+use Codex\Core\Extensions\Extender;
 use Codex\Core\Traits;
 use Illuminate\Contracts\Container\Container;
 use Sebwite\Support\Filesystem;
@@ -107,7 +108,7 @@ class Document
         $this->runHook('document:render', [ $this ]);
 
         $fsettings = $this->project->config('filters');
-        $filters   = Extensions::getFilters($this->project->config('filters.enabled'));
+        $filters   = Extender::getFilters($this->project->config('filters.enabled'));
 
         if (count($filters) > 0) {
             foreach ($filters as $name => $filter) {

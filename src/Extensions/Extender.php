@@ -4,7 +4,7 @@
  *
  * MIT License and copyright information bundled with this package in the LICENSE file
  */
-namespace Codex\Core;
+namespace Codex\Core\Extensions;
 
 use Codex\Core\Contracts\Filter;
 use Codex\Core\Contracts\Hook;
@@ -17,7 +17,7 @@ use Codex\Core\Contracts\Hook;
  * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
-class Extensions
+class Extender
 {
 
     /**

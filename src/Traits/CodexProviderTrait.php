@@ -1,7 +1,7 @@
 <?php
 namespace Codex\Core\Traits;
 
-use Codex\Core\Extensions;
+use Codex\Core\Extensions\Extender;
 
 /**
  * Codex hook provider trait
@@ -11,7 +11,7 @@ use Codex\Core\Extensions;
  * @copyright Copyright (c) 2015, Codex Project
  * @license   https://tldrlegal.com/license/mit-license MIT License
  */
-trait ProvidesCodex
+trait CodexProviderTrait
 {
     /**
      * Add a new factory hook.
@@ -21,9 +21,9 @@ trait ProvidesCodex
      *
 *@return void
      */
-    protected function addCodexHook($hookPoint, $handler)
+    protected function codexHook($hookPoint, $handler)
     {
-        Extensions::addHook($hookPoint, $handler);
+        Extender::addHook($hookPoint, $handler);
     }
 
     /**
@@ -34,9 +34,9 @@ trait ProvidesCodex
      *
 *@return void
      */
-    protected function addCodexFilter($name, $handler)
+    protected function codexFilter($name, $handler)
     {
-        Extensions::filter($name, $handler);
+        Extender::filter($name, $handler);
     }
 
     /**
@@ -44,8 +44,8 @@ trait ProvidesCodex
      *
      * @param string|array $names
      */
-    protected function addRouteProjectNameExclusions($names)
+    protected function codexRouteExclusion($names)
     {
-        Extensions::addExcludedProjectNames($names);
+        Extender::addExcludedProjectNames($names);
     }
 }
