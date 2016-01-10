@@ -1,32 +1,25 @@
 <?php
 /**
- * Part of the Codex PHP packages.
+ * Part of the Sebwite PHP packages.
  *
- * MIT License and copyright information bundled with this package in the LICENSE file
+ * License and copyright information bundled with this package in the LICENSE file
  */
-namespace Codex\Core\Menus;
 
-use Codex\Core\Contracts\Menus\MenuFactory as MenuFactoryContract;
+
+namespace Codex\Core\Components\Factory;
+
+use Codex\Core\Contracts\Codex;
 use Codex\Core\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\View\Factory as View;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 
-/**
- * This is the MenuFactory.
- *
- * @package        Codex\Core
- * @author         Codex Dev Team
- * @copyright      Copyright (c) 2015, Codex
- * @license        https://tldrlegal.com/license/mit-license MIT License
- */
-class MenuFactory implements MenuFactoryContract
+class Menus extends FactoryComponent
 {
-    use Traits\Hookable, Traits\ContainerTrait, Traits\FilesTrait;
+    use Traits\Hookable, Traits\FilesTrait;
 
     /**
      * @var \Illuminate\Contracts\Cache\Repository
@@ -51,7 +44,7 @@ class MenuFactory implements MenuFactoryContract
     /**
      * @var \Illuminate\Support\Collection
      */
-    protected $menus;
+    protected $items;
 
     /**
      * @param \Illuminate\Contracts\Container\Container   $container
@@ -61,17 +54,17 @@ class MenuFactory implements MenuFactoryContract
      * @param \Illuminate\Contracts\Routing\UrlGenerator  $url
      * @param \Illuminate\Contracts\View\Factory          $view
      */
-    public function __construct(Container $container, Filesystem $files, Cache $cache, Router $router, UrlGenerator $url, View $view)
+    public function __construct(Codex $parent, Filesystem $files, Cache $cache, Router $router, UrlGenerator $url, View $view)
     {
-        $this->setContainer($container);
+        parent::__construct($parent);
         $this->setFiles($files);
         $this->cache  = $cache;
         $this->router = $router;
         $this->url    = $url;
         $this->view   = $view;
-        $this->menus  = new Collection();
+        $this->items  = new Collection();
 
-        $this->runHook('menu-factory:ready', [ $this ]);
+        $this->runHook('menus:ready', [ $this ]);
     }
 
 
@@ -80,7 +73,7 @@ class MenuFactory implements MenuFactoryContract
      *
      * @param string $id
      *
-     * @return \Codex\Core\Menus\Menu
+     * @return \Codex\Core\Menu
      */
     public function add($id)
     {
@@ -88,12 +81,12 @@ class MenuFactory implements MenuFactoryContract
             return $this->get($id);
         }
 
-        $menu = $this->getContainer()->make('codex.builder.menu', [
-            'menuFactory' => $this,
-            'id' => $id
+        $menu = $this->getContainer()->make('codex.menu', [
+            'menus' => $this,
+            'id'          => $id
         ]);
-        $this->runHook('menu-factory:add', [ $this, $menu ]);
-        $this->menus->put($id, $menu);
+        $this->runHook('menus:add', [ $this, $menu ]);
+        $this->items->put($id, $menu);
 
         return $menu;
     }
@@ -105,11 +98,11 @@ class MenuFactory implements MenuFactoryContract
      * @param string $id
      * @param null   $default
      *
-     * @return \Codex\Core\Menus\Menu
+     * @return \Codex\Core\Menu
      */
     public function get($id, $default = null)
     {
-        return $this->menus->get($id, $default);
+        return $this->items->get($id, $default);
     }
 
     /**
@@ -121,7 +114,7 @@ class MenuFactory implements MenuFactoryContract
      */
     public function has($id)
     {
-        return $this->menus->has($id);
+        return $this->items->has($id);
     }
 
     /**
@@ -134,7 +127,7 @@ class MenuFactory implements MenuFactoryContract
     public function forget($id)
     {
         $this->runHook('menu-factory:forget', [ $this, $id ]);
-        $this->menus->forget($id);
+        $this->items->forget($id);
 
         return $this;
     }

@@ -1,38 +1,32 @@
 <?php
 /**
- * Part of the Sebwite PHP packages.
+ * Part of the Codex PHP packages.
  *
- * License and copyright information bundled with this package in the LICENSE file
+ * MIT License and copyright information bundled with this package in the LICENSE file
  */
-
 
 namespace Codex\Core;
 
 use Codex\Core\Contracts\Codex;
-use Codex\Core\Menu;
 use Codex\Core\Traits;
 use Illuminate\Contracts\Container\Container;
-use Sebwite\Support\Filesystem;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Sebwite\Support\Path;
 use Sebwite\Support\Str;
-use Sebwite\Support\Traits\Extendable;
 use Symfony\Component\Yaml\Yaml;
 use vierbergenlars\SemVer\version;
 
 /**
- * This is the class Project.
+ * Project class.
  *
- * @author         Sebwite
- * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
- *
+ * @package   Codex\Core
+ * @author    Codex Project Dev Team
+ * @copyright Copyright (c) 2015, Codex Project
+ * @license   https://tldrlegal.com/license/mit-license MIT License
  */
-class Project
+class Project2
 {
-    use Extendable,
-        Traits\Hookable,
-        Traits\FilesTrait,
-        Traits\ConfigTrait,
-        Traits\CodexTrait;
+    use Traits\Hookable, Traits\ConfigTrait, Traits\FilesTrait, Traits\CodexTrait, Traits\ContainerTrait;
 
     const SHOW_MASTER_BRANCH                        = 0;
     const SHOW_LAST_VERSION                         = 1;
@@ -82,39 +76,97 @@ class Project
      */
     protected $versions;
 
+    /**
+     * A collection of documents that have already been instantiated. getDocument method will first check if the document is here.
+     *
+     * @var Document[]
+     */
+    protected $documents = [ ];
 
     /**
-     * getContainer method
+     * The menu instance, getMenu will first check if this property is set and if so returns it.
+     * Otherwise it will instanciate a new Menu and set this property
      *
-     * @return Container
+     * @var \Codex\Core\Menus\Menu
      */
-    public function getContainer()
-    {
-        return $this->getCodex()->getContainer();
-    }
-
+    protected $menu;
 
     /**
-     * @param \Codex\Core\Contracts\Codex|\Codex\Core\Factory                         $parent
-     * @param \Illuminate\Contracts\Filesystem\Filesystem|\Sebwite\Support\Filesystem $files
-     * @param \Illuminate\Contracts\Container\Container                               $container
-     * @param string                                                                  $name
-     * @param array                                                                   $config
-     *
-     * @internal param \Codex\Core\Factory $codex
+     * @param \Codex\Core\Factory                         $codex
+     * @param \Illuminate\Contracts\Filesystem\Filesystem $files
+     * @param \Illuminate\Contracts\Container\Container   $container
+     * @param string                                      $name
+     * @param array                                       $config
      */
-    public function __construct(Codex $parent, Filesystem $files, Container $container, $name, $config)
+    public function __construct(Codex $codex, Filesystem $files, Container $container, $name, $config)
     {
-        $this->setCodex($parent);
+        $this->setContainer($container);
+        $this->setCodex($codex);
         $this->setConfig($config);
         $this->setFiles($files);
         $this->name = $name;
-        $this->path = $path = Path::join($parent->getRootDir(), $name);
+        $this->path = $path = Path::join($codex->getRootDir(), $name);
 
         $this->runHook('project:ready', [ $this ]);
 
         # Resolve refs
-        $this->resolveRefs();
+
+        $directories = $this->files->directories($this->path);
+        $branches    = [ ];
+        $this->refs  = [ ];
+
+        $this->versions = array_filter(array_map(function ($dirPath) use ($path, $name, &$branches) {
+        
+
+
+            $version      = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft($path)->removeLeft(DIRECTORY_SEPARATOR);
+            $version      = (string)$version->removeLeft($name . '/');
+            $this->refs[] = $version;
+
+            try {
+                return new version($version);
+            } catch (\RuntimeException $e) {
+                $branches[] = $version;
+            }
+        }, $directories), 'is_object');
+
+        $this->branches = $branches;
+
+        // check which version/branch to show by default
+        $defaultRef = count($this->versions) > 0 ? head($this->versions) : head($branches);
+
+        switch ($this->config[ 'default' ]) {
+            case Project::SHOW_LAST_VERSION:
+                usort($this->versions, function (version $v1, version $v2) {
+                
+
+
+                    return version::gt($v1, $v2) ? -1 : 1;
+                });
+
+                $defaultRef = head($this->versions);
+                break;
+            case Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH:
+                if (count($this->versions) > 0) {
+                    usort($this->versions, function (version $v1, version $v2) {
+                    
+
+
+                        return version::gt($v1, $v2) ? -1 : 1;
+                    });
+                }
+
+                $defaultRef = count($this->versions) > 0 ? head($this->versions) : head($branches);
+                break;
+            case Project::SHOW_MASTER_BRANCH:
+                $defaultRef = 'master';
+                break;
+            case Project::SHOW_CUSTOM:
+                $defaultRef = $this->config[ 'custom' ];
+                break;
+        }
+
+        $this->ref = $this->defaultRef = (string)$defaultRef;
 
         # Resolve menu
         $this->runHook('project:done', [ $this ]);
@@ -155,73 +207,51 @@ class Project
         return in_array($hook, $this->config('hooks.enabled', [ ]), true);
     }
 
-    protected function resolveRefs()
+
+    /**
+     * Get a document by path. Returns an instance of document
+     *
+     * @param string $pathName
+     *
+     * @return \Codex\Core\Document
+     */
+    public function getDocument($pathName = '')
     {
-
-        $directories = $this->getFiles()->directories($this->path);
-        $branches    = [ ];
-        $this->refs  = [ ];
-
-        $this->versions = array_filter(array_map(function ($dirPath) use (&$branches) {
-            $version      = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft($this->path)->removeLeft(DIRECTORY_SEPARATOR);
-            $version      = (string)$version->removeLeft($this->name . '/');
-            $this->refs[] = $version;
-
-            try {
-                return new version($version);
-            } catch (\RuntimeException $e) {
-                $branches[] = $version;
-            }
-        }, $directories), 'is_object');
-
-        $this->branches = $branches;
-
-        // check which version/branch to show by default
-        $defaultRef = count($this->versions) > 0 ? head($this->versions) : head($branches);
-
-        switch ($this->config[ 'default' ]) {
-            case static::SHOW_LAST_VERSION:
-                usort($this->versions, function (version $v1, version $v2) {
-                
-                    return version::gt($v1, $v2) ? -1 : 1;
-                });
-
-                $defaultRef = head($this->versions);
-                break;
-            case static::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH:
-                if (count($this->versions) > 0) {
-                    usort($this->versions, function (version $v1, version $v2) {
-                    
-                        return version::gt($v1, $v2) ? -1 : 1;
-                    });
-                }
-
-                $defaultRef = count($this->versions) > 0 ? head($this->versions) : head($branches);
-                break;
-            case static::SHOW_MASTER_BRANCH:
-                $defaultRef = 'master';
-                break;
-            case Project::SHOW_CUSTOM:
-                $defaultRef = $this->config[ 'custom' ];
-                break;
+        if ($pathName === '') {
+            $pathName = 'index';
         }
 
-        $this->ref = $this->defaultRef = (string)$defaultRef;
+        if (!$this->documents->has($pathName)) {
+            $path = Path::join($this->path, $this->ref, $pathName . '.md');
 
+            $this->documents->set($pathName, $this->getContainer()->make('codex.builder.document', [
+                'factory'  => $this->codex,
+                'project'  => $this,
+                'path'     => $path,
+                'pathName' => $pathName
+            ]));
+            //new Document($this->factory, $this, $this->files, $path, $pathName);
+
+            $this->runHook('project:document', [ $this->documents[ $pathName ] ]);
+        }
+
+
+        return $this->documents[ $pathName ];
     }
+    # Menu
 
     /**
      * Returns the menu for this project
      *
-     * @return \Codex\Core\Menu
+     * @return \Codex\Core\Menus\Menu
      */
     public function getSidebarMenu()
     {
 
         $path  = Path::join($this->getPath(), $this->getRef(), 'menu.yml');
-        $yaml  = $this->getFiles()->get($path);
+        $yaml  = $this->files->get($path);
         $array = Yaml::parse($yaml);
-        $this->getCodex()->menus->forget('sidebar');
+        $this->codex->getMenus()->forget('sidebar');
 
         $menu = $this->setupSidebarMenu($array[ 'menu' ]);
         $this->runHook('project:documents-menu', [ $this, $menu ]);
@@ -235,19 +265,19 @@ class Project
      * @param array  $items The array converted from yaml
      * @param string $parentId
      *
-     * @return \Codex\Core\Menu
+     * @return \Codex\Core\Menus\Menu
      */
     protected function setupSidebarMenu($items, $parentId = 'root')
     {
         /**
-         * @var Codex\Core\Menu $menu
+         * @var Menus\Menu $menu
          */
-        $menu = $this->codex->menus->add('sidebar');
+        $menu = $this->getCodex()->getMenus()->add('sidebar');
 
         foreach ($items as $item) {
             $link = '#';
             if (array_key_exists('document', $item)) {
-                // remove .md extension if present
+            // remove .md extension if present
                 $path = Str::endsWith($item[ 'document' ], '.md', false) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
                 $link = $this->codex->url($this, $this->getRef(), $path);
             } elseif (array_key_exists('href', $item)) {
@@ -271,6 +301,10 @@ class Project
 
         return $menu;
     }
+
+
+
+    # Refs / versions
 
     /**
      * Set the ref (version/branch) you want to use. getDocument will be getting stuff using the ref

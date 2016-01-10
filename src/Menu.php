@@ -1,7 +1,8 @@
 <?php
-namespace Codex\Core\Menus;
+namespace Codex\Core;
 
-use Codex\Core\Contracts\Menus\MenuFactory as MenuFactoryContract;
+use Codex\Core\Components\Factory\Menus;
+use Codex\Core\Components\Menu\Node;
 use Codex\Core\Traits\Hookable;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -79,7 +80,7 @@ class Menu
      * @param \Illuminate\Contracts\Routing\UrlGenerator  $url
      * @param \Illuminate\Contracts\View\Factory          $viewFactory
      */
-    public function __construct(MenuFactoryContract $menus, Filesystem $files, Cache $cache, Router $router, UrlGenerator $url, ViewFactory $viewFactory, $id = '')
+    public function __construct(Menus $menus, Filesystem $files, Cache $cache, Router $router, UrlGenerator $url, ViewFactory $viewFactory, $id = '')
     {
         $this->menus       = $menus;
         $this->cache       = $cache;
@@ -123,7 +124,7 @@ class Menu
      * @param array  $meta
      * @param array  $attributes
      *
-*@return \Codex\Core\Menus\Node
+*@return \Codex\Core\Components\Menu\Node
      */
     public function add($id, $value, $parent = 'root', array $meta = [ ], array $attributes = [ ])
     {
@@ -160,7 +161,7 @@ class Menu
      * @param string     $id
      * @param null|mixed $default
      *
-*@return \Codex\Core\Menus\Node
+*@return \Codex\Core\Components\Menu\Node
      */
     public function get($id, $default = null)
     {
@@ -204,7 +205,7 @@ class Menu
     /**
      * Get breadcrumbs to the given Node
      *
-     * @param \Codex\Core\Menus\Node $item
+     * @param \Codex\Core\Components\Menu\Node $item
      *
 *@return array
      */
@@ -234,7 +235,7 @@ class Menu
      *
      * @param $href
      *
-*@return \Codex\Core\Menus\Node|null
+*@return \Codex\Core\Components\Menu\Node|null
      */
     public function findItemByHref($href)
     {

@@ -4,7 +4,9 @@
  *
  * MIT License and copyright information bundled with this package in the LICENSE file
  */
-namespace Codex\Core\Menus;
+namespace Codex\Core\Components\Menu;
+
+use Codex\Core\Menu;
 
 /**
  * This is the Node.
@@ -37,10 +39,10 @@ class Node extends \Tree\Node\Node
     protected $attributes;
 
     /**
-     * @param mixed|null             $id
-     * @param \Codex\Core\Menus\Menu $menu
-     * @param null                   $value
-     * @param array                  $children
+     * @param mixed|null       $id
+     * @param \Codex\Core\Menu $menu
+     * @param null             $value
+     * @param array            $children
      */
     public function __construct($id, Menu $menu, $value = null, array $children = [ ])
     {

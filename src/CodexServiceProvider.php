@@ -65,26 +65,29 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $bindings = [
-        'codex.builder.project'  => Project::class,
-        'codex.builder.document' => Document::class,
-        'codex.builder.menu'     => Menus\Menu::class
+        'codex.project'  => \Codex\Core\Project::class,
+        'codex.document' => \Codex\Core\Document::class,
+        'codex.menu'     => \Codex\Core\Menu::class,
+
+        'codex.projects'  => Components\Factory\Projects::class,
+        'codex.menus'     => Components\Factory\Menus::class,
+        'codex.documents' => Components\Project\Documents::class
+
     ];
 
     /**
      * @var array
      */
     protected $singletons = [
-        'codex'       => Factory::class,
-        'codex.menus' => Menus\MenuFactory::class
+        'codex' => Factory::class
     ];
 
     /**
      * @var array
      */
     protected $aliases = [
-        'codex'       => Contracts\Codex::class,
-        'codex.log'   => Contracts\Log::class,
-        'codex.menus' => Contracts\Menus\MenuFactory::class
+        'codex'     => Contracts\Codex::class,
+        'codex.log' => Contracts\Log::class
     ];
 
     public function boot()
@@ -104,6 +107,10 @@ class CodexServiceProvider extends ServiceProvider
         $app = parent::register();
         $this->registerLogger($app);
         $this->registerFilters();
+
+        Factory::extend('projects', Components\Factory\Projects::class);
+        Factory::extend('menus', Components\Factory\Menus::class);
+        \Codex\Core\Project::extend('documents', Components\Project\Documents::class);
     }
 
     /**

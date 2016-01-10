@@ -40,16 +40,21 @@ class CodexController extends Controller
      */
     public function document($projectSlug, $ref = null, $path = '')
     {
-        $project = $this->codex->getProject($projectSlug);
+        if (!$this->codex->projects->has($projectSlug)) {
+            return abort(404, 'project does not exist');
+        }
+        $project = $this->codex->projects->get($projectSlug);
 
         if (is_null($ref)) {
             $ref = $project->getDefaultRef();
         }
         $project->setRef($ref);
+        $path = $path === '' ? 'index' : $path;
 
-        $document = $project->getDocument($path);
+        $document = $project->documents->get($path);
 
         $res = $this->runHook('controller:document', [ $this, $project, $document ]);
+
         if ($this->isResponse($res)) {
             return $res;
         }

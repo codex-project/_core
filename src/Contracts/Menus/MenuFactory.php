@@ -22,7 +22,7 @@ interface MenuFactory
      *
      * @param string $id
      *
-     * @return \Codex\Core\Menus\Menu
+     * @return \Codex\Core\Menu
      */
     public function add($id);
 }

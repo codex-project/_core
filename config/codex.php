@@ -75,7 +75,7 @@ return [
     */
     'default_project_config' => [
         'description'      => '',
-        'default'          => Codex\Core\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
+        'default'          => \Codex\Core\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
         'custom'           => null,
         'filters'          => [
             'enabled' => ['front_matter', 'parsedown' ],

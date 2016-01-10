@@ -18,7 +18,7 @@ use Codex\Core\Contracts\Codex;
 trait CodexTrait
 {
     /**
-     * @var \Codex\Core\Contracts\Codex|\Codex\Core\Factory
+     * @var \Codex\Core\Factory
      */
     protected $codex;
 

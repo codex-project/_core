@@ -7,7 +7,6 @@
 namespace Codex\Core\Traits;
 
 use Codex\Core\Extensions;
-use Illuminate\Support\Traits\Macroable;
 
 /**
  * This is the Hookable.
@@ -19,7 +18,6 @@ use Illuminate\Support\Traits\Macroable;
  */
 trait Hookable
 {
-    use Macroable;
 
     /**
      * Run a hook

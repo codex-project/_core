@@ -8,35 +8,34 @@ namespace Codex\Core;
 
 use Codex\Core\Contracts\Codex;
 use Codex\Core\Contracts\Log;
-use Codex\Core\Contracts\Menus\MenuFactory;
 use Codex\Core\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Support\Collection;
 use Illuminate\View\View;
-use Sebwite\Support\Path;
-use Symfony\Component\Finder\Finder;
+use Sebwite\Support\Traits\Extendable;
 
 /**
  * Factory class.
  *
- * @package   Codex\Core
  * @author    Codex Project Dev Team
  * @copyright Copyright (c) 2015, Codex Project
- * @license   https://tldrlegal.com/license/mit-license MIT License
+ *
+ *
+ *
+ *
+ * @property \Codex\Core\Components\Factory\Projects|mixed   $projects asdfas
+ * @property-read \Codex\Core\Components\Factory\Menus|mixed $menus    asdf
+ *
  */
 class Factory implements Codex
 {
-    use Traits\Hookable, Traits\ConfigTrait, Traits\FilesTrait, Traits\ContainerTrait;
-
-    /**
-     * The codex menu factory instance
-     *
-     * @var \Codex\Core\Contracts\Menus\MenuFactory|\Codex\Core\Menus\MenuFactory
-     */
-    protected $menus;
+    use Traits\Hookable,
+        Traits\ConfigTrait,
+        Traits\FilesTrait,
+        Traits\ContainerTrait,
+        Extendable;
 
     /**
      * The codex log writer instance
@@ -59,170 +58,31 @@ class Factory implements Codex
      */
     protected $rootDir;
 
-    /**
-     * A collection of resolved projects
-     *
-     * @var \Illuminate\Support\Collection
-     */
-    protected $projects;
 
     /**
-     * @param \Illuminate\Contracts\Container\Container   $container
-     * @param \Illuminate\Contracts\Filesystem\Filesystem $files
-     * @param \Illuminate\Contracts\Config\Repository     $config
-     * @param \Illuminate\Contracts\Cache\Repository      $cache
-     * @param \Codex\Core\Contracts\Log                   $log
-     * @param \Codex\Core\Contracts\Menus\MenuFactory|\Codex\Core\Menus\MenuFactory     $menus The menu factory
+     * @param \Illuminate\Contracts\Container\Container                             $container
+     * @param \Illuminate\Contracts\Filesystem\Filesystem                           $files
+     * @param \Illuminate\Contracts\Config\Repository                               $config
+     * @param \Illuminate\Contracts\Cache\Repository                                $cache
+     * @param \Codex\Core\Contracts\Log                                             $log
+     * @param \Codex\Core\Contracts\Menus\MenuFactory|\Components\Menus\MenuFactory $menus The menu factory
      */
-    public function __construct(Container $container, Filesystem $files, Repository $config, Cache $cache, Log $log, MenuFactory $menus)
+    public function __construct(Container $container, Filesystem $files, Repository $config, Cache $cache, Log $log)
     {
         $this->setContainer($container);
         $this->setConfig($config->get('codex'));
         $this->setFiles($files);
-        $this->cache    = $cache;
-        $this->rootDir  = config('codex.root_dir');
-        $this->menus    = $menus;
-        $this->log      = $log;
-        $this->projects = new Collection();
+        $this->cache   = $cache;
+        $this->rootDir = config('codex.root_dir');
+        $this->log     = $log;
 
         // 'factory:ready' is called after parameters have been set as class properties.
         $this->runHook('factory:ready', [ $this ]);
-
-        $this->resolveProjects();
-        $this->resolveProjectsMenu();
 
         // 'factory:done' called after all factory operations have completed.
         $this->runHook('factory:done', [ $this ]);
     }
 
-
-    public function stack($viewName, $data = null, $appendTo = 'codex::layouts.default')
-    {
-        $this->container->make('events')->listen('composing: ' . $appendTo, function (View $view) use ($viewName, $data) {
-        
-
-            if ($data instanceof \Closure) {
-                $data = call_user_func_array($data, [ $this->container, $this ]);
-            } elseif ($data === null) {
-                $data = [ ];
-            }
-            if (!is_array($data)) {
-                throw new \InvalidArgumentException("appendSectionsView data is not a array");
-            }
-            $view->getFactory()->make($viewName, $data)->render();
-        });
-
-        return $this;
-    }
-    # Projects
-
-    /**
-     * Scans the configured documentation root directory for projects and resolves them and puts them into the projects collection
-     *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    protected function resolveProjects()
-    {
-        if (!$this->projects->isEmpty()) {
-            return;
-        }
-
-        /**
-         * @var \Codex\Core\Menus\Node $projectsMenu
-         */
-        #$projectsMenu = $this->menus->add('projects_menu');
-        $finder       = new Finder();
-        $projects     = $finder->in($this->rootDir)->files()->name('config.php')->depth('<= 1')->followLinks();
-
-        foreach ($projects as $projectDir) {
-        /** @var \SplFileInfo $projectDir */
-            $name    = Path::getDirectoryName($projectDir->getPath());
-            $config  = $this->getContainer()->make('fs')->getRequire($projectDir->getRealPath());
-            $config  = array_replace_recursive($this->config('default_project_config'), $config);
-            $project = $this->getContainer()->make(Project::class, [
-                'codex'  => $this,
-                'name'   => $name,
-                'config' => $config
-            ]);
-
-            $this->runHook('project:make', [ $this, $project ]);
-
-            $this->projects->put($name, $project);
-//            $projectsMenu->add($name, $name, 'root', [ ], [
-//                'href' => $this->url($project)
-//            ]);
-        }
-    }
-
-    protected function resolveProjectsMenu()
-    {
-        /** @var \Codex\Core\Menus\Menu $menu */
-        $menu = $this->getMenus()->add('projects');
-
-        foreach ($this->getProjects() as $project) {
-            $name  = (string)$project->config('display_name');
-            $names = [ ];
-            if (strpos($name, ' :: ') !== false) {
-                $names = explode(' :: ', $name);
-                $name  = array_shift($names);
-            }
-            $href = $project->url();
-            if (!$menu->has($name)) {
-                $menu->add($name, $name, 'root', [ ], count($names) === 0 ? compact('href') : [ ])
-                    ->setMeta('project', $project);
-            }
-
-            $parentId = $name;
-            $id = $name;
-            while (count($names) > 0) {
-                $name = array_shift($names);
-                $id .= '::' . $name;
-                if (!$menu->has($id)) {
-                    $menu->add($id, $name, $parentId, [ ], count($names) === 0 ? compact('href') : [ ])
-                        ->setMeta('project', $project);
-                }
-                $parentId = $id;
-            }
-        }
-    }
-
-    /**
-     * Returns a project instance for the given name
-     *
-     * @param $name
-     *
-     * @return \Codex\Core\Project
-     */
-    public function getProject($name)
-    {
-        if (!$this->hasProject($name)) {
-            throw new \InvalidArgumentException("Project [$name] could not be found in [{$this->rootDir}]");
-        }
-
-        return $this->projects->get($name);
-    }
-
-    /**
-     * Check if the given project exists.
-     *
-     * @param  string $name
-     *
-     * @return bool
-     */
-    public function hasProject($name)
-    {
-        return $this->projects->has($name);
-    }
-
-    /**
-     * Return all found projects.
-     *
-     * @return Project[]
-     */
-    public function getProjects()
-    {
-        return $this->projects->all();
-    }
 
     # Config
 
@@ -237,8 +97,25 @@ class Factory implements Codex
         );
     }
 
-
     # Helper functions
+
+    public function stack($viewName, $data = null, $appendTo = 'codex::layouts.default')
+    {
+        $this->container->make('events')->listen('composing: ' . $appendTo, function (View $view) use ($viewName, $data) {
+        
+            if ($data instanceof \Closure) {
+                $data = call_user_func_array($data, [ $this->container, $this ]);
+            } elseif ($data === null) {
+                $data = [ ];
+            }
+            if (!is_array($data)) {
+                throw new \InvalidArgumentException("appendSectionsView data is not a array");
+            }
+            $view->getFactory()->make($viewName, $data)->render();
+        });
+
+        return $this;
+    }
 
     /**
      * Generate a URL to a project's default page and version.
@@ -255,7 +132,7 @@ class Factory implements Codex
 
         if (!is_null($project)) {
             if (!$project instanceof Project) {
-                $project = $this->getProject($project);
+                $project = $this->projects->get($project);
             }
             $uri .= '/' . $project->getName();
 
@@ -319,54 +196,6 @@ class Factory implements Codex
     public function setCache($cache)
     {
         $this->cache = $cache;
-
-        return $this;
-    }
-
-    /**
-     * get app value
-     *
-     * @return \Illuminate\Contracts\Container\Container
-     */
-    public function getApp()
-    {
-        return $this->container;
-    }
-
-    /**
-     * Set the app value
-     *
-     * @param \Illuminate\Contracts\Container\Container $app
-     *
-     * @return Factory
-     */
-    public function setApp($app)
-    {
-        $this->container = $app;
-
-        return $this;
-    }
-
-    /**
-     * get menus value
-     *
-     * @return Menus\MenuFactory
-     */
-    public function getMenus()
-    {
-        return $this->menus;
-    }
-
-    /**
-     * Set the menus value
-     *
-     * @param Menus\MenuFactory $menus
-     *
-     * @return Factory
-     */
-    public function setMenus($menus)
-    {
-        $this->menus = $menus;
 
         return $this;
     }
