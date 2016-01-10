@@ -89,11 +89,10 @@ class Projects extends FactoryComponent
             }
 
             $href  = $project->url();
-            $attrs = count($names) === 0 ? compact('href') : [ ];
             $metas = compact('project');
             $id    = Str::slugify($name, '_');
             if (!$menu->has($id)) {
-                $menu->add($id, $name, 'root', [], $attrs);
+                $menu->add($id, $name, 'root', [], count($names) === 0 ? compact('href') : [ ]);
             }
 
             $parentId = $id;
@@ -102,7 +101,7 @@ class Projects extends FactoryComponent
                 $id .= '::' . $name;
                 $id = Str::slugify($id, '_');
                 if (!$menu->has($id)) {
-                    $menu->add($id, $name, $parentId, $metas, $attrs);
+                    $menu->add($id, $name, $parentId, $metas, count($names) === 0 ? compact('href') : [ ]);
                 }
                 $parentId = $id;
             }

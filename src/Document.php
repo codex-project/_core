@@ -12,7 +12,7 @@ use Codex\Core\Contracts\Codex;
 use Codex\Core\Extensions\Extender;
 use Codex\Core\Traits;
 use Illuminate\Contracts\Container\Container;
-use Sebwite\Support\Filesystem;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Sebwite\Support\Traits\Extendable;
 
 class Document

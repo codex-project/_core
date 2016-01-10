@@ -20,7 +20,7 @@
 
 </head>
 
-<body class="@yield('bodyClass', 'page-loading page-header-fixed page-footer-fixed page-edged page-sidebar-condensed')">
+<body class="@yield('bodyClass', 'page-loading page-header-fixed page-footer-fixed page-edged page-sidebar-condensed page-sidebar-fixed')">
 
     @section('page-loader')
         <div id="page-loader">
