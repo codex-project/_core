@@ -3,63 +3,50 @@ menu:
     icon: fa fa-eye
     document: index
 
-  - name: Preface
-    icon: fa fa-eye
-    children:
-      - name: Download
-        document: preface/download
+  - name: Install &amp; Config
+    icon: fa fa-cogs
+    document: installation-configuration
 
-      - name: License
-        document: preface/license
-
-  - name: Getting Started
+  - name: Getting started
     icon: fa fa-coffee
     children:
       - name: Installation
-        document: getting-started/installation
+        document: insallation
 
-      - name: Configuration
-        document: getting-started/configuration
+  - name: Filters &amp; Hooks
+    icon: fa fa-filter
+    document: filters-hooks
 
-      - name: Creating a project
-        document: getting-started/creating-a-project
+  - name: Api usage
+    icon: fa fa-code
+    document: api-usage
 
-  - name: Hooks
+  - name: Customize &amp; Extend
     icon: fa fa-coffee
     children:
-      - name: Adding hooks
-        document: usage/creating-a-theme
 
-      - name: Creating a hook
-        document: usage/loading-theme-views
+      - name: Themes
+        document: customize/themes
 
-  - name: Filters
-    icon: fa fa-coffee
+      - name: Filters
+        document: customize/hooks
+
+      - name: Hooks
+        document: customize/hooks
+
+      - name: Components
+        document: customize/hooks
+
+
+
+  - name: Contributing
+    icon: fa fa-eye
     children:
-      - name: Adding filters
-        document: usage/creating-a-theme
+      - name: Guidelines
+        document: contributing/guidelins
 
-      - name: Creating a hook
-        document: usage/loading-theme-views
+      - name: PSR 1 Coding style
+        document: contributing/psr-1-coding-style
 
-  - name: Themes
-    icon: fa fa-coffee
-    children:
-      - name: Creating a theme
-        document: usage/creating-a-theme
-
-      - name: Loading views
-        document: usage/loading-theme-views
-
-
-
-
-  - name: Links
-    icon: fa fa-link
-    children:
-      - name: Github
-        href: https://github.com/laradic/themes
-      - name: Packagist
-        href: http://packagist.org/laradic/themes
-      - name: Jenkins
-        href: http://radic.nl:8080/job/laradic-themes
+      - name: PSR 2 Coding style
+        document: contributing/psr-2-coding-style
