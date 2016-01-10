@@ -101,7 +101,6 @@ class Projects extends FactoryComponent
             }
 
             $parentId = $id;
-            $id       = $id;
             while (count($names) > 0) {
                 $name = array_shift($names);
                 $id .= '::' . $name;
