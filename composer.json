@@ -1,9 +1,10 @@
 {
     "name": "codex/core",
-    "description": "Laravel 5 Documentation Platform",
-    "keywords": ["documentation", "laravel"],
-    "license": "MIkT",
-    "authors": [ { "name": "Robin Radic", "email": "robin@radic.nl" } ],
+    "description": "The core package for codex. This is the minimum required package to get codex up and running.",
+    "keywords": ["framework", "laravel", "documentation", "docs", "markdown", "codex"],
+    "homepage": "http://codex-project.ninja",
+    "authors": [{"name": "Robin Radic", "email": "robin@radic.nl"}],
+    "license": "MIT",
     "require": {
         "php": ">=5.5.9",
         "sebwite/support": "~1.0",
@@ -11,8 +12,7 @@
         "erusev/parsedown-extra": "~0.7",
         "symfony/yaml": "~2.7",
         "vierbergenlars/php-semver": "3.0.*",
-        "nicmart/tree": "0.2.*",
-        "sebwite/assets": "1.0.*"
+        "nicmart/tree": "0.2.*"
     },
     "autoload": {
         "psr-4": {
