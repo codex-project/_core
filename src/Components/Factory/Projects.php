@@ -35,7 +35,6 @@ class Projects extends FactoryComponent
         $this->fs    = $fs;
         $this->items = collect();
         $this->resolve();
-        $this->resolveProjectsMenu();
     }
 
     public function create()
@@ -53,18 +52,20 @@ class Projects extends FactoryComponent
             return;
         }
 
-        /**
-         * @var \Codex\Core\Components\Menu\Node $projectsMenu
-         */
-        #$projectsMenu = $this->menus->add('projects_menu');
+        /** @var \Codex\Core\Menu $menu */
+        $menu     = $this->codex->menus->add('projects');
         $finder   = new Finder();
         $projects = $finder->in($this->getCodex()->getRootDir())->files()->name('config.php')->depth('<= 1')->followLinks();
 
         foreach ($projects as $projectDir) {
-        /** @var \SplFileInfo $projectDir */
-            $name    = Path::getDirectoryName($projectDir->getPath());
-            $config  = $this->getContainer()->make('fs')->getRequire($projectDir->getRealPath());
-            $config  = array_replace_recursive($this->getCodex()->config('default_project_config'), $config);
+        # Make project
+
+            /** @var \SplFileInfo $projectDir */
+            $name   = Path::getDirectoryName($projectDir->getPath());
+            $config = $this->getContainer()->make('fs')->getRequire($projectDir->getRealPath());
+            $config = array_replace_recursive($this->getCodex()->config('default_project_config'), $config);
+
+            /** @var \Codex\Core\Project $project */
             $project = $this->getContainer()->make('codex.project', [
                 'codex'  => $this,
                 'name'   => $name,
@@ -72,18 +73,9 @@ class Projects extends FactoryComponent
             ]);
 
             $this->runHook('project:make', [ $this, $project ]);
-
             $this->items->put($name, $project);
-        }
-    }
 
-    protected function resolveProjectsMenu()
-    {
-        /** @var \Codex\Core\Menu $menu */
-        $menu = $this->codex->menus->add('projects');
-
-
-        foreach ($this->all() as $project) {
+            # Add to menu
             $name  = (string)$project->config('display_name');
             $names = [ ];
             if (strpos($name, ' :: ') !== false) {
@@ -91,10 +83,10 @@ class Projects extends FactoryComponent
                 $name  = array_shift($names);
             }
 
-            $href = $project->url();
+            $href  = $project->url();
             $attrs = count($names) === 0 ? compact('href') : [ ];
             $metas = compact('project');
-            $id = Str::slugify($name, '_');
+            $id    = Str::slugify($name, '_');
             if (!$menu->has($id)) {
                 $menu->add($id, $name, 'root', $metas, $attrs)
                     ->setMeta('project', $project);
@@ -107,7 +99,6 @@ class Projects extends FactoryComponent
                 $id = Str::slugify($id, '_');
                 if (!$menu->has($id)) {
                     $menu->add($id, $name, $parentId, $metas, $attrs);
-
                 }
                 $parentId = $id;
             }

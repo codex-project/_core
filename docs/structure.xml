@@ -3871,7 +3871,7 @@ output. Should be called within a view.</long-description>
     </parse_markers>
     <source>eJy1WN1T2zgQf89fsQ/MxGEM3DMc9HrAHZ3pdZjCW8NkFFtJfNiSR5KhXMv/fqsvW/5KUjr1Q+xYq93ffq/8+7tyU05ODg8ncAi3RCjgK1AbCnd0+ZwpCrc3t1CS5JGsqTxGIk33MUsokxQISyHh5YvI1hsFGVtxURCVcQbLiqU5TQFZbJBdJj0PpDLsP364vP50dw2rLKfI8mQymTBSUIlkFC55Sr/OL7mgZ5NJJcMX+MOUIImSc/PyrLt+L0impH39Ic+rImNEtbcxRTJGRfNkqZ3G87uqLLlQ878QmnyRihbD61bS/Pqroiwly1yDTXIiJVzxpCooU5NvE8BLb26oYvNOX47BDeePgwsGgHnuLSH0VbYeW0NjmGcEZBaNe/V1CGuqarWhoGrDU7fkKf4QVFWCQU3mFk7MvayWeZbAqmKJcXTIL5oZkm81IMfpQAfA0UUp+L80UUcX7T1nhvy1D/UewyR1lgSilMiWlcIghCu6IlWuJCQEI42CpMqHVWLsEtf7LI12wEqgSIxOhXorDkklFS+y/zAg1XHXAk9EABGCvLRVF1whfozqgwbNWQ+22S1xna3HtiNKjAbV3/t+KXmObDFbdN5wmzpemSGY2wVpNn0p2rDOGWg3qQhL6BDveZBWt5Z+VJBdHpGFKHRyA+qi3H9YZ0+UaRVvg7DwiXMMH9RUAsEIyrGgPNk9b9P/E0ru47oUFMuCFsHoc52wYPK3K6ckghRD1oC3XAhKNM6suQ/WqqYEBY/f5+OVCg50QZWGtzb9ql7ZS95AbdylTVIT3tv8c/9CS3qh1llvslrXhBhBtZKknzW0mzS/BIIOLQuhFacjEIYL6GKBNkNUVaIiE2HapHiLfWLUyRVDz89xU6UDT8QWXdyA7BZmV5GlLsQoK7IiXSluExiZkRU3c3kUUPg6ch7UgC6Jd9a5L0gDBMaU572MDahExXSnjKberKeYwunLNIYvlgQeBvA1lVpzN2oeXdgugZxsI1l4jouGeto3hqvaThP7zpjFlK4oUGYARx99yhntgNf0A43wM04OumsFIdVtWfeaxXOW54CCgOA9sJLZvUHp0kxsyIf51ozPngWvVFlh5b3b8CpPdV9NkI+b4bC9EnjK6HOvVzpGQ3W4E+kWSG9I2OJeTT/q3xUGp0KZsvFGPWF4B6N7sN+3neneGS+aqUwiOHl6ujaxrpeiHeyOKdPzWjqdhYCyFUQJr5iKvIgZXMBvs0BVfeGMTEmygZoKiIQD0x7PLzy67ibP3y3XXRtn9fllzmUl6NAWfWknLnAAEgvtiIUZazyf2rQxtmapY7g26heH6WEG72DgNZzi3oc6asPrFWiOA9cwnAMPHa1PyjKaHV0U5JF6RAPsRpX40jCLYboh+sQxhYdfpNRk+N9rEwDtabee8RxVN6n/xqGVNGMtzqi6L6VcAePKHKKGx5Cggx080pfOKqvy/HuRfdXDj6tuIwlrbPi9od+auhpmpMWh1/SWuObuXoxM/plc6FWz1di8V5RPLZBFUEGb1dio2AhrSuSAMXV5rES+c2rev2Ahtx1HGtdPNGG7ZsRDh57PdBXN4m7XG1XqsxGla7a1kT6Z29kRD26swoMLLXqzaujdXQe3P3UDTURVLH/g5HaXpXRJxD+IQCdvi809vxGoo9tlzDeq3dq5zEwHTySv6E+0FmR2i3x2qVEPH+NwfJN3X0HG+u2PYbu0THcGU7tidBDedRAam+3E2S4a/uQ5os3VPgOrbPTx7EZaukd63j3xdnXfltbhLBN+BfiZwH9fs9nhkvCcv90r+0B0vrDJHHxD+ElvBNoETEd80p6He98x9vVMQcWavh/VwGq6r6JG0lYtO+KiHud9tLWNRtAyJwnFe1IJiUe2wbYTcH5DzIYBMZX+W8tYyO78zDJQ7CzZfmV7V+huqcCd6jH0EeYHg9WUacNoxGUGzXnr09WY6V8n/wOwgold</source>
   </file>
-  <file path="Components/Factory/Projects.php" generated-path="Components.Factory.Projects.html" hash="32c0f59aecfb1b542615f55d6199f4f1" package="Default">
+  <file path="Components/Factory/Projects.php" generated-path="Components.Factory.Projects.html" hash="1384e170acae52dc0adcac7d29ea7d0d" package="Default">
     <docblock line="0">
       <description>Part of the Sebwite PHP packages.</description>
       <long-description>License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -3944,41 +3944,33 @@ output. Should be called within a view.</long-description>
           <type>\Sebwite\Support\Filesystem</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Components\Factory" line="41" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Components\Factory" line="40" package="Default">
         <name>create</name>
         <full_name>\Codex\Core\Components\Factory\Projects::create()</full_name>
-        <docblock line="41">
+        <docblock line="40">
           <description></description>
           <long-description></long-description>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Components\Factory" line="50" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Components\Factory" line="49" package="Default">
         <name>resolve</name>
         <full_name>\Codex\Core\Components\Factory\Projects::resolve()</full_name>
-        <docblock line="50">
+        <docblock line="49">
           <description>Scans the configured documentation root directory for projects and resolves them and puts them into the projects collection</description>
           <long-description></long-description>
-          <tag name="throws" line="50" description="" type="\Illuminate\Contracts\Filesystem\FileNotFoundException">
+          <tag name="throws" line="49" description="" type="\Illuminate\Contracts\Filesystem\FileNotFoundException">
             <type>\Illuminate\Contracts\Filesystem\FileNotFoundException</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core\Components\Factory" line="80" package="Default">
-        <name>resolveProjectsMenu</name>
-        <full_name>\Codex\Core\Components\Factory\Projects::resolveProjectsMenu()</full_name>
-        <docblock line="80">
-          <description></description>
-          <long-description></long-description>
-        </docblock>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Components\Factory" line="124" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Components\Factory" line="115" package="Default">
         <name>get</name>
         <full_name>\Codex\Core\Components\Factory\Projects::get()</full_name>
-        <docblock line="124">
+        <docblock line="115">
           <description>Returns a project instance for the given name</description>
           <long-description></long-description>
-          <tag name="param" line="124" description="" type="" variable="$name"/>
-          <tag name="return" line="124" description="" type="\Codex\Core\Project">
+          <tag name="param" line="115" description="" type="" variable="$name"/>
+          <tag name="return" line="115" description="" type="\Codex\Core\Project">
             <type>\Codex\Core\Project</type>
           </tag>
         </docblock>
@@ -3988,16 +3980,16 @@ output. Should be called within a view.</long-description>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Components\Factory" line="140" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Components\Factory" line="131" package="Default">
         <name>has</name>
         <full_name>\Codex\Core\Components\Factory\Projects::has()</full_name>
-        <docblock line="140">
+        <docblock line="131">
           <description>Check if the given project exists.</description>
           <long-description></long-description>
-          <tag name="param" line="140" description="" type="string" variable="$name">
+          <tag name="param" line="131" description="" type="string" variable="$name">
             <type>string</type>
           </tag>
-          <tag name="return" line="140" description="" type="boolean">
+          <tag name="return" line="131" description="" type="boolean">
             <type>boolean</type>
           </tag>
         </docblock>
@@ -4007,21 +3999,21 @@ output. Should be called within a view.</long-description>
           <type>string</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Components\Factory" line="150" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Components\Factory" line="141" package="Default">
         <name>all</name>
         <full_name>\Codex\Core\Components\Factory\Projects::all()</full_name>
-        <docblock line="150">
+        <docblock line="141">
           <description>Return all found projects.</description>
           <long-description></long-description>
-          <tag name="return" line="150" description="" type="array&lt;mixed,\Codex\Core\Project&gt;">
+          <tag name="return" line="141" description="" type="array&lt;mixed,\Codex\Core\Project&gt;">
             <type>array&lt;mixed,\Codex\Core\Project&gt;</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Components\Factory" line="155" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Components\Factory" line="146" package="Default">
         <name>toArray</name>
         <full_name>\Codex\Core\Components\Factory\Projects::toArray()</full_name>
-        <docblock line="155">
+        <docblock line="146">
           <description></description>
           <long-description></long-description>
         </docblock>
@@ -4128,13 +4120,12 @@ output. Should be called within a view.</long-description>
       <error line="32" code="PPC:ERR-50015">Argument $parent is missing from the Docblock of __construct</error>
       <error line="32" code="PPC:ERR-50015">Argument $fs is missing from the Docblock of __construct</error>
       <error line="32" code="PPC:ERR-50008">No summary for method __construct()</error>
-      <error line="41" code="PPC:ERR-50008">No summary for method create()</error>
-      <error line="80" code="PPC:ERR-50008">No summary for method resolveProjectsMenu()</error>
-      <error line="155" code="PPC:ERR-50008">No summary for method toArray()</error>
+      <error line="40" code="PPC:ERR-50008">No summary for method create()</error>
+      <error line="146" code="PPC:ERR-50008">No summary for method toArray()</error>
       <error line="28" code="PPC:ERR-50007">No summary for property $items</error>
       <error line="30" code="PPC:ERR-50007">No summary for property $fs</error>
     </parse_markers>
-    <source>eJydV1tP3DgUfp9fcdpFSoIGaFfal6FDiyhVkShCpW8MGpnEmWTJ2FnbAUYV/33PsZ3rhGl3I8TM2J/P5TsXn3z4WGbl5Gh/fwL7cM2UAZmCyTjc8Pun3HC4/noNJYsf2IrrQwQR7jKPudAcmEggluVG5avMQC5SqdbM5FLAfSWSgieAIjIUl+taBqKs+MuLs/Orm3NI84KjyKPJZCLYmmuEcTiTCX9enEnF8d+6lIILoxdfWGyk2hxPJpUeYIRRuKkXdvF4uP9DsRw3v0r5wO4L7va9f4ubqiylMosvaIjeaMPX4/vXzGTjOzdG+Y3NOpVi09qMQkXClf9Awz3PP4gQ/CMi4oJpDddK/s3Rg5rhT6wymVRQP16n3WoZt89Z8zOMI/jz3fu/pjX8EE6LAuymBsU1V488sWz3tQJ/NlwkGjzFjQOTnxNSQc617NmlUkmDRzHEe6horbeX02atui/yGNJKxDY3lstYCm1UFZvQRgn2SqZQ2xTaIND5yB53JlhBFjWbdQX4o9Fxg9qjdDs4STX9mDs7BnvWYtyLZVGgteH2aSRLFo/89Z2aum9cVDXqZdzfWHFmUFTHG4+06UDPPtzETPiEkCLNV5VCDhMZV2v0ztWUktJAkituYwRYbES3CyBVorfMSlnblbIy/lcujLTSmxPedxTsTagt+WQyJZ80LC6KolrnAm3vVFgbIfv1SpovEmv9/DnmZUfY0SgTDauDwOYphG+6scEPfb4uzSaMog6OHsVNpUQbFk9lj07vyCNTsBjvJRS2xRVuYe51Itk5ftR8/6MHoZRylmJkKvxgSRIGNWJJi0E3a1Jb+zYVBX8C1wp6edWEZF6j0X0Rei0rbqwLYWS/f8ck+JyjAPxJvVPTOnXOMHCJc4j9PMC1BOORhcGHObynnymGWz5d5uJBk/JGO2YRZ3EGYWsG041NqKnLPxLsWb0pCwr/Bbb8LrhLm/WNLAPrPPXP2Qw9+Fxn8BVZ3Tls/SMYOnfcF+Ncg5Z7ywoWRi6ITIwFe0AGUh14lvg/FarZkv6ds+JXGphSbLNUvCzwKsLPuFI6x6QdiYc7FAYJT1lVmKXXtnTrQTSt5Q61eeCv/IlJ0aEHB1O47Umhx0ECtPvEiZpuQygGATgIfR+BeIMtxH3vYe66GWMd8L2wEnQtNOk/I7PJTm9L6+hrEny1Y6MKnW3Nkahb4u7/4IYZtpV+Sx60mDZ1Ow3B1vMelWw3cd1CExrL8Hi1U6GPlZI7yIoijLrVNGxlvjrmEOJllotVVAM7mZVrzMPN0sZwmEV2YMLjt3DX36F+iiJLqWtWA5jNIIjgzXwOKSs0H9rSE8ifywK9Dt2pqdsYaO854GpGZ3nq46gH6JdB9DPFU6K4cbhSRTj0jxmj3DVdiUYuzNGFd/ARV9c4LJowIFno2mybB4ykYU6Cx9a1NFSVJ4jCQW4200W1ytNNQ9xyiHWXFaXDwUnGkOE82bqkvHKCUMIgxJOIAukaJ06tbVPvZbR1nJ6DE83NN8S1ho8WyBjDbi66IL9QfR/7lGHvxnGxx+sJvHs1KX4nxDWPh3MIZrMADt3RcdCQbCJom+r/QvcOyhsutlgfNCXH45bUXVS+jHepzmT33Q4seK3WsxcOY9owge85NMLRULbC+0UAGTucxVA1Wzs/hltuEOr1M98Bd85geNO4+O0awizRFjSk2g6HdpJZXIhHVuTJqVrZIbUZAcO33g64tTLuqICLBASOr/fkNM6L9Bp4+7O+RtxM83L3Nhqd67yn/Suj9eP4FeLPMh4/kFstxXUE+HOu7cvWGNvguvFO1u+lLHbS3DI4oHnUmRb9mjMuiwDvFE9g2b4x/m5e3N7tNNneV79jrQXufOUx8pTaxf8Q9zL5F6nysvk=</source>
+    <source>eJydV9tu2zgQffdXTNsAkgMnaRfYF6dOE6QpGqAtgqZvcWAwEmVxI5NakkpiFPn3zpDU1Y7bXcGwJPJwLmeGw9H7D2Vejo7290ewD1dMW1AZ2JzDNb97FJbD1ecrKFlyz5bcHCKIcF9EwqXhwGQKiSrXWixzC0JmSq+YFUrCXSXTgqeAInIUJ0wtA1FO/JfL84tv1xeQiYKjyKPRaCTZihuEcThXKX+anyvN8W9VKsmlNfNPLLFKr49Ho8oMMNJqnDRzN3g8nP+hmcDJz0rds7uC+/ng3/y6Kkul7fwTGmLWxvLV9vkrZvPtM9dWh4n1KlNy3dqMQmXKdbih4YHnH0QI/oiIpGDGwJVW/3D0oGb4lFU2VxrqK+h0Uy3j7jpvXuNkDH+9fff3pIYfwllRgJs0oLnh+oGnju2+VuBPlsvUQKC4cWD0c0QqyLmWPTdUamVxKYZ4DxWtzOZw1oxVd4VIIKtk4nJjsUiUNFZXiY1dlGCvZBq1TaANAq0fu+XeBCfIoabTroCwdHzcoPYo3Q5OMkMvM2/HYM5ZjHOJKgq0Nt5cjWSp4oHXM8/bPUk0ZxZBHTsD0gWarn24TpgMoVYyE8tKIzupSqoV2u13i1bKQio0d+wDbiMi0oeG9liwxklZuZGysuFNSKuc9GZF8AoFBxNqS05trtWjgfllUVQrIdH2zt5puXeP35T9pHAXXzwlvOwIO9rKRMPXIGQig/hVl3W8mYtVadfxeNzB0aW5rbRsQxGoDHTC6QPTMO9s669cVrC3ov9glQugGwix94oTWnNwQhP4xtI0jmqyom7oM7dN3UrJH8Hv2l5yNBzPajT6I+OgZ8mtMy8eu+fvGNWPAgXgK5U5Q+NU5OLIZ8Ihlt4Ix1IkOI+j9zN4R68Zxk89fhHy3pDyRjumBWdJDnFrBjONTaipS+gb+Mrum6QY9Yhu2bwuC4r1JVburqAun85vstrxQlVwOkXnPtbZ+o0c6qx1rhMM/T7uS/Fet3FxfOEeEJJoxgChxXGUmSjwx/+tUMuG8O+cFb9RwLRm64XmZYHHCd6TShuB6bklUH5NHKU8Y1VhF0HZwo9H40ktthuKF3MyVNSGzA0m6/HfkOBS9jCAownc9KTQ5SERBuXEi5psQihsEXgIPW+BBDcdxD/3MLdDr+v6WEk6EJqNNCWzyc5gS+vo7TBIvWKAdSz2pjUrhhrfwFmaAhY52r/b0nIGMR4GQi7HtYhOVIXBHFgvHBNDS1zDgctv4LY/Q1ULRZbK1MZFMJ1CNIZXsxlkrDB8WLx6AvlTWWB0Yr9q4icG2nsO+Hw1ucgCHWaAfh5EIdc8cxWu8bjSRTx0kFmr/TlXyUYwzNCHt/ABR1fYbdk4ImHo23STCCymlnkJAVun5FCVSOk2A2yGplNTVEuRrRvyFkO4PxYooAcnOUOWRbpxHAT9BKGSjZBAJAqkA5N4deZNgqPjjeV0HZwYbr8irrW9l2u7WPa9xWVKRIu0j33MsXBiy9Wj9gTevpgYfxLmmsrDGUTTaQSHful20JBsImiT6v9C9w7KGy42WN9U97xp7i4mW/jzCy3Ud9cZ4HFXn2fY9RjLJH4qUK9E3c8Sy7sEsnXY9KBqtvJuDKd8x7GtgO9sdrBk+/Dt6nYczw40ZNp1Ya7DmF/KB1aI9EwvXTfY9Frx6/oguXEybmkLFylI7BPvyGlszOhL6uZnXY99r/F8+3q8tYEKnvaLb+vH8QvEn+c8uSe3WorrCPAnYdz3yja2wRfknazfKVXspLllcEDzVmda9EvO+CwChp9EnsCy/ej607y4ud1pMsreaIG3WuuAO78trDqjavE/xD2PfgGhdXb+</source>
   </file>
   <file path="Components/Factory/Menus.php" generated-path="Components.Factory.Menus.html" hash="803c457886d89a42165e61743486f30d" package="Default">
     <docblock line="0">
