@@ -10,17 +10,17 @@
 // 5. Components
 // 6. Utilities
 //
-/****************************/
+///**************************/
 // 1. Base
-/****************************/
+///**************************/
 //
 @import "base";
 @import url($web-font);
 @import "../../bower_components/font-awesome/scss/font-awesome";
 //
-/****************************/
+///**************************/
 // 2. Bootstrap
-/****************************/
+///**************************/
 //
 // Reset and dependencies
 @import "../../bower_components/bootstrap/scss/normalize";
@@ -64,9 +64,9 @@
 @import "../../bower_components/bootstrap/scss/utilities-spacing";
 @import "../../bower_components/bootstrap/scss/utilities-responsive";
 //
-/****************************/
+///**************************/
 // 3. Layout
-/****************************/
+///**************************/
 //
 @import 'layout/print';
 @import 'layout/header';
@@ -82,9 +82,9 @@
 }
 
 //
-/****************************/
+///**************************/
 // 4. Plugins
-/****************************/
+///**************************/
 //
 @import "plugins/noty";
 @import "plugins/slimscroll";
@@ -106,9 +106,9 @@
 }
 
 //
-/****************************/
+///**************************/
 // 5. Components
-/****************************/
+///**************************/
 //
 @import "components/grid";
 @import "components/styler";
@@ -133,9 +133,9 @@
 
 
 //
-/****************************/
+///**************************/
 // 6. Utilities
-/****************************/
+///**************************/
 //
 @import "utilities/positioning";
 @import "scss-json";

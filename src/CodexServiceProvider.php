@@ -110,7 +110,7 @@ class CodexServiceProvider extends ServiceProvider
 
         Factory::extend('projects', Components\Factory\Projects::class);
         Factory::extend('menus', Components\Factory\Menus::class);
-        \Codex\Core\Project::extend('documents', Components\Project\Documents::class);
+        Project::extend('documents', Components\Project\Documents::class);
     }
 
     /**

@@ -10,8 +10,6 @@ namespace Codex\Core\Components\Document;
 
 use BadMethodCallException;
 use Codex\Core\Document;
-use Codex\Core\Documents\Components\Workbench;
-use Codex\Core\Documents\Components\WorkbenchContract;
 use Sebwite\Support\Traits\Extendable;
 
 /**

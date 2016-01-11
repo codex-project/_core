@@ -11,7 +11,7 @@ Version: 3.4.5 Timestamp: Mon Nov  4 08:22:42 PST 2013
   display: inline-block;
   /* inline-block for ie7 */
   zoom: 1;
-  *display: inline;
+///display: inline;
   vertical-align: middle;
   .select2-choice {
     display: block;
@@ -116,7 +116,7 @@ Version: 3.4.5 Timestamp: Mon Nov  4 08:22:42 PST 2013
     container without overlap because of margin/padding.
 
     More Info : http://www.quirksmode.org/css/box.html
-  */
+///
   -webkit-box-sizing: border-box; /* webkit */
      -moz-box-sizing: border-box; /* firefox */
           box-sizing: border-box; /* css3 */

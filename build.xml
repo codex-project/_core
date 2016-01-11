@@ -3,6 +3,14 @@
     <property name="vendordir" value="${project.basedir}/../../../vendor"/>
     <property name="phpdocfile" value="${project.basedir}/docs/structure.xml"/>
 
+    <property name="package-dir" value="${project.basedir}/resources"/>
+    <property name="package-bin-dir" value="${project.basedir}/resources/node_modules/.bin"/>
+    <property name="typedoc" value="${package-bin-dir}/typedoc"/>
+    <property name="sassdoc" value="${package-bin-dir}/sassdoc"/>
+
+    <property name="sassfile" value="${project.basedir}/docs/sass.json"/>
+    <property name="sassdir" value="${project.basedir}/resources/src/styles"/>
+
     <target name="clean" unless="clean.done" description="Cleanup build artifacts">
         <delete dir="${project.basedir}/vendor"/>
         <delete file="${project.basedir}/composer.lock"/>
@@ -20,7 +28,7 @@
         <apply executable="php" failonerror="true">
             <arg value="-l"/>
 
-            <fileset dir="${project.basedir}/src" >
+            <fileset dir="${project.basedir}/src">
                 <include name="**/*.php"/>
             </fileset>
         </apply>
@@ -62,5 +70,12 @@
         </exec>
         <move file="${project.basedir}/phpdoc/structure.xml" tofile="${phpdocfile}"/>
         <delete dir="${project.basedir}/phpdoc"/>
+    </target>
+
+
+    <target name="sassdoc" description="Generate sassdoc json output and move into docs folder">
+        <delete file="${sassfile}" quiet="true"/>
+        <exec command="${sassdoc} --parse ${sassdir} >> sass.json" dir="${package-dir}" logoutput="true"/>
+        <move file="${package-dir}/sass.json" tofile="${sassfile}" mode=""/>
     </target>
 </project>

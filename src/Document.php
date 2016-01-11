@@ -71,11 +71,13 @@ class Document
     /**
      * Creates a new Document class
      *
-     * @param \Codex\Core\Project                                                     $parent
+     * @param \Codex\Core\Contracts\Codex                                             $codex
+     * @param \Codex\Core\Project                                                     $project
      * @param \Illuminate\Contracts\Filesystem\Filesystem|\Sebwite\Support\Filesystem $files     The filesystem
      * @param \Illuminate\Contracts\Container\Container                               $container The container class
      * @param string                                                                  $path      The absolute path to the document
      * @param string                                                                  $pathName  The relative path to the document
+     *
      */
     public function __construct(Codex $codex, Project $project, Filesystem $files, Container $container, $path, $pathName)
     {
@@ -89,7 +91,7 @@ class Document
         $this->runHook('document:ready', [ $this ]);
 
         $this->attributes = $codex->config('default_document_attributes');
-        $this->content    = $this->files->get($this->path);
+        $this->content    = $this->getFiles()->get($this->path);
 
         $this->runHook('document:done', [ $this ]);
     }

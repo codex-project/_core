@@ -114,7 +114,7 @@ $component-color-variants: (
         @include widget-color-variant($color-name + '-light', $light);
         @include widget-color-variant($color-name , $normal);
         @include widget-color-variant($color-name + '-dark', $dark);
-    */
+///
 }
 
 @each $color-name, $color-variants in $material-colors {

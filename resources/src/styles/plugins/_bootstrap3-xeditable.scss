@@ -17,7 +17,7 @@
   margin-left: 7px;
   /* inline-block emulation for IE7*/
   zoom: 1; 
-  *display: inline;
+///display: inline;
 
   &.editable-buttons-bottom {
     display: block; 
@@ -33,7 +33,7 @@
   white-space: normal; /* reset white-space decalred in parent*/
   /* display-inline emulation for IE7*/
   zoom: 1; 
-  *display: inline;   
+///display: inline;   
 }
 
 .editable-buttons .editable-cancel {
@@ -147,7 +147,7 @@
   width: auto;
   /* inline-block emulation for IE7*/
   zoom: 1; 
-  *display: inline;    
+///display: inline;    
 }
 
 .editable-container.ui-widget {
@@ -200,8 +200,8 @@ a.editable-click.editable-disabled:hover {
 
 
 /*
- * x-editable CSS
- */
+/// x-editable CSS
+///
 .editable-address {
   display: block;
   margin-bottom: 5px;  
@@ -213,13 +213,13 @@ a.editable-click.editable-disabled:hover {
 }
 
 /*!
- * Datepicker for Bootstrap
- *
- * Copyright 2012 Stefan Petre
- * Licensed under the Apache License v2.0
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- */
+/// Datepicker for Bootstrap
+///
+/// Copyright 2012 Stefan Petre
+/// Licensed under the Apache License v2.0
+/// http://www.apache.org/licenses/LICENSE-2.0
+///
+///
 .editable-input .datepicker {
 	top: 0;
 	left: 0;
