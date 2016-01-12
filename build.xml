@@ -76,6 +76,6 @@
     <target name="sassdoc" description="Generate sassdoc json output and move into docs folder">
         <delete file="${sassfile}" quiet="true"/>
         <exec command="${sassdoc} --parse ${sassdir} >> sass.json" dir="${package-dir}" logoutput="true"/>
-        <move file="${package-dir}/sass.json" tofile="${sassfile}" mode=""/>
+        <move file="${package-dir}/sass.json" tofile="${sassfile}"/>
     </target>
 </project>
