@@ -2027,7 +2027,7 @@
     </interface>
     <source>eJxdkd9LwzAQx9/zV9yDD9vQVQVfnKBQJw42GbjHvcTm2gbbpCRXtyH+716ylE2P0tB+P/e9H3l47OpOZJOJgAmspSOwJVCNkFuFe1i/rqGTxaes0E8ZCdRqsYGlLtB4BGkUFLY7OF3VBNqU1rWStDXw0RvVoIKdppoNtR98mIoFlot8/vY+h1I3yLaZMLJFz1Cqvc2tQ34ZcrIgv12h6f1MDL1ugiU/wSpILwxZdxiafBqqpThZRlX2VFsHf1R4xi/YoGwjcZoqEcPnqBjD7fXN3eUxK8JNWkeKmqjz91lGjXINVrKZFrbNEpS1mq6GhLNdxh1oQ+jKsIOzmcS3EME2Th5iArlDSehBgsEdtMwCj+OQemf4rwHca0/aVClhyOO1ONmCJ8caXGj1Xz9awPbsCkInSc/i2fUf3D+UvSniVUulRmw1nokf8Qvl4rO5</source>
   </file>
-  <file path="Http/Controllers/CodexController.php" generated-path="Http.Controllers.CodexController.html" hash="abf12991d107d160d9ac1b7bd34794d1" package="Default">
+  <file path="Http/Controllers/CodexController.php" generated-path="Http.Controllers.CodexController.html" hash="b176bccd17f55c329f13e19fab6dfe33" package="Default">
     <docblock line="0">
       <description></description>
       <long-description></long-description>
@@ -2120,6 +2120,14 @@
           <type>string</type>
         </argument>
       </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core\Http\Controllers" line="70" package="Codex\Core">
+        <name>markdown</name>
+        <full_name>\Codex\Core\Http\Controllers\CodexController::markdown()</full_name>
+        <docblock line="70">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+      </method>
       <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core\Http\Controllers" line="28" package="Codex\Core">
         <name>runHook</name>
         <full_name>\Codex\Core\Traits\Hookable::runHook()</full_name>
@@ -2188,8 +2196,9 @@
     </class>
     <parse_markers>
       <error line="0" code="PPC:ERR-50000">No summary was found for this file</error>
+      <error line="70" code="PPC:ERR-50008">No summary for method markdown()</error>
     </parse_markers>
-    <source>eJyNVcFO3DAQvecrptJKTlZhl1b0Al1AhQOV2gvdW0HImziJS2JHtrNt1fLvHTtO4tAF1UJK1jNv5r03sflw0VZtJGjDdEszBlcyZz/vrqRidzfGtPgmjJJ1zZQ+i6JOzzK2inKj726kfKS7mmHCermMYAnbimvAP1P5/KnMCuM25RLbPdKSgV9TWRelnamkglkUrtketow2LiOT7S/Fy8oMGcPPOEvg3fHb92mPcsk1z5jQY7MKpenT9drUuapZSetVJpu1T1o33BwNgC+ftvC5f8dC6yirqdbPNQH7aZjI7f6wFf2ObCNrWGCP3XIW2bWEW5ZzxTIDRjqrclbQrjbQKvndblORwx6d51KsPGaAXipmOiXGEn5/7Z5tt0P+UHQiM4gFLpBunLhYz8uuhcEpHZ2rTliGMclG8qcOQFL41ifBfeLJ2+U7K985VrIzzMIRs8pl1jVMGAseEXYRL+pr3ZUENudDewezD1HwMibeggefTZKxyH2CJOzL0wEfka/qLfT9qRPe2g+skH2o5Hsm/svbliragDaKi9J7FbA/mPZHdHUNC8WKV6tQU70wSGfHq1McpMUhmdT1hA3Y/mnfAX8R8nzavID4zdxzXwY3KqpnVZMkQAYzpzupTHxyfJKO80RaTIOQBg8B1ziwsxH4NH1qQ/IGXqJQsrmw8Iuz3Ll+sBJjK/cfet6DAe+qXfdf0i0r4lc5HZ1r5rJc5bMg3lvpnxtrKlwA6c8GnPaBgOViGNCMybA5SkRQqA276smWQ4cxPFJ9XjrWT4Ou988t8zW5vsXLXeINZiXql2ZrY6FPE0PLxTbAtZn6IVl37EJ3FzvFaJ6prtnNU1H6xzEUz/T3JPec/cBJVFThVTIc/knngftnBmzoI6qb+lFjVExsjCQp4OWO/21MWJgErhIv0L5OAsh03zxFfwGroxym</source>
+    <source>eJyNVV1vmzAUfedX3EmRgIgm3dS+tEtbrX3opO2ly8vURpUDTvACNrNNumnrf9+1MWDSJJoVCfD9OudcX+fjdZVXASclVRVJKdyKjP56uhWSPt1rXeEb11IUBZXqMghqNfCYS8K0eroXYkOWBUWH6XgcwBjmOVOAP507/z7NBO3G5QbLbciaglt9Wmsltc6FhIEV7ugW5pSU1iMV1W/J1rluPdrPKI3hw+n786SJss4FSylXXbEcqamL6VQXmSzomhSTVJRT5zQtmT5pA75+nsOX5h0TTYO0IErtcgL6S1Oemf12K/gTmEJGME8es2UlMmsMDzRjkqYatLBSZXRF6kJDJcUPs014BltUngk+cTFt6I2kupa8S+H2p/ZZ1UvED6uapxpjgXGEG8XW1uAya6SxSydXsuYGYRSmHfgLGxAm8Ng4wSJ24M1ylaWrHElRa2rCMWaSibQuKdcmuIswK3SkvhX1OoTZVVvehpkHX7F1FDoJnp13GHdJFjGCMC+ve3REvLKR0NUnlnhlDthKNKY121L+X9pWRJISlJaMr51WHvq9bn95XRQwknR1NAvR+YFGWjmOdrGlFvlgElsTZmDqJ00F/ArD3W6zFUTvhpq7NLiREzXIGsdepNdzshRSR2enZ0nXT4RFFXChcQiYwoZddoGv/VFrnWdwCMKaDon5J85gZ+rZUIwM3TfwnAZtvM1215ykB7qKjmI6uVLUetnMl569kdI9Z0ZUuIawmQ24aAweylHboAGSdrOjiEE+N6yqeln2DaM/Uo1f0uVPvKqLXclcTqYe8HIXeIMZiupQb43N16lHaLCYArhmfT0Ea8fOV3e0lJRkqazL5dAVqX/qTNGAfwNyy+gLdiInEq+Sdvh7nnvun0FgSTbIrq9HtJZRaGxhnABe7vhvo/3Eoadq6Aia155AuHPf7I5jSeQmEy/8zb1qJ03SnzVVOoqb4bK3Y3h8rM5PTxHAd1FDxjI7UQh3yzJqb69Hk2FxYLyMDQX3ipqz5oq2LF6Df0vEUrA=</source>
   </file>
   <file path="Http/Controllers/Controller.php" generated-path="Http.Controllers.Controller.html" hash="f38c73c0645fc7f18b35f0360fd3853c" package="Default">
     <docblock line="0">
@@ -2274,7 +2283,7 @@
     </parse_markers>
     <source>eJyFUstOAjEU3fcr7oKER8BREzfiK2qMJroxxNUkpJYLM7HTTto7KFH/3T4GGFCwIUxvzzn3fXZZZiVTvEBbcoFwoyf4kd5og+k9UeluioyWEo0dMlbZDUYAuSCbhsdhwB+krIpccWriLzm+p3fuqs0CuAVv1+Yv1bOuKFezRmivuOYW1y8ul6TXY9CDUZZbcD/K6tTWpAOHe8qVq+yNzxDqs64goLyiTBvYQOEW5zBCXgSG0OXC5LOMloyl2RFdOD48OulHVSDLXKCyq2CZ66I9TRKSEyNxxuWB0EVSk5Iip8FS8PQwgsd4d44SJiS3FhpdwA9CNdluBftkPk5ohz8uhTk3kO6e01cTq6dQa5PwLY0mFIQTaIk42L9DNIbWHPAuX3PH+cNVyQ0v9uULzdOabgTZL39CVcX/5e61Cv+0Lf5/Z2NsX8FmddWrGx9MKyUo1wrGY6GVJVMJ6sTcYwf7zY2PfrrBQRxecE5ukwcXgQ7nq85vwV4JHo7NXKHeHFzYjBvstIO03a99dCPtm32zHz8XPNo=</source>
   </file>
-  <file path="Http/routes.php" generated-path="Http.routes.html" hash="11c8fbeba819f3b37bbdb59d609dca76" package="Default">
+  <file path="Http/routes.php" generated-path="Http.routes.html" hash="967f7524ae9eb42c0e00dfcd9dae4830" package="Default">
     <docblock line="0">
       <description></description>
       <long-description></long-description>
@@ -2284,7 +2293,7 @@
     <parse_markers>
       <error line="0" code="PPC:ERR-50000">No summary was found for this file</error>
     </parse_markers>
-    <source>eJyFkNFKwzAUhu/zFEcYnGRo5/V0jVB2K6KXTmEkZ1ulS0qaYKH03U1aO8aEmZuEnJ/v+5NHWR9qFhqCwmpqN4V1tFm3nkxTWtOMR03ugbFZGQ8trODVBk/L5Z48xwXewjtuG4RVDqgSIxty8R4j9ncwwAtrvLNVRe5pjHyIhNVWhSMZf0Huame/SPm3Kuz7RedoJ+M2hWWfxHBhnqbX5acUpAIn/13+fSBHHM8pPJsLTDXLHXBlg/F8+pKh57pVVdCkX8ayz9sjNVwIyOFeQMcgrr+Cs5clxyfn8gYhg//J3gUSMYkim0sxS8169gPwRJOC</source>
+    <source>eJyFkVFLwzAUhd/zK64wSDK083m6Vih7FdFHp1KSu63aJiVNWKH0v5u0ttQJMy+53Hv4zsnNfVIdK+JqhFRLbHapNrjbNhZVnWtVD6VEc0fIIvdFAxt41s7ien1Ay+iKXsMrzWoKmxioCIyo1/k+9difQQ9PtbJGFwWah0HyxgNWauFKVPaM3FZGf6KwL4U7dKvW4D7x1yhOumAMZ87j9LL5pIIQYPK/iU9HNMjonMKiJachZr4HJrRTlo0r6XNuG1E4ifJpCPuYlVgzziGGWw4tAX/+GsxeFjzeGUuuKETwP9kah9wrKY+WCV+EZB0h87V9lJn5kvqkfn3MrHlhMZMq7OUbOU6vpA==</source>
   </file>
   <file path="Providers/RouteServiceProvider.php" generated-path="Providers.RouteServiceProvider.html" hash="f70c18addf8472157d9b3aadac3f4517" package="Default">
     <docblock line="0">
@@ -2474,7 +2483,7 @@ file. In addition, it is set as the URL generator's root namespace.</description
     </parse_markers>
     <source>eJxlkV9PwjAUxd/7Ke6DCbAAexeDGiSRhAhxvDkfynrZGre26R/EGL67bTdQ8L4svffXs3Nu7+5VpUiaJAQSWFNtQe7AVggZbj+5RVg/r0HR4oOWaMYeCtySFygMAhUMCqm+NC8rC1zspG6o5VLA1glWIwMvUXk5bk4anoryy8Vs/pLNYcdr9JIpIUTQBo3HEGaS4SGfSY35Wss9Z6jNhBBnzrbyR2PQmnyjKfefjjJtd3JBZk4pqW2eod573ydBr1fU1BiId66GgAeLghm46pNvAr6C/PUv40BpabGwPvjOiSJugsZ5fxDn7fVQN2EpoynVSPu9IuRNqbNVb3AmQo2mpZZO9XtlLbe07g3h7X0IVju85CbxdGxNxMcMlcArltxYnyes3LRZgskYZtxRJ/hBo3VawF5y1vXSNpXb1rz4jaQ71X+h0hQ2q6fVLSwaVWODwv5hoUFbSTburB7JDz2XxPo=</source>
   </file>
-  <file path="CodexServiceProvider.php" generated-path="CodexServiceProvider.html" hash="8e66f20c8b46f78f4ef70463a9d07478" package="Default">
+  <file path="CodexServiceProvider.php" generated-path="CodexServiceProvider.html" hash="7f912e824812c19bef97a96659c9f4de" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -2623,27 +2632,27 @@ file. In addition, it is set as the URL generator's root namespace.</description
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="121" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="122" package="Codex\Core">
         <name>registerFilters</name>
         <full_name>\Codex\Core\CodexServiceProvider::registerFilters()</full_name>
-        <docblock line="121">
+        <docblock line="122">
           <description>Register the core filters.</description>
           <long-description></long-description>
-          <tag name="return" line="121" description="" type="void">
+          <tag name="return" line="122" description="" type="void">
             <type>void</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="134" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="135" package="Codex\Core">
         <name>registerLogger</name>
         <full_name>\Codex\Core\CodexServiceProvider::registerLogger()</full_name>
-        <docblock line="134">
+        <docblock line="135">
           <description>registerLogger method</description>
           <long-description></long-description>
-          <tag name="param" line="134" description="" type="\Illuminate\Contracts\Foundation\Application" variable="$app">
+          <tag name="param" line="135" description="" type="\Illuminate\Contracts\Foundation\Application" variable="$app">
             <type>\Illuminate\Contracts\Foundation\Application</type>
           </tag>
-          <tag name="return" line="134" description="" type="\Codex\Core\Log\Writer">
+          <tag name="return" line="135" description="" type="\Codex\Core\Log\Writer">
             <type>\Codex\Core\Log\Writer</type>
           </tag>
         </docblock>
@@ -2743,7 +2752,7 @@ file. In addition, it is set as the URL generator's root namespace.</description
       <error line="81" code="PPC:ERR-50007">No summary for property $singletons</error>
       <error line="88" code="PPC:ERR-50007">No summary for property $aliases</error>
     </parse_markers>
-    <source>eJytVktv4zYQvutXzCGA5MCO2wK92F23hZ2gAZLdIAnQw2ph0BJts5FIgaScDRb73zt8SJZlqXba6iKJ88035Lw4v/xabItgfHkZwCU8EKlBrEFvKcxFSr/Cwx8PUJDkhWyoukKIQd3fPsMdSyhXFAhPIRHFm2SbrQbG10LmRDPBYVXyNKMpvDK9RUKmKh5EWQN3t/Prj0/XsGYZRdpxwElOFYK87XguJJ0GQamaC/H1V42W0YKKb1imqcS3FFzfE40/bml6hhKeVdFUvPIelTuxif+UrEv0LAnTKrYrD1LsWEqlXXPI2ywrc8aJpgjhWpIEwTcC/WE9E/9eFBlL7LdTuBdcZGgOTW6oBKKqFSd+oit0Io2fyqIQUsdPVO7Q/ZVldJEPnwuZcmIovLwK22+V/6FxFisgpd4KCZUAkPkvmmhY0B08U5Jb0D7K8/orSgbw0w8//jw8VLT4zGcIwFbrQk3GY52lMqMbkl0lIh97+ThnelRhG5llMyLJiFKOu3VooCaiqYLWevAtMOeoA9YKjxVab5kHd7kjEpSWjG/80ti+0XcaD4Lpe5EyCR9guVzcPi6XxwxzkWWINBmPhZMIvmabUroSMJltqsYiD0wSKclbn0VHcmOU0fJnCBNzkhC+nLK+MjmG5aU04cm/sexT5qTZ00w7Rl8XTHom86dC+DD7b6SYDFTvWe3v/0BbFYqldSB84qOyc+9Wwk0mNkmHtV4lMP2BK5HR8xUeRal74BZdna6x9xXjKSbv4dadN64KV40hGA/Fjf7ly/RoJ14vFUmZU67Dtt7CC/oUUVaGdqGleI+CWqlnm8rtcy7yQnA0gi0TG6eQb9V21T+ZVbXdDgJjvle7Oq1LpIa2N1ufumIIDmLxrkxTGKqMasyLjnhZ+37LXVF/X6lkjCjabaZ2VHU32Uj1+QevofAQjtdUZ1aWK+zjsC65a0grIXQ0sKJvNekFKQrcVEGkzSOHmcJ4DM+fFp8mMN8SjleUmQ/wVhIbyik2UzyR0uXqgGU0y8kLjfyhBqMZdr3kxf9PJvZPXRV44Y2I3ZAKB1PL8D04cugj3TCFVz3U9eSHFOzFmjBub1ELrUMgqS4lh8ZlfhiLljekt3DKI3vcdA8x49NoVoncmBAZxX6QH3MMTQ2pk8tdnlFYl97wjLpr2DoiciXYydIsvgZF3YMqin0dDs+pwn0s+0LpwiepuYaNK/oiuBMs7Smjo+jVXm0H0Tnf5p7DROHaTKXL3I6leKajIfXYJ10sRTWmIkVrZD3licN8gZzilJe2nYD8JIf4HTOrzdgeX8adA/S53vWJ3bbVVTGjWTXmRI0+NYQLfGE1cfoKznZUq5nHrPvZOnI0lO8YRsakVjQYDA/QBoFzBt256+FLLRw0g4ZcoxkOnHZgi7yOm+FQ53Ojj2I30ltca9akd9yFnfZdHL8HfwMkuyWI</source>
+    <source>eJytV0tv4zYQvutXzCGA5MCO2wK92F1vCztBAyTdIAnQw2ph0BJts5FIgaScBIv97x0+JEuytXG21UUWZ+Ybznv828diWwTj8/MAzuGOSA1iDXpLYS5S+gJ3f95BQZInsqHqAlkM1+31I9ywhHJFgfAUElG8SrbZamB8LWRONBMcViVPM5rCM9NbBGSqwkEuq+Dmen7518MlrFlGEXYccJJThUxedzwXkk6DoFTNg/jyRaNm1KDiK5ZpKvEtBde3ROOHO5qeIIS2KpqKZ94jciM28d+SHSM9SsK0iu3JnRQ7llJpzxzndZaVOeNEU2ThWpIEma8E+sN6Jv6jKDKW2N9O4FZwkaE6VLmhEoiqThz5ga7QiTR+KItCSB0/ULlD91ea0UU+fC5kypGh8PQqbL9X/oeGLZZASr0VEioCIPI/NNGwoDt4pCS3TPsoz+tfUTKAX376+ddhW9DyZz5DALZaF2oyHusslRndkOwiEfnY08c506OKt5FZNiOSjCjlsDtGAzURTRV0zoOvgbGjDlgnPJZovWUevOWOSFBaMr7xR2P7Rt9pNATT9yxlEj7Acrm4vl8uDxHmIsuQ02Q8Fk4i+JptSulKwGS2qRrL2VJJpCSvfRodyJURRs2fIUyMJSF8eUv7yuQYlpfShCc/otmnzJtq30baMfq8YNIjmS8VwofZfwPFZKB6j2o//wfYqlAsrGPCJz4oO/fuJNxkYpN0WMtVBNMfuBIZPV3gXpS6h91yV9Y17r5iPMXkbV/deeOicNUYgvFQ3OhfvkwPbuLlUpGUOeU67MotPKFPEGllaA86grdIqIV6rqncPeciLwRHJdgysXEK+VpdV31Prar1HgEw6nulK2tdIjWkvdra6gohaMXiXZmmMFQZ1ZgXR+Jl9fsrH4v6+0olY0TR42pqR1WzyUaqzz84hsI2O46po1lZrrCPw7rkriGthNDRwJK+1qBnpCjwUgWRNo8czxTGY3j8tPg0gfmWcBxRZj/AqSQ2lFNspmiR0uWqhTKa5eSJRt6owWiGXS958t+Tif1SFwUOvBGxF1LhYGoRvgUHDr2nG6Zw1ENdT35JwV6sCeN2ilrWOgSS6lJyaAzzdiw63pBew1se2fNN9yxmfRrNKpJbEyIj2M/k1xwDU7PUyeWGZxTWpTc8oe4aug6AXAkeRWkWXwOi7kEVxL4Oh6dU4aHlNvC2hV6+JFlptr0oXOZEPpktrxH8vti7eEtq5rbxXV/Id4KlPXV3EO46DN2oN+7seKJwbdZYvLDZY9EJB1vt9y2vUIpqr0WIzo7bBjj0RDvBIKe4FqZdJyA+ySF+x5JrU7zHl/HRjftU7/pK6Oo6VmKjWbUXRY3GNoQzfGH5cfoMTndUi5nHnPtlPHIwlO8YRsbkYjQYDFvchgMXE7pz8+RLTRw0g4ZYoxluqHbDi7yMW/pQ5nOj8WL70ls8axaxd9yZ/Xvg4vgt+BfAezVR</source>
   </file>
   <file path="Menu.php" generated-path="Menu.html" hash="efab43de92d1f489d6a36cf6ddd8b3ad" package="Default">
     <docblock line="0">

@@ -51,13 +51,18 @@ export default {
       })
       this.on('blur', function () {
         self.focused = false
-        self.listener()
+        // do not sync value after fragment removal (#2017)
+        if (!self._frag || self._frag.inserted) {
+          self.rawListener()
+        }
       })
     }
 
     // Now attach the main listener
-    this.listener = function () {
-      if (composing) return
+    this.listener = this.rawListener = function () {
+      if (composing || !self._bound) {
+        return
+      }
       var val = number || isRange
         ? toNumber(el.value)
         : el.value

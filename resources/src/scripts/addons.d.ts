@@ -1,8 +1,8 @@
 /// <reference path="types.d.ts" />
-/// <reference path="packadic.d.ts" />
-declare module packadic {
+/// <reference path="codex.d.ts" />
+declare module codex {
 }
-declare module packadic.extensions {
+declare module codex.extensions {
     class LayoutExtension extends Extension {
         openCloseInProgress: boolean;
         closing: boolean;
@@ -73,7 +73,7 @@ declare module packadic.extensions {
         start(): void;
     }
 }
-declare module packadic.extensions {
+declare module codex.extensions {
     class PresetsExtension extends Extension {
         static dependencies: string[];
         init(): void;
@@ -85,7 +85,7 @@ declare module packadic.extensions {
         protected applyPresetType(name: string, config?: any): void;
     }
 }
-declare module packadic.extensions {
+declare module codex.extensions {
     class QuickSidebarTabs {
         qs: QuickSidebarExtension;
         switching: boolean;
@@ -141,12 +141,12 @@ declare module packadic.extensions {
         exists(): boolean;
     }
 }
-declare module packadic.plugins {
+declare module codex.plugins {
     class TestPlugin extends Plugin {
         protected _create(): void;
     }
 }
-declare module packadic.widgets {
+declare module codex.widgets {
     class progressbarWidget extends Widget {
         version: string;
         widgetEventPrefix: string;
@@ -179,7 +179,7 @@ declare module packadic.widgets {
         _setOption(key: string, value: any): any;
     }
 }
-declare module packadic.widgets {
+declare module codex.widgets {
     class TestWidget extends Widget {
         version: string;
         widgetEventPrefix: string;

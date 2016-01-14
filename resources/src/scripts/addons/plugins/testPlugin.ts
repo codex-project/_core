@@ -1,5 +1,5 @@
 
-module packadic.plugins {
+module codex.plugins {
 
     @plugin('testPlugin')
     export class TestPlugin extends Plugin {

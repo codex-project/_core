@@ -1,14 +1,14 @@
 
-module packadic {
+module codex {
 
-    import DeferredInterface = packadic.util.promise.DeferredInterface;
-    import PromiseInterface = packadic.util.promise.PromiseInterface;
+    import DeferredInterface = codex.util.promise.DeferredInterface;
+    import PromiseInterface = codex.util.promise.PromiseInterface;
 
     declare var hljs:HighlightJS;
 
     export function highlight(code:string, lang?:string, wrap:boolean = false, wrapPre:boolean = false):util.promise.PromiseInterface<string> {
         if (!defined(hljs)) {
-            console.warn('Cannot call highlight function in packadic.plugins, hljs is not defined');
+            console.warn('Cannot call highlight function in codex.plugins, hljs is not defined');
             return;
         }
 

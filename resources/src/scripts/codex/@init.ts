@@ -2,7 +2,7 @@
 
 console.groupCollapsed('Packadic pre-init logs');
 
-module packadic {
+module codex {
 
     export var app:Application;
     export var debug:Debug;
@@ -44,7 +44,7 @@ module packadic {
             bootstrap: {
                 tooltip: {
                     container: 'body',
-                    template: '<div class="tooltip tooltip-packadic" role="tooltip"><div class="tooltip-inner"></div></div>',
+                    template: '<div class="tooltip tooltip-codex" role="tooltip"><div class="tooltip-inner"></div></div>',
                     selector: '*[data-toggle="tooltip"], .tooltip-toggle'
                 },
                 popover: {
@@ -76,7 +76,7 @@ module packadic {
 
     export function ready(fn:Function) {
         if (isReady) {
-            fn.apply(fn, [packadic.app]);
+            fn.apply(fn, [codex.app]);
         } else {
             _readyCallbacks.push(fn);
         }

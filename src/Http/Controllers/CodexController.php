@@ -66,4 +66,12 @@ class CodexController extends Controller
 
         return $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
     }
+
+    public function markdown()
+    {
+        if (!request()->has('code')) {
+            return abort(500, 'You did not provide the [code]');
+        }
+        $code = request()->get('code');
+    }
 }

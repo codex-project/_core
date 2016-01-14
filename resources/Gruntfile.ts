@@ -48,7 +48,7 @@ export = function (grunt:IGrunt) {
         uglify: {
             vendor  : {files: {'<%= target.dest %>/scripts/vendor.min.js': '<%= target.dest %>/scripts/vendor.js'}},
             addons  : {files: {'<%= target.dest %>/scripts/addons.min.js': '<%= target.dest %>/scripts/addons.js'}},
-            packadic: {files: {'<%= target.dest %>/scripts/packadic.min.js': '<%= target.dest %>/scripts/packadic.js'}}
+            codex: {files: {'<%= target.dest %>/scripts/codex.min.js': '<%= target.dest %>/scripts/codex.js'}}
         },
 
         clean: {
@@ -88,10 +88,10 @@ export = function (grunt:IGrunt) {
 
         ts: {
             options : {compiler: 'node_modules/typescript/bin/tsc', target: 'ES5', emitError: true, sourceMap: ifTarget('dev', true), experimentalDecorators: true},
-            packadic: {
+            codex: {
                 options: {declaration: true, sourceMap: ifTarget('dev', true)},
-                src    : ['src/scripts/packadic/@init.ts', 'src/scripts/packadic/{util,lib}/**/*.ts', 'src/scripts/packadic/~bootstrap.ts'],
-                out    : 'src/scripts/packadic.js'
+                src    : ['src/scripts/codex/@init.ts', 'src/scripts/codex/{util,lib}/**/*.ts', 'src/scripts/codex/~bootstrap.ts'],
+                out    : 'src/scripts/codex.js'
             },
             addons  : {
                 options: {declaration: true, sourceMap: ifTarget('dev', true)},
@@ -104,7 +104,7 @@ export = function (grunt:IGrunt) {
 
         watch: {
             options    : {livereload: true},
-            ts_packadic: {files: ['src/scripts/packadic/**/*.ts'], tasks: ['ts:packadic', 'copy:ts']},
+            ts_packadic: {files: ['src/scripts/codex/**/*.ts'], tasks: ['ts:codex', 'copy:ts']},
             ts_addons  : {files: ['src/scripts/addons/**/*.ts'], tasks: ['ts:addons', 'copy:ts']},
             sass       : {files: ['src/styles/**/*.{sass,scss}'], tasks: ['sass:styles']}
         }
@@ -121,12 +121,16 @@ export = function (grunt:IGrunt) {
             'clean:all',
             'sass:styles',
             'jade:index',
-            'ts:packadic',
+            'ts:codex',
             'ts:addons',
             'copy:ts',
             'bower',
             'concat:vendor',
             'uglify'
+        ]],
+        ['dist', 'Dist build', [
+            'target:dist',
+            'build'
         ]],
         ['bower', '', function () {
             grunt.task.run(grunt.config('target.name') == 'dist' ? 'copy:bower' : 'link:bower');

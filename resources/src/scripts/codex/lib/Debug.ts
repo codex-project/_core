@@ -1,4 +1,4 @@
-module packadic {
+module codex {
     export class StyleStuff {
 
         protected _styles:{[key: string]: string};

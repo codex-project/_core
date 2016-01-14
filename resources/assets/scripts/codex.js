@@ -1,7 +1,7 @@
 /// <reference path="./../types.d.ts" />
 console.groupCollapsed('Packadic pre-init logs');
-var packadic;
-(function (packadic) {
+var codex;
+(function (codex) {
     var configDefaults = {
         baseUrl: location.origin,
         assetPath: '/assets',
@@ -35,11 +35,11 @@ var packadic;
             bootstrap: {
                 tooltip: {
                     container: 'body',
-                    template: '<div class="tooltip tooltip-packadic" role="tooltip"><div class="tooltip-inner"></div></div>',
-                    selector: '*[data-toggle="tooltip"]'
+                    template: '<div class="tooltip tooltip-codex" role="tooltip"><div class="tooltip-inner"></div></div>',
+                    selector: '*[data-toggle="tooltip"], .tooltip-toggle'
                 },
                 popover: {
-                    selector: '*[data-toggle="popover"]'
+                    selector: '*[data-toggle="popover"], .popover-toggle'
                 }
             }
         }
@@ -47,64 +47,64 @@ var packadic;
     function getConfigDefaults() {
         return configDefaults;
     }
-    packadic.getConfigDefaults = getConfigDefaults;
+    codex.getConfigDefaults = getConfigDefaults;
     function mergeIntoDefaultConfig(obj) {
         if (obj === void 0) { obj = {}; }
         configDefaults = _.merge(configDefaults, obj);
     }
-    packadic.mergeIntoDefaultConfig = mergeIntoDefaultConfig;
+    codex.mergeIntoDefaultConfig = mergeIntoDefaultConfig;
     var isReady = false;
-    packadic._readyCallbacks = [];
+    codex._readyCallbacks = [];
     function ready(fn) {
         if (isReady) {
-            fn.apply(fn, [packadic.app]);
+            fn.apply(fn, [codex.app]);
         }
         else {
-            packadic._readyCallbacks.push(fn);
+            codex._readyCallbacks.push(fn);
         }
     }
-    packadic.ready = ready;
+    codex.ready = ready;
     function callReadyCallbacks(app) {
         if (isReady) {
             return;
         }
-        packadic._readyCallbacks.forEach(function (fn) {
+        codex._readyCallbacks.forEach(function (fn) {
             fn.apply(fn, [app]);
         });
         isReady = true;
     }
-    packadic.callReadyCallbacks = callReadyCallbacks;
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
-    packadic.namespacePrefix = 'packadic.';
-    console.log('packadic namespace ' + packadic.namespacePrefix);
+    codex.callReadyCallbacks = callReadyCallbacks;
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
+    codex.namespacePrefix = 'codex.';
+    console.log('codex namespace ' + codex.namespacePrefix);
     function extension(name, configToMergeIntoDefaults) {
         if (configToMergeIntoDefaults === void 0) { configToMergeIntoDefaults = {}; }
         return function (cls) {
             extensions.Extensions.register(name, cls, configToMergeIntoDefaults);
         };
     }
-    packadic.extension = extension;
+    codex.extension = extension;
     function widget(name, parent) {
         return function (cls) {
             if (parent) {
-                $.widget(packadic.namespacePrefix + name, new cls, parent);
+                $.widget(codex.namespacePrefix + name, new cls, parent);
             }
             else {
-                $.widget(packadic.namespacePrefix + name, new cls);
+                $.widget(codex.namespacePrefix + name, new cls);
             }
             console.log('Widget', name, 'registered', cls);
         };
     }
-    packadic.widget = widget;
+    codex.widget = widget;
     function plugin(name, regOpts) {
         if (regOpts === void 0) { regOpts = {}; }
         return function (cls) {
             plugins.registerPlugin(name, cls, regOpts);
         };
     }
-    packadic.plugin = plugin;
+    codex.plugin = plugin;
     var extensions;
     (function (extensions_1) {
         var Extensions = (function () {
@@ -113,10 +113,10 @@ var packadic;
                 if (Extensions._instance) {
                     throw new Error("Error - use Singleton.getInstance()");
                 }
-                this.app = app || packadic.app;
-                if (!packadic.defined(this.app)) {
-                    packadic.ready(function () {
-                        _this.app = packadic.Application.instance;
+                this.app = app || codex.app;
+                if (!codex.defined(this.app)) {
+                    codex.ready(function () {
+                        _this.app = codex.Application.instance;
                     });
                 }
                 this.extensions = {};
@@ -130,7 +130,7 @@ var packadic;
                 configurable: true
             });
             Extensions.prototype.has = function (name) {
-                return packadic.kindOf(name) === 'string' && Object.keys(this.extensions).indexOf(name) !== -1;
+                return codex.kindOf(name) === 'string' && Object.keys(this.extensions).indexOf(name) !== -1;
             };
             Extensions.prototype.get = function (name) {
                 if (this.has(name)) {
@@ -143,12 +143,12 @@ var packadic;
                     return this.get(name);
                 }
                 if (typeof Extensions.EXTENSIONSDEPS === 'undefined') {
-                    Extensions.EXTENSIONSDEPS = new packadic.util.obj.DependencySorter();
+                    Extensions.EXTENSIONSDEPS = new codex.util.obj.DependencySorter();
                 }
                 this.extensions[name] = new Extensions.EXTENSIONS[name](name, this, this.app);
                 this.app.emit('component:loaded', name, this.extensions[name]);
-                packadic.debug.log('Components', ' loaded: ', name, this.extensions[name]);
-                if (packadic.kindOf(cb) === 'function') {
+                codex.debug.log('Components', ' loaded: ', name, this.extensions[name]);
+                if (codex.kindOf(cb) === 'function') {
                     cb.apply(this, arguments);
                 }
                 return this.extensions[name];
@@ -165,7 +165,7 @@ var packadic;
             Extensions.prototype.loadAll = function () {
                 var _this = this;
                 if (typeof Extensions.EXTENSIONSDEPS === 'undefined') {
-                    Extensions.EXTENSIONSDEPS = new packadic.util.obj.DependencySorter();
+                    Extensions.EXTENSIONSDEPS = new codex.util.obj.DependencySorter();
                 }
                 var names = Extensions.EXTENSIONSDEPS.sort();
                 console.log('loadAll deps:', names);
@@ -181,12 +181,12 @@ var packadic;
                 return this;
             };
             Extensions.prototype.each = function (fn) {
-                packadic.util.arr.each(this.all(), fn);
+                codex.util.arr.each(this.all(), fn);
                 return this;
             };
             Extensions.register = function (name, componentClass, configToMergeIntoDefaults) {
                 if (typeof Extensions.EXTENSIONSDEPS === 'undefined') {
-                    Extensions.EXTENSIONSDEPS = new packadic.util.obj.DependencySorter();
+                    Extensions.EXTENSIONSDEPS = new codex.util.obj.DependencySorter();
                 }
                 if (typeof Extensions.EXTENSIONS[name] !== 'undefined') {
                     throw new Error('Cannot add ' + name + '. Already exists');
@@ -197,7 +197,7 @@ var packadic;
                 if (typeof configToMergeIntoDefaults !== "undefined") {
                     var configMerger = {};
                     configMerger[name] = configToMergeIntoDefaults;
-                    packadic.mergeIntoDefaultConfig(configMerger);
+                    codex.mergeIntoDefaultConfig(configMerger);
                 }
                 console.log('Components', ' registered: ', name, componentClass);
             };
@@ -254,7 +254,7 @@ var packadic;
             return Extension;
         })();
         extensions_1.Extension = Extension;
-    })(extensions = packadic.extensions || (packadic.extensions = {}));
+    })(extensions = codex.extensions || (codex.extensions = {}));
     var widgets;
     (function (widgets) {
         var Widget = (function () {
@@ -330,7 +330,7 @@ var packadic;
             };
             Object.defineProperty(Widget.prototype, "app", {
                 get: function () {
-                    return packadic.Application.instance;
+                    return codex.Application.instance;
                 },
                 enumerable: true,
                 configurable: true
@@ -338,13 +338,13 @@ var packadic;
             return Widget;
         })();
         widgets.Widget = Widget;
-    })(widgets = packadic.widgets || (packadic.widgets = {}));
+    })(widgets = codex.widgets || (codex.widgets = {}));
     var plugins;
     (function (plugins) {
         var Plugin = (function () {
             function Plugin(element, options, ns) {
                 this.VERSION = '0.0.0';
-                this.NAMESPACE = 'packadic.';
+                this.NAMESPACE = 'codex.';
                 this.enabled = true;
                 this._options = options;
                 this.$window = $(window);
@@ -365,7 +365,7 @@ var packadic;
             });
             Object.defineProperty(Plugin.prototype, "app", {
                 get: function () {
-                    return packadic.Application.instance;
+                    return codex.Application.instance;
                 },
                 enumerable: true,
                 configurable: true
@@ -393,7 +393,7 @@ var packadic;
                     args[_i - 0] = arguments[_i];
                 }
                 args[0] = args[0] + '.' + this.NAMESPACE;
-                packadic.debug.log('plugin _on ', this, args);
+                codex.debug.log('plugin _on ', this, args);
                 this.$element.on.apply(this.$element, args);
                 return this;
             };
@@ -414,7 +414,7 @@ var packadic;
             if (typeof regOpts.namespace !== 'string') {
                 regOpts.namespace = name;
             }
-            regOpts.namespace = packadic.namespacePrefix + regOpts.namespace;
+            regOpts.namespace = codex.namespacePrefix + regOpts.namespace;
             return regOpts;
         }
         function registerPlugin(name, pluginClass, opts) {
@@ -432,14 +432,14 @@ var packadic;
                     if (!data) {
                         $this.data(regOpts.namespace, (data = new pluginClass(this, opts, regOpts.namespace)));
                     }
-                    if (packadic.kindOf(options) === 'string') {
+                    if (codex.kindOf(options) === 'string') {
                         data[options].call(data, args);
                     }
-                    if (packadic.kindOf(regOpts.callback) === 'function') {
+                    if (codex.kindOf(regOpts.callback) === 'function') {
                         regOpts.callback.apply(this, [data, opts]);
                     }
                 });
-                if (packadic.kindOf(options) === 'string' && options === 'instance' && all.length > 0) {
+                if (codex.kindOf(options) === 'string' && options === 'instance' && all.length > 0) {
                     if (all.length === 1) {
                         return $(all[0]).data(regOpts.namespace);
                     }
@@ -458,13 +458,13 @@ var packadic;
             $.fn[name].Constructor = pluginClass;
         }
         plugins.registerPlugin = registerPlugin;
-    })(plugins = packadic.plugins || (packadic.plugins = {}));
-})(packadic || (packadic = {}));
+    })(plugins = codex.plugins || (codex.plugins = {}));
+})(codex || (codex = {}));
 /**
  * The application class
  */
-var packadic;
-(function (packadic) {
+var codex;
+(function (codex) {
     var $body = $('body');
     function EventHook(hook) {
         return function (cls, name, desc) {
@@ -473,7 +473,7 @@ var packadic;
             return desc;
         };
     }
-    packadic.EventHook = EventHook;
+    codex.EventHook = EventHook;
     var Application = (function () {
         function Application(options) {
             this.timers = { construct: null, init: null, boot: null };
@@ -483,17 +483,17 @@ var packadic;
                 maxListeners: 1000,
                 newListener: true
             });
-            $body.data('packadic', this);
+            $body.data('codex', this);
             var self = this;
-            packadic.app = this;
-            Application.defaults = packadic.getConfigDefaults();
+            codex.app = this;
+            Application.defaults = codex.getConfigDefaults();
             this.timers.construct = new Date;
             this.isInitialised = false;
             this.isBooted = false;
         }
         Object.defineProperty(Application.prototype, "extensions", {
             get: function () {
-                return packadic.extensions.Extensions.instance;
+                return codex.extensions.Extensions.instance;
             },
             enumerable: true,
             configurable: true
@@ -502,7 +502,7 @@ var packadic;
             get: function () {
                 if (typeof Application._instance === "undefined") {
                     Application._instance = new Application();
-                    packadic.app = Application._instance;
+                    codex.app = Application._instance;
                 }
                 return Application._instance;
             },
@@ -526,9 +526,9 @@ var packadic;
                 this.debug.setStartDate(this.timers.construct);
                 console.groupCollapsed('DEBUG: init');
             }
-            this._config = new packadic.ConfigObject($.extend({}, Application.defaults, opts));
-            this.config = packadic.ConfigObject.makeProperty(this._config);
-            var styles = JSON.parse(packadic.util.str.unquote($('head').css('font-family'), "'"));
+            this._config = new codex.ConfigObject($.extend({}, Application.defaults, opts));
+            this.config = codex.ConfigObject.makeProperty(this._config);
+            var styles = JSON.parse(codex.util.str.unquote($('head').css('font-family'), "'"));
             ['breakpoints', 'containers'].forEach(function (name) {
                 $.each(styles['style'][name], function (key, val) {
                     styles['style'][name][key] = parseInt(val);
@@ -539,8 +539,8 @@ var packadic;
             this.extensions.each(function (comp) {
                 _this[comp.name] = comp;
             });
-            packadic.registerHelperPlugins();
-            packadic.callReadyCallbacks(this);
+            codex.registerHelperPlugins();
+            codex.callReadyCallbacks(this);
             this.emit('init', this);
             if (this.DEBUG)
                 console.groupEnd();
@@ -548,7 +548,7 @@ var packadic;
         };
         Application.prototype.boot = function () {
             var _this = this;
-            var defer = packadic.util.promise.create();
+            var defer = codex.util.promise.create();
             if (!this.isInitialised) {
                 throw new Error('Calling boot before init is not acceptable');
             }
@@ -563,7 +563,7 @@ var packadic;
             $(function () {
                 _this.emit('boot', _this);
                 _this.timers.boot = new Date;
-                if (!packadic.isTouchDevice()) {
+                if (!codex.isTouchDevice()) {
                     $body.tooltip(_this.config('vendor.bootstrap.tooltip'));
                 }
                 $body.popover(_this.config('vendor.bootstrap.popover'));
@@ -579,7 +579,7 @@ var packadic;
         };
         Object.defineProperty(Application.prototype, "debug", {
             get: function () {
-                return packadic.debug;
+                return codex.debug;
             },
             enumerable: true,
             configurable: true
@@ -587,7 +587,7 @@ var packadic;
         Application.prototype.getAssetPath = function (path, prefixBaseUrl) {
             if (path === void 0) { path = ''; }
             if (prefixBaseUrl === void 0) { prefixBaseUrl = true; }
-            path = packadic.util.str.startsWith(path, '/') ? path : '/' + path;
+            path = codex.util.str.startsWith(path, '/') ? path : '/' + path;
             return (prefixBaseUrl ? this.config('baseUrl') : '') + this.config('assetPath') + path;
         };
         Application.prototype.on = function (event, listener) {
@@ -626,10 +626,10 @@ var packadic;
         };
         return Application;
     })();
-    packadic.Application = Application;
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    codex.Application = Application;
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     var ConfigObject = (function () {
         function ConfigObject(obj) {
             this.allDelimiters = {};
@@ -651,7 +651,7 @@ var packadic;
         ConfigObject.prototype.unset = function (prop) {
             prop = prop.split('.');
             var key = prop.pop();
-            var obj = packadic.util.obj.objectGet(this.data, ConfigObject.getPropString(prop.join('.')));
+            var obj = codex.util.obj.objectGet(this.data, ConfigObject.getPropString(prop.join('.')));
             delete obj[key];
         };
         ConfigObject.getPropString = function (prop) {
@@ -662,7 +662,7 @@ var packadic;
         };
         ConfigObject.prototype.raw = function (prop) {
             if (prop) {
-                return packadic.util.obj.objectGet(this.data, ConfigObject.getPropString(prop));
+                return codex.util.obj.objectGet(this.data, ConfigObject.getPropString(prop));
             }
             else {
                 return this.data;
@@ -672,7 +672,7 @@ var packadic;
             return this.process(this.raw(prop));
         };
         ConfigObject.prototype.set = function (prop, value) {
-            packadic.util.obj.objectSet(this.data, ConfigObject.getPropString(prop), value);
+            codex.util.obj.objectSet(this.data, ConfigObject.getPropString(prop), value);
             return this;
         };
         ConfigObject.prototype.merge = function (obj) {
@@ -681,7 +681,7 @@ var packadic;
         };
         ConfigObject.prototype.process = function (raw) {
             var self = this;
-            return packadic.util.obj.recurse(raw, function (value) {
+            return codex.util.obj.recurse(raw, function (value) {
                 if (typeof value !== 'string') {
                     return value;
                 }
@@ -736,10 +736,10 @@ var packadic;
         ConfigObject.propStringTmplRe = /^<%=\s*([a-z0-9_$]+(?:\.[a-z0-9_$]+)*)\s*%>$/i;
         return ConfigObject;
     })();
-    packadic.ConfigObject = ConfigObject;
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    codex.ConfigObject = ConfigObject;
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     var StyleStuff = (function () {
         function StyleStuff() {
             this._styles = {};
@@ -750,7 +750,7 @@ var packadic;
                 if (variant !== '500') {
                     name += variant.toString();
                 }
-                this._styles[name.toString()] = 'color: ' + packadic.util.material.color(name.toString(), variant);
+                this._styles[name.toString()] = 'color: ' + codex.util.material.color(name.toString(), variant);
             }
             else {
                 name.forEach(function (n) {
@@ -792,7 +792,7 @@ var packadic;
         };
         return StyleStuff;
     })();
-    packadic.StyleStuff = StyleStuff;
+    codex.StyleStuff = StyleStuff;
     var Debug = (function () {
         function Debug() {
             this.matcher = /\[style\=([\w\d\_\-\,]*?)\](.*?)\[style\]/g;
@@ -805,7 +805,7 @@ var packadic;
             this.styles
                 .add('bold', 'font-weight:bold')
                 .add('code-box', 'background: rgb(255, 255, 219); padding: 1px 5px; border: 1px solid rgba(0, 0, 0, 0.1); line-height: 18px')
-                .addMSC(Object.keys(packadic.util.material.colors))
+                .addMSC(Object.keys(codex.util.material.colors))
                 .addFont('code', '"Source Code Pro", "Courier New", Courier, monospace')
                 .addFont('arial', 'Arial, Helvetica, sans-serif')
                 .addFont('verdana', 'Verdana, Geneva, sans-serif');
@@ -820,7 +820,7 @@ var packadic;
             }
             var elapsedTime = Date.now() - this.start.getTime();
             if (elapsedTime > 1) {
-                elapsedTime = packadic.util.num.round(elapsedTime / 1000, 2);
+                elapsedTime = codex.util.num.round(elapsedTime / 1000, 2);
             }
             this.out.apply(this, ['[style=orange,fs10]DEBUG[style]([style=green,fs8]' + elapsedTime + '[style]): '].concat(args));
         };
@@ -831,7 +831,7 @@ var packadic;
             }
             var elapsedTime = Date.now() - this.start.getTime();
             if (elapsedTime > 1) {
-                elapsedTime = packadic.util.num.round(elapsedTime / 1000, 2);
+                elapsedTime = codex.util.num.round(elapsedTime / 1000, 2);
             }
             this.out.apply(this, ['[style=orange,fs10]DEBUG[style]([style=green,fs8]' + elapsedTime + '[style]):[style=teal,fs10]EVENT[style]([style=blue,fs8]' + eventName + '[style]): '].concat(args));
         };
@@ -872,10 +872,10 @@ var packadic;
         };
         return Debug;
     })();
-    packadic.Debug = Debug;
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    codex.Debug = Debug;
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     var kindsOf = {};
     'Number String Boolean Function RegExp Array Date Error'.split(' ').forEach(function (k) {
         kindsOf['[object ' + k + ']'] = k.toLowerCase();
@@ -895,22 +895,22 @@ var packadic;
         }
         return kindsOf[kindsOf.toString.call(value)] || 'object';
     }
-    packadic.kindOf = kindOf;
+    codex.kindOf = kindOf;
     function def(val, def) {
         return defined(val) ? val : def;
     }
-    packadic.def = def;
+    codex.def = def;
     function defined(obj) {
         return !_.isUndefined(obj);
     }
-    packadic.defined = defined;
+    codex.defined = defined;
     function cre(name) {
         if (!defined(name)) {
             name = 'div';
         }
         return $(document.createElement(name));
     }
-    packadic.cre = cre;
+    codex.cre = cre;
     function getViewPort() {
         var e = window, a = 'inner';
         if (!('innerWidth' in window)) {
@@ -922,7 +922,7 @@ var packadic;
             height: e[a + 'Height']
         };
     }
-    packadic.getViewPort = getViewPort;
+    codex.getViewPort = getViewPort;
     function isTouchDevice() {
         try {
             document.createEvent("TouchEvent");
@@ -932,7 +932,7 @@ var packadic;
             return false;
         }
     }
-    packadic.isTouchDevice = isTouchDevice;
+    codex.isTouchDevice = isTouchDevice;
     function getRandomId(length) {
         if (!_.isNumber(length)) {
             length = 15;
@@ -944,17 +944,17 @@ var packadic;
         }
         return text;
     }
-    packadic.getRandomId = getRandomId;
+    codex.getRandomId = getRandomId;
     function getTemplate(name) {
         if (!defined(window['JST'][name])) {
             throw new Error('Template [' + name + '] not found');
         }
         return window['JST'][name];
     }
-    packadic.getTemplate = getTemplate;
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    codex.getTemplate = getTemplate;
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     var storage;
     (function (storage) {
         storage.bags = {};
@@ -996,7 +996,7 @@ var packadic;
             };
             StorageBag.prototype.get = function (key, options) {
                 var options = _.merge({ json: false, def: null }, options);
-                if (!packadic.defined(key)) {
+                if (!codex.defined(key)) {
                     return options.def;
                 }
                 if (_.isString(this.provider.getItem(key))) {
@@ -1010,7 +1010,7 @@ var packadic;
                     }
                 }
                 var val = this.provider.getItem(key);
-                if (!packadic.defined(val) || packadic.defined(val) && val == null) {
+                if (!codex.defined(val) || codex.defined(val) && val == null) {
                     return options.def;
                 }
                 if (options.json) {
@@ -1240,18 +1240,18 @@ var packadic;
         if (typeof window.document.cookie !== 'undefined') {
             createBag('cookie', new CookieStorage());
         }
-    })(storage = packadic.storage || (packadic.storage = {}));
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    })(storage = codex.storage || (codex.storage = {}));
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     function highlight(code, lang, wrap, wrapPre) {
         if (wrap === void 0) { wrap = false; }
         if (wrapPre === void 0) { wrapPre = false; }
-        if (!packadic.defined(hljs)) {
-            console.warn('Cannot call highlight function in packadic.plugins, hljs is not defined');
+        if (!codex.defined(hljs)) {
+            console.warn('Cannot call highlight function in codex.plugins, hljs is not defined');
             return;
         }
-        var defer = packadic.util.promise.create();
+        var defer = codex.util.promise.create();
         var highlighted;
         if (lang && hljs.getLanguage(lang)) {
             highlighted = hljs.highlight(lang, code).value;
@@ -1268,7 +1268,7 @@ var packadic;
         defer.resolve(highlighted);
         return defer.promise;
     }
-    packadic.highlight = highlight;
+    codex.highlight = highlight;
     function makeSlimScroll(el, opts) {
         if (opts === void 0) { opts = {}; }
         var $el = typeof (el) === 'string' ? $(el) : el;
@@ -1283,7 +1283,7 @@ var packadic;
             else {
                 height = $(this).css('height');
             }
-            var o = packadic.app.config('vendor.slimscroll');
+            var o = codex.app.config('vendor.slimscroll');
             $(this).slimScroll(_.merge(o, {
                 color: ($(this).attr("data-handle-color") ? $(this).attr("data-handle-color") : o.color),
                 wrapperClass: ($(this).attr("data-wrapper-class") ? $(this).attr("data-wrapper-class") : o.wrapperClass),
@@ -1295,7 +1295,7 @@ var packadic;
             $(this).attr("data-initialized", "1");
         });
     }
-    packadic.makeSlimScroll = makeSlimScroll;
+    codex.makeSlimScroll = makeSlimScroll;
     function destroySlimScroll(el) {
         var $el = typeof (el) === 'string' ? $(el) : el;
         $el.each(function () {
@@ -1329,9 +1329,9 @@ var packadic;
             }
         });
     }
-    packadic.destroySlimScroll = destroySlimScroll;
+    codex.destroySlimScroll = destroySlimScroll;
     function registerHelperPlugins() {
-        if (packadic.kindOf($.fn.prefixedData) === 'function') {
+        if (codex.kindOf($.fn.prefixedData) === 'function') {
             return;
         }
         $.fn.prefixedData = function (prefix) {
@@ -1374,13 +1374,13 @@ var packadic;
                 args[_i - 0] = arguments[_i];
             }
             var $this = $(this);
-            return $this.on.apply($this, [packadic.isTouchDevice() ? 'touchend' : 'click'].concat(args));
+            return $this.on.apply($this, [codex.isTouchDevice() ? 'touchend' : 'click'].concat(args));
         };
     }
-    packadic.registerHelperPlugins = registerHelperPlugins;
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    codex.registerHelperPlugins = registerHelperPlugins;
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     var util;
     (function (util) {
         var JSON;
@@ -1427,10 +1427,10 @@ var packadic;
             }
             JSON.clone = clone;
         })(JSON = util.JSON || (util.JSON = {}));
-    })(util = packadic.util || (packadic.util = {}));
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    })(util = codex.util || (codex.util = {}));
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     var util;
     (function (util) {
         util.str = s;
@@ -1443,7 +1443,7 @@ var packadic;
             if (opts === void 0) { opts = {}; }
             opts = $.extend({}, util.openWindowDefaults, opts);
             var win = window.open('', '', 'width=' + opts.width + ', height=' + opts.height);
-            if (packadic.defined(opts.content)) {
+            if (codex.defined(opts.content)) {
                 win.document.body.innerHTML = opts.content;
             }
             return win;
@@ -1501,10 +1501,10 @@ var packadic;
                 return '[' + util.str.escapeRegExp(characters) + ']';
         }
         util.defaultToWhiteSpace = defaultToWhiteSpace;
-    })(util = packadic.util || (packadic.util = {}));
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    })(util = codex.util || (codex.util = {}));
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     var util;
     (function (util) {
         var material;
@@ -1815,10 +1815,10 @@ var packadic;
             }
             material.color = color;
         })(material = util.material || (util.material = {}));
-    })(util = packadic.util || (packadic.util = {}));
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    })(util = codex.util || (codex.util = {}));
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     var util;
     (function (util) {
         var obj;
@@ -1872,7 +1872,7 @@ var packadic;
                     if (fnContinue && fnContinue(value) === false) {
                         return value;
                     }
-                    else if (packadic.kindOf(value) === 'array') {
+                    else if (codex.kindOf(value) === 'array') {
                         return value.map(function (item, index) {
                             return recurse(item, fn, fnContinue, {
                                 objs: state.objs.concat([value]),
@@ -1880,7 +1880,7 @@ var packadic;
                             });
                         });
                     }
-                    else if (packadic.kindOf(value) === 'object') {
+                    else if (codex.kindOf(value) === 'object') {
                         obj = {};
                         for (key in value) {
                             obj[key] = recurse(value[key], fn, fnContinue, {
@@ -2139,8 +2139,8 @@ var packadic;
             })();
             obj_1.DependencySorter = DependencySorter;
         })(obj = util.obj || (util.obj = {}));
-    })(util = packadic.util || (packadic.util = {}));
-})(packadic || (packadic = {}));
+    })(util = codex.util || (codex.util = {}));
+})(codex || (codex = {}));
 /**
  * The MIT License (MIT)
  *
@@ -2166,8 +2166,8 @@ var packadic;
  *
  */
 'use strict';
-var packadic;
-(function (packadic) {
+var codex;
+(function (codex) {
     var util;
     (function (util) {
         var promise;
@@ -2352,10 +2352,10 @@ var packadic;
                 return Promise;
             })();
         })(promise = util.promise || (util.promise = {}));
-    })(util = packadic.util || (packadic.util = {}));
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    })(util = codex.util || (codex.util = {}));
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     var util;
     (function (util) {
         var version;
@@ -3209,9 +3209,9 @@ var packadic;
                 return true;
             }
         })(version = util.version || (util.version = {}));
-    })(util = packadic.util || (packadic.util = {}));
-})(packadic || (packadic = {}));
+    })(util = codex.util || (codex.util = {}));
+})(codex || (codex = {}));
 (function () {
-    packadic.debug = new packadic.Debug();
+    codex.debug = new codex.Debug();
 }.call(this));
-//# sourceMappingURL=packadic.js.map
+//# sourceMappingURL=codex.js.map

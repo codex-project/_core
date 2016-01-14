@@ -258,6 +258,11 @@ var components = {
 			"require": "clike",
 			"owner": "sherblot"
 		},
+		"json": {
+			"title": "JSON",
+			"option": "default",
+			"owner": "CupOfTea696"
+		},
 		"julia": {
 			"title": "Julia",
 			"owner": "cdagnino"
@@ -598,6 +603,10 @@ var components = {
 			"title": "Keep Markup",
 			"owner": "Golmote",
 			"noCSS": true
+		},
+		"command-line": {
+			"title": "Command Line",
+			"owner": "chriswells0"
 		}
 	}
 };

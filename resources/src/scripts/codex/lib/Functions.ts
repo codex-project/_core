@@ -1,7 +1,7 @@
-module packadic {
+module codex {
 
-    import DeferredInterface = packadic.util.promise.DeferredInterface;
-    import PromiseInterface = packadic.util.promise.PromiseInterface;
+    import DeferredInterface = codex.util.promise.DeferredInterface;
+    import PromiseInterface = codex.util.promise.PromiseInterface;
 
     var kindsOf:any = {};
     'Number String Boolean Function RegExp Array Date Error'.split(' ').forEach(function (k) {

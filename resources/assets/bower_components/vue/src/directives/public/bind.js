@@ -1,17 +1,17 @@
-import { warn } from '../../util/index'
+import { warn, setClass } from '../../util/index'
+import { BIND } from '../priorities'
 import vStyle from '../internal/style'
 
 // xlink
 const xlinkNS = 'http://www.w3.org/1999/xlink'
 const xlinkRE = /^xlink:/
 
-// these input element attributes should also set their
-// corresponding properties
-const inputProps = {
-  value: 1,
-  checked: 1,
-  selected: 1
-}
+// check for attributes that prohibit interpolations
+const disallowedInterpAttrRE = /^v-|^:|^@|^(is|transition|transition-mode|debounce|track-by|stagger|enter-stagger|leave-stagger)$/
+
+// these attributes should also set their corresponding properties
+// because they only affect the initial state of the element
+const attrWithPropsRE = /^(value|checked|selected|muted)$/
 
 // these attributes should set a hidden property for
 // binding v-model to object values
@@ -21,12 +21,9 @@ const modelProps = {
   'false-value': '_falseValue'
 }
 
-// check for attributes that prohibit interpolations
-const disallowedInterpAttrRE = /^v-|^:|^@|^(is|transition|transition-mode|debounce|track-by|stagger|enter-stagger|leave-stagger)$/
-
 export default {
 
-  priority: 850,
+  priority: BIND,
 
   bind () {
     var attr = this.arg
@@ -90,35 +87,50 @@ export default {
   handleObject: vStyle.handleObject,
 
   handleSingle (attr, value) {
-    if (inputProps[attr] && attr in this.el) {
-      this.el[attr] = attr === 'value'
-        ? (value || '') // IE9 will set input.value to "null" for null...
+    const el = this.el
+    const interp = this.descriptor.interp
+    if (
+      !interp &&
+      attrWithPropsRE.test(attr) &&
+      attr in el
+    ) {
+      el[attr] = attr === 'value'
+        ? value == null // IE9 will set input.value to "null" for null...
+          ? ''
+          : value
         : value
     }
     // set model props
     var modelProp = modelProps[attr]
-    if (modelProp) {
-      this.el[modelProp] = value
+    if (!interp && modelProp) {
+      el[modelProp] = value
       // update v-model if present
-      var model = this.el.__v_model
+      var model = el.__v_model
       if (model) {
         model.listener()
       }
     }
     // do not set value attribute for textarea
-    if (attr === 'value' && this.el.tagName === 'TEXTAREA') {
-      this.el.removeAttribute(attr)
+    if (attr === 'value' && el.tagName === 'TEXTAREA') {
+      el.removeAttribute(attr)
       return
     }
     // update attribute
     if (value != null && value !== false) {
-      if (xlinkRE.test(attr)) {
-        this.el.setAttributeNS(xlinkNS, attr, value)
+      if (attr === 'class') {
+        // handle edge case #1960:
+        // class interpolation should not overwrite Vue transition class
+        if (el.__v_trans) {
+          value += ' ' + el.__v_trans.id + '-transition'
+        }
+        setClass(el, value)
+      } else if (xlinkRE.test(attr)) {
+        el.setAttributeNS(xlinkNS, attr, value)
       } else {
-        this.el.setAttribute(attr, value)
+        el.setAttribute(attr, value)
       }
     } else {
-      this.el.removeAttribute(attr)
+      el.removeAttribute(attr)
     }
   }
 }

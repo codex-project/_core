@@ -2,7 +2,7 @@
 
 
 
-module packadic.extensions {
+module codex.extensions {
 
 
 

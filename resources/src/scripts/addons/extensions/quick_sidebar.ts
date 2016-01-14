@@ -1,5 +1,5 @@
 
-module packadic.extensions {
+module codex.extensions {
 
 
     var defaultConfig:any = {

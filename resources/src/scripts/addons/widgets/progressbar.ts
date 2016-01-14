@@ -1,5 +1,5 @@
 
-module packadic.widgets {
+module codex.widgets {
 
     // @todo: transform to bs4
     //@widget('progressbar')

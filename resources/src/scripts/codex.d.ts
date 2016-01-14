@@ -1,5 +1,5 @@
 /// <reference path="types.d.ts" />
-declare module packadic {
+declare module codex {
     var app: Application;
     var debug: Debug;
     function getConfigDefaults(): any;
@@ -8,7 +8,7 @@ declare module packadic {
     function ready(fn: Function): void;
     function callReadyCallbacks(app: Application): void;
 }
-declare module packadic {
+declare module codex {
     var namespacePrefix: string;
     function extension(name: string, configToMergeIntoDefaults?: any): (cls: typeof extensions.Extension) => void;
     function widget(name: string, parent?: any): (cls: typeof widgets.Widget) => void;
@@ -136,8 +136,8 @@ declare module packadic {
         function registerPlugin(name: string, pluginClass: typeof Plugin, opts?: IPluginRegisterOptions): void;
     }
 }
-declare module packadic {
-    import PromiseInterface = packadic.util.promise.PromiseInterface;
+declare module codex {
+    import PromiseInterface = codex.util.promise.PromiseInterface;
     interface IApplication {
     }
     function EventHook(hook: string): (cls: any, name: string, desc: PropertyDescriptor) => PropertyDescriptor;
@@ -165,7 +165,7 @@ declare module packadic {
         booted(fn: Function): void;
     }
 }
-declare module packadic {
+declare module codex {
     interface IDelimitersCollection {
         [index: string]: IDelimiter;
     }
@@ -209,7 +209,7 @@ declare module packadic {
         private processTemplate(tmpl, options);
     }
 }
-declare module packadic {
+declare module codex {
     class StyleStuff {
         protected _styles: {
             [key: string]: string;
@@ -237,7 +237,7 @@ declare module packadic {
         setStartDate(start: Date): Debug;
     }
 }
-declare module packadic {
+declare module codex {
     function kindOf(value: any): any;
     function def(val: any, def: any): any;
     function defined(obj?: any): boolean;
@@ -247,7 +247,7 @@ declare module packadic {
     function getRandomId(length?: number): string;
     function getTemplate(name: any): any;
 }
-declare module packadic.storage {
+declare module codex.storage {
     var bags: {
         [name: string]: IStorageBag;
     };
@@ -317,18 +317,18 @@ declare module packadic.storage {
         keys(): string[];
     }
 }
-declare module packadic {
+declare module codex {
     function highlight(code: string, lang?: string, wrap?: boolean, wrapPre?: boolean): util.promise.PromiseInterface<string>;
     function makeSlimScroll(el: any, opts?: any): void;
     function destroySlimScroll(el: any): void;
     function registerHelperPlugins(): void;
 }
-declare module packadic.util.JSON {
+declare module codex.util.JSON {
     function stringify(obj: any): any;
     function parse(str: string, date2obj?: any): any;
     function clone(obj: any, date2obj?: any): any;
 }
-declare module packadic.util {
+declare module codex.util {
     var str: UnderscoreStringStatic;
     var arr: _.LoDashStatic;
     interface OpenWindowOptions {
@@ -351,11 +351,11 @@ declare module packadic.util {
     function makeString(object: any): string;
     function defaultToWhiteSpace(characters: any): any;
 }
-declare module packadic.util.material {
+declare module codex.util.material {
     var colors: any;
     function color(name: string, variant?: any, prefixHexSymbol?: boolean): any;
 }
-declare module packadic.util.obj {
+declare module codex.util.obj {
     function getParts(str: any): any;
     function objectGet(obj?: any, parts?: any, create?: any): any;
     function objectSet(obj: any, parts: any, value: any): any;
@@ -400,7 +400,7 @@ declare module packadic.util.obj {
         getHits(str?: any): any;
     }
 }
-declare module packadic.util.promise {
+declare module codex.util.promise {
     interface ImmediateSuccessCB<T, TP> {
         (value: T): TP;
     }
@@ -439,7 +439,7 @@ declare module packadic.util.promise {
     function when<T>(value?: ThenableInterface<T>): PromiseInterface<T>;
     function when<T>(value?: T): PromiseInterface<T>;
 }
-declare module packadic.util.version {
+declare module codex.util.version {
     class SemVer {
         protected loose: any;
         protected raw: any;

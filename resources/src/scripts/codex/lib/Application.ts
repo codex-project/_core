@@ -4,10 +4,10 @@
  * The application class
  */
 
-module packadic {
+module codex {
 
-    import DeferredInterface = packadic.util.promise.DeferredInterface;
-    import PromiseInterface = packadic.util.promise.PromiseInterface;
+    import DeferredInterface = codex.util.promise.DeferredInterface;
+    import PromiseInterface = codex.util.promise.PromiseInterface;
 
     var $body:JQuery = $('body');
 
@@ -28,12 +28,12 @@ module packadic {
      * The Application class is the main class initialising and booting all other components, plugins, etc
      *
      * ```typescript
-     * var app:packadic.Application = packadic.Application.instance
+     * var app:codex.Application = codex.Application.instance
      * app.DEBUG = true;
      * app.init({
      *      customConfigVariable: 'asdf'
      * });
-     * app.boot().then(function(app:packadic.Application){
+     * app.boot().then(function(app:codex.Application){
      *     // Application booted
      *     $('someElement').superDuperPlugin({
      *
@@ -89,9 +89,9 @@ module packadic {
                 maxListeners: 1000,
                 newListener: true
             });
-            $body.data('packadic', this);
+            $body.data('codex', this);
             var self:Application = this;
-            packadic.app = this;
+            codex.app = this;
 
 
 
@@ -109,7 +109,7 @@ module packadic {
         public static get instance() {
             if (typeof Application._instance === "undefined") {
                 Application._instance = new Application();
-                packadic.app = Application._instance;
+                codex.app = Application._instance;
             }
             return Application._instance;
         }
@@ -146,7 +146,7 @@ module packadic {
 
             this.extensions.loadAll();
 
-            this.extensions.each((comp:packadic.extensions.Extension) => {
+            this.extensions.each((comp:codex.extensions.Extension) => {
                 this[comp.name] = comp;
             });
 

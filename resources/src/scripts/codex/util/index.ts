@@ -1,4 +1,4 @@
-module packadic.util {
+module codex.util {
 
     export var str:UnderscoreStringStatic = s;
     export var arr:_.LoDashStatic = _;
