@@ -1,5 +1,5 @@
 /// <reference path="./../types.d.ts" />
-/// <reference path="./../packadic.d.ts" />
+/// <reference path="./../codex.d.ts" />
 
-module packadic {
+module codex {
 }

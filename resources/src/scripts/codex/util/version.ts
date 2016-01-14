@@ -1,5 +1,5 @@
 
-module packadic.util.version {
+module codex.util.version {
     var expr:any = {};
 
 // Note: this is the semver.org version of the spec that it implements

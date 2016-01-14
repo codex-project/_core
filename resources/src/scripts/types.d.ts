@@ -1,7 +1,7 @@
 /// <reference path="./types/tsd.d.ts" />
-/// <reference path="./packadic/definitions/underscore.string.d.ts" />
-/// <reference path="./packadic/definitions/vue.d.ts" />
-/// <reference path="./packadic/definitions/jquery.noty.d.ts" />
+/// <reference path="./codex/definitions/underscore.string.d.ts" />
+/// <reference path="./codex/definitions/vue.d.ts" />
+/// <reference path="./codex/definitions/jquery.noty.d.ts" />
 /*
  interface WebpackRequireEnsureCallback {
  (req: WebpackRequire): void
@@ -24,8 +24,8 @@ declare module "globule" {
 
 interface Window {
     attachEvent(name:string, handler?:Function);
-    packadic?:any;
-    packadicConfig?:any;
+    codex?:any;
+    codexConfig?:any;
 
 }
 declare var window:Window;

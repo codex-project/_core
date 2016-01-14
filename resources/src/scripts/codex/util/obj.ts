@@ -1,4 +1,4 @@
-module packadic.util.obj {
+module codex.util.obj {
 
     export function getParts(str):any {
         return str.replace(/\\\./g, '\uffff').split('.').map(function (s) {

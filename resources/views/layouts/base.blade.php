@@ -32,15 +32,17 @@
 
 
     <script src="{{ asset('vendor/codex/scripts/vendor.js') }}"></script>
-    <script src="{{ asset('vendor/codex/scripts/packadic.js') }}"></script>
+    <script src="{{ asset('vendor/codex/scripts/codex.js') }}"></script>
     <script src="{{ asset('vendor/codex/scripts/addons.js') }}"></script>
 
+    <script src="{{ asset('vendor/codex/bower_components/jstree/dist/jstree.js') }}"></script>
+    
     @stack('scripts')
 
     @section('init-script')
         <script>
             (function() {
-                var app = packadic.Application.instance;
+                var app = codex.Application.instance;
                 if ( ! app.isInitialised ) {
                     app.init({
                         assetPath: '/vendor/codex'
@@ -56,7 +58,7 @@
     @section('boot-script')
         <script>
             (function() {
-                var app = packadic.Application.instance;
+                var app = codex.Application.instance;
                 app.boot().then(function (app) {
                     app.debug.log('BOOTED FROM boot-script');
                 });

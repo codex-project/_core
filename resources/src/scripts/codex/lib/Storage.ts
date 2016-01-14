@@ -1,9 +1,9 @@
 /**
  * The storage module provides data storage providers
  */
-module packadic.storage {
-    import DeferredInterface = packadic.util.promise.DeferredInterface;
-    import PromiseInterface = packadic.util.promise.PromiseInterface;
+module codex.storage {
+    import DeferredInterface = codex.util.promise.DeferredInterface;
+    import PromiseInterface = codex.util.promise.PromiseInterface;
 
 
     export var bags:{[name:string]:IStorageBag} = {};

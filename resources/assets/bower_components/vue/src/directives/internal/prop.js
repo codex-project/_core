@@ -5,7 +5,7 @@
 
 import Watcher from '../../watcher'
 import config from '../../config'
-import { assertProp, initProp } from '../../util/index'
+import { assertProp, initProp, coerceProp } from '../../util/index'
 
 const bindingModes = config._propBindingModes
 
@@ -25,6 +25,7 @@ export default {
       parent,
       parentKey,
       function (val) {
+        val = coerceProp(prop, val)
         if (assertProp(prop, val)) {
           child[childKey] = val
         }
@@ -45,7 +46,7 @@ export default {
       // important: defer the child watcher creation until
       // the created hook (after data observation)
       var self = this
-      child.$once('hook:created', function () {
+      child.$once('pre-hook:created', function () {
         self.childWatcher = new Watcher(
           child,
           childKey,

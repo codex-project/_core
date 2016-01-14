@@ -1,6 +1,6 @@
 
 
-module packadic.util.JSON {
+module codex.util.JSON {
     var old_json:any = JSON;
 
 

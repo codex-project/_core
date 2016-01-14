@@ -1,5 +1,5 @@
 
-module packadic.widgets {
+module codex.widgets {
 
     @widget('testWidget')
     export class TestWidget extends Widget {

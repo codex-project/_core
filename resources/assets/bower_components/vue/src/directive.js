@@ -100,6 +100,7 @@ Directive.prototype._bind = function () {
   if (this.bind) {
     this.bind()
   }
+  this._bound = true
 
   if (this.literal) {
     this.update && this.update(descriptor.raw)
@@ -147,7 +148,6 @@ Directive.prototype._bind = function () {
       this.update(watcher.value)
     }
   }
-  this._bound = true
 }
 
 /**
@@ -204,7 +204,8 @@ Directive.prototype._setupParamWatcher = function (key, expression) {
       called = true
     }
   }, {
-    immediate: true
+    immediate: true,
+    user: false
   })
   ;(this._paramUnwatchFns || (this._paramUnwatchFns = [])).push(unwatch)
 }

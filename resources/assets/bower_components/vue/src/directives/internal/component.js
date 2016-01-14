@@ -1,4 +1,5 @@
 import { cloneNode } from '../../parsers/template'
+import { COMPONENT } from '../priorities'
 import {
   extractContent,
   createAnchor,
@@ -11,7 +12,7 @@ import {
 
 export default {
 
-  priority: 1500,
+  priority: COMPONENT,
 
   params: [
     'keep-alive',
@@ -144,6 +145,9 @@ export default {
     if (activateHook && !cached) {
       this.waitingFor = newComponent
       activateHook.call(newComponent, function () {
+        if (self.waitingFor !== newComponent) {
+          return
+        }
         self.waitingFor = null
         self.transition(newComponent, cb)
       })

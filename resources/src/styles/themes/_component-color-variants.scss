@@ -96,25 +96,7 @@ $component-color-variants: (
         }
     }
 
-    // text-emphasis-variant($parent, $color)
 
-    /*
-        @include text-emphasis-variant('.text-' + $color-name + '-light', $light);
-        @include text-emphasis-variant('.text-' + $color-name, $normal);
-        @include text-emphasis-variant('.text-' + $color-name + '-dark', $dark);
-
-        @include bg-variant('.bg-' + $color-name + '-light', $light);
-        @include bg-variant('.bg-' + $color-name, $normal);
-        @include bg-variant('.bg-' + $color-name + '-dark', $dark);
-
-        @include make-general-color-variant($color-name + '-light', $light, darken($light, 5%), $dark);
-        @include make-general-color-variant($color-name, $normal, darken($normal, 5%), #fff);
-        @include make-general-color-variant($color-name + '-dark', $dark, darken($dark, 5%), #fff);
-
-        @include widget-color-variant($color-name + '-light', $light);
-        @include widget-color-variant($color-name , $normal);
-        @include widget-color-variant($color-name + '-dark', $dark);
-///
 }
 
 @each $color-name, $color-variants in $material-colors {

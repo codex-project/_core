@@ -1,5 +1,5 @@
 
-module packadic {
+module codex {
     export interface IDelimitersCollection {
         [index: string]: IDelimiter;
     }

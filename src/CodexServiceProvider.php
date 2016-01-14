@@ -111,6 +111,7 @@ class CodexServiceProvider extends ServiceProvider
         Factory::extend('projects', Components\Factory\Projects::class);
         Factory::extend('menus', Components\Factory\Menus::class);
         Project::extend('documents', Components\Project\Documents::class);
+        $this->codexRouteExclusion('_markdown');
     }
 
     /**

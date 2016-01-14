@@ -366,13 +366,14 @@ function logloads(loads) {
         if (loader.loads[i].name == name) {
           existingLoad = loader.loads[i];
 
-          if(step == 'translate' && !existingLoad.source) {
+          if (step == 'translate' && !existingLoad.source) {
             existingLoad.address = stepState.moduleAddress;
             proceedToTranslate(loader, existingLoad, Promise.resolve(stepState.moduleSource));
           }
 
-          // a primary load -> use that existing linkset
-          if (existingLoad.linkSets.length)
+          // a primary load -> use that existing linkset if it is for the direct load here
+          // otherwise create a new linkset unit
+          if (existingLoad.linkSets.length && existingLoad.linkSets[0].loads[0].name == existingLoad.name)
             return existingLoad.linkSets[0].done.then(function() {
               resolve(existingLoad);
             });
@@ -740,19 +741,14 @@ function logloads(loads) {
       if (typeof obj != 'object')
         throw new TypeError('Expected object');
 
-      // we do this to be able to tell if a module is a module privately in ES5
-      // by doing m instanceof Module
       var m = new Module();
 
-      var pNames;
-      if (Object.getOwnPropertyNames && obj != null) {
+      var pNames = [];
+      if (Object.getOwnPropertyNames && obj != null)
         pNames = Object.getOwnPropertyNames(obj);
-      }
-      else {
-        pNames = [];
+      else
         for (var key in obj)
           pNames.push(key);
-      }
 
       for (var i = 0; i < pNames.length; i++) (function(key) {
         defineProperty(m, key, {
@@ -763,9 +759,6 @@ function logloads(loads) {
           }
         });
       })(pNames[i]);
-
-      if (Object.preventExtensions)
-        Object.preventExtensions(m);
 
       return m;
     },

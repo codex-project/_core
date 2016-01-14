@@ -1,5 +1,5 @@
 import Watcher from '../../watcher'
-import { del } from '../../util/index'
+import { del, toArray } from '../../util/index'
 import { parseText } from '../../parsers/text'
 import { parseDirective } from '../../parsers/directive'
 import { getPath } from '../../parsers/path'
@@ -23,7 +23,9 @@ export default function (Vue) {
       if (asStatement && !isSimplePath(exp)) {
         var self = this
         return function statementHandler () {
+          self.$arguments = toArray(arguments)
           res.get.call(self, self)
+          self.$arguments = null
         }
       } else {
         try {
@@ -80,7 +82,9 @@ export default function (Vue) {
     }
     var watcher = new Watcher(vm, expOrFn, cb, {
       deep: options && options.deep,
-      filters: parsed && parsed.filters
+      sync: options && options.sync,
+      filters: parsed && parsed.filters,
+      user: !options || options.user !== false
     })
     if (options && options.immediate) {
       cb.call(vm, watcher.value)

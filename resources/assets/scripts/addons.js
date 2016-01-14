@@ -1,5 +1,5 @@
 /// <reference path="./../types.d.ts" />
-/// <reference path="./../packadic.d.ts" />
+/// <reference path="./../codex.d.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -13,8 +13,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
-var packadic;
-(function (packadic) {
+var codex;
+(function (codex) {
     var extensions;
     (function (extensions) {
         var defaultConfig = {
@@ -155,12 +155,12 @@ var packadic;
                 var _this = this;
                 this.app.debug.log('LayoutComponent init');
                 this.app.on('booted', function () {
-                    packadic.debug.log('layout received event emitted from app: booted');
+                    codex.debug.log('layout received event emitted from app: booted');
                     _this.removePageLoader();
                 });
             };
             LayoutExtension.prototype.boot = function () {
-                packadic.debug.log('LayoutComponent debug');
+                codex.debug.log('LayoutComponent debug');
                 el = new Elements(this);
                 this._initLayoutApiActions();
                 this._initHeader();
@@ -295,8 +295,8 @@ var packadic;
             LayoutExtension.prototype._initEdgedHeightResizeListener = function () {
                 var _this = this;
                 var listener = function () {
-                    if (_this.isEdged() && packadic.getViewPort().width >= _this.getBreakpoint('md')) {
-                        packadic.debug.log('edged height resize', 'viewport height', packadic.getViewPort().height, 'calculated', _this.calculateViewportHeight());
+                    if (_this.isEdged() && codex.getViewPort().width >= _this.getBreakpoint('md')) {
+                        codex.debug.log('edged height resize', 'viewport height', codex.getViewPort().height, 'calculated', _this.calculateViewportHeight());
                         el.sidebarMenu.css('min-height', _this.calculateViewportHeight());
                         el.content.css('min-height', _this.calculateViewportHeight());
                     }
@@ -352,13 +352,13 @@ var packadic;
                 });
             };
             LayoutExtension.prototype._initFixed = function () {
-                packadic.destroySlimScroll(el.sidebarMenu);
+                codex.destroySlimScroll(el.sidebarMenu);
                 if (!this.isSidebarFixed()) {
                     return;
                 }
-                if (packadic.getViewPort().width >= this.getBreakpoint('md')) {
+                if (codex.getViewPort().width >= this.getBreakpoint('md')) {
                     el.sidebarMenu.attr("data-height", this.calculateViewportHeight());
-                    packadic.makeSlimScroll(el.sidebarMenu, {
+                    codex.makeSlimScroll(el.sidebarMenu, {
                         position: this.isSidebarReversed() ? 'left' : 'right',
                         allowPageScroll: false
                     });
@@ -368,11 +368,11 @@ var packadic;
                 var self = this;
                 el.sidebar.onClick('li > a', function (e) {
                     var $this = $(this);
-                    if (packadic.getViewPort().width >= self.getBreakpoint('md') && $this.parents('.page-sidebar-menu-hover-submenu').size() === 1) {
+                    if (codex.getViewPort().width >= self.getBreakpoint('md') && $this.parents('.page-sidebar-menu-hover-submenu').size() === 1) {
                         return;
                     }
                     if ($this.next().hasClass('sub-menu') === false) {
-                        if (packadic.getViewPort().width < self.getBreakpoint('md') && el.sidebarMenu.hasClass("in")) {
+                        if (codex.getViewPort().width < self.getBreakpoint('md') && el.sidebarMenu.hasClass("in")) {
                             $('.page-header .responsive-toggler').click();
                         }
                         return;
@@ -391,7 +391,7 @@ var packadic;
                     var visible = $subMenu.is(":visible");
                     $this.find('.arrow').ensureClass("open", !visible);
                     $this.parent().ensureClass("open", !visible);
-                    packadic.debug.log('sidebarsubmenu', visible, $this, $subMenu);
+                    codex.debug.log('sidebarsubmenu', visible, $this, $subMenu);
                     $subMenu[visible ? 'slideUp' : 'slideDown'](self.config('layout.sidebar.slideSpeed'), function () {
                         if (self.config('layout.sidebar.autoScroll') === true && self.isSidebarClosed() === false) {
                             if (self.isSidebarFixed()) {
@@ -587,9 +587,9 @@ var packadic;
                 var self = this;
                 if (this.config('layout.sidebar.resolveActive') !== true)
                     return;
-                var currentPath = packadic.util.str.trim(location.pathname.toLowerCase(), '/');
+                var currentPath = codex.util.str.trim(location.pathname.toLowerCase(), '/');
                 var md = this.getBreakpoint('md');
-                if (packadic.getViewPort().width < md) {
+                if (codex.getViewPort().width < md) {
                     return;
                 }
                 el.sidebarMenu.find('a').each(function () {
@@ -597,12 +597,12 @@ var packadic;
                     if (!_.isString(href)) {
                         return;
                     }
-                    href = packadic.util.str.trim(href)
+                    href = codex.util.str.trim(href)
                         .replace(location['origin'], '')
                         .replace(/\.\.\//g, '');
                     if (location['hostname'] !== 'localhost') {
                     }
-                    var path = packadic.util.str.trim(href, '/');
+                    var path = codex.util.str.trim(href, '/');
                     if (path == currentPath) {
                         var $el = $(this);
                         $el.parent('li').not('.active').addClass('active');
@@ -686,7 +686,7 @@ var packadic;
             LayoutExtension.prototype.setTheme = function (name) {
                 var $ts = $('#theme-style');
                 if ($ts.length === 0) {
-                    $ts = packadic.cre('link')
+                    $ts = codex.cre('link')
                         .attr('href', '#')
                         .attr('rel', 'stylesheet')
                         .attr('type', 'text/css');
@@ -737,7 +737,7 @@ var packadic;
                 return parseInt(this.config.get('layout.breakpoints4.' + which));
             };
             LayoutExtension.prototype.calculateViewportHeight = function () {
-                var sidebarHeight = packadic.getViewPort().height - el.header.outerHeight();
+                var sidebarHeight = codex.getViewPort().height - el.header.outerHeight();
                 if (this.isFooterFixed()) {
                     sidebarHeight = sidebarHeight - el.footer.outerHeight();
                 }
@@ -774,7 +774,7 @@ var packadic;
                 return $body.hasClass('page-sidebar-reversed');
             };
             LayoutExtension = __decorate([
-                packadic.extension('layout', defaultConfig)
+                codex.extension('layout', defaultConfig)
             ], LayoutExtension);
             return LayoutExtension;
         })(extensions.Extension);
@@ -806,10 +806,10 @@ var packadic;
             return Loader;
         })();
         extensions.Loader = Loader;
-    })(extensions = packadic.extensions || (packadic.extensions = {}));
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    })(extensions = codex.extensions || (codex.extensions = {}));
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     var extensions;
     (function (extensions) {
         var defaultConfig = {
@@ -831,7 +831,7 @@ var packadic;
             PresetsExtension.prototype.init = function () {
                 this.app.debug.log('PresetsComponent init');
                 this.app.on('booted', function () {
-                    packadic.debug.log('PresetsComponent received event emitted from app: booted');
+                    codex.debug.log('PresetsComponent received event emitted from app: booted');
                 });
             };
             PresetsExtension.prototype.boot = function () {
@@ -880,7 +880,7 @@ var packadic;
                         break;
                     case 'layout':
                         this.layout.reset();
-                        if (packadic.kindOf(config) === 'string') {
+                        if (codex.kindOf(config) === 'string') {
                             config = [config];
                         }
                         config.forEach(function (actionName) {
@@ -893,15 +893,15 @@ var packadic;
             };
             PresetsExtension.dependencies = ['layout', 'quick_sidebar'];
             PresetsExtension = __decorate([
-                packadic.extension('presets', defaultConfig)
+                codex.extension('presets', defaultConfig)
             ], PresetsExtension);
             return PresetsExtension;
         })(extensions.Extension);
         extensions.PresetsExtension = PresetsExtension;
-    })(extensions = packadic.extensions || (packadic.extensions = {}));
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    })(extensions = codex.extensions || (codex.extensions = {}));
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     var extensions;
     (function (extensions) {
         var defaultConfig = {
@@ -962,14 +962,14 @@ var packadic;
                 configurable: true
             });
             QuickSidebarTabs.prototype.handleTabsMiddleResizing = function () {
-                packadic.debug.log('xs breakpoint:', this.qs.layout.getBreakpoint('sm'), 'viewport width', packadic.getViewPort().width);
+                codex.debug.log('xs breakpoint:', this.qs.layout.getBreakpoint('sm'), 'viewport width', codex.getViewPort().width);
                 var $middle = this.find('.qs-header .middle');
                 var $header = this.find('.qs-header');
-                if (packadic.getViewPort().width >= this.qs.layout.getBreakpoint('sm') && packadic.getViewPort().width <= this.qs.layout.getBreakpoint('md')) {
+                if (codex.getViewPort().width >= this.qs.layout.getBreakpoint('sm') && codex.getViewPort().width <= this.qs.layout.getBreakpoint('md')) {
                     var width = $header.children().first().outerWidth();
                     width += $header.children().last().outerWidth();
                     width = $header.width() - width;
-                    packadic.debug.log('width: ', width);
+                    codex.debug.log('width: ', width);
                     if (this.$wrapper.closest('.qs-header').length == 0) {
                         this.$wrapper.appendTo($middle);
                     }
@@ -995,11 +995,11 @@ var packadic;
                     - this.find('.qs-seperator').outerHeight();
             };
             QuickSidebarTabs.prototype.initContentScroll = function ($content) {
-                $content = packadic.defined($content) ? $($content) : this.getTabContent(this.getActive());
+                $content = codex.defined($content) ? $($content) : this.getTabContent(this.getActive());
                 this.destroyContentScroll($content);
-                packadic.makeSlimScroll($content, {
+                codex.makeSlimScroll($content, {
                     height: this.getContentScrollHeight(),
-                    wheelStep: packadic.isTouchDevice() ? 60 : 20
+                    wheelStep: codex.isTouchDevice() ? 60 : 20
                 });
                 if (this.qs.mouseOverContent) {
                     this.$content.trigger("mouseleave").trigger('mouseenter');
@@ -1010,8 +1010,8 @@ var packadic;
                 return this;
             };
             QuickSidebarTabs.prototype.destroyContentScroll = function ($content) {
-                $content = packadic.defined($content) ? $($content) : this.getTabContent(this.getActive());
-                packadic.destroySlimScroll($content);
+                $content = codex.defined($content) ? $($content) : this.getTabContent(this.getActive());
+                codex.destroySlimScroll($content);
                 this.find('.slimScrollBar, .slimScrollRail').remove();
                 return this;
             };
@@ -1019,14 +1019,14 @@ var packadic;
                 this.find('.qs-tab.active').removeClass('active');
                 var $activeTabContent = this.find('.qs-content.active').removeClass('active');
                 if ($activeTabContent.length) {
-                    packadic.destroySlimScroll($activeTabContent);
+                    codex.destroySlimScroll($activeTabContent);
                     this.find('.slimScrollBar, .slimScrollRail').remove();
                 }
                 return this;
             };
             QuickSidebarTabs.prototype.openTab = function (id) {
                 var _this = this;
-                id = packadic.defined(id) ? packadic.util.str.lstrip(id, '#') : this.getFirst();
+                id = codex.defined(id) ? codex.util.str.lstrip(id, '#') : this.getFirst();
                 var $tab = this.getTabNav(id);
                 var $tabContent = this.getTabContent(id);
                 if (this.switching) {
@@ -1109,13 +1109,13 @@ var packadic;
             QuickSidebarExtension.prototype.init = function () {
                 this.app.debug.log('QuickSidebarComponent init');
                 this.app.on('booted', function () {
-                    packadic.debug.log('QuickSidebarComponent received event emitted from app: booted');
+                    codex.debug.log('QuickSidebarComponent received event emitted from app: booted');
                 });
             };
             QuickSidebarExtension.prototype.boot = function () {
-                packadic.debug.log('QuickSidebarComponent boot');
+                codex.debug.log('QuickSidebarComponent boot');
                 if (!this.exists()) {
-                    packadic.debug.log('QuickSidebarComponent does not exist');
+                    codex.debug.log('QuickSidebarComponent does not exist');
                     return;
                 }
                 var ttOpts = _.merge(this.config('vendor.bootstrap.tooltip'), {
@@ -1124,7 +1124,7 @@ var packadic;
                     trigger: 'hover focus',
                     selector: false
                 });
-                if (!packadic.isTouchDevice()) {
+                if (!codex.isTouchDevice()) {
                     this.$e.find('.qs-header .btn[data-quick-sidebar]').tooltip(ttOpts);
                 }
                 this.tabs = new QuickSidebarTabs(this);
@@ -1295,15 +1295,15 @@ var packadic;
             };
             QuickSidebarExtension.dependencies = ['layout'];
             QuickSidebarExtension = __decorate([
-                packadic.extension('quick_sidebar', defaultConfig)
+                codex.extension('quick_sidebar', defaultConfig)
             ], QuickSidebarExtension);
             return QuickSidebarExtension;
         })(extensions.Extension);
         extensions.QuickSidebarExtension = QuickSidebarExtension;
-    })(extensions = packadic.extensions || (packadic.extensions = {}));
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    })(extensions = codex.extensions || (codex.extensions = {}));
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     var plugins;
     (function (plugins) {
         var TestPlugin = (function (_super) {
@@ -1315,16 +1315,16 @@ var packadic;
                 console.log('TestPlugin create');
             };
             TestPlugin = __decorate([
-                packadic.plugin('testPlugin')
+                codex.plugin('testPlugin')
             ], TestPlugin);
             return TestPlugin;
         })(plugins.Plugin);
         plugins.TestPlugin = TestPlugin;
         plugins.Plugin.register('testPlugin', TestPlugin);
-    })(plugins = packadic.plugins || (packadic.plugins = {}));
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    })(plugins = codex.plugins || (codex.plugins = {}));
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     var widgets;
     (function (widgets) {
         var progressbarWidget = (function (_super) {
@@ -1461,10 +1461,10 @@ var packadic;
             return progressbarWidget;
         })(widgets.Widget);
         widgets.progressbarWidget = progressbarWidget;
-    })(widgets = packadic.widgets || (packadic.widgets = {}));
-})(packadic || (packadic = {}));
-var packadic;
-(function (packadic) {
+    })(widgets = codex.widgets || (codex.widgets = {}));
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     var widgets;
     (function (widgets) {
         var TestWidget = (function (_super) {
@@ -1479,11 +1479,11 @@ var packadic;
                 console.log('TestWidget create');
             };
             TestWidget = __decorate([
-                packadic.widget('testWidget')
+                codex.widget('testWidget')
             ], TestWidget);
             return TestWidget;
         })(widgets.Widget);
         widgets.TestWidget = TestWidget;
-    })(widgets = packadic.widgets || (packadic.widgets = {}));
-})(packadic || (packadic = {}));
+    })(widgets = codex.widgets || (codex.widgets = {}));
+})(codex || (codex = {}));
 //# sourceMappingURL=addons.js.map

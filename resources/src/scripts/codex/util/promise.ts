@@ -25,7 +25,7 @@
 
 'use strict';
 
-module packadic.util.promise {
+module codex.util.promise {
 
     export interface ImmediateSuccessCB<T, TP> {
         (value:T): TP;

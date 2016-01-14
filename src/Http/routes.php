@@ -9,3 +9,5 @@ $document->where('document', '(.*)');
 if (count(Extender::getExcludedProjectNames()) > 0) {
     $document->where('projectSlug', '^((?!' . Extender::getExcludedProjectNames(true) . ').*?)$');
 }
+
+Route::get('_markdown', ['as' => 'markdown', 'uses' => 'CodexController@markdown']);

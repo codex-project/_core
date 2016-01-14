@@ -1,5 +1,5 @@
 
-module packadic.util.material {
+module codex.util.material {
     var materialColors:any = {
         'red': {
             '50': '#ffebee',

@@ -1,13 +1,13 @@
-module packadic {
+module codex {
 
-    export var namespacePrefix:string = 'packadic.';
+    export var namespacePrefix:string = 'codex.';
 
-    console.log('packadic namespace ' + namespacePrefix);
+    console.log('codex namespace ' + namespacePrefix);
 
     /**
      * The @extension decorator registers a extension
      * ```typescript
-     * module packadic.extensions {
+     * module codex.extensions {
      *      @extension('code-block', { })
      *      export class LayoutExtension extends Extension {
      *            init(){
@@ -21,7 +21,7 @@ module packadic {
      * ```
      * @param {String} name - The name of the extension
      * @param {Object} configToMergeIntoDefaults - The config object to merge into the default config
-     * @returns {function(packadic.extensions.Extension): void}
+     * @returns {function(codex.extensions.Extension): void}
      */
     export function extension(name:string, configToMergeIntoDefaults:any = {}):(cls:typeof extensions.Extension)=>void {
         return (cls:typeof extensions.Extension):void => {
@@ -32,7 +32,7 @@ module packadic {
     /**
      * The @widget decorator registers a widget
      * ```typescript
-     * module packadic.extensions {
+     * module codex.extensions {
      *      @extension('code-block', { })
      *      export class LayoutExtension extends Extension {
      *            init(){
@@ -46,7 +46,7 @@ module packadic {
      * ```
      * @param name
      * @param parent
-     * @returns {function(packadic.widgets.Widget): void}
+     * @returns {function(codex.widgets.Widget): void}
      */
     export function widget(name:string, parent?:any):(cls:typeof widgets.Widget)=>void {
         return (cls:typeof widgets.Widget):void => {
@@ -63,7 +63,7 @@ module packadic {
     /**
      * The @plugin decorator registers a plugin
      * ```typescript
-     * module packadic.extensions {
+     * module codex.extensions {
      *      @extension('code-block', { })
      *      export class LayoutExtension extends Extension {
      *            init(){
@@ -77,7 +77,7 @@ module packadic {
      * ```
      * @param name
      * @param regOpts
-     * @returns {function(packadic.plugins.Plugin): void}
+     * @returns {function(codex.plugins.Plugin): void}
      */
     export function plugin(name:string, regOpts:any = {}):(cls:typeof plugins.Plugin)=>void {
         return (cls:typeof plugins.Plugin):void => {
@@ -122,10 +122,10 @@ module packadic {
                 if (Extensions._instance) {
                     throw new Error("Error - use Singleton.getInstance()");
                 }
-                this.app = app || packadic.app;
+                this.app = app || codex.app;
                 if (!defined(this.app)) {
-                    packadic.ready(() => {
-                        this.app = packadic.Application.instance;
+                    codex.ready(() => {
+                        this.app = codex.Application.instance;
                     })
                 }
                 this.extensions = {};
@@ -206,7 +206,7 @@ module packadic {
 
             /**
              * Load all registered components
-             * @returns {packadic.components.Components}
+             * @returns {codex.components.Components}
              */
             public loadAll():Extensions {
                 if (typeof Extensions.EXTENSIONSDEPS === 'undefined') {
@@ -230,7 +230,7 @@ module packadic {
             /**
              * Iterate over all loaded components, executing the callback function each time
              * @param fn
-             * @returns {packadic.components.Components}
+             * @returns {codex.components.Components}
              */
             public each(fn:_.ObjectIterator<Extension, void>):Extensions {
                 util.arr.each(this.all(), fn);
@@ -445,7 +445,7 @@ module packadic {
             }
 
             public get app():Application {
-                return packadic.Application.instance;
+                return codex.Application.instance;
             }
         }
     }
@@ -471,13 +471,13 @@ module packadic {
             }
 
             public get app():Application {
-                return packadic.Application.instance;
+                return codex.Application.instance;
             }
 
             public static defaults:any = {};
 
             public VERSION:string = '0.0.0';
-            public NAMESPACE:string = 'packadic.';
+            public NAMESPACE:string = 'codex.';
 
             public enabled:boolean = true;
             protected _options:any;

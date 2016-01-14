@@ -4,6 +4,7 @@ import { getAttr, getBindAttr } from './dom'
 import { isArray, isPlainObject } from './lang'
 
 export const commonTagRE = /^(div|p|span|img|a|b|i|br|ul|ol|li|h1|h2|h3|h4|h5|h6|code|pre|table|th|td|tr|form|label|input|select|option|nav|article|section|header|footer)$/
+export const reservedTagRE = /^(slot|partial|component)$/
 
 /**
  * Check if an element is a component, if yes return its
@@ -17,7 +18,7 @@ export const commonTagRE = /^(div|p|span|img|a|b|i|br|ul|ol|li|h1|h2|h3|h4|h5|h6
 export function checkComponentAttr (el, options) {
   var tag = el.tagName.toLowerCase()
   var hasAttrs = el.hasAttributes()
-  if (!commonTagRE.test(tag) && tag !== 'component') {
+  if (!commonTagRE.test(tag) && !reservedTagRE.test(tag)) {
     if (resolveAsset(options, 'components', tag)) {
       return { id: tag }
     } else {
@@ -76,6 +77,7 @@ function getIsBinding (el) {
 
 export function initProp (vm, prop, value) {
   const key = prop.path
+  value = coerceProp(prop, value)
   vm[key] = vm._data[key] = assertProp(prop, value)
     ? value
     : undefined
@@ -141,6 +143,23 @@ export function assertProp (prop, value) {
     }
   }
   return true
+}
+
+/**
+ * Force parsing value with coerce option.
+ *
+ * @param {*} value
+ * @param {Object} options
+ * @return {*}
+ */
+
+export function coerceProp (prop, value) {
+  var coerce = prop.options.coerce
+  if (!coerce) {
+    return value
+  }
+  // coerce is a function
+  return coerce(value)
 }
 
 function formatType (val) {
