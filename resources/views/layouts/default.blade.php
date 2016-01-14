@@ -63,7 +63,7 @@
             <div class="page-content">
 
                 @section('page-errors')
-                    @if (count($errors) > 0)
+                    @if (isset($errors) && count($errors) > 0)
                     <div class="page-alerts page-alerts-top">
                         @include('codex::partials/errors')
                     </div>
