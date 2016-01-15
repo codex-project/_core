@@ -60,14 +60,15 @@ class CodexServiceProvider extends ServiceProvider
      */
     protected $providers = [
         \Sebwite\Support\SupportServiceProvider::class,
+        \Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
         Providers\ConsoleServiceProvider::class,
         Providers\RouteServiceProvider::class
     ];
 
     protected $bindings = [
-        'codex.project'  => \Codex\Core\Project::class,
-        'codex.document' => \Codex\Core\Document::class,
-        'codex.menu'     => \Codex\Core\Menu::class,
+        'codex.project'  => Project::class,
+        'codex.document' => Document::class,
+        'codex.menu'     => Menu::class,
 
         'codex.projects'  => Components\Factory\Projects::class,
         'codex.menus'     => Components\Factory\Menus::class,

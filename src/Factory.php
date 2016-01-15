@@ -81,6 +81,8 @@ class Factory implements Codex
 
         // 'factory:done' called after all factory operations have completed.
         $this->runHook('factory:done', [ $this ]);
+
+        $this->fire('factory');
     }
 
 
