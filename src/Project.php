@@ -25,6 +25,8 @@ use vierbergenlars\SemVer\version;
  * @author         Sebwite
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
  *
+ *
+ * @property \Codex\Core\Components\Project\Documents $documents
  */
 class Project
 {
@@ -82,7 +84,6 @@ class Project
      */
     protected $versions;
 
-
     /**
      * getContainer method
      *
@@ -92,7 +93,6 @@ class Project
     {
         return $this->getCodex()->getContainer();
     }
-
 
     /**
      * @param \Codex\Core\Contracts\Codex|\Codex\Core\Factory                         $parent
@@ -120,6 +120,7 @@ class Project
         $this->runHook('project:done', [ $this ]);
     }
 
+
     /**
      * Get the absolute path to a file in the project using the current ref
      *
@@ -130,6 +131,19 @@ class Project
     public function path($path = null)
     {
         return is_null($path) ? Path::join($this->path, $this->ref) : Path::join($this->path, $this->ref, $path);
+    }
+
+    /**
+     * The the path relative to the configured root directory for cdoex docs
+     *
+     *
+     * @param null $path
+     *
+     * @return string
+     */
+    public function relPath($path = null)
+    {
+        return Path::makeRelative($this->path($path), $this->getCodex()->getRootDir());
     }
 
     /**

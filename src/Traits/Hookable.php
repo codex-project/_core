@@ -18,6 +18,10 @@ use Codex\Core\Extensions\Extender;
  */
 trait Hookable
 {
+    public function fire($event)
+    {
+        app('events')->fire('codex.' . $event, [$this]);
+    }
 
     /**
      * Run a hook

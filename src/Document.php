@@ -13,6 +13,7 @@ use Codex\Core\Extensions\Extender;
 use Codex\Core\Traits;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Sebwite\Support\Path;
 use Sebwite\Support\Traits\Extendable;
 
 class Document
@@ -91,7 +92,7 @@ class Document
         $this->runHook('document:ready', [ $this ]);
 
         $this->attributes = $codex->config('default_document_attributes');
-        $this->content    = $this->getFiles()->get($this->path);
+        $this->content    = $this->getFiles()->get(Path::makeRelative($this->path, $codex->getRootDir()));
 
         $this->runHook('document:done', [ $this ]);
     }
