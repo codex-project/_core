@@ -7,12 +7,13 @@
     "license": "MIT",
     "require": {
         "php": ">=5.5.9",
-        "sebwite/support": "~1.0",
+        "sebwite/support": "1.0.*",
         "erusev/parsedown": "~1.5",
         "erusev/parsedown-extra": "~0.7",
         "symfony/yaml": "~2.7",
         "vierbergenlars/php-semver": "3.0.*",
-        "nicmart/tree": "0.2.*"
+        "nicmart/tree": "0.2.*",
+        "radic/blade-extensions": "~6.2"
     },
     "autoload": {
         "psr-4": {
