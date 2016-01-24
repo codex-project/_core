@@ -73,7 +73,7 @@ class Extender
      *
      * @param  string $name
      * @param  array  $params
-     * @return void
+     * @return void|mixed
      */
     public static function runHook($name, array $params = [ ])
     {
