@@ -12,6 +12,7 @@ use Codex\Core\Log\Writer;
 use Codex\Core\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application;
 use Monolog\Logger as Monolog;
+use Sebwite\Support\LocalFilesystem;
 use Sebwite\Support\ServiceProvider;
 
 /**
@@ -73,14 +74,13 @@ class CodexServiceProvider extends ServiceProvider
         'codex.projects'  => Components\Factory\Projects::class,
         'codex.menus'     => Components\Factory\Menus::class,
         'codex.documents' => Components\Project\Documents::class
-
     ];
 
     /**
      * @var array
      */
     protected $singletons = [
-        'codex' => Factory::class
+        #'codex' => Factory::class
     ];
 
     /**
@@ -108,7 +108,12 @@ class CodexServiceProvider extends ServiceProvider
         $app = parent::register();
         $this->registerLogger($app);
         $this->registerFilters();
-
+        $app->singleton('codex', function(Application $app){
+            $codex = $app->make(Factory::class, [
+                'files' => LocalFilesystem::create()
+            ]);
+            return $codex;
+        });
         Factory::extend('projects', Components\Factory\Projects::class);
         Factory::extend('menus', Components\Factory\Menus::class);
         Project::extend('documents', Components\Project\Documents::class);
