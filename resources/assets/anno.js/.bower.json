@@ -1,0 +1,14 @@
+{
+  "name": "anno.js",
+  "homepage": "https://github.com/iamdanfox/anno.js",
+  "version": "0.2.0",
+  "_release": "0.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.2.0",
+    "commit": "4d78e29e4b01d544e9ab8dc91bc65cbe1de6d9ad"
+  },
+  "_source": "git://github.com/iamdanfox/anno.js.git",
+  "_target": "~0.2.0",
+  "_originalSource": "anno.js"
+}

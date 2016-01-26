@@ -78,4 +78,9 @@
         <exec command="${sassdoc} --parse ${sassdir} >> sass.json" dir="${package-dir}" logoutput="true"/>
         <move file="${package-dir}/sass.json" tofile="${sassfile}"/>
     </target>
+
+    <target name="bower" description="Run bower to get the latest codex-theme">
+        <exec command="bower install" dir="${project.basedir" logoutput="true"/>
+
+    </target>
 </project>

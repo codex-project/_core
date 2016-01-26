@@ -9,11 +9,10 @@
 namespace Codex\Core;
 
 use Codex\Core\Contracts\Codex;
+use Codex\Core\Exceptions\DocumentNotFoundException;
 use Codex\Core\Extensions\Extender;
 use Codex\Core\Traits;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use Sebwite\Support\Path;
 use Sebwite\Support\Traits\Extendable;
 
 class Document
@@ -69,6 +68,11 @@ class Document
      */
     protected $pathName;
 
+    public function getName()
+    {
+        return $this->pathName;
+    }
+
     /**
      * Creates a new Document class
      *
@@ -83,7 +87,7 @@ class Document
     public function __construct(Codex $codex, Project $project, $path, $pathName)
     {
         $this->setCodex($codex);
-        $this->project = $project;
+        $this->project  = $project;
         $this->path     = $project->refPath($path);
         $this->pathName = $pathName;
 
@@ -92,7 +96,13 @@ class Document
         $this->runHook('document:ready', [ $this ]);
 
         $this->attributes = $codex->config('default_document_attributes');
-        $this->content    = $this->getFiles()->get($this->path);
+
+        if ( !$this->getFiles()->exists($this->path) )
+        {
+            throw DocumentNotFoundException::document($this)->inProject($project);
+        }
+
+        $this->content = $this->getFiles()->get($this->path);
 
         $this->runHook('document:done', [ $this ]);
     }
@@ -113,11 +123,16 @@ class Document
         $fsettings = $this->project->config('filters');
         $filters   = Extender::getFilters($this->project->config('filters.enabled'));
 
-        if (count($filters) > 0) {
-            foreach ($filters as $name => $filter) {
-                if ($filter instanceof \Closure) {
+        if ( count($filters) > 0 )
+        {
+            foreach ( $filters as $name => $filter )
+            {
+                if ( $filter instanceof \Closure )
+                {
                     call_user_func_array($filter, [ $this, isset($fsettings[ $name ]) ? $fsettings[ $name ] : [ ] ]);
-                } else {
+                }
+                else
+                {
                     $instance = app()->make($filter);
                     call_user_func_array([ $instance, 'handle' ], [ $this, isset($fsettings[ $name ]) ? $fsettings[ $name ] : [ ] ]);
                 }

@@ -36,9 +36,12 @@ class Documents extends ProjectComponent
         return $this->items->all();
     }
 
-    public function has($name)
+    public function has($pathName = '')
     {
-        return $this->items->has($name);
+        if ($pathName === '') {
+            $pathName = 'index';
+        }
+        return $this->project->getFiles()->exists($this->project->refPath($pathName . '.md'));
     }
 
 
@@ -57,6 +60,7 @@ class Documents extends ProjectComponent
 
         if (!$this->items->has($pathName)) {
             $path = $pathName . '.md';
+
 
             $this->items->put($pathName, $this->getContainer()->make('codex.document', [
                 'codex'    => $this->getCodex(),

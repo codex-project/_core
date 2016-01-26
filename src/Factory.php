@@ -15,6 +15,7 @@ use Illuminate\Contracts\Container\Container;
 use Sebwite\Support\Filesystem;
 use Illuminate\View\View;
 use Sebwite\Support\Traits\Extendable;
+use vierbergenlars\SemVer\version;
 
 /**
  * Factory class.
@@ -106,7 +107,8 @@ class Factory implements Codex
         $this->container->make('events')->listen('composing: ' . $appendTo, function (View $view) use ($viewName, $data) {
         
             if ($data instanceof \Closure) {
-                $data = call_user_func_array($data, [ $this->container, $this ]);
+                $data = $this->container->call($data, [$this]);
+                $data = is_array($data) ? $data : [];
             } elseif ($data === null) {
                 $data = [ ];
             }
@@ -146,6 +148,11 @@ class Factory implements Codex
         }
 
         return url($uri);
+    }
+
+    public function getLaravelVersion()
+    {
+        return new version(app()->version());
     }
 
     /**
