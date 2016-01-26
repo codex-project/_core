@@ -39,6 +39,8 @@ class CodexServiceProvider extends ServiceProvider
      */
     protected $configFiles = [ 'codex' ];
 
+    protected $viewDirs = [ 'views' => 'codex' ];
+
     /**
      * Collection of bound instances.
      *
@@ -98,12 +100,7 @@ class CodexServiceProvider extends ServiceProvider
         $app = parent::register();
         $this->registerLogger($app);
         $this->registerFilters();
-        $app->singleton('c2odex', function(Application $app){
-            $codex = $app->make(Factory::class, [
-                'files' => LocalFilesystem::create()
-            ]);
-            return $codex;
-        });
+
         Factory::extend('projects', Components\Factory\Projects::class);
         Factory::extend('menus', Components\Factory\Menus::class);
         Project::extend('documents', Components\Project\Documents::class);
