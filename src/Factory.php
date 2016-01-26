@@ -12,7 +12,7 @@ use Codex\Core\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Filesystem\Filesystem;
+use Sebwite\Support\Filesystem;
 use Illuminate\View\View;
 use Sebwite\Support\Traits\Extendable;
 
@@ -58,7 +58,6 @@ class Factory implements Codex
      */
     protected $rootDir;
 
-
     /**
      * @param \Illuminate\Contracts\Container\Container                             $container
      * @param \Illuminate\Contracts\Filesystem\Filesystem                           $files
@@ -75,6 +74,7 @@ class Factory implements Codex
         $this->cache   = $cache;
         $this->rootDir = config('codex.root_dir');
         $this->log     = $log;
+
 
         // 'factory:ready' is called after parameters have been set as class properties.
         $this->runHook('factory:ready', [ $this ]);

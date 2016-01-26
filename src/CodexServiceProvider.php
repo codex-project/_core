@@ -49,16 +49,6 @@ class CodexServiceProvider extends ServiceProvider
     /**
      * @var array
      */
-    protected $viewDirs = [ 'views' => 'codex' ];
-
-    /**
-     * @var array
-     */
-    protected $assetDirs = [ 'assets' => 'codex' ];
-
-    /**
-     * @var array
-     */
     protected $providers = [
         \Sebwite\Support\SupportServiceProvider::class,
         \Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
@@ -80,7 +70,7 @@ class CodexServiceProvider extends ServiceProvider
      * @var array
      */
     protected $singletons = [
-        #'codex' => Factory::class
+        'codex' => Factory::class
     ];
 
     /**
@@ -108,7 +98,7 @@ class CodexServiceProvider extends ServiceProvider
         $app = parent::register();
         $this->registerLogger($app);
         $this->registerFilters();
-        $app->singleton('codex', function(Application $app){
+        $app->singleton('c2odex', function(Application $app){
             $codex = $app->make(Factory::class, [
                 'files' => LocalFilesystem::create()
             ]);
