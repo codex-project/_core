@@ -23,18 +23,8 @@ class Documents extends ProjectComponent
     {
         parent::__construct($parent);
         $this->items = collect();
-        $this->resolve();
     }
 
-    public function resolve()
-    {
-        $files = Finder::create()->in($this->path())->files()->depth('<= 4')->contains('.md');
-        foreach ($files as $file) {
-        /** @var \SplFileInfo $file */
-            $path = $file->getPathname();
-            $a    = 'a';
-        }
-    }
 
     /**
      * all method
@@ -66,7 +56,7 @@ class Documents extends ProjectComponent
         }
 
         if (!$this->items->has($pathName)) {
-            $path = Path::join($this->project->path(), $pathName . '.md');
+            $path = $pathName . '.md';
 
             $this->items->put($pathName, $this->getContainer()->make('codex.document', [
                 'codex'    => $this->getCodex(),

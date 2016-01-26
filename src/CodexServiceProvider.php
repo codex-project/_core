@@ -12,8 +12,10 @@ use Codex\Core\Log\Writer;
 use Codex\Core\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application;
 use Monolog\Logger as Monolog;
+use Radic\BladeExtensions\BladeExtensionsServiceProvider;
 use Sebwite\Support\LocalFilesystem;
 use Sebwite\Support\ServiceProvider;
+use Sebwite\Support\SupportServiceProvider;
 
 /**
  * Codex service provider.
@@ -27,31 +29,17 @@ class CodexServiceProvider extends ServiceProvider
 {
     use CodexProviderTrait;
 
-    /**
-     * @var string
-     */
     protected $dir = __DIR__;
 
-    /**
-     * Collection of configuration files.
-     *
-     * @var array
-     */
     protected $configFiles = [ 'codex' ];
 
-    /**
-     * Collection of bound instances.
-     *
-     * @var array
-     */
+    protected $viewDirs = [ 'views' => 'codex' ];
+
     protected $provides = [ 'codex' ];
 
-    /**
-     * @var array
-     */
     protected $providers = [
-        \Sebwite\Support\SupportServiceProvider::class,
-        \Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
+        SupportServiceProvider::class,
+        BladeExtensionsServiceProvider::class,
         Providers\ConsoleServiceProvider::class,
         Providers\RouteServiceProvider::class
     ];
@@ -98,12 +86,7 @@ class CodexServiceProvider extends ServiceProvider
         $app = parent::register();
         $this->registerLogger($app);
         $this->registerFilters();
-        $app->singleton('c2odex', function(Application $app){
-            $codex = $app->make(Factory::class, [
-                'files' => LocalFilesystem::create()
-            ]);
-            return $codex;
-        });
+
         Factory::extend('projects', Components\Factory\Projects::class);
         Factory::extend('menus', Components\Factory\Menus::class);
         Project::extend('documents', Components\Project\Documents::class);

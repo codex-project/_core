@@ -80,19 +80,19 @@ class Document
      * @param string                                                                  $pathName  The relative path to the document
      *
      */
-    public function __construct(Codex $codex, Project $project, Filesystem $files, Container $container, $path, $pathName)
+    public function __construct(Codex $codex, Project $project, $path, $pathName)
     {
         $this->setCodex($codex);
-        $this->setFiles($files);
-
         $this->project = $project;
-        $this->path     = $path;
+        $this->path     = $project->refPath($path);
         $this->pathName = $pathName;
+
+        $this->setFiles($project->getFiles());
 
         $this->runHook('document:ready', [ $this ]);
 
         $this->attributes = $codex->config('default_document_attributes');
-        $this->content    = $this->getFiles()->get(Path::makeRelative($this->path, $codex->getRootDir()));
+        $this->content    = $this->getFiles()->get($this->path);
 
         $this->runHook('document:done', [ $this ]);
     }
