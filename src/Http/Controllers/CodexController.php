@@ -43,31 +43,27 @@ class CodexController extends Controller
     public function document($projectSlug, $ref = null, $path = '')
     {
         # get project
-        if ( !$this->codex->projects->has($projectSlug) )
-        {
+        if (!$this->codex->projects->has($projectSlug)) {
             throw ProjectNotFoundException::project($projectSlug)->toHttpException();
         }
         $project = $this->codex->projects->get($projectSlug);
 
         # get ref (version)
-        if ( is_null($ref) )
-        {
+        if (is_null($ref)) {
             $ref = $project->getDefaultRef();
         }
         $project->setRef($ref);
         $path = $path === '' ? 'index' : $path;
 
         # get document
-        if ( !$project->documents->has($path) )
-        {
+        if (!$project->documents->has($path)) {
             throw DocumentNotFoundException::document($path)->inProject($project)->toHttpException();
         }
 
         $document = $project->documents->get($path);
         $res      = $this->runHook('controller:document', [ $this, $project, $document ]);
 
-        if ( $this->isResponse($res) )
-        {
+        if ($this->isResponse($res)) {
             return $res;
         }
 
@@ -82,8 +78,7 @@ class CodexController extends Controller
 
     public function markdown()
     {
-        if ( !request()->has('code') )
-        {
+        if (!request()->has('code')) {
             return abort(500, 'You did not provide the [code]');
         }
         $code = request()->get('code');

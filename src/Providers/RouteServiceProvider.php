@@ -59,8 +59,8 @@ class RouteServiceProvider extends ServiceProvider
             'prefix'     => config('codex.base_route'),
             'namespace'  => $this->namespace,
             'middleware' => app('codex')->getLaravelVersion()->getMinor() >= 2 ? [ 'web' ] : [ ]
-        ], function ($router)
-        {
+        ], function ($router) {
+        
             require __DIR__ . '/../Http/routes.php';
         });
     }

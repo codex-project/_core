@@ -51,6 +51,4 @@ class Writer extends BaseWriter implements Log
     {
         $this->monolog->pushHandler($handler = new FirePHPHandler($this->parseLevel($level)));
     }
-
-
 }

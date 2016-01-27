@@ -193,22 +193,19 @@ class Project
     protected function resolveRefs()
     {
 
-    $directories = $this->getFiles()->directories($this->path());
+        $directories = $this->getFiles()->directories($this->path());
         $branches    = [ ];
         $this->refs  = [ ];
 
-        $this->versions = array_filter(array_map(function ($dirPath) use (&$branches)
-        {
+        $this->versions = array_filter(array_map(function ($dirPath) use (&$branches) {
+        
             $version      = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft($this->path())->removeLeft(DIRECTORY_SEPARATOR);
             $version      = (string)$version->removeLeft($this->name . '/');
             $this->refs[] = $version;
 
-            try
-            {
+            try {
                 return new version($version);
-            }
-            catch (\RuntimeException $e)
-            {
+            } catch (\RuntimeException $e) {
                 $branches[] = $version;
             }
         }, $directories), 'is_object');
@@ -218,11 +215,10 @@ class Project
         // check which version/branch to show by default
         $defaultRef = count($this->versions) > 0 ? head($this->versions) : head($branches);
 
-        switch ( $this->config[ 'default' ] )
-        {
+        switch ($this->config[ 'default' ]) {
             case static::SHOW_LAST_VERSION:
-                usort($this->versions, function (version $v1, version $v2)
-                {
+                usort($this->versions, function (version $v1, version $v2) {
+                
 
                     return version::gt($v1, $v2) ? -1 : 1;
                 });
@@ -230,10 +226,9 @@ class Project
                 $defaultRef = head($this->versions);
                 break;
             case static::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH:
-                if ( count($this->versions) > 0 )
-                {
-                    usort($this->versions, function (version $v1, version $v2)
-                    {
+                if (count($this->versions) > 0) {
+                    usort($this->versions, function (version $v1, version $v2) {
+                    
 
                         return version::gt($v1, $v2) ? -1 : 1;
                     });
@@ -286,17 +281,13 @@ class Project
          */
         $menu = $this->codex->menus->add('sidebar');
 
-        foreach ( $items as $item )
-        {
+        foreach ($items as $item) {
             $link = '#';
-            if ( array_key_exists('document', $item) )
-            {
-                // remove .md extension if present
+            if (array_key_exists('document', $item)) {
+            // remove .md extension if present
                 $path = Str::endsWith($item[ 'document' ], '.md', false) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
                 $link = $this->codex->url($this, $this->getRef(), $path);
-            }
-            elseif ( array_key_exists('href', $item) )
-            {
+            } elseif (array_key_exists('href', $item)) {
                 $link = $item[ 'href' ];
             }
 
@@ -306,13 +297,11 @@ class Project
             $node->setAttribute('href', $link);
             $node->setAttribute('id', $id);
 
-            if ( isset($item[ 'icon' ]) )
-            {
+            if (isset($item[ 'icon' ])) {
                 $node->setMeta('icon', $item[ 'icon' ]);
             }
 
-            if ( isset($item[ 'children' ]) )
-            {
+            if (isset($item[ 'children' ])) {
                 $this->setupSidebarMenu($item[ 'children' ], $id);
             }
         }
@@ -373,15 +362,15 @@ class Project
     {
         $versions = $this->versions;
 
-        usort($versions, function (version $v1, version $v2)
-        {
+        usort($versions, function (version $v1, version $v2) {
+        
 
 
             return version::gt($v1, $v2) ? -1 : 1;
         });
 
-        $versions = array_map(function (version $v)
-        {
+        $versions = array_map(function (version $v) {
+        
 
 
             return $v->getVersion();
