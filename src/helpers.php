@@ -6,7 +6,7 @@
  */
 
 
-if(!function_exists('version')){
+if (!function_exists('version')) {
     /**
      * version method
      *
@@ -15,7 +15,8 @@ if(!function_exists('version')){
      *
      * @return \vierbergenlars\SemVer\version
      */
-    function version($str = null, $loose = false){
+    function version($str = null, $loose = false)
+    {
         return $str === null ? vierbergenlars\SemVer\version::class : new \vierbergenlars\SemVer\version($str, $loose);
 
     }

@@ -1173,6 +1173,42 @@
     </parse_markers>
     <source>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</source>
   </file>
+  <file path="helpers.php" generated-path="helpers.html" hash="8eb284154bf1681ec3be0d6a5b86a6a3" package="Default">
+    <docblock line="0">
+      <description>Part of the Sebwite PHP packages.</description>
+      <long-description>License and copyright information bundled with this package in the LICENSE file</long-description>
+      <tag name="package" line="0" description="Default"/>
+    </docblock>
+    <function namespace="" line="18" package="Default">
+      <name>version</name>
+      <full_name>\version()</full_name>
+      <docblock line="18">
+        <description>version method</description>
+        <long-description></long-description>
+        <tag name="package" line="18" description="Default"/>
+        <tag name="param" line="18" description="" type="null" variable="$str">
+          <type>null</type>
+        </tag>
+        <tag name="param" line="18" description="" type="boolean" variable="$loose">
+          <type>boolean</type>
+        </tag>
+        <tag name="return" line="18" description="" type="\vierbergenlars\SemVer\version">
+          <type>\vierbergenlars\SemVer\version</type>
+        </tag>
+      </docblock>
+      <argument line="0" by_reference="false">
+        <name>$str</name>
+        <default>null</default>
+        <type>null</type>
+      </argument>
+      <argument line="0" by_reference="false">
+        <name>$loose</name>
+        <default>false</default>
+        <type>boolean</type>
+      </argument>
+    </function>
+    <source>eJyFT01LxDAQvedXPEHYtoi9V5cVZEFhkULBU0HSdtoG06Qk6a4i+99Ns+1lDzqXMG/eVx53Yz+yNEkYEuTcOOgWricUVJ2EI+QvOUZef/KO7L0nzbyDqElZAlcNaj1+G9H1DkK12gzcCa1QTaqR1MBb9N5O2NXDs4L94fV5/1bs0QpJ3jJljIkW0U07qXp2+KAvYZ2NNkcy1u+bOMYPg5/QdZ4Eyw0DuV43C7oen0Zu+AA1SYlb68wVXmntcam1pWuhITcZhfIoyFRkOlKSG1sWNLyTKZfQhZ2Gd229NormQGxD+N2S4teWS0txUFz+Ms+SdlFsLxrs8Gd4ltWSW4sMik7/FA1d1hLxAwvBZ3Zmv5d3nak=</source>
+  </file>
   <file path="Factory.php" generated-path="Factory.html" hash="b301866273c8405bdfe3575becee3432" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
@@ -6669,6 +6705,7 @@ output. Should be called within a view.</long-description>
   </package>
   <package name="Default" full_name="Default"/>
   <package name="global" full_name="global"/>
+  <namespace name="global" full_name="global"/>
   <namespace name="Codex" full_name="Codex">
     <namespace name="Core" full_name="Codex\Core">
       <namespace name="Components" full_name="Codex\Core\Components">
