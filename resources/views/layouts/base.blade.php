@@ -10,11 +10,16 @@
             {{ config('codex.display_name') }}
         @show
     </title>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <link href="{{ asset('vendor/codex/styles/stylesheet.css') }}" type="text/css" rel="stylesheet">
-    <link href="{{ asset('vendor/codex/styles/themes/theme-codex.css') }}" type="text/css" rel="stylesheet" id="theme-style">
+    @section('meta')
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    @show
+
+    @section('stylesheets')
+        <link href="{{ asset('vendor/codex/styles/stylesheet.css') }}" type="text/css" rel="stylesheet">
+        <link href="{{ asset('vendor/codex/styles/themes/theme-codex.css') }}" type="text/css" rel="stylesheet" id="theme-style">
+    @show
 
     @stack('styles')
 
@@ -31,9 +36,11 @@
     @yield('body')
 
 
-    <script src="{{ asset('vendor/codex/scripts/vendor.js') }}"></script>
-    <script src="{{ asset('vendor/codex/scripts/codex.js') }}"></script>
-    <script src="{{ asset('vendor/codex/scripts/addons.js') }}"></script>
+    @section('javascripts')
+        <script src="{{ asset('vendor/codex/scripts/vendor.js') }}"></script>
+        <script src="{{ asset('vendor/codex/scripts/codex.js') }}"></script>
+        <script src="{{ asset('vendor/codex/scripts/addons.js') }}"></script>
+    @show
 
     <script src="{{ asset('vendor/codex/bower_components/jstree/dist/jstree.js') }}"></script>
     

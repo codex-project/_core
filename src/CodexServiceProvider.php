@@ -35,7 +35,9 @@ class CodexServiceProvider extends ServiceProvider
 
     protected $viewDirs = [ 'views' => 'codex' ];
 
-    protected $provides = [ 'codex' ];
+    protected $assetDirs = ['assets/codex-theme/dist' => 'codex'];
+
+    protected $provides = [ 'codex', 'codex.log' ];
 
     protected $providers = [
         SupportServiceProvider::class,

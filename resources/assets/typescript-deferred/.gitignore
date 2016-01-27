@@ -1,7 +1,0 @@
-typescript_deferred.js
-**/*.swp
-.tscache
-node_modules
-typescript_deferred.d.ts
-typings
-tests/*.js
