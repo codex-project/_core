@@ -40,6 +40,7 @@
         </exec>
     </target>
 
+
     <target name="phpcs" depends="phpcbf" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="phpcs" logoutput="true" passthru="true">
             <arg value="--standard=PSR2"/>
