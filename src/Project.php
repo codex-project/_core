@@ -9,10 +9,10 @@
 namespace Codex\Core;
 
 use Codex\Core\Contracts\Codex;
-use Codex\Core\Menu;
 use Codex\Core\Traits;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
-use Sebwite\Support\Filesystem;
+use Illuminate\Filesystem\FilesystemManager;
 use Sebwite\Support\Path;
 use Sebwite\Support\Str;
 use Sebwite\Support\Traits\Extendable;
@@ -84,6 +84,10 @@ class Project
      */
     protected $versions;
 
+    protected $repository;
+
+    protected $fsm;
+
     /**
      * getContainer method
      *
@@ -103,14 +107,18 @@ class Project
      *
      * @internal param \Codex\Core\Factory $codex
      */
-    public function __construct(Codex $parent, Filesystem $files, Container $container, $name, $config)
+    public function __construct(Codex $parent, FilesystemManager $fsm, Repository $repository, Container $container, $name, $config)
     {
         $this->setCodex($parent);
+        $this->name       = $name;
+        $this->path       = $path = Path::join($parent->getRootDir(), $name);
+        $this->fsm        = $fsm;
+        $this->repository = $repository;
         $this->setConfig($config);
-        $this->setFiles($files);
-        $this->name = $name;
-        $this->path = $path = Path::join($parent->getRootDir(), $name);
-
+        $this->setDisk([
+            'driver' => 'local',
+            'root'   => Path::join($this->getCodex()->getRootDir(), $this->getName())
+        ]);
         $this->runHook('project:ready', [ $this ]);
 
         # Resolve refs
@@ -121,6 +129,23 @@ class Project
     }
 
 
+    public function getDiskName()
+    {
+        return 'codex-' . $this->getName();
+    }
+
+    public function setDisk(array $config = [ ])
+    {
+        $this->repository->set('filesystems.disks.' . $this->getDiskName(), $config);
+        $files = $this->fsm->disk($this->getDiskName());
+        $this->setFiles($files);
+    }
+
+    public function getDisk()
+    {
+        return collect($this->repository->get('filesystems.disks.' . $this->getDiskName()));
+    }
+
     /**
      * Get the absolute path to a file in the project using the current ref
      *
@@ -130,20 +155,16 @@ class Project
      */
     public function path($path = null)
     {
-        return is_null($path) ? Path::join($this->path, $this->ref) : Path::join($this->path, $this->ref, $path);
+        $root     = $this->getDisk()->get('root');
+        $absolute = is_null($path) ? $this->path : Path::join($this->path, $path);
+        $relative = path_relative($absolute, $root);
+
+        return $relative;
     }
 
-    /**
-     * The the path relative to the configured root directory for cdoex docs
-     *
-     *
-     * @param null $path
-     *
-     * @return string
-     */
-    public function relPath($path = null)
+    public function refPath($path = null)
     {
-        return Path::makeRelative($this->path($path), $this->getCodex()->getRootDir());
+        return is_null($path) ? $this->path($this->ref) : $this->path(path_join($this->ref, $path));
     }
 
     /**
@@ -172,12 +193,13 @@ class Project
     protected function resolveRefs()
     {
 
-        $directories = $this->getFiles()->directories($this->path);
+        $directories = $this->getFiles()->directories($this->path());
         $branches    = [ ];
         $this->refs  = [ ];
 
         $this->versions = array_filter(array_map(function ($dirPath) use (&$branches) {
-            $version      = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft($this->path)->removeLeft(DIRECTORY_SEPARATOR);
+        
+            $version      = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft($this->path())->removeLeft(DIRECTORY_SEPARATOR);
             $version      = (string)$version->removeLeft($this->name . '/');
             $this->refs[] = $version;
 
@@ -197,6 +219,7 @@ class Project
             case static::SHOW_LAST_VERSION:
                 usort($this->versions, function (version $v1, version $v2) {
                 
+
                     return version::gt($v1, $v2) ? -1 : 1;
                 });
 
@@ -206,6 +229,7 @@ class Project
                 if (count($this->versions) > 0) {
                     usort($this->versions, function (version $v1, version $v2) {
                     
+
                         return version::gt($v1, $v2) ? -1 : 1;
                     });
                 }
@@ -221,7 +245,6 @@ class Project
         }
 
         $this->ref = $this->defaultRef = (string)$defaultRef;
-
     }
 
     /**
@@ -232,7 +255,7 @@ class Project
     public function getSidebarMenu()
     {
 
-        $path  = Path::join($this->getPath(), $this->getRef(), 'menu.yml');
+        $path  = $this->refPath('menu.yml');
         $yaml  = $this->getFiles()->get($path);
         $array = Yaml::parse($yaml);
         $this->getCodex()->menus->forget('sidebar');
@@ -261,7 +284,7 @@ class Project
         foreach ($items as $item) {
             $link = '#';
             if (array_key_exists('document', $item)) {
-                // remove .md extension if present
+            // remove .md extension if present
                 $path = Str::endsWith($item[ 'document' ], '.md', false) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
                 $link = $this->codex->url($this, $this->getRef(), $path);
             } elseif (array_key_exists('href', $item)) {
@@ -340,12 +363,14 @@ class Project
         $versions = $this->versions;
 
         usort($versions, function (version $v1, version $v2) {
+        
 
 
             return version::gt($v1, $v2) ? -1 : 1;
         });
 
         $versions = array_map(function (version $v) {
+        
 
 
             return $v->getVersion();

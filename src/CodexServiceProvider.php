@@ -12,8 +12,10 @@ use Codex\Core\Log\Writer;
 use Codex\Core\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application;
 use Monolog\Logger as Monolog;
+use Radic\BladeExtensions\BladeExtensionsServiceProvider;
 use Sebwite\Support\LocalFilesystem;
 use Sebwite\Support\ServiceProvider;
+use Sebwite\Support\SupportServiceProvider;
 
 /**
  * Codex service provider.
@@ -27,33 +29,19 @@ class CodexServiceProvider extends ServiceProvider
 {
     use CodexProviderTrait;
 
-    /**
-     * @var string
-     */
     protected $dir = __DIR__;
 
-    /**
-     * Collection of configuration files.
-     *
-     * @var array
-     */
     protected $configFiles = [ 'codex' ];
 
     protected $viewDirs = [ 'views' => 'codex' ];
 
-    /**
-     * Collection of bound instances.
-     *
-     * @var array
-     */
-    protected $provides = [ 'codex' ];
+    protected $assetDirs = ['assets/codex-theme/dist' => 'codex'];
 
-    /**
-     * @var array
-     */
+    protected $provides = [ 'codex', 'codex.log' ];
+
     protected $providers = [
-        \Sebwite\Support\SupportServiceProvider::class,
-        \Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
+        SupportServiceProvider::class,
+        BladeExtensionsServiceProvider::class,
         Providers\ConsoleServiceProvider::class,
         Providers\RouteServiceProvider::class
     ];

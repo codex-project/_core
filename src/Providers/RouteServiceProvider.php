@@ -26,6 +26,7 @@ class RouteServiceProvider extends ServiceProvider
      * Boot Codex's route service provider.
      *
      * @param Illuminate\Routing\Router $router
+     *
      * @return void
      */
     public function boot(Router $router)
@@ -48,14 +49,19 @@ class RouteServiceProvider extends ServiceProvider
      * Define the routes for Codex.
      *
      * @param Illuminate\Routing\Router $router
+     *
      * @return void
      */
     public function map(Router $router)
     {
-        $router->group([ 'prefix' => config('codex.base_route'), 'namespace' => $this->namespace ], function ($router) {
+        $router->group([
+            'as'         => 'codex.',
+            'prefix'     => config('codex.base_route'),
+            'namespace'  => $this->namespace,
+            'middleware' => app('codex')->getLaravelVersion()->getMinor() >= 2 ? [ 'web' ] : [ ]
+        ], function ($router) {
         
-
-            require(realpath(__DIR__ . '/../Http/routes.php'));
+            require __DIR__ . '/../Http/routes.php';
         });
     }
 }

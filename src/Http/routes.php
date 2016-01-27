@@ -1,9 +1,9 @@
 <?php
 use Codex\Core\Extensions\Extender;
 
-$index = Route::get('/', ['as' => 'codex.index', 'uses' => 'CodexController@index']);
+$index = Route::get('/', ['as' => 'index', 'uses' => 'CodexController@index']);
 
-$document = Route::get('{projectSlug}/{ref?}/{document?}', [ 'as' => 'codex.document', 'uses' => 'CodexController@document' ]);
+$document = Route::get('{projectSlug}/{ref?}/{document?}', [ 'as' => 'document', 'uses' => 'CodexController@document' ]);
 $document->where('document', '(.*)');
 
 if (count(Extender::getExcludedProjectNames()) > 0) {
