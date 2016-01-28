@@ -11,7 +11,7 @@ namespace Codex\Core\Exceptions;
 use Codex\Core\Project;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ProjectNotFoundException extends \FileNotFoundException
+class ProjectNotFoundException extends \Exception
 {
     public static function project($project)
     {

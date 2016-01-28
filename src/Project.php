@@ -193,13 +193,13 @@ class Project
     protected function resolveRefs()
     {
 
-        $directories = $this->getFiles()->directories($this->path());
+        $directories = $this->getFiles()->directories();
         $branches    = [ ];
         $this->refs  = [ ];
 
         $this->versions = array_filter(array_map(function ($dirPath) use (&$branches) {
         
-            $version      = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft($this->path())->removeLeft(DIRECTORY_SEPARATOR);
+            $version      = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft(DIRECTORY_SEPARATOR);
             $version      = (string)$version->removeLeft($this->name . '/');
             $this->refs[] = $version;
 

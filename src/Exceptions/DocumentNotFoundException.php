@@ -12,7 +12,7 @@ use Codex\Core\Document;
 use Codex\Core\Project;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class DocumentNotFoundException extends \FileNotFoundException
+class DocumentNotFoundException extends \Exception
 {
     public static function document($document)
     {
