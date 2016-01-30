@@ -2199,7 +2199,7 @@
     </interface>
     <source>eJxdkd9LwzAQx9/zV9yDD9vQVQVfnKBQJw42GbjHvcTm2gbbpCRXtyH+716ylE2P0tB+P/e9H3l47OpOZJOJgAmspSOwJVCNkFuFe1i/rqGTxaes0E8ZCdRqsYGlLtB4BGkUFLY7OF3VBNqU1rWStDXw0RvVoIKdppoNtR98mIoFlot8/vY+h1I3yLaZMLJFz1Cqvc2tQ34ZcrIgv12h6f1MDL1ugiU/wSpILwxZdxiafBqqpThZRlX2VFsHf1R4xi/YoGwjcZoqEcPnqBjD7fXN3eUxK8JNWkeKmqjz91lGjXINVrKZFrbNEpS1mq6GhLNdxh1oQ+jKsIOzmcS3EME2Th5iArlDSehBgsEdtMwCj+OQemf4rwHca0/aVClhyOO1ONmCJ8caXGj1Xz9awPbsCkInSc/i2fUf3D+UvSniVUulRmw1nokf8Qvl4rO5</source>
   </file>
-  <file path="Exceptions/ProjectNotFoundException.php" generated-path="Exceptions.ProjectNotFoundException.html" hash="3434e9760480329ff43e82943b48045c" package="Default">
+  <file path="Exceptions/ProjectNotFoundException.php" generated-path="Exceptions.ProjectNotFoundException.html" hash="0c6c75cba5487132a985d8d7239636f4" package="Default">
     <docblock line="0">
       <description>Part of the Sebwite PHP packages.</description>
       <long-description>License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -2208,7 +2208,7 @@
     <namespace-alias name="Project">\Codex\Core\Project</namespace-alias>
     <namespace-alias name="NotFoundHttpException">\Symfony\Component\HttpKernel\Exception\NotFoundHttpException</namespace-alias>
     <class final="false" abstract="false" namespace="Codex\Core\Exceptions" line="14" package="Default">
-      <extends>\FileNotFoundException</extends>
+      <extends>\Exception</extends>
       <name>ProjectNotFoundException</name>
       <full_name>\Codex\Core\Exceptions\ProjectNotFoundException</full_name>
       <docblock line="14">
@@ -2244,9 +2244,9 @@
       <error line="16" code="PPC:ERR-50008">No summary for method project()</error>
       <error line="24" code="PPC:ERR-50008">No summary for method toHttpException()</error>
     </parse_markers>
-    <source>eJxtks1uwjAMx+95CgtxaJE2HoB9HCoQ0xiqxHHdoaQuzdYmUeMKEOq7zy0lg20+WfHfP3/l4dkWVkwnEwETiNOawORABcIGt3tFCPEyBpvKr3SH7p5FnW6lJGqHkOoMpLHHWu0KAqVzU1cpKaNh2+isxAwYUTBOuQuDVT1+9RLN15s55KpERk6FEDqt0LEMITIZHpLI1JjMDxJth3QzIRp3E4tr84mSZv375ljlRh85UlmjUVOyJLKvWGssfyjJ2tDCcHNd0L8yWpapczAQLyIvADwQ6sxBsuB+/4TFSQCbbbalkuCIdyAhb7Tsc+0ZGowHJ+zF55TOVA4+xuvhdC2RrzA0E15JO/PSR+/ePe2Q1ry+IJx5bSu8WyM1tQaN+6G5YBSZpsxAG+IL8BUvzPfThdl+jAZYez2cn4rMzQqD31Nd1fx358G4+xZ952/oHH+NIPQFW/ENxGbazQ==</source>
+    <source>eJxtks9uwjAMxu95CgtxaJE2HoD9OVRMTGOoEsd1h5K6NFvrRE0qQKjvPre0GUzzyYq//Gx/ycOzKYyYz2YCZhCntQOdgysQtrg7KIcQr2IwqfxO92jvWdTp1koiWYSUMpDanGq1LxwoynVdpU5pgl1DWYkZMKJgnLIjg1U9fv0aLTfbJeSqREbOhRCUVmhZhhDpDI9JpGtMlkeJpkPahRCNvanFtf5C6Rb9+fZU5ZpOXKmMJiSXrJwzb1gTlr+UZKPdi+bhuqI/ZbQsU2thII4iLwA8OqTMwi9JnAVwmGZXKgnW8d4S8oZkrzcXUDAdkrAXX650oXLwNbaEr5NEdn4YILySduGljz69e9qj27BlQbjw2lb4tEbX1ASEh2G4YBLppsyAtGPX+eVG5sd5ZLafkwHWXi/nt3L6xrbg71ZXPf/1OZh2X6Gf/B2t5e8QhL5hK34ARxvWIA==</source>
   </file>
-  <file path="Exceptions/DocumentNotFoundException.php" generated-path="Exceptions.DocumentNotFoundException.html" hash="aa47c4b576370e7c71a72e2658596858" package="Default">
+  <file path="Exceptions/DocumentNotFoundException.php" generated-path="Exceptions.DocumentNotFoundException.html" hash="81ad93f22db754618ba89f67f453ba9b" package="Default">
     <docblock line="0">
       <description>Part of the Sebwite PHP packages.</description>
       <long-description>License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -2256,7 +2256,7 @@
     <namespace-alias name="Project">\Codex\Core\Project</namespace-alias>
     <namespace-alias name="NotFoundHttpException">\Symfony\Component\HttpKernel\Exception\NotFoundHttpException</namespace-alias>
     <class final="false" abstract="false" namespace="Codex\Core\Exceptions" line="15" package="Default">
-      <extends>\FileNotFoundException</extends>
+      <extends>\Exception</extends>
       <name>DocumentNotFoundException</name>
       <full_name>\Codex\Core\Exceptions\DocumentNotFoundException</full_name>
       <docblock line="15">
@@ -2307,7 +2307,7 @@
       <error line="24" code="PPC:ERR-50008">No summary for method inProject()</error>
       <error line="34" code="PPC:ERR-50008">No summary for method toHttpException()</error>
     </parse_markers>
-    <source>eJyFUk1vwjAMvedXWIhDQWL8AMZ2YExMYwiJ47pDSV3I1jpRkwrQxH+fC2n4lOaTlff84mf78dmsjeh3uwK6ME9KBzoDt0ZY4HKjHMJ8MgeTyJ9khfaBSTVvqiSSRUgoBanNrlSrtQNFmS6LxClNsKwozTEFlliznLKNBrMO8tO30Xi2GEOmcmTJvhCCkgIt0xBGOsVtPNIlxuOtRFNL2oEQlb3AXrSsCiQ3uAbmpf5G6d8XuyLTtGOkMJqYHk+cM+9YEuYn+Xim3avmrmswvPKfMk+shearhhUYgFuHlFqIX9nJDSx+BXCYapkrCdbxdCRkFclDbepVo3aTdQ70Y1EdKoMTyLNjBZLIK2oa6pyR6ziRh6e897RCN+PxRp1BYO9DVqKrSgLCje8wao10ladA2vGCeMlB9PM3iO6/Wl5tf+4xmFPk1xC1zTG5a85j59583Y21hjoM6T/G2vXl9Z74rGx9eg9DaNX31+iwGZ+yF1711TwO1Y3DuxadvriW6Nrg2WDvnlfkG2QTH8ceo06Y6V78AXfMKH8=</source>
+    <source>eJyFksFuwjAMhu95CgtxKEgbD8DYDoyJaQwhcRw7lNSFbK0TNakATbz7XEjTwpCWkxX/+eLf9sOT2Rox6PcF9GERFw50Cm6LsMT1TjmExXQBJpbf8QbtPYsq3UxJJIsQUwJSm0OhNlsHilJd5LFTmmBdUpJhAozYMk7ZmsGqE372Op7MlxNIVYaMHAghKM7RsgxhrBPcr8a6wNVkL9FUSDsUorQXuWctyxzJDa8Ti0J/ofT3y0OeajpwJjeaWL6aOmfesCDMGvxqrt2L5qqrZLjlP2UWWwv1V7UqKAD3Dimx0KDEjwA+plxnSoJ13BEJaUnypE88KerWUe8kPz+qjkqhSXK/mEASeSx1Eb2WuDqNeNTEd48bdHNuadQbBvUxRAW6siAg3PkKo85Yl1kCpB0PhQcboB8/AXr87Hjase0xmFPkWx91zTm4ac7n2t78uz/WaukohP8Y61bbdvfIq2SrdbsfQafauZrDZnzIXni8V/04va4d3rTo9MWGRNcGW429uVKRL5BNvJ9rjHqhp0fxC0F4I9I=</source>
   </file>
   <file path="Http/Controllers/CodexController.php" generated-path="Http.Controllers.CodexController.html" hash="8edcdadb994e68cd3ffc563ccf295de9" package="Default">
     <docblock line="0">
