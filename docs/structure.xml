@@ -2788,7 +2788,7 @@ file. In addition, it is set as the URL generator's root namespace.</description
     </parse_markers>
     <source>eJx9kl1LwzAUhu/zK86FUB1zVcEb51ScAwdTCt2d8yJLT9ewtAlJOififzdpG6oyDb1IeJ/z9Z5e36pCkXgwIDCAhGoLMgdbIExlhntIHhNQlG3pBs3IIZ56mi9hwRlWBoFWGTCp3jXfFBZ4lUtdUstlBeu6ygRm8MZt4RJyE/I4qimwmE9nz+kMci7QpY1JRUs0Dupqr6ZS4yrRcscz1GZMSO0Kprh2GXGV1kpJbR1UGSkwRb1zLQUaqIF7avCw6lJ1Ay99X+5rBz7EhqHvQvfd6VtsVFrbQmr4ocID7mCJtGyI3qWOCM9jdgIXZ+eXwzaqgUVnb3cKa5W5imMrMi1wQ8WIyTLuoLjk9jQEfNtN4ykT1Jg/RgPcW6yy/5wiH8TXV1paZNZt86hf0gSi1oR2UWETkXP3V4zSmPO9D2A+wDdfuh/HjA6wQXP0CwnzRyXdYgSTG4ie/G3YK4Ib2yoLf2uE1zH5JF9P6OkM</source>
   </file>
-  <file path="CodexServiceProvider.php" generated-path="CodexServiceProvider.html" hash="7816ebd9804b43c41e7f1b9e8c2d901f" package="Default">
+  <file path="CodexServiceProvider.php" generated-path="CodexServiceProvider.html" hash="87cf88cf60fd7d6209f735bcead27060" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -2801,148 +2801,147 @@ file. In addition, it is set as the URL generator's root namespace.</description
     <namespace-alias name="Application">\Illuminate\Contracts\Foundation\Application</namespace-alias>
     <namespace-alias name="Monolog">\Monolog\Logger</namespace-alias>
     <namespace-alias name="BladeExtensionsServiceProvider">\Radic\BladeExtensions\BladeExtensionsServiceProvider</namespace-alias>
-    <namespace-alias name="LocalFilesystem">\Sebwite\Support\LocalFilesystem</namespace-alias>
     <namespace-alias name="ServiceProvider">\Sebwite\Support\ServiceProvider</namespace-alias>
     <namespace-alias name="SupportServiceProvider">\Sebwite\Support\SupportServiceProvider</namespace-alias>
-    <class final="false" abstract="false" namespace="Codex\Core" line="28" package="Codex\Core">
+    <class final="false" abstract="false" namespace="Codex\Core" line="27" package="Codex\Core">
       <extends>\Sebwite\Support\ServiceProvider</extends>
       <name>CodexServiceProvider</name>
       <full_name>\Codex\Core\CodexServiceProvider</full_name>
-      <docblock line="28">
+      <docblock line="27">
         <description>Codex service provider.</description>
         <long-description></long-description>
-        <tag name="package" line="28" description="Codex\Core"/>
-        <tag name="author" line="28" description="Codex Project Dev Team"/>
-        <tag name="copyright" line="28" description="Copyright (c) 2015, Codex Project"/>
-        <tag name="license" line="28" description="MIT License" link="https://tldrlegal.com/license/mit-license"/>
+        <tag name="package" line="27" description="Codex\Core"/>
+        <tag name="author" line="27" description="Codex Project Dev Team"/>
+        <tag name="copyright" line="27" description="Copyright (c) 2015, Codex Project"/>
+        <tag name="license" line="27" description="MIT License" link="https://tldrlegal.com/license/mit-license"/>
       </docblock>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="32" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="31" package="Codex\Core">
         <name>$dir</name>
         <full_name>\Codex\Core\CodexServiceProvider::dir</full_name>
         <default>__DIR__</default>
-        <docblock line="32">
+        <docblock line="31">
           <description></description>
           <long-description></long-description>
         </docblock>
       </property>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="34" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="33" package="Codex\Core">
         <name>$configFiles</name>
         <full_name>\Codex\Core\CodexServiceProvider::configFiles</full_name>
         <default>array('codex')</default>
-        <docblock line="34">
+        <docblock line="33">
           <description></description>
           <long-description></long-description>
         </docblock>
       </property>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="36" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="35" package="Codex\Core">
         <name>$viewDirs</name>
         <full_name>\Codex\Core\CodexServiceProvider::viewDirs</full_name>
         <default>array('views' =&gt; 'codex')</default>
-        <docblock line="36">
+        <docblock line="35">
           <description></description>
           <long-description></long-description>
         </docblock>
       </property>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="38" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="37" package="Codex\Core">
         <name>$assetDirs</name>
         <full_name>\Codex\Core\CodexServiceProvider::assetDirs</full_name>
-        <default>array('assets/codex-theme/dist' =&gt; 'codex')</default>
-        <docblock line="38">
+        <default>array('assets' =&gt; 'codex')</default>
+        <docblock line="37">
           <description></description>
           <long-description></long-description>
         </docblock>
       </property>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="40" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="39" package="Codex\Core">
         <name>$provides</name>
         <full_name>\Codex\Core\CodexServiceProvider::provides</full_name>
         <default>array('codex', 'codex.log')</default>
-        <docblock line="40">
+        <docblock line="39">
           <description></description>
           <long-description></long-description>
         </docblock>
       </property>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="42" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="41" package="Codex\Core">
         <name>$providers</name>
         <full_name>\Codex\Core\CodexServiceProvider::providers</full_name>
         <default>array(\Sebwite\Support\SupportServiceProvider::class, \Radic\BladeExtensions\BladeExtensionsServiceProvider::class, \Codex\Core\Providers\ConsoleServiceProvider::class, \Codex\Core\Providers\RouteServiceProvider::class)</default>
-        <docblock line="42">
+        <docblock line="41">
           <description></description>
           <long-description></long-description>
         </docblock>
       </property>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="49" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="48" package="Codex\Core">
         <name>$bindings</name>
         <full_name>\Codex\Core\CodexServiceProvider::bindings</full_name>
         <default>array('codex.project' =&gt; \Codex\Core\Project::class, 'codex.document' =&gt; \Codex\Core\Document::class, 'codex.menu' =&gt; \Codex\Core\Menu::class, 'codex.projects' =&gt; \Codex\Core\Components\Factory\Projects::class, 'codex.menus' =&gt; \Codex\Core\Components\Factory\Menus::class, 'codex.documents' =&gt; \Codex\Core\Components\Project\Documents::class)</default>
-        <docblock line="49">
+        <docblock line="48">
           <description></description>
           <long-description></long-description>
         </docblock>
       </property>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="62" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="61" package="Codex\Core">
         <name>$singletons</name>
         <full_name>\Codex\Core\CodexServiceProvider::singletons</full_name>
         <default>array('codex' =&gt; \Codex\Core\Factory::class)</default>
-        <docblock line="62">
+        <docblock line="61">
           <description></description>
           <long-description></long-description>
-          <tag name="var" line="62" description="" type="array" variable="">
+          <tag name="var" line="61" description="" type="array" variable="">
             <type>array</type>
           </tag>
         </docblock>
       </property>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="69" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="68" package="Codex\Core">
         <name>$aliases</name>
         <full_name>\Codex\Core\CodexServiceProvider::aliases</full_name>
         <default>array('codex' =&gt; \Codex\Core\Contracts\Codex::class, 'codex.log' =&gt; \Codex\Core\Contracts\Log::class)</default>
-        <docblock line="69">
+        <docblock line="68">
           <description></description>
           <long-description></long-description>
-          <tag name="var" line="69" description="" type="array" variable="">
+          <tag name="var" line="68" description="" type="array" variable="">
             <type>array</type>
           </tag>
         </docblock>
       </property>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="74" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="73" package="Codex\Core">
         <name>boot</name>
         <full_name>\Codex\Core\CodexServiceProvider::boot()</full_name>
-        <docblock line="74">
+        <docblock line="73">
           <description></description>
           <long-description></long-description>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="86" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="87" package="Codex\Core">
         <name>register</name>
         <full_name>\Codex\Core\CodexServiceProvider::register()</full_name>
-        <docblock line="86">
+        <docblock line="87">
           <description>Register bindings in the container.</description>
           <long-description></long-description>
-          <tag name="return" line="86" description="" type="\Illuminate\Contracts\Foundation\Application">
+          <tag name="return" line="87" description="" type="\Illuminate\Contracts\Foundation\Application">
             <type>\Illuminate\Contracts\Foundation\Application</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="103" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="106" package="Codex\Core">
         <name>registerFilters</name>
         <full_name>\Codex\Core\CodexServiceProvider::registerFilters()</full_name>
-        <docblock line="103">
+        <docblock line="106">
           <description>Register the core filters.</description>
           <long-description></long-description>
-          <tag name="return" line="103" description="" type="void">
+          <tag name="return" line="106" description="" type="void">
             <type>void</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="116" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="119" package="Codex\Core">
         <name>registerLogger</name>
         <full_name>\Codex\Core\CodexServiceProvider::registerLogger()</full_name>
-        <docblock line="116">
+        <docblock line="119">
           <description>registerLogger method</description>
           <long-description></long-description>
-          <tag name="param" line="116" description="" type="\Illuminate\Contracts\Foundation\Application" variable="$app">
+          <tag name="param" line="119" description="" type="\Illuminate\Contracts\Foundation\Application" variable="$app">
             <type>\Illuminate\Contracts\Foundation\Application</type>
           </tag>
-          <tag name="return" line="116" description="" type="\Codex\Core\Log\Writer">
+          <tag name="return" line="119" description="" type="\Codex\Core\Log\Writer">
             <type>\Codex\Core\Log\Writer</type>
           </tag>
         </docblock>
@@ -3030,21 +3029,21 @@ file. In addition, it is set as the URL generator's root namespace.</description
       </method>
     </class>
     <markers>
-      <todo line="76">Change the autogenerated stub</todo>
+      <todo line="75">Change the autogenerated stub</todo>
     </markers>
     <parse_markers>
-      <error line="74" code="PPC:ERR-50008">No summary for method boot()</error>
-      <error line="32" code="PPC:ERR-50007">No summary for property $dir</error>
-      <error line="34" code="PPC:ERR-50007">No summary for property $configFiles</error>
-      <error line="36" code="PPC:ERR-50007">No summary for property $viewDirs</error>
-      <error line="38" code="PPC:ERR-50007">No summary for property $assetDirs</error>
-      <error line="40" code="PPC:ERR-50007">No summary for property $provides</error>
-      <error line="42" code="PPC:ERR-50007">No summary for property $providers</error>
-      <error line="49" code="PPC:ERR-50007">No summary for property $bindings</error>
-      <error line="62" code="PPC:ERR-50007">No summary for property $singletons</error>
-      <error line="69" code="PPC:ERR-50007">No summary for property $aliases</error>
+      <error line="73" code="PPC:ERR-50008">No summary for method boot()</error>
+      <error line="31" code="PPC:ERR-50007">No summary for property $dir</error>
+      <error line="33" code="PPC:ERR-50007">No summary for property $configFiles</error>
+      <error line="35" code="PPC:ERR-50007">No summary for property $viewDirs</error>
+      <error line="37" code="PPC:ERR-50007">No summary for property $assetDirs</error>
+      <error line="39" code="PPC:ERR-50007">No summary for property $provides</error>
+      <error line="41" code="PPC:ERR-50007">No summary for property $providers</error>
+      <error line="48" code="PPC:ERR-50007">No summary for property $bindings</error>
+      <error line="61" code="PPC:ERR-50007">No summary for property $singletons</error>
+      <error line="68" code="PPC:ERR-50007">No summary for property $aliases</error>
     </parse_markers>
-    <source>eJylVktv4zYQvvtXzCGA5cCO2gK92F334WTRAMlukAToYbUIGGlss5FIgaScBIv97x0+pMiWlLqoLzI537wfnF9+LbflKD49HcEp3DBlQK7BbBFWMsMXuPnzBkqWPrEN6jOCWNT15T1c8RSFRmAig1SWr4pvtga4WEtVMMOlgMdKZDlm8MzNlgRyXcshlFNwdbm6+HR3AWueI4mNR4IVqAkUdCcrqXAxGlW6fZFcvBjSTBp08pHnBhV9lRTmmhk6+KvFEUzkq8ZMPosBliu5Sf5SvI90rxg3OnE3N0rueIbK3XnkZZ5XBRfMIEGEUSwl8EdJ8XCRSX4vy5yn7r9nuJZC5qSOVG5QAdP1jSffsoynyR85y7Dlx8H5DtWOclKb4znv8JHCj8ldVZZSGVKQspz8Rf2qDRb9oKMkhW8HW1eSrx7tyVAGel1Bv9WlAK2wOgKrzFYqqAlAkv/G1MA57uAeWeFAbwW3av5F6QR++uHHn6f7jA6fh2IF2BpT6nkcmzxTOW5YfpbKIg70uOBmVmNbRe6KM82Z1l72gdOANgmZhoP70beR9aOpnYNKcUQKjCErqU1OMq7gAzw8nF/ePjx0yakUa75xuSPYFxinVuYYvnahO47P51wFnD3pMXxYvsdCvqGpecbupGMHn1GrFhhnXJu2kB4ZIcl75k3DnzMq5l7FdWU4Lke0v/7qms9dEqYN7P0W6MBrgu1coWWOxzPcysoMwB26x7NHLjIuNvuOhWiUvjjHYCMaKrWjPWAzmVYFCh/983AYAhOtGrsLAl/ToQEOmKC9DStZlFKQYBpUNK6kek2CWfo9VbrR1SPAqh/krr3yldniDmqT2lPdF2Y3ZOyPmnvHaGIqxV7DTXyYCE1ZyNFQyntS4dQHi/+3JpZzprFfTROn+kFwM2EoPK5d9uD0NvQWXPVIEwvWlUj9qyuliSaO9K0ResLKkowqmXKl4zELiGO4/3z+eQ6rLRM0jO2jTPNXblCgYtYjbarHPSmzZcGeMApOTWZLbWiSh/N87k76rKTRPmPOID2eLJyE76NOQG9xQ1OFBmjTKmEzoFlnGBfuvXDQJgUKTaUEtF7Q/VwcREMFDf8WkTfc4g1id5bZsib5tzmyjMOgsFtYMQ2kKS7/TETjpvOmR7RdS1dHkO/AXint3muJaEZNLeKtDafHNGHXc5d4Nx0vXtK8snM4Gj8UTD3Z1aqV/KHc+3wrtGugjd1QyneSZwN910l3k4bDrLds9phovLa7Ixlsl0cKQmeVfN/zWkpZL5Mk4mCx3BfQjcR+gUGBtABlh0Eg+ayA5D9slq7EB2KZ9K65x0Y3dMKhrr4Wmy25oJkg0npkuME2hRP6UPsJfAavO2rY7M/ehw048mJQ7DhlxtZiNJlM99AWQQsH7vxz8rUhTtpJI1mzJe1iboOKAo9fqojnS2vw0vgyW7prN3EI3InbyX0ev4/+Abz5K9Y=</source>
+    <source>eJylVt9v4zYMfs9fwYcCcYqk2QbsJdnltqU9rEC7K9oCezgfCtVmEq22ZEhy2uJw//uoH3ac2G5zWF4ciR9JkfpI8bePxaYYTE9PB3AKN0wZkCswG4SlTPEFbv66gYIlT2yN+owgFnV9eQ9XPEGhEZhIIZHFq+LrjQEuVlLlzHAp4LEUaYYpPHOzIYNcV3YI5RxcXS4v/r67gBXPkMxOB4LlqAkUfMdLqXA+GJS6uRFfvBjyTB50/IlnBhV9lRTmmhla+K35EUoUq8ZUPoselSu5jv9RvEt0rxg3OnY7N0pueYrK7XnkZZaVORfMIEGEUSwh8CdJ+XCZif8oiown7r9XuJZCZuSOXK5RAdPVjhffspQn8Z8ZS7ERx8H6DtWW7qQ6jte8w0dKP8Z3ZVFIZeLjQP7bwlYk8cTQXgxFkFfk+L26ZWhkzAlYaTZSQSUAsvwvJgbOcQv3yHIH2nFpWf+LkhH88tPPv473FR0+CzwE2BhT6Nl0arJUZbhm2Vki82mQT3NuJhW2wV/HuyRjWnvbB0ED2vymGg72B98GNo6aFgckcEJKjKFTUgWcpFzBB3h4OL+8fXhoixMpVnxNNERNsC8wTKzNIXxtQ7ccn8+5Cji70kP4sHhLhWJDs9Nxy3eVwq3unWcc/pwRMd9S8p6c0P666TSbuayPa9jbdG7BK4GtQqFlhscr3MrS9MAduiOyRy5SLtb7gYVsFJ6NQ7ApDdRseQ/YVCZljsK49J+HRR+YZOXQbRD4mhY1sOcI2p9hKfNCCjJMTYdaj1SvcTiWfsuVrn11GLDue7WrqDyrGtrBbVxFqrvS7LqK/VE1bxl1P6XYa9iZHl6EplvI0NCVd1yFcx9O/L89sYwzjd1u6jxVzd01gb70uHLZg1Of7yRc+UgtClalSPwLKqWJRk70rTZ6woqCDlUw5ajjMXOYTuH+8/nnGSw3TFD3tQ8sNVy5RoGK2Yi0KR/3rEwWOXvCKAQ1miy0odYd1rOZW+mzgnr5hLkD6eFovuOeQlMq4SzN3eb3QSvNt7jmml5QqAsovP3U8gzjwj0bDlpfTDDbeCP3b+ggRyp4eC9PO9x8B7FTyWRRifzrG1nFflCYHqJmJmrK+dciGtb1OD6iGBu+WoZ8XXZaaVZkw0TdgCoTu+IcH1Oa7cgdHVzPvHhJstJ252j4kDP1ZIendynRxwjPAoV2/LMZ7SPCVvK0p0ZbJKgv55ALjUg8Jhqu7MxIYdihkVLTGiHfzkdlpaiGSDJxMFDuG2hnYp92kCNNR+lhEsg+yyH+gYnSZb8nl3HneHtsdkN9HPrqKrzJggvqHyKp2otrgmM4oQ8VpcBn8L6jWs3+7H6YfCNvBsWW081Yhkaj0XgPbRE0nODWPz1fa+GoeWlka7KgQc2NV1HQ8RMX6XxpNGlqdWZDe12MdrO4v8fvg/8ARWQiTw==</source>
   </file>
   <file path="Menu.php" generated-path="Menu.html" hash="efab43de92d1f489d6a36cf6ddd8b3ad" package="Default">
     <docblock line="0">
