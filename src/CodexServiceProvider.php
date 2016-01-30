@@ -13,7 +13,6 @@ use Codex\Core\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application;
 use Monolog\Logger as Monolog;
 use Radic\BladeExtensions\BladeExtensionsServiceProvider;
-use Sebwite\Support\LocalFilesystem;
 use Sebwite\Support\ServiceProvider;
 use Sebwite\Support\SupportServiceProvider;
 
@@ -35,7 +34,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected $viewDirs = [ 'views' => 'codex' ];
 
-    protected $assetDirs = ['assets/codex-theme/dist' => 'codex'];
+    protected $assetDirs = [ 'assets' => 'codex' ];
 
     protected $provides = [ 'codex', 'codex.log' ];
 
