@@ -8,6 +8,7 @@
     "require": {
         "php": ">=5.5.9",
         "sebwite/support": "1.0.*",
+        "sebwite/config-parser": "1.0.*",
         "erusev/parsedown": "~1.5",
         "erusev/parsedown-extra": "~0.7",
         "symfony/yaml": "~2.7",
