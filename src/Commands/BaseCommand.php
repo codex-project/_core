@@ -4,7 +4,7 @@
  *
  * MIT License and copyright information bundled with this package in the LICENSE file
  */
-namespace Codex\Core\Console;
+namespace Codex\Core\Commands;
 
 use Codex\Core\Contracts\Codex;
 use Sebwite\Support\Console\Command;

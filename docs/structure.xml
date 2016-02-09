@@ -460,7 +460,7 @@
     </parse_markers>
     <source>eJytU01v2zAMvetX8JBDarR1N2CXtMBaZC02YBuCIUdfBImJtdqSQdFZgrX/ffqwu3RoigCrLhbEx8fHR/rqY1d3wsoWfScVwtxp3FZzR1gtSRr2l0L0/tn77ZbReuOsz1eNFEBlUQgoMg5q5+6hI7cxIQgciUIwxq9DlXu5RoA9yhSQPdeOYAzAgtxPVAyfcANLlG0CKdftyKxrDqDxNlUn8P7i3YfT54kJ3xgVtMZqNXPnZ2XJjaYG17I5V64th3jZGj4bsd++LOFrvgeOUiT5mXsxtJSsEb9FVJsaj6eAG61BgsVfsJKKHe2SEedDeEQFC0i2AJ7J2DW8fiaRYeGM5X/Tq3njfE/4UO3NZh6mEvQq9tXnOINJLa1ukEYJxTUh92Rh44weHsv0DdPi4BpqWPVWcRgvqMgbaaZ/VZw+UZ6ktOxBPOMuzGZS68NZlynhURz2TjvVt2gZVqZhpP+yDyZxtY+1bnDuLtV9A+8y0TRpOMa41cv4Q5YFn3+4nnFY+O8h63armj79my+7lk17kERyl73xR3WS6jyRZ4X+1Q1IYI16T5wf88aGHsUfHKtX0A==</source>
   </file>
-  <file path="Project.php" generated-path="Project.html" hash="331d391d0d7aed4111fddc45168e2337" package="Default">
+  <file path="Project.php" generated-path="Project.html" hash="9942ad2fa439403cea91c1001dbba275" package="Default">
     <docblock line="0">
       <description>Part of the Sebwite PHP packages.</description>
       <long-description>License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -1224,7 +1224,7 @@
       <error line="87" code="PPC:ERR-50007">No summary for property $repository</error>
       <error line="89" code="PPC:ERR-50007">No summary for property $fsm</error>
     </parse_markers>
-    <source>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</source>
+    <source>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</source>
   </file>
   <file path="helpers.php" generated-path="helpers.html" hash="8eb284154bf1681ec3be0d6a5b86a6a3" package="Default">
     <docblock line="0">
@@ -2788,7 +2788,7 @@ file. In addition, it is set as the URL generator's root namespace.</description
     </parse_markers>
     <source>eJx9kl1LwzAUhu/zK86FUB1zVcEb51ScAwdTCt2d8yJLT9ewtAlJOififzdpG6oyDb1IeJ/z9Z5e36pCkXgwIDCAhGoLMgdbIExlhntIHhNQlG3pBs3IIZ56mi9hwRlWBoFWGTCp3jXfFBZ4lUtdUstlBeu6ygRm8MZt4RJyE/I4qimwmE9nz+kMci7QpY1JRUs0Dupqr6ZS4yrRcscz1GZMSO0Kprh2GXGV1kpJbR1UGSkwRb1zLQUaqIF7avCw6lJ1Ay99X+5rBz7EhqHvQvfd6VtsVFrbQmr4ocID7mCJtGyI3qWOCM9jdgIXZ+eXwzaqgUVnb3cKa5W5imMrMi1wQ8WIyTLuoLjk9jQEfNtN4ykT1Jg/RgPcW6yy/5wiH8TXV1paZNZt86hf0gSi1oR2UWETkXP3V4zSmPO9D2A+wDdfuh/HjA6wQXP0CwnzRyXdYgSTG4ie/G3YK4Ib2yoLf2uE1zH5JF9P6OkM</source>
   </file>
-  <file path="CodexServiceProvider.php" generated-path="CodexServiceProvider.html" hash="87cf88cf60fd7d6209f735bcead27060" package="Default">
+  <file path="CodexServiceProvider.php" generated-path="CodexServiceProvider.html" hash="c1022fe316d0c0f91008ffa4856c7b4e" package="Default">
     <docblock line="0">
       <description>Part of the Codex PHP packages.</description>
       <long-description>MIT License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -2799,149 +2799,151 @@ file. In addition, it is set as the URL generator's root namespace.</description
     <namespace-alias name="Writer">\Codex\Core\Log\Writer</namespace-alias>
     <namespace-alias name="CodexProviderTrait">\Codex\Core\Traits\CodexProviderTrait</namespace-alias>
     <namespace-alias name="Application">\Illuminate\Contracts\Foundation\Application</namespace-alias>
+    <namespace-alias name="Local">\League\Flysystem\Adapter\Local</namespace-alias>
+    <namespace-alias name="Filesystem">\League\Flysystem\Filesystem</namespace-alias>
     <namespace-alias name="Monolog">\Monolog\Logger</namespace-alias>
     <namespace-alias name="BladeExtensionsServiceProvider">\Radic\BladeExtensions\BladeExtensionsServiceProvider</namespace-alias>
     <namespace-alias name="ServiceProvider">\Sebwite\Support\ServiceProvider</namespace-alias>
     <namespace-alias name="SupportServiceProvider">\Sebwite\Support\SupportServiceProvider</namespace-alias>
-    <class final="false" abstract="false" namespace="Codex\Core" line="27" package="Codex\Core">
+    <class final="false" abstract="false" namespace="Codex\Core" line="29" package="Codex\Core">
       <extends>\Sebwite\Support\ServiceProvider</extends>
       <name>CodexServiceProvider</name>
       <full_name>\Codex\Core\CodexServiceProvider</full_name>
-      <docblock line="27">
+      <docblock line="29">
         <description>Codex service provider.</description>
         <long-description></long-description>
-        <tag name="package" line="27" description="Codex\Core"/>
-        <tag name="author" line="27" description="Codex Project Dev Team"/>
-        <tag name="copyright" line="27" description="Copyright (c) 2015, Codex Project"/>
-        <tag name="license" line="27" description="MIT License" link="https://tldrlegal.com/license/mit-license"/>
+        <tag name="package" line="29" description="Codex\Core"/>
+        <tag name="author" line="29" description="Codex Project Dev Team"/>
+        <tag name="copyright" line="29" description="Copyright (c) 2015, Codex Project"/>
+        <tag name="license" line="29" description="MIT License" link="https://tldrlegal.com/license/mit-license"/>
       </docblock>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="31" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="33" package="Codex\Core">
         <name>$dir</name>
         <full_name>\Codex\Core\CodexServiceProvider::dir</full_name>
         <default>__DIR__</default>
-        <docblock line="31">
-          <description></description>
-          <long-description></long-description>
-        </docblock>
-      </property>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="33" package="Codex\Core">
-        <name>$configFiles</name>
-        <full_name>\Codex\Core\CodexServiceProvider::configFiles</full_name>
-        <default>array('codex')</default>
         <docblock line="33">
           <description></description>
           <long-description></long-description>
         </docblock>
       </property>
       <property static="false" visibility="protected" namespace="Codex\Core" line="35" package="Codex\Core">
-        <name>$viewDirs</name>
-        <full_name>\Codex\Core\CodexServiceProvider::viewDirs</full_name>
-        <default>array('views' =&gt; 'codex')</default>
+        <name>$configFiles</name>
+        <full_name>\Codex\Core\CodexServiceProvider::configFiles</full_name>
+        <default>array('codex')</default>
         <docblock line="35">
           <description></description>
           <long-description></long-description>
         </docblock>
       </property>
       <property static="false" visibility="protected" namespace="Codex\Core" line="37" package="Codex\Core">
-        <name>$assetDirs</name>
-        <full_name>\Codex\Core\CodexServiceProvider::assetDirs</full_name>
-        <default>array('assets' =&gt; 'codex')</default>
+        <name>$viewDirs</name>
+        <full_name>\Codex\Core\CodexServiceProvider::viewDirs</full_name>
+        <default>array('views' =&gt; 'codex')</default>
         <docblock line="37">
           <description></description>
           <long-description></long-description>
         </docblock>
       </property>
       <property static="false" visibility="protected" namespace="Codex\Core" line="39" package="Codex\Core">
-        <name>$provides</name>
-        <full_name>\Codex\Core\CodexServiceProvider::provides</full_name>
-        <default>array('codex', 'codex.log')</default>
+        <name>$assetDirs</name>
+        <full_name>\Codex\Core\CodexServiceProvider::assetDirs</full_name>
+        <default>array('assets' =&gt; 'codex')</default>
         <docblock line="39">
           <description></description>
           <long-description></long-description>
         </docblock>
       </property>
       <property static="false" visibility="protected" namespace="Codex\Core" line="41" package="Codex\Core">
-        <name>$providers</name>
-        <full_name>\Codex\Core\CodexServiceProvider::providers</full_name>
-        <default>array(\Sebwite\Support\SupportServiceProvider::class, \Radic\BladeExtensions\BladeExtensionsServiceProvider::class, \Codex\Core\Providers\ConsoleServiceProvider::class, \Codex\Core\Providers\RouteServiceProvider::class)</default>
+        <name>$provides</name>
+        <full_name>\Codex\Core\CodexServiceProvider::provides</full_name>
+        <default>array('codex', 'codex.log')</default>
         <docblock line="41">
           <description></description>
           <long-description></long-description>
         </docblock>
       </property>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="48" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="43" package="Codex\Core">
+        <name>$providers</name>
+        <full_name>\Codex\Core\CodexServiceProvider::providers</full_name>
+        <default>array(\Sebwite\Support\SupportServiceProvider::class, \Radic\BladeExtensions\BladeExtensionsServiceProvider::class, \Codex\Core\Providers\ConsoleServiceProvider::class, \Codex\Core\Providers\RouteServiceProvider::class)</default>
+        <docblock line="43">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+      </property>
+      <property static="false" visibility="protected" namespace="Codex\Core" line="50" package="Codex\Core">
         <name>$bindings</name>
         <full_name>\Codex\Core\CodexServiceProvider::bindings</full_name>
         <default>array('codex.project' =&gt; \Codex\Core\Project::class, 'codex.document' =&gt; \Codex\Core\Document::class, 'codex.menu' =&gt; \Codex\Core\Menu::class, 'codex.projects' =&gt; \Codex\Core\Components\Factory\Projects::class, 'codex.menus' =&gt; \Codex\Core\Components\Factory\Menus::class, 'codex.documents' =&gt; \Codex\Core\Components\Project\Documents::class)</default>
-        <docblock line="48">
+        <docblock line="50">
           <description></description>
           <long-description></long-description>
         </docblock>
       </property>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="61" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="63" package="Codex\Core">
         <name>$singletons</name>
         <full_name>\Codex\Core\CodexServiceProvider::singletons</full_name>
         <default>array('codex' =&gt; \Codex\Core\Factory::class)</default>
-        <docblock line="61">
+        <docblock line="63">
           <description></description>
           <long-description></long-description>
-          <tag name="var" line="61" description="" type="array" variable="">
+          <tag name="var" line="63" description="" type="array" variable="">
             <type>array</type>
           </tag>
         </docblock>
       </property>
-      <property static="false" visibility="protected" namespace="Codex\Core" line="68" package="Codex\Core">
+      <property static="false" visibility="protected" namespace="Codex\Core" line="70" package="Codex\Core">
         <name>$aliases</name>
         <full_name>\Codex\Core\CodexServiceProvider::aliases</full_name>
         <default>array('codex' =&gt; \Codex\Core\Contracts\Codex::class, 'codex.log' =&gt; \Codex\Core\Contracts\Log::class)</default>
-        <docblock line="68">
+        <docblock line="70">
           <description></description>
           <long-description></long-description>
-          <tag name="var" line="68" description="" type="array" variable="">
+          <tag name="var" line="70" description="" type="array" variable="">
             <type>array</type>
           </tag>
         </docblock>
       </property>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="73" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="75" package="Codex\Core">
         <name>boot</name>
         <full_name>\Codex\Core\CodexServiceProvider::boot()</full_name>
-        <docblock line="73">
+        <docblock line="75">
           <description></description>
           <long-description></long-description>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="87" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Codex\Core" line="89" package="Codex\Core">
         <name>register</name>
         <full_name>\Codex\Core\CodexServiceProvider::register()</full_name>
-        <docblock line="87">
+        <docblock line="89">
           <description>Register bindings in the container.</description>
           <long-description></long-description>
-          <tag name="return" line="87" description="" type="\Illuminate\Contracts\Foundation\Application">
+          <tag name="return" line="89" description="" type="\Illuminate\Contracts\Foundation\Application">
             <type>\Illuminate\Contracts\Foundation\Application</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="106" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="114" package="Codex\Core">
         <name>registerFilters</name>
         <full_name>\Codex\Core\CodexServiceProvider::registerFilters()</full_name>
-        <docblock line="106">
+        <docblock line="114">
           <description>Register the core filters.</description>
           <long-description></long-description>
-          <tag name="return" line="106" description="" type="void">
+          <tag name="return" line="114" description="" type="void">
             <type>void</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="119" package="Codex\Core">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="127" package="Codex\Core">
         <name>registerLogger</name>
         <full_name>\Codex\Core\CodexServiceProvider::registerLogger()</full_name>
-        <docblock line="119">
+        <docblock line="127">
           <description>registerLogger method</description>
           <long-description></long-description>
-          <tag name="param" line="119" description="" type="\Illuminate\Contracts\Foundation\Application" variable="$app">
+          <tag name="param" line="127" description="" type="\Illuminate\Contracts\Foundation\Application" variable="$app">
             <type>\Illuminate\Contracts\Foundation\Application</type>
           </tag>
-          <tag name="return" line="119" description="" type="\Codex\Core\Log\Writer">
+          <tag name="return" line="127" description="" type="\Codex\Core\Log\Writer">
             <type>\Codex\Core\Log\Writer</type>
           </tag>
         </docblock>
@@ -3029,21 +3031,21 @@ file. In addition, it is set as the URL generator's root namespace.</description
       </method>
     </class>
     <markers>
-      <todo line="75">Change the autogenerated stub</todo>
+      <todo line="77">Change the autogenerated stub</todo>
     </markers>
     <parse_markers>
-      <error line="73" code="PPC:ERR-50008">No summary for method boot()</error>
-      <error line="31" code="PPC:ERR-50007">No summary for property $dir</error>
-      <error line="33" code="PPC:ERR-50007">No summary for property $configFiles</error>
-      <error line="35" code="PPC:ERR-50007">No summary for property $viewDirs</error>
-      <error line="37" code="PPC:ERR-50007">No summary for property $assetDirs</error>
-      <error line="39" code="PPC:ERR-50007">No summary for property $provides</error>
-      <error line="41" code="PPC:ERR-50007">No summary for property $providers</error>
-      <error line="48" code="PPC:ERR-50007">No summary for property $bindings</error>
-      <error line="61" code="PPC:ERR-50007">No summary for property $singletons</error>
-      <error line="68" code="PPC:ERR-50007">No summary for property $aliases</error>
+      <error line="75" code="PPC:ERR-50008">No summary for method boot()</error>
+      <error line="33" code="PPC:ERR-50007">No summary for property $dir</error>
+      <error line="35" code="PPC:ERR-50007">No summary for property $configFiles</error>
+      <error line="37" code="PPC:ERR-50007">No summary for property $viewDirs</error>
+      <error line="39" code="PPC:ERR-50007">No summary for property $assetDirs</error>
+      <error line="41" code="PPC:ERR-50007">No summary for property $provides</error>
+      <error line="43" code="PPC:ERR-50007">No summary for property $providers</error>
+      <error line="50" code="PPC:ERR-50007">No summary for property $bindings</error>
+      <error line="63" code="PPC:ERR-50007">No summary for property $singletons</error>
+      <error line="70" code="PPC:ERR-50007">No summary for property $aliases</error>
     </parse_markers>
-    <source>eJylVt9v4zYMfs9fwYcCcYqk2QbsJdnltqU9rEC7K9oCezgfCtVmEq22ZEhy2uJw//uoH3ac2G5zWF4ciR9JkfpI8bePxaYYTE9PB3AKN0wZkCswG4SlTPEFbv66gYIlT2yN+owgFnV9eQ9XPEGhEZhIIZHFq+LrjQEuVlLlzHAp4LEUaYYpPHOzIYNcV3YI5RxcXS4v/r67gBXPkMxOB4LlqAkUfMdLqXA+GJS6uRFfvBjyTB50/IlnBhV9lRTmmhla+K35EUoUq8ZUPoselSu5jv9RvEt0rxg3OnY7N0pueYrK7XnkZZaVORfMIEGEUSwh8CdJ+XCZif8oiown7r9XuJZCZuSOXK5RAdPVjhffspQn8Z8ZS7ERx8H6DtWW7qQ6jte8w0dKP8Z3ZVFIZeLjQP7bwlYk8cTQXgxFkFfk+L26ZWhkzAlYaTZSQSUAsvwvJgbOcQv3yHIH2nFpWf+LkhH88tPPv473FR0+CzwE2BhT6Nl0arJUZbhm2Vki82mQT3NuJhW2wV/HuyRjWnvbB0ED2vymGg72B98GNo6aFgckcEJKjKFTUgWcpFzBB3h4OL+8fXhoixMpVnxNNERNsC8wTKzNIXxtQ7ccn8+5Cji70kP4sHhLhWJDs9Nxy3eVwq3unWcc/pwRMd9S8p6c0P666TSbuayPa9jbdG7BK4GtQqFlhscr3MrS9MAduiOyRy5SLtb7gYVsFJ6NQ7ApDdRseQ/YVCZljsK49J+HRR+YZOXQbRD4mhY1sOcI2p9hKfNCCjJMTYdaj1SvcTiWfsuVrn11GLDue7WrqDyrGtrBbVxFqrvS7LqK/VE1bxl1P6XYa9iZHl6EplvI0NCVd1yFcx9O/L89sYwzjd1u6jxVzd01gb70uHLZg1Of7yRc+UgtClalSPwLKqWJRk70rTZ6woqCDlUw5ajjMXOYTuH+8/nnGSw3TFD3tQ8sNVy5RoGK2Yi0KR/3rEwWOXvCKAQ1miy0odYd1rOZW+mzgnr5hLkD6eFovuOeQlMq4SzN3eb3QSvNt7jmml5QqAsovP3U8gzjwj0bDlpfTDDbeCP3b+ggRyp4eC9PO9x8B7FTyWRRifzrG1nFflCYHqJmJmrK+dciGtb1OD6iGBu+WoZ8XXZaaVZkw0TdgCoTu+IcH1Oa7cgdHVzPvHhJstJ252j4kDP1ZIendynRxwjPAoV2/LMZ7SPCVvK0p0ZbJKgv55ALjUg8Jhqu7MxIYdihkVLTGiHfzkdlpaiGSDJxMFDuG2hnYp92kCNNR+lhEsg+yyH+gYnSZb8nl3HneHtsdkN9HPrqKrzJggvqHyKp2otrgmM4oQ8VpcBn8L6jWs3+7H6YfCNvBsWW081Yhkaj0XgPbRE0nODWPz1fa+GoeWlka7KgQc2NV1HQ8RMX6XxpNGlqdWZDe12MdrO4v8fvg/8ARWQiTw==</source>
+    <source>eJylV21v4zYM/p5fIWAF6hRJsw3Yl2SX7Zb2sKDptWgKbMC5CFSbSbTakiHJaYtD//uoFzuOX9oMy5fY0kNSpMiH9K+/ZdusNzo765EzckulJmJN9BbITMTwQm7/vCUZjZ7oBtQ5Qgzqen5PFiwCroBQHpNIZK+SbbaaML4WMqWaCU4ecx4nEJNnpreokKlCD6KsgcV8dvl1eUnWLAFUO+pxmoJCkLcdzoSESa+Xq+pCePmi0TJaUOEXlmiQ+C8F19dU44tbmhwhhL4qiMUz7xBZiE34l2RtW/eSMq1Cu3IrxY7FIO2aQ86TJE8ZpxoQwrWkEYK/CIyHjUz4OcsSFtlnJ7AAuskh/JK8qlelIQ0/xzRDw3iGiCYdGDw2uEcHuBZcJHhmPPcGJKGqWHHbdzRmUfhHQmOoBKP2vgS5w4stfHKSS3jEO4RwmWeZkDo8DuT+G9gi01x2KbdNMr9fZNjvRaqQStjtBs31VkhSbBDU/A9EmlzAjtwDTS1on5Cz8imI+uTnH3/6ZXAoaPGJT2ZCtlpnajwa6SSWCWxoch6JdOT3RynTwwJbKQKbvFFClXK6a04TMPGNFamt9773jB9lbtUyyW5iYDSeEsvoJGaSfCKr1cX8brVqbkeCr9nGJgXCvpHTyOg8JQ9N6I7B8wWTHmfe1Cn5NH1PBH0DvZexrx8K+Vs9OM/AP5xjYr4n5CzZTfNrT6fx2EZ9UMLeT+cGvNgwpcyVSOB4gTuR6w64Rbd49sh4zPjm0DEfjcxlo42oz8yGcQ+NRZSnwB32wr90gXEvt8BrfChBHdbdhc5EmgmOOpGzkLmEfA39idR7VjqFjeVOycKZhrQ3GRYOqrbgWi4xP6zhHUXOk5K++pVRPfwKY5+AxotuuQBr3p/4f1uiCaMKOs3se4It+67Q2AI5gCOzt6ZY/oikRNY5j1zjFUIHfbv1vVR6QrMMD5RRabPFYSZkNCL3Nxc3YzLbUo58a/oyUqzYAAdJjTdK548HWobTlD5B4B3qD6dKI1n79/HYvqnzDNl7SO2B1Gl/sk85CTqX3Gqa2MW3XiPEd7Bh2NgkKUvGjwxIcpoybhuFhZaX4tVWWuvh7dRiJL2Fj+K0x01ag7Aum7CJhCN6H4phYpo3El5pNKiczmoZuDwqyNvy5EO/chrz+8G7ZmeBfdPHTJCAN1Q9mTudmx1QGYfnulTgTSEfS0wBZOABWdzMrlaXfw8cdjxeXs1vV4v516tlTbU/iFFb1egNVsBv1Qs/MbPfcFpE0o0ngXG/GtNDkJ/RgqqesjqLKJesNTiCsyq2GoocfbVqqZJXRUVJ0YWKPY8NjmGxpuc2ZWxTuXyJkty0r+B0lVL5ZEbUDyuoq4Bc0UgwQ7aJaFfd7ASLO+isUTPl5dRLp+KJw2B9mMkc3TCjOYamMai/H49CS1aM6qiiNrYfKmhG4jDtSAo4Psb1IKB+mpLwP8ztNvodsQxbPyKOja6vj7qtNp4aThlHuuVRwca2ZwzICf758ne2g4MyNuv+0yBwaoDvGN6MydCg3x/U+CTLkC1g57r0Q7nZr14a6hpOcZK1vBB4GUc1KPOt0tOwM+gtrrVltP1Ycff41vsX8nmVUA==</source>
   </file>
   <file path="Menu.php" generated-path="Menu.html" hash="efab43de92d1f489d6a36cf6ddd8b3ad" package="Default">
     <docblock line="0">
@@ -4075,6 +4077,95 @@ output. Should be called within a view.</long-description>
     </parse_markers>
     <source>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</source>
   </file>
+  <file path="LocalFilesystem.php" generated-path="LocalFilesystem.html" hash="6682545f738a9cdc5d4d324fe9067d17" package="Default">
+    <docblock line="0">
+      <description>Part of the Sebwite PHP packages.</description>
+      <long-description>License and copyright information bundled with this package in the LICENSE file</long-description>
+      <tag name="package" line="0" description="Default"/>
+    </docblock>
+    <namespace-alias name="FilesystemIterator">\FilesystemIterator</namespace-alias>
+    <namespace-alias name="Local">\League\Flysystem\Adapter\Local</namespace-alias>
+    <namespace-alias name="RecursiveDirectoryIterator">\RecursiveDirectoryIterator</namespace-alias>
+    <namespace-alias name="RecursiveIteratorIterator">\RecursiveIteratorIterator</namespace-alias>
+    <namespace-alias name="SplFileInfo">\SplFileInfo</namespace-alias>
+    <class final="false" abstract="false" namespace="Codex\Core" line="18" package="Default">
+      <extends>\League\Flysystem\Adapter\Local</extends>
+      <name>LocalFilesystem</name>
+      <full_name>\Codex\Core\LocalFilesystem</full_name>
+      <docblock line="18">
+        <description></description>
+        <long-description></long-description>
+        <tag name="package" line="18" description="Default"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="26" package="Default">
+        <name>getRecursiveDirectoryIterator</name>
+        <full_name>\Codex\Core\LocalFilesystem::getRecursiveDirectoryIterator()</full_name>
+        <docblock line="26">
+          <description></description>
+          <long-description></long-description>
+          <tag name="param" line="26" description="" type="string" variable="$path">
+            <type>string</type>
+          </tag>
+          <tag name="param" line="26" description="" type="integer" variable="$mode">
+            <type>integer</type>
+          </tag>
+          <tag name="return" line="26" description="" type="\RecursiveIteratorIterator">
+            <type>\RecursiveIteratorIterator</type>
+          </tag>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$path</name>
+          <default></default>
+          <type>string</type>
+        </argument>
+        <argument line="0" by_reference="false">
+          <name>$mode</name>
+          <default>\RecursiveIteratorIterator::SELF_FIRST</default>
+          <type>integer</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="39" package="Default">
+        <name>mapFileInfo</name>
+        <full_name>\Codex\Core\LocalFilesystem::mapFileInfo()</full_name>
+        <docblock line="39">
+          <description></description>
+          <long-description></long-description>
+          <tag name="param" line="39" description="" type="\SplFileInfo" variable="$file">
+            <type>\SplFileInfo</type>
+          </tag>
+          <tag name="return" line="39" description="" type="array">
+            <type>array</type>
+          </tag>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$file</name>
+          <default></default>
+          <type>\SplFileInfo</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Codex\Core" line="47" package="Default">
+        <name>normalizeFileInfo</name>
+        <full_name>\Codex\Core\LocalFilesystem::normalizeFileInfo()</full_name>
+        <docblock line="47">
+          <description></description>
+          <long-description></long-description>
+        </docblock>
+        <argument line="0" by_reference="false">
+          <name>$file</name>
+          <default></default>
+          <type>\SplFileInfo</type>
+        </argument>
+      </method>
+    </class>
+    <parse_markers>
+      <error line="18" code="PPC:ERR-50005">No summary for class \Codex\Core\LocalFilesystem</error>
+      <error line="26" code="PPC:ERR-50008">No summary for method getRecursiveDirectoryIterator()</error>
+      <error line="39" code="PPC:ERR-50008">No summary for method mapFileInfo()</error>
+      <error line="47" code="PPC:ERR-50015">Argument $file is missing from the Docblock of normalizeFileInfo</error>
+      <error line="47" code="PPC:ERR-50008">No summary for method normalizeFileInfo()</error>
+    </parse_markers>
+    <source>eJyNVE1vm0AQvfMr5mAJ20rru12aVo5RUWhshUhVVFfWBgZYBZbVsjQhqf97B7AJOEbtXICZN28+HrufLmUsjdl0asAUNkxpyELQMYKHD09cI2y+bUAy/5FFmH8kUIVzuY8iR2AiAD+TpeJRrIGLMFMp0zwT8FCIIMEAiCImOp4fOQhV07vOcnXjrSDkCRLlzDAMwVLMCYawzAJ83i4zhQvyF1TJJlhe5hpTR6NiOlOL2u8iiwrc2knZRLdfAyYJsXUznyUN5hb9QuX8N15xhT6lln2ONn5098OeTKrqDk1H3fgJy3Oo2d96AnzWKIKD33g1gKzeaWVT+CKZYinkWnERwUgyHZ+EuNDV9yilyQ+hFqFQF0oMt3kAzuqnVJmmIWn1YSH8WosI9fAKxnU3F01lsIarzOfeyrV3tnPr3U3qUs2YlR06FPg0nD9u0ZX1oINNvVedurh2Nrur9Z0Hf87G7bXrrn/svPvvrnNz7U0uenU7CyabLOrXvTEgWEd6GDV/6llpmFKs/JcMKZNHsvE74tONjkR1lBL+QgwWnR2FQs/nXYombdFm8HDcSfpp6lKi+QssywIz4eLRnLz2N3EODGbAlflGuj+VuJN13N3AuC3w/4c+1qjuiw+fh4YltfbGX0TleX8=</source>
+  </file>
   <file path="Extensions/Parsers/ParsedownExtra.php" generated-path="Extensions.Parsers.ParsedownExtra.html" hash="3db6b066ee761cf5ee341beac31e1fcb" package="Default">
     <docblock line="0">
       <description></description>
@@ -4598,7 +4689,7 @@ output. Should be called within a view.</long-description>
     </parse_markers>
     <source>eJy9V1tPG0cUft9fcZogsUYObiv1xZSmEXUUpCRCgTfbsia7Y3vL7MxqZtYYAf+9Z272Xg1pUVcI8M6Zc/nOdy7+/X2xLqLRyUkEJ3BFpAaxBL2mcCFSuoWrT1dQkOSWrKg6RREj9eXyBj5nCeWKAuEpJKK4l9lqrSHjSyFzojPB4XvJU0ZTuMv0GhVmKuhBKWvg8+XF5Ov1BJYZo6h2FHGSU4VC3vbsQkg6m2w1GkKF6iyKSlU7uxBcS5JoNfuYMU3lWb/AJyFuUYGP88a4gz/Gjb0BSBhRuyj/DO76Z6/WnpJSr4WE2in8RTdwQ0luJfaweInwMU4G8OvPv/w2dLesMPN4+metdaHGo5FmqWR0RdhpIvKRFxrlmX4XLlSSYUG0MbigUiqjhygy+mzc5kFTGyKBSEnu/ZuR/VtIoWmiMWFKYwITOFojZArOYQrzs3+vhW4TVqY0vZLibzz5anL8n5Uubbr3eqzYWzBJVi2tE65KSaEQGden/uXOYkEkyQEVy4yv4MhQcHcmqS4lh43I0sP+LEueWM5Ta8q4cWWsxVbfwF56iEJusyXEPyH7FNWxUzAeO7CnzgGYDwYVefP0yAUAgthT5H43IfhGV5lCxICAUYAViAp5Qp+BY/ccWfC6pR5nF0xYhI/WxJS8fB7A8jvSt4UeSVMDXeysDXf6ugEMp7tgsG/tXDFtCTHmC8um2Kgdj21pDF2VL7K8YDSnXKt4Z2cIS8IUbaGv11LcAad3MLvkG8Ky9INclebyZJvQwjgfv/lIMtPuMAgDnYH5FJD0mwzJD8FXbI8wfXABPs1NC+JCg1V5ChPslChTuEsmWbNdQHjP+l0Q200J9tq8oMwGYMRsc9r/CW3P9r03gypDdv8GTrVIa72r3GmRzwrAfGr4F8A766Ne6br9KttQ7mD5kRr0ZzaNhofmo+oi2GOebemLaCZL7mhmDA29aq/ZFVSTcL1I2fI+20N65ByyaipliVmnJFlDX7kDUXuyN7hnyH6I6k35qhs2QQlhbIFzUS4MAr4ggsZhCLySbptHoFgIxrarFrrF/lGplE6rwTs0SooiHrz7Iye3dH+pAtTLPZ3u9Q7h2Kk6hnmv41H7P8+SYKvG1LfwTZSamqIL4wnsyLIbQYvNK6qhc6JhCZe0SWxvuGOidTMTtU86lMcmVGVgde2pwc4Qnhc6PwctSwrvTYdg2BDi48fj4b6Iu9wfwPiwQF91Y7fr8ri7wv28CAXXln9uOvSAUw2kZ9YG2tdkmySundpOUH/TGrTmOQibqQRjeJFTuaLxQdlh3dqgD/JrpKBpqC+noUPfw951rUlYWxLXVG5wr/QjTL4kRaqHvwdM97XaPjgPs9OXtPs2oKIWdh9SHNB2kLsNErSwWEq/H+GkDqslwxcvXY+6n85BFtr24+zA95jmJhWd/Ogq5aIII+71Finn3/+7Sjmb/cuUibG1S30pFXbq2kL1KvuUc+aZjSp8P6nu6c/tSWayBO691jDxdRB7f0IN8ZKx3kZpDmsXWils9tRDsrYO6tan9Rfz5vyufawGvRCc3cdNjIc1ddW82BWm4Y/X11TS/gb1FP0DkO0c4w==</source>
   </file>
-  <file path="Components/Factory/Projects.php" generated-path="Components.Factory.Projects.html" hash="afe3a7079a305fc91552feef9bd865db" package="Default">
+  <file path="Components/Factory/Projects.php" generated-path="Components.Factory.Projects.html" hash="8031c079e97ea57f2a43bac16fbc7d71" package="Default">
     <docblock line="0">
       <description>Part of the Sebwite PHP packages.</description>
       <long-description>License and copyright information bundled with this package in the LICENSE file</long-description>
@@ -4875,7 +4966,7 @@ output. Should be called within a view.</long-description>
       <error line="28" code="PPC:ERR-50007">No summary for property $items</error>
       <error line="30" code="PPC:ERR-50007">No summary for property $fs</error>
     </parse_markers>
-    <source>eJylV9tu2zgQffdXTNsAkgM3bRfYF6dOG6QpGiAtgqZvsREwEmVxI5FakkpiFPn3nSGpi2XHye4KhiWRw7mcMxyOPn6q8mr0bn9/BPtwwbQFlYHNOVzym3thOVx8u4CKJbdsyc0BCpHcuUi4NByYTCFR1UqLZW5ByEzpklmhJNzUMi14CqgiR3XCNDpQyqk/Pzs5/XF5CpkoOKp8NxqNJCu5QTEOJyrlD/MTpTn+lZWSXFoz/8oSq/TqcDSqzUBGWo2TZu4GD4fzvzQTOPlNqVt2U3A/H+KbX9ZVpbSdf0VHzMpYXm6fv2A23z5zaXWYWJWZkqvOZ1QqU67DDR0POP8iQPBHQCQFMwYutPqLYwQNwp9ZbXOlobmCTTfVIe6uk/Y1Tsbwx/sPf04a8QM4LgpwkwY0N1zf8dShvW4V+IPlMjUQIG4DGP0ekQkKrkPPDVVaWVyKFO+hodJsDmftWH1TiASyWiYuN66vEyWN1XViY8cS7FVMo7UJdCTQ+rFb7l1wipzUdNpXEJaOD1upPUq3t0eZoZeZ92Mw5zzGuUQVBXobj4OnPRFdS4o4jqqA0VRzlq6iCVw5icW2Ndyo4o6/TF2KAK9pI+nH7YglaNui3h4eQdIlFF37cJkwGVJKyUwsa40spCqpS8TH70qtlIVUaO5YBtyu0Pjj9nIIwGkp3UhV2/AmpFVOe7sioIeKgwuNJ59trtW9gflZUdSlkOh7b492HLvHH8p+VVgtTh8SXvWUvduKRAvxIDVEBvGrPrt4M6dlZVfxeNyTo0tzW2vZJcXjS7h3Zjf4ChTA5zumYd4rOd+5rGGvpP8QidPvBkJeelsJrXl7RBP4xtK0sxr1kzpzJcStlPwefEWJ+xItL7NGGjGQcbCz5Na5F4/d80/MhC8CFeArlWBD41SA48hnzwEeCxGOpUhKHkcfZ/CBXjPkXN2fC3lr1tIcU4mzJIe4c4OZ1ie01CfhDXxnt20ijdbI6dC8rArKjzM8VfqK+ni6uMlrhwtV6OkUg/vSZPgPCqi31oVOYhj34boWH3XHi8ML942QBDMShB7HUWaigB//u0YrG8p/clY8Y4BpzVbXmlcFHnV4T2ptBKb0FqL8mjhKecbqwl4HY9d+PBpPGrV9Kp7MyVDtWzA3kGzGnwHBpexBEKYtsaaFLi8SISlHXtVkU4Roi8CL0PMWkRCmE/HPazKLYdRPbN8puU1+Bl+6QBdDktYKCNa+2LvWrhhafAPHaQpYGGn/bkvLGcR4UAm5HDcqeqwKgzmwunZIDD1xzRAuv4LF+gxVOlRZKdM4F8F0CtEYXs1mkLHC8GHBW1PIH6oC2Yn9qomfGFhfC8Dnq8lFFuAwA+nHAQu55pmrcG3EtS7iYYAlt8yfwSX2fLZlawMJkdJtBthmTaemqJciW7WhXw/F/UFAdLw9yhliJNKNAyDYJxEquCgSYECFdERSriwm6Fkt25Bhhui+h0+dvxQmoj4lip5BxPcoZymBItJ12fscixy2bmvGjuD9kyS+hJIGuIMZRNNpBAd+6XahIbQExyaw/wbcHQC3WExCCvwfnD3WG5Z3wd2Jv/zYT1/ap1HIG62Jbze2n/dYYDfP+83W7qdTgUdqc2ZiN2Ysk/ipRD0cdWVLPEIkEIbDZgzRYKWHfzgVXNtySOxswshrXzZ2dGEuP5zQMENcd+i6mPmZvGOFSI/10nWpbQ8Yv24OqyunY0FJUqQgsX+9oaCxYaQvyavfDXe+n3lcvB73G7snSAgFvovjKeBPcp7cUlgdxA0D/EEY9722DW3wRX8n6jdKFTth7hDcmVEhmE56dxYBw09CD2DVfXS+NC+uFjtdRt3P5H/w1gnu3EtWHVOV+w/qHkf/APp4yEg=</source>
+    <source>eJylV21P4zgQ/t5fMbuLlBQV2D3pvoQtC2JBi8QiBPuNVpVJnMZHYudsB6hW/Pcbv+S1pXB3UdUk9uN5eWY8nnz9Vmbl6GB3dwS7cE2kBpGCzijc0vsnpilc/7iGksQPZEnVPoIM7pLFlCsKhCcQi3Il2TLTwHgqZEE0ExzuK57kNAEUkaE4pmoZiLLiLy9Oz65uzyBlOUWRB6PRiJOCKoRROBUJfZ6dCknxrygFp1yr2TmJtZCrw9GoUgMM1xIn1cwOHg7nf0nCcPKHEA/kPqdu3vs3u63KUkg9O0dD1EppWmyevyY62zxzq6WfWBWp4KvWZhTKEyr9DQ33PP8yhODPEBHnRCm4luIvih7UDB+TSmdCQn15nXaqZdxep81rGI/hj89f/pzU8H04yXOwkwokVVQ+0sSy3dcK9FlTnijwFDcOjH6PjArjXMueHSql0LgUQ7yDigq1Ppw2Y9V9zmJIKx7b3FgsYsGVllWsQxsl2CmJRG0TaINg1o/tcmeCFWRRUdQV4JeODxvUjkm3vaNUmZeps2MwZy3GuVjkOVobjr2lHYisuPE4DErPUSQpSVbBBO4sYr5pDVUif6TvE5cgwT1pBv2ymbEYdWuU2+HDI21CmWsXbmPCfUoJnrJlJTEKiYirAvlxu1IKoSFhktooA25XqO2xe9k7YKUUdqSstH9jXAsrvVnh2UPB3oTakmOdSfGkYHaR51XBONre2aNtjO3jldDnAqvF2XNMy46wg41MNBQPUoOlEH7oRhdv6qwo9Socjzs4c0mqK8nbpHh5T+yt2rV4+RDA8SORMOuUnJ+UV7BTmH/viZVvB3xeOl2xWbN3ZCbwjSRJqzXoJnVqS4hdyekTuIoSdhFNXKY1GjngodezpNqaF47t8w1mwneGAvDVlGBlxk0BDgOXPft4LAQ4lmBQsjD4OoUv5jXFmIunS8YfVC/NMZUoiTMIWzOIamxCTd0gfIKf5KFJpFEvOC2bt2Vu8uMCT5WuoC6f1m9jteXFVOgoQue+1xl+ZRzqrLWuGxj6fdiX4rxu42L5wn3DuKEZA4QWh0GqAs8f/btCLWvCbyjJ31BApCSrhaRljkcd3uNKKoYpvSFQbk0YJDQlVa4XXtnCjQfjSS22G4pXc9JX+4bMNSbr8TdIsCm778FmS/SkmMtBAgzKkRM1WYeYsAXgIOZ5A8S7aSHuuYeZD71+ZftGxmxjp7eldXQ+DFKvgGDtC51pzYqhxk9wkiSAhdHs301pOYUQDyrGl+NaRCeqTGEOrBaWiaElthnC5Xcw78+YSociS6Fq4wKIIgjG8GE6hZTkig4LXk8gfS5zjE7oVk3cxEB7zwGXrypjqadDDdAvgyhkkqa2wjUeVzIPhw4WVBN3BhfY8+kmWmtMsMTcpoBtVhSpvFqydNW4vhjC3UFgwrF3lBHkiCVrB4DXbyCm4CLE04ACzRGJrMR4JDXuwhSZ/QzfaqMjuJu/BmncMSxgUCITwTcIcy3MRWI4Y0kf+5RhDcTOrqfsCD6/GuP3RKzmdX8KQRQFsO+WbgYNmTdsrfP+b7jfwn/DxcST/X94dlyvad5Gdwt/f1eQvLeNMy6vdS6uG9ncDmD9XW8H1ju/GysCT9z6SMVmTWnC8UvKtHimaVviCcPBcDjs1ZANUjj6h1PetA1nyNYezVjtqsqWJs3mhwUNM8Q2j7bJmV3wR5Kz5EQubRPbtIjhx/osu7My5iZJ8gQ4trf3xmnsJ82H5t3vOnau3XmZfxx3+75XguDrf+vHa8SfZjR+MG61FNcRoM9M2c+5TWyDOxO2sn4vRL6V5pbBrRnlnWnR27MICH4xOgLL9pv0vXlxN99qMsp+I/+9tRa4dS9pcWKq3H8Q9zL6B3/50Vg=</source>
   </file>
   <file path="Components/Factory/Menus.php" generated-path="Components.Factory.Menus.html" hash="803c457886d89a42165e61743486f30d" package="Default">
     <docblock line="0">

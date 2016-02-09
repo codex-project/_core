@@ -98,6 +98,8 @@ class CodexServiceProvider extends ServiceProvider
         $this->registerLogger($app);
         $this->registerFilters();
 
+
+
         Factory::extend('projects', Components\Factory\Projects::class);
         Factory::extend('menus', Components\Factory\Menus::class);
         Project::extend('documents', Components\Project\Documents::class);

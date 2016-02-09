@@ -6,7 +6,7 @@
  */
 namespace Codex\Core;
 
-use Codex\Core\Contracts\Codex;
+use Codex\Core\Contracts\Codex as CodexContract;
 use Codex\Core\Contracts\Log;
 use Codex\Core\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
@@ -30,7 +30,7 @@ use vierbergenlars\SemVer\version;
  * @property-read \Codex\Core\Components\Factory\Menus|mixed $menus    asdf
  *
  */
-class Factory implements Codex
+class Factory implements CodexContract
 {
     use Traits\Hookable,
         Traits\ConfigTrait,
@@ -105,7 +105,7 @@ class Factory implements Codex
     public function stack($viewName, $data = null, $appendTo = 'codex::layouts.default')
     {
         $this->container->make('events')->listen('composing: ' . $appendTo, function (View $view) use ($viewName, $data) {
-        
+
             if ($data instanceof \Closure) {
                 $data = $this->container->call($data, [$this]);
                 $data = is_array($data) ? $data : [];

@@ -18,7 +18,7 @@ use Sebwite\Support\ConsoleServiceProvider as BaseConsoleServiceProvider;
  */
 class ConsoleServiceProvider extends BaseConsoleServiceProvider
 {
-    protected $namespace = 'Codex\\Core\\Console';
+    protected $namespace = 'Codex\\Core\\Commands';
 
     protected $prefix = 'codex.commands.';
 
