@@ -11,6 +11,8 @@ use Codex\Core\Extensions\Filters\ParsedownFilter;
 use Codex\Core\Log\Writer;
 use Codex\Core\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
 use Monolog\Logger as Monolog;
 use Radic\BladeExtensions\BladeExtensionsServiceProvider;
 use Sebwite\Support\ServiceProvider;
@@ -46,12 +48,12 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $bindings = [
-        'codex.project'  => Project::class,
+        'codex.project' => Project::class,
         'codex.document' => Document::class,
-        'codex.menu'     => Menu::class,
+        'codex.menu' => Menu::class,
 
-        'codex.projects'  => Components\Factory\Projects::class,
-        'codex.menus'     => Components\Factory\Menus::class,
+        'codex.projects' => Components\Factory\Projects::class,
+        'codex.menus' => Components\Factory\Menus::class,
         'codex.documents' => Components\Project\Documents::class
     ];
 
@@ -66,7 +68,7 @@ class CodexServiceProvider extends ServiceProvider
      * @var array
      */
     protected $aliases = [
-        'codex'     => Contracts\Codex::class,
+        'codex' => Contracts\Codex::class,
         'codex.log' => Contracts\Log::class
     ];
 
@@ -87,6 +89,12 @@ class CodexServiceProvider extends ServiceProvider
     public function register()
     {
         $app = parent::register();
+        $app->make('filesystem')->extend('codex-local', function (Application $app, array $config = [ ]) {
+            #return LocalFilesystem::create();
+            $adapter = new LocalFilesystem($config[ 'root' ], LOCK_EX, Local::SKIP_LINKS);
+            return new Filesystem($adapter);
+        });
+
         $this->registerLogger($app);
         $this->registerFilters();
 

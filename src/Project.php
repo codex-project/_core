@@ -117,7 +117,7 @@ class Project
         $this->repository = $repository;
         $this->setConfig($config);
         $this->setDisk([
-            'driver' => 'local',
+            'driver' => 'codex-local',
             'root'   => Path::join($this->getCodex()->getRootDir(), $this->getName())
         ]);
         $this->runHook('project:ready', [ $this ]);
@@ -199,7 +199,7 @@ class Project
         $this->refs  = [ ];
 
         $this->versions = array_filter(array_map(function ($dirPath) use (&$branches) {
-        
+
 
             $version      = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft(DIRECTORY_SEPARATOR);
             $version      = (string)$version->removeLeft($this->name . '/');
@@ -220,7 +220,7 @@ class Project
         switch ($this->config[ 'default' ]) {
             case static::SHOW_LAST_VERSION:
                 usort($this->versions, function (version $v1, version $v2) {
-                
+
 
 
                     return version::gt($v1, $v2) ? -1 : 1;
@@ -231,7 +231,7 @@ class Project
             case static::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH:
                 if (count($this->versions) > 0) {
                     usort($this->versions, function (version $v1, version $v2) {
-                    
+
 
 
                         return version::gt($v1, $v2) ? -1 : 1;
@@ -367,14 +367,14 @@ class Project
         $versions = $this->versions;
 
         usort($versions, function (version $v1, version $v2) {
-        
+
 
 
             return version::gt($v1, $v2) ? -1 : 1;
         });
 
         $versions = array_map(function (version $v) {
-        
+
 
 
             return $v->getVersion();

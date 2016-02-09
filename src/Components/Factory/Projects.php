@@ -92,7 +92,7 @@ class Projects extends FactoryComponent
             $metas = compact('project');
             $id    = Str::slugify($name, '_');
             if (!$menu->has($id)) {
-                $menu->add($id, $name, 'root', count($names) === 0 ? $metas : [], count($names) === 0 ? compact('href') : [ ]);
+                $menu->add($id, $name, 'root', [], count($names) === 0 ? compact('href') : [ ]);
             }
 
             $parentId = $id;
