@@ -40,10 +40,14 @@ class CodexServiceProvider extends ServiceProvider
 
     protected $provides = [ 'codex', 'codex.log' ];
 
+    protected $commands = [
+        Commands\ListCommand::class,
+        Commands\MakeCommand::class
+    ];
+
     protected $providers = [
         SupportServiceProvider::class,
         BladeExtensionsServiceProvider::class,
-        Providers\ConsoleServiceProvider::class,
         Providers\RouteServiceProvider::class
     ];
 

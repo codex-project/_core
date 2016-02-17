@@ -21,3 +21,14 @@ if (!function_exists('version')) {
 
     }
 }
+
+if (!function_exists('codex')) {
+    /**
+     * codex method
+     * @return \Codex\Core\Factory
+     */
+    function codex()
+    {
+        return app('codex');
+    }
+}
