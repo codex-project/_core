@@ -6,10 +6,10 @@
  */
 
 
-namespace Codex\Core\Addon\Extension;
+namespace Codex\Core\Next\Contracts;
 
 
-class AbstractExtensionAddon
+interface Observable
 {
 
 }

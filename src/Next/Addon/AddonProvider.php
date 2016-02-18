@@ -6,7 +6,7 @@
  */
 
 
-namespace Codex\Core\Addon;
+namespace Codex\Core\Next\Addon;
 
 
 use Illuminate\Contracts\Events\Dispatcher;

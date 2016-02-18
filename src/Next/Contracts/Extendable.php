@@ -6,10 +6,14 @@
  */
 
 
-namespace Codex\Core\Addon\Filter;
+namespace Codex\Core\Next\Contracts;
 
 
-class FilterAddonInterface
+interface Extendable
 {
+
+    public function extensions();
+
+    public function extend($name, $extension);
 
 }

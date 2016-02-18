@@ -6,12 +6,12 @@
  */
 
 
-namespace Codex\Core\Addon\Traits;
+namespace Codex\Core\Next\Traits;
 
 
-use Codex\Core\Contracts\Addon\Bootable;
-use Codex\Core\Contracts\Addon\Hookable;
 use Codex\Core\Exception\ContractMissingException;
+use Codex\Core\Next\Contracts\Bootable;
+use Codex\Core\Next\Contracts\Hookable;
 
 trait BootableTrait
 {
@@ -37,11 +37,11 @@ trait BootableTrait
         if ( !isset(static::$booted[ $class ]) ) {
             static::$booted[ $class ] = true;
 
-            $this->emit('booting', false);
+            $this->fireEvent('booting', false);
 
             static::boot();
 
-            $this->emit('booted', false);
+            $this->fireEvent('booted', false);
         }
     }
 
@@ -86,14 +86,14 @@ trait BootableTrait
 
     public static function booting($callback)
     {
-        static::listen('booting', $callback);
+        static::registerEventListener('booting', $callback);
 
         return static::class;
     }
 
     public static function booted($callback)
     {
-        static::listen('booted', $callback);
+        static::registerEventListener('booted', $callback);
 
         return static::class;
     }

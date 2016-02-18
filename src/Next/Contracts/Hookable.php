@@ -6,7 +6,7 @@
  */
 
 
-namespace Codex\Core\Contracts\Addon;
+namespace Codex\Core\Next\Contracts;
 
 
 interface Hookable

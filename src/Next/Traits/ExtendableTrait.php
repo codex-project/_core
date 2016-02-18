@@ -6,7 +6,7 @@
  */
 
 
-namespace Codex\Core\Addon\Traits;
+namespace Codex\Core\Next\Traits;
 
 
 use BadMethodCallException;
@@ -15,9 +15,7 @@ use Sebwite\Support\Str;
 
 trait ExtendableTrait
 {
-    public function getContainer(){
-        return app();
-    }
+    use ContainerTrait;
 
     protected $extensions = [ ];
 

@@ -241,7 +241,7 @@ class Menu
     {
 
         $found = $this->items->filter(function (Node $item) use ($href) {
-        
+
 
             if ($item->hasAttribute('href') && $item->attribute('href') === $href) {
                 return true;

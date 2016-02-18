@@ -6,10 +6,10 @@
  */
 
 
-namespace Codex\Core\Contracts\Addon;
+namespace Codex\Core\Next\Theme;
 
 
-interface Extendable
+class Assets
 {
 
 }
