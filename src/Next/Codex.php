@@ -33,6 +33,8 @@ use Sebwite\Support\Filesystem;
  * @author         Sebwite
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
  *
+ *
+ *
  * @property \Codex\Core\Next\Theme\Theme       $theme
  * @property \Codex\Core\Next\Theme\Assets      $assets
  * @property \Codex\Core\Next\Projects\Projects $projects

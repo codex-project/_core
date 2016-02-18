@@ -6,7 +6,7 @@
  */
 namespace Codex\Core\Next\Traits;
 
-use Codex\Core\Contracts\Codex;
+use Codex\Core\Next\Contracts\Codex;
 
 /**
  * This is the class ConfigTrait.

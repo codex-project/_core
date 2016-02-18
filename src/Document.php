@@ -97,7 +97,7 @@ class Document
 
         $this->attributes = $codex->config('default_document_attributes');
 
-        if (!$this->getFiles()->exists($this->path)) {
+        if ( !$this->getFiles()->exists($this->path) ) {
             throw DocumentNotFoundException::document($this)->inProject($project);
         }
 
@@ -122,9 +122,9 @@ class Document
         $fsettings = $this->project->config('filters');
         $filters   = Extender::getFilters($this->project->config('filters.enabled'));
 
-        if (count($filters) > 0) {
-            foreach ($filters as $name => $filter) {
-                if ($filter instanceof \Closure) {
+        if ( count($filters) > 0 ) {
+            foreach ( $filters as $name => $filter ) {
+                if ( $filter instanceof \Closure ) {
                     call_user_func_array($filter, [ $this, isset($fsettings[ $name ]) ? $fsettings[ $name ] : [ ] ]);
                 } else {
                     $instance = app()->make($filter);

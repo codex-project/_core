@@ -9,9 +9,6 @@
 namespace Codex\Core\Components\Project;
 
 use Codex\Core\Project;
-use Codex\Core\Traits\Hookable;
-use Sebwite\Support\Path;
-use Symfony\Component\Finder\Finder;
 
 class Documents extends ProjectComponent
 {
@@ -38,7 +35,7 @@ class Documents extends ProjectComponent
 
     public function has($pathName = '')
     {
-        if ($pathName === '') {
+        if ( $pathName === '' ) {
             $pathName = 'index';
         }
         return $this->project->getFiles()->exists($this->project->refPath($pathName . '.md'));
@@ -54,11 +51,11 @@ class Documents extends ProjectComponent
      */
     public function get($pathName = '')
     {
-        if ($pathName === '') {
+        if ( $pathName === '' ) {
             $pathName = 'index';
         }
 
-        if (!$this->items->has($pathName)) {
+        if ( !$this->items->has($pathName) ) {
             $path = $pathName . '.md';
 
 
@@ -66,7 +63,7 @@ class Documents extends ProjectComponent
                 'codex'    => $this->getCodex(),
                 'project'  => $this->getProject(),
                 'path'     => $path,
-                'pathName' => $pathName
+                'pathName' => $pathName,
             ]));
 
             $this->runHook('project:document', [ $this->items->get($pathName) ]);

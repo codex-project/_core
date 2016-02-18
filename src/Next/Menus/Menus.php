@@ -9,8 +9,28 @@
 namespace Codex\Core\Next\Menus;
 
 
-class Menus
+use Codex\Core\Next\Contracts\Codex;
+use Codex\Core\Next\Support\Collection;
+use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Contracts\View\View;
+use Illuminate\Routing\Router;
+use Codex\Core\Next\Traits;
+use Codex\Core\Next\Contracts;
+
+class Menus implements
+    Contracts\Menus,
+    Contracts\Extendable,
+    Contracts\Hookable,
+    Contracts\Bootable
 {
+    use Traits\ExtendableTrait,
+        Traits\HookableTrait,
+        Traits\ObservableTrait,
+        Traits\BootableTrait,
+
+        Traits\CodexTrait,
+        Traits\FilesTrait,
+        Traits\ConfigTrait;
 
     /**
      * @var \Illuminate\Contracts\Cache\Repository
@@ -38,23 +58,24 @@ class Menus
     protected $items;
 
     /**
-     * @param \Illuminate\Contracts\Container\Container   $container
-     * @param \Illuminate\Contracts\Filesystem\Filesystem $files
-     * @param \Illuminate\Contracts\Cache\Repository      $cache
-     * @param \Illuminate\Routing\Router                  $router
-     * @param \Illuminate\Contracts\Routing\UrlGenerator  $url
-     * @param \Illuminate\Contracts\View\Factory          $view
+     * Menus constructor.
+     *
+     * @param \Codex\Core\Next\Contracts\Codex|\Codex\Core\Next\Codex $parent
+     * @param \Illuminate\Routing\Router                              $router
+     * @param \Illuminate\Contracts\Routing\UrlGenerator              $url
+     * @param \Illuminate\Contracts\View\View                         $view
      */
-    public function __construct(Codex $parent, Filesystem $files, Cache $cache, Router $router, UrlGenerator $url, View $view)
+    public function __construct(Codex $parent, Router $router, UrlGenerator $url, View $view)
     {
-        $this->setFiles($files);
-        $this->cache  = $cache;
+        $this->setCodex($parent);
+        $this->setFiles($parent->getFiles());
+        $this->cache = $parent->getCache();
         $this->router = $router;
-        $this->url    = $url;
-        $this->view   = $view;
-        $this->items  = new Collection();
+        $this->url = $url;
+        $this->view = $view;
+        $this->items = new Collection();
 
-        $this->runHook('menus:ready', [ $this ]);
+        $this->hookPoint('menus:ready', [ $this ]);
     }
 
 
@@ -67,15 +88,16 @@ class Menus
      */
     public function add($id)
     {
-        if ($this->has($id)) {
+        if ( $this->has($id) ) {
             return $this->get($id);
         }
 
         $menu = $this->getContainer()->make('codex.menu', [
             'menus' => $this,
-            'id'          => $id
+            'id'    => $id,
         ]);
-        $this->runHook('menus:add', [ $this, $menu ]);
+
+        $this->hookPoint('menus:add', [ $this, $menu ]);
         $this->items->put($id, $menu);
 
         return $menu;
@@ -116,7 +138,7 @@ class Menus
      */
     public function forget($id)
     {
-        $this->runHook('menu-factory:forget', [ $this, $id ]);
+        $this->hookPoint('menu-factory:forget', [ $this, $id ]);
         $this->items->forget($id);
 
         return $this;
