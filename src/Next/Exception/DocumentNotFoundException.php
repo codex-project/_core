@@ -6,9 +6,9 @@
  */
 
 
-namespace Codex\Core\Exceptions;
+namespace Codex\Core\Next\Exception;
 
-use Codex\Core\Next\Document;
+use Codex\Core\Next\Documents\Document;
 use Codex\Core\Project;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

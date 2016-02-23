@@ -1,22 +1,9 @@
 <?php
 
 
-
 return [
 
-    'extensions' => [
-        'codex' => [
-            'projects' => \Codex\Core\Next\Projects\Projects::class,
-            'menus'    => \Codex\Core\Next\Menus\Menus::class,
-            'theme'    => \Codex\Core\Next\Theme\Theme::class
-        ],
-        'codex.project' => [
-            'documents' => \Codex\Core\Next\Documents\Documents::class
-        ],
-        'codex.menu' => [
 
-        ],
-    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -24,7 +11,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'display_name' => env('CODEX_DISPLAY_NAME', 'Codex'),
+    'display_name'                => env('CODEX_DISPLAY_NAME', 'Codex'),
 
     /*
     |--------------------------------------------------------------------------
@@ -32,7 +19,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'root_dir' => env('CODEX_ROOT_DIR', base_path('resources/docs')),
+    'root_dir'                    => env('CODEX_ROOT_DIR', base_path('resources/docs')),
 
     /*
     |--------------------------------------------------------------------------
@@ -44,7 +31,7 @@ return [
     | Codex as a stand alone application.
     |
     */
-    'base_route' => env('CODEX_BASE_ROUTE', 'codex'),
+    'base_route'                  => env('CODEX_BASE_ROUTE', 'codex'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +39,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
+    'default_project'             => env('CODEX_DEFAULT_PROJECT', 'codex'),
 
     /*
     |--------------------------------------------------------------------------
@@ -65,12 +52,12 @@ return [
     |
     */
     'default_document_attributes' => [
-    'author'   => 'John Doe',
-    'title'    => 'Documentation',
-    'subtitle' => '',
-    'layout'   => 'codex::layouts.document',
-    'view'     => 'codex::document',
-],
+        'author'   => 'John Doe',
+        'title'    => 'Documentation',
+        'subtitle' => '',
+        'layout'   => 'codex::layouts.document',
+        'view'     => 'codex::document',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -81,26 +68,26 @@ return [
     | configuration files.
     |
     */
-    'default_project_config' => [
-    'description' => '',
-    'default'     => \Codex\Core\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
-    'custom'      => null,
-    'filters'     => [
-        'enabled'      => [ 'front_matter', 'parsedown' ],
-        'front_matter' => [ ],
-        'parsedown'    => [
-            'fenced_code_lang_class' => 'hljs lang-{LANG}'//'prettyprint lang-{LANG}'
+    'default_project_config'      => [
+        'description' => '',
+        'default'     => \Codex\Core\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
+        'custom'      => null,
+        'filters'     => [
+            'enabled'      => [ 'front_matter', 'parsedown' ],
+            'front_matter' => [ ],
+            'parsedown'    => [
+                'fenced_code_lang_class' => 'hljs lang-{LANG}'//'prettyprint lang-{LANG}'
+            ],
+        ],
+        'hooks'       => [
+            'enabled' => [ ],
+            // '{hookName}' => [ hookSettings ]
         ],
     ],
-    'hooks'       => [
-        'enabled' => [ ],
-        // '{hookName}' => [ hookSettings ]
-    ],
-],
 
     'log' => [
-    'path' => storage_path('logs/codex.log'),
-],
+        'path' => storage_path('logs/codex.log'),
+    ],
 
-    'stubs_path' => __DIR__ . '/../resources/stubs'
+    'stubs_path' => __DIR__ . '/../resources/stubs',
 ];

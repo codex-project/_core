@@ -8,14 +8,17 @@
 
 namespace Codex\Core\Next\Projects;
 
-use Codex\Core\Contracts\Codex;
+use Codex\Core\Next\Contracts;
+use Codex\Core\Next\Exception\ProjectNotFoundException;
 use Codex\Core\Next\Traits;
 use Sebwite\Support\Filesystem;
 use Sebwite\Support\Path;
 use Sebwite\Support\Str;
 use Symfony\Component\Finder\Finder;
 
-class Projects
+class Projects implements
+    Contracts\Projects,
+    Contracts\Hookable
 {
     use Traits\HookableTrait,
 
@@ -25,9 +28,13 @@ class Projects
 
     protected $items;
 
-
-
-    public function __construct(Codex $parent, Filesystem $files)
+    /**
+     * Projects constructor.
+     *
+     * @param \Codex\Core\Next\Contracts\Codex|\Codex\Core\Next\Codex $parent
+     * @param \Sebwite\Support\Filesystem      $files
+     */
+    public function __construct(Contracts\Codex $parent, Filesystem $files)
     {
         $this->setCodex($parent);
         $this->setContainer($parent->getContainer());
@@ -60,7 +67,12 @@ class Projects
         /** @var \Codex\Core\Menu $menu */
         $menu     = $this->codex->menus->add('projects');
         $finder   = new Finder();
-        $projects = $finder->in($this->getCodex()->getRootDir())->files()->name('config.php')->depth('<= 1')->followLinks();
+        $projects = $finder
+            ->in($this->getCodex()->getRootDir())
+            ->files()
+            ->name('config.php')
+            ->depth('<= 1')
+            ->followLinks();
 
         foreach ($projects as $projectDir) {
             # Make project
@@ -70,9 +82,9 @@ class Projects
             $config = $this->getContainer()->make('fs')->getRequire($projectDir->getRealPath());
             $config = array_replace_recursive($this->getCodex()->config('default_project_config'), $config);
 
-            /** @var \Codex\Core\Project $project */
+            /** @var \Codex\Core\Next\Projects\Project $project */
             $project = $this->getContainer()->make('codex.project', [
-                'codex'  => $this,
+                'projects' => $this,
                 'name'   => $name,
                 'config' => $config
             ]);
@@ -124,7 +136,7 @@ class Projects
     public function get($name)
     {
         if (!$this->has($name)) {
-            throw new \InvalidArgumentException("Project [$name] could not be found in [{$this->rootDir}]");
+            throw ProjectNotFoundException::in($this)->project($name);
         }
 
         return $this->items->get($name);

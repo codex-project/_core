@@ -1,21 +1,27 @@
 <?php
 /**
- * Part of the Sebwite PHP packages.
+ * Part of the Codex Project packages.
  *
  * License and copyright information bundled with this package in the LICENSE file
  */
 
-
-namespace Codex\Core;
+namespace Codex\Core\Next\Filesystem;
 
 
 use FilesystemIterator;
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Adapter\Local as BaseLocal;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 
-class LocalFilesystem extends Local
+/**
+ * This is the class Local.
+ *
+ * @package        Codex\Core
+ * @author         Robin Radic
+ * @copyright      Copyright (c) 2015, Robin Radic. All rights reserved
+ */
+class Local extends BaseLocal
 {
     /**
      * @param string $path

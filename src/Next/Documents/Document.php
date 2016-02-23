@@ -81,11 +81,11 @@ class Document implements
 
         $this->attributes = $codex->config('default_document_attributes');
 
-        if ( !$this->getFiles()->exists($this->path) ) {
+        if ( !$this->getFiles()->exists($this->getPath()) ) {
             throw DocumentNotFoundException::document($this)->inProject($project);
         }
 
-        $this->content = $this->getFiles()->get($this->path);
+        $this->content = $this->getFiles()->get($this->getPath());
 
         $this->hookPoint('document:done', [ $this ]);
     }

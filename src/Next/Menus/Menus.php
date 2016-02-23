@@ -9,24 +9,20 @@
 namespace Codex\Core\Next\Menus;
 
 
+use Codex\Core\Next\Contracts;
 use Codex\Core\Next\Contracts\Codex;
 use Codex\Core\Next\Support\Collection;
-use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Contracts\View\View;
-use Illuminate\Routing\Router;
 use Codex\Core\Next\Traits;
-use Codex\Core\Next\Contracts;
+use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Contracts\View\Factory as View;
+use Illuminate\Routing\Router;
 
 class Menus implements
     Contracts\Menus,
-    Contracts\Extendable,
-    Contracts\Hookable,
-    Contracts\Bootable
+    Contracts\Hookable
 {
-    use Traits\ExtendableTrait,
+    use
         Traits\HookableTrait,
-        Traits\ObservableTrait,
-        Traits\BootableTrait,
 
         Traits\CodexTrait,
         Traits\FilesTrait,
@@ -69,11 +65,11 @@ class Menus implements
     {
         $this->setCodex($parent);
         $this->setFiles($parent->getFiles());
-        $this->cache = $parent->getCache();
+        $this->cache  = $parent->getCache();
         $this->router = $router;
-        $this->url = $url;
-        $this->view = $view;
-        $this->items = new Collection();
+        $this->url    = $url;
+        $this->view   = $view;
+        $this->items  = new Collection();
 
         $this->hookPoint('menus:ready', [ $this ]);
     }
@@ -92,7 +88,7 @@ class Menus implements
             return $this->get($id);
         }
 
-        $menu = $this->getContainer()->make('codex.menu', [
+        $menu = $this->getCodex()->getContainer()->make('codex.menu', [
             'menus' => $this,
             'id'    => $id,
         ]);
@@ -101,20 +97,6 @@ class Menus implements
         $this->items->put($id, $menu);
 
         return $menu;
-    }
-
-
-    /**
-     * Returns a menu
-     *
-     * @param string $id
-     * @param null   $default
-     *
-     * @return \Codex\Core\Menu
-     */
-    public function get($id, $default = null)
-    {
-        return $this->items->get($id, $default);
     }
 
     /**
@@ -127,6 +109,19 @@ class Menus implements
     public function has($id)
     {
         return $this->items->has($id);
+    }
+
+    /**
+     * Returns a menu
+     *
+     * @param string $id
+     * @param null   $default
+     *
+     * @return \Codex\Core\Menu
+     */
+    public function get($id, $default = null)
+    {
+        return $this->items->get($id, $default);
     }
 
     /**

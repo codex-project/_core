@@ -8,7 +8,7 @@
 
 namespace Codex\Core\Next\Projects;
 
-use Codex\Core\Contracts\Codex;
+use Codex\Core\Next\Contracts\Codex;
 use Codex\Core\Next\Addon\Addon;
 use Codex\Core\Next\Traits;
 use Illuminate\Contracts\Config\Repository;
@@ -77,53 +77,84 @@ class Project extends Addon
 
     protected $fsm;
 
+    protected $projects;
+
+    protected $diskName;
+
     /**
      * Project constructor.
      *
-     * @param \Codex\Core\Contracts\Codex|\Codex\Core\Components\Factory\ $codex
-     * @param \Illuminate\Filesystem\FilesystemManager                    $fsm
-     * @param \Illuminate\Contracts\Config\Repository                     $repository
-     * @param \Illuminate\Contracts\Container\Container                   $container
-     * @param                                                             $name
-     * @param                                                             $config
+     * @param \Codex\Core\Next\Projects\Projects        $projects
+     * @param \Codex\Core\Next\Contracts\Codex          $codex
+     * @param \Illuminate\Filesystem\FilesystemManager  $fsm
+     * @param \Illuminate\Contracts\Config\Repository   $repository
+     * @param \Illuminate\Contracts\Container\Container $container
+     * @param                                           $name
+     * @param                                           $config
      */
-    public function __construct(Codex $codex, FilesystemManager $fsm, Repository $repository, Container $container, $name, $config)
+    public function __construct(Codex $codex, FilesystemManager $fsm, Repository $repository, Container $container, Projects $projects, $name, $config)
     {
         $this->setCodex($codex);
-        $this->name = $name;
-        $this->path = $path = path_join($codex->getRootDir(), $name);
         $this->fsm = $fsm;
         $this->repository = $repository;
+        $this->projects = $projects;
+        $this->name = $name;
         $this->setConfig($config);
-        $this->setDisk([
-            'driver' => 'codex-local',
-            'root'   => path_join($this->getCodex()->getRootDir(), $this->getName())
-        ]);
-        $this->hookPoint('project:ready', [ $this ]);
+        $this->path = $path = path_join($codex->getRootDir(), $name);
 
-        # Resolve refs
+        $this->hookPoint('project:construct', [ $this ]);
+
+        $this->diskName = $this->getDefaultDiskName();
+        $this->setDisk();
         $this->resolveRefs();
 
         # Resolve menu
-        $this->hookPoint('project:done', [ $this ]);
+        $this->hookPoint('project:constructed', [ $this ]);
     }
 
 
     public function getDiskName()
     {
-        return 'codex-' . $this->getName();
+        return $this->diskName ?: $this->getDefaultDiskName();
     }
 
-    public function setDisk(array $config = [ ])
+    public function getDefaultDiskName()
     {
-        $this->repository->set('filesystems.disks.' . $this->getDiskName(), $config);
-        $files = $this->fsm->disk($this->getDiskName());
-        $this->setFiles($files);
+        return 'codex-local-' . $this->getName();
+    }
+
+
+    /**
+     * setDisk method
+     *
+     * @param null|string $diskName
+     *
+     */
+    public function setDisk()
+    {
+        $this->repository->set(
+            "filesystems.disks.{$this->getDiskName()}",
+            $this->getDiskConfig()->toArray()
+        );
+        $this->setFiles($this->fsm->disk($this->getDiskName()));
+    }
+
+    public function getDiskConfig()
+    {
+        $default = [];
+        if($this->getDiskName() === $this->getDefaultDiskName()){
+            $default = [
+                'driver' => 'codex-local',
+                'root' => $this->codex->getRootDir() . DIRECTORY_SEPARATOR . $this->getName()
+            ];
+        }
+
+        return collect($this->repository->get("filesystems.disks.{$this->getDiskName()}", $default));
     }
 
     public function getDisk()
     {
-        return collect($this->repository->get('filesystems.disks.' . $this->getDiskName()));
+        return $this->fsm->disk($this->getDiskName());
     }
 
     /**
@@ -135,16 +166,21 @@ class Project extends Addon
      */
     public function path($path = null)
     {
-        $root = $this->getDisk()->get('root');
-        $absolute = is_null($path) ? $this->path : path_join($this->path, $path);
-        $relative = path_relative($absolute, $root);
-
-        return $relative;
+        $root = $this->getDiskConfig()->get('root');
+        $path = isset($path) ? $root : path_join($root, $path);
+        return path_absolute($root, $path);
+        #return is_null($path) ? '' : path_absolute($path, $this->rootPath());
+        #return is_null($path) ? $root : path_join($root, $path);
     }
 
+    public function rootPath($path = null)
+    {
+        $root = $this->getDiskConfig()->get('root');
+        $path = isset($path) ? $root : path_join($root, $path);
+    }
     public function refPath($path = null)
     {
-        return is_null($path) ? $this->path($this->ref) : $this->path(path_join($this->ref, $path));
+        return path_join($this->getRef(), $path);
     }
 
     /**
@@ -178,8 +214,6 @@ class Project extends Addon
         $this->refs = [ ];
 
         $this->versions = array_filter(array_map(function ($dirPath) use (&$branches) {
-
-
             $version = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft(DIRECTORY_SEPARATOR);
             $version = (string)$version->removeLeft($this->name . '/');
             $this->refs[] = $version;
@@ -243,7 +277,7 @@ class Project extends Addon
         $this->getCodex()->menus->forget('sidebar');
 
         $menu = $this->setupSidebarMenu($array[ 'menu' ]);
-        $this->runHook('project:documents-menu', [ $this, $menu ]);
+        $this->hookPoint('project:documents-menu', [ $this, $menu ]);
 
         return $menu;
     }
@@ -343,6 +377,7 @@ class Project extends Addon
     public function getSortedRefs()
     {
         $versions = $this->versions;
+
 
         usort($versions, function (version $v1, version $v2) {
 

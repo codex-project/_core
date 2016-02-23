@@ -9,6 +9,7 @@ namespace Codex\Core;
 use Codex\Core\Extensions\Filters\FrontMatterFilter;
 use Codex\Core\Extensions\Filters\ParsedownFilter;
 use Codex\Core\Log\Writer;
+use Codex\Core\Next\Filesystem\Local;
 use Codex\Core\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application;
 use League\Flysystem\Adapter\Local;
@@ -95,7 +96,7 @@ class CodexServiceProvider extends ServiceProvider
         $app = parent::register();
         $app->make('filesystem')->extend('codex-local', function (Application $app, array $config = [ ]) {
             #return LocalFilesystem::create();
-            $adapter = new LocalFilesystem($config[ 'root' ], LOCK_EX, Local::SKIP_LINKS);
+            $adapter = new Local($config[ 'root' ], LOCK_EX, Local::SKIP_LINKS);
             return new Filesystem($adapter);
         });
 

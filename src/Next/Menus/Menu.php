@@ -10,7 +10,7 @@ namespace Codex\Core\Next\Menus;
 
 use Codex\Core\Next\Support\Collection;
 use Illuminate\Contracts\Cache\Repository as Cache;
-use Illuminate\Contracts\Filesystem\Filesystem;
+use Sebwite\Support\Filesystem;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Routing\Router;
