@@ -18,13 +18,14 @@ use Codex\Core\Contracts\Codex;
 trait CodexTrait
 {
     /**
-     * @var \Codex\Core\Contracts\Codex|\Codex\Core\Codex
+     * @var \Codex\Core\Factory
      */
     protected $codex;
 
     /**
-     * getCodex method
-     * @return \Codex\Core\Codex|\Codex\Core\Contracts\Codex
+     * get codex value
+     *
+     * @return \Codex\Core\Contracts\Codex|\Codex\Core\Factory
      */
     public function getCodex()
     {

@@ -27,7 +27,7 @@ trait ConfigTrait
      */
     public function config($key = null, $default = null)
     {
-        return $key === null ? $this->config : data_get($this->config, $key, $default);
+        return $key === null ? $this->config : array_get($this->config, $key, $default);
     }
 
     /**

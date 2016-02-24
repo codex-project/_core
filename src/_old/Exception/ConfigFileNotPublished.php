@@ -12,7 +12,7 @@ namespace Codex\Core\Exception;
 /**
  * This is the class ConfigFileNotPublished.
  *
- * @package        Codex\Core\Next;
+ * @package        Codex\Core
  * @author         Sebwite
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
  *

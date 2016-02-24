@@ -24,17 +24,13 @@ trait ContainerTrait
      */
     public function getContainer()
     {
-        if ( !isset($this->container) ) {
-            return function_exists('app') ? app() : \Illuminate\Container\Container::getInstance();
-        }
         return $this->container;
     }
 
     /**
      * Sets the IoC container instance.
      *
-     * @param  \Illuminate\Container\Container $container
-     *
+     * @param  \Illuminate\Container\Container  $container
      * @return $this
      */
     public function setContainer(Container $container)
