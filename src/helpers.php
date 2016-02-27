@@ -25,7 +25,7 @@ if (!function_exists('version')) {
 if (!function_exists('codex')) {
     /**
      * codex method
-     * @return \Codex\Core\Factory
+     * @return \Codex\Core\Codex
      */
     function codex()
     {
