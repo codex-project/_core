@@ -15,7 +15,7 @@ use Codex\Core\Exception\DocumentNotFoundException;
 use Codex\Core\Projects\Project;
 use Codex\Core\Traits;
 
-class Document implements
+abstract class Document implements
     Contracts\Extendable,
     Contracts\Hookable,
     Contracts\Bootable

@@ -71,7 +71,12 @@ class Codex implements
      */
     protected $rootDir;
 
-    protected $documentExtensions;
+    protected $documents = [];
+
+    protected $hookPoints = [ ];
+
+
+    # Config
 
     /**
      * @param \Illuminate\Contracts\Container\Container                             $container
@@ -87,22 +92,21 @@ class Codex implements
         $this->setConfig($config);
         $this->setFiles($files);
 
-        $this->documentExtensions = collect();
-        $this->cache              = $cache;
-        $this->rootDir            = config('codex.root_dir');
-        $this->log                = $log;
+        $this->documents = collection();
+        $this->cache     = $cache;
+        $this->rootDir   = config('codex.root_dir');
+        $this->log       = $log;
 
         // 'factory:ready' is called after parameters have been set as class properties.
         $this->hookPoint('construct', [ $this ]);
 
-        $this->registerDocumentExtension('html', 'codex.document.html');
 
         // 'factory:done' called after all factory operations have completed.
         $this->hookPoint('constructed', [ $this ]);
     }
 
+    # Helper functions
 
-    # Config
     public function mergeDefaultProjectConfig($config)
     {
         $this->setConfig(
@@ -113,8 +117,6 @@ class Codex implements
             )
         );
     }
-
-    # Helper functions
 
     /** Add a view to a view stack */
     public function stack($viewName, $data = null, $appendTo = 'codex::layouts.default')
@@ -175,6 +177,8 @@ class Codex implements
         return Parser::toVersion(app()->version());
     }
 
+    # Getters / setters
+
     /**
      * Writes a log message to the codex log file
      *
@@ -186,8 +190,6 @@ class Codex implements
     {
         return $this->log->log($level, $message, $context);
     }
-
-    # Getters / setters
 
     /**
      * Get root directory.
@@ -247,17 +249,10 @@ class Codex implements
         return $this;
     }
 
-    public function registerDocumentExtensions(array $extensions)
-    {
-        foreach ( $extensions as $extension => $handler ) {
-            $this->registerDocumentExtension($extension, $handler);
-        }
-        return $this;
-    }
 
-    public function registerDocumentExtension($extension, $handler)
+    public function registerDocument($name, $extensions, $handler)
     {
-        $this->documentExtensions->put($extension, $handler);
+        $this->documents->put($name, compact('name', 'extensions', 'handler'));
         return $this;
     }
 
@@ -265,16 +260,28 @@ class Codex implements
      * getExtensions method
      * @return \Illuminate\Support\Collection
      */
-    public function getExtensions()
+    public function getDocuments()
     {
-        return $this->documentExtensions;
+        return $this->documents;
     }
 
-    public function filter($document, $name, $class)
+    public function registerFilter($name, $class, $documents = null)
     {
-        $this->getContainer()->resolving($document, function(Document $document) use ($name, $class){
-            $document->filters()->put($name, $class);
-        });
+        foreach ( $documents as $document ) {
+            $this->getContainer()->resolving($document, function (Document $document) use ($name, $class) {
+                $document->filters()->put($name, $class);
+            });
+        }
+    }
+
+    public function registerHook($point, $callable)
+    {
+        collect($this->hookPoints)->get($point);
+    }
+
+    public function registerHookPoint($point, $class)
+    {
+        $this->hookPoints[ $point ] = $class;
     }
 
 }

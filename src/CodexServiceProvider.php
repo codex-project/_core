@@ -33,7 +33,7 @@ class CodexServiceProvider extends ServiceProvider
 
 
     protected $bindings = [
-        'codex.document.html' => Documents\Document::class,
+        'codex.document.html' => Documents\HtmlDocument::class,
         'codex.project'       => Projects\Project::class,
         'codex.menu'          => Menus\Menu::class,
     ];
@@ -61,6 +61,7 @@ class CodexServiceProvider extends ServiceProvider
     public function boot()
     {
         $app = parent::boot();
+        $codex = $app->make('codex');
         return $app;
     }
 
