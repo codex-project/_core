@@ -5,9 +5,12 @@
     "homepage": "http://codex-project.ninja",
     "authors": [{"name": "Robin Radic", "email": "robin@radic.nl"}],
     "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": ">=5.5.9",
-        "sebwite/support": "1.0.*",
+        "laradic/support": "1.0.*",
+        "illuminate/contracts": "~5.0",
         "herrera-io/version": "~1.1",
         "erusev/parsedown": "~1.5",
         "erusev/parsedown-extra": "~0.7",
@@ -15,11 +18,22 @@
         "vierbergenlars/php-semver": "3.0.*",
         "nicmart/tree": "0.2.*",
         "radic/blade-extensions": "~6.2",
-        "myclabs/php-enum": "~1.4"
+        "myclabs/php-enum": "~1.4",
+        "symfony/config": "~3.0",
+        "doctrine/common": "~2.6",
+        "doctrine/annotations": "~1.2"
+    },
+    "require-dev": {
+        "orchestra/testbench": "~3.2"
     },
     "autoload": {
         "psr-4": {
             "Codex\\Core\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Codex\\Tests\\Core\\": "tests"
         }
     },
     "extra": {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Part of the Sebwite PHP packages.
+ * Part of the Codex Project PHP packages.
  *
  * License and copyright information bundled with this package in the LICENSE file
  */
@@ -11,7 +11,7 @@ use Codex\Core\Traits;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Filesystem\FilesystemManager;
-use Sebwite\Support\Str;
+use Laradic\Support\Str;
 use Symfony\Component\Yaml\Yaml;
 use vierbergenlars\SemVer\version;
 

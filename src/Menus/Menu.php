@@ -1,6 +1,6 @@
 <?php
 /**
- * Part of the Sebwite PHP packages.
+ * Part of the Codex Project PHP packages.
  *
  * License and copyright information bundled with this package in the LICENSE file
  */
@@ -15,7 +15,7 @@ use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Routing\Router;
-use Sebwite\Support\Filesystem;
+use Laradic\Support\Filesystem;
 
 class Menu implements
     Contracts\Extendable,

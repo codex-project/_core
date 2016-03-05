@@ -4,7 +4,7 @@ subtitle: Installation and configuration
 -->
 
 
-Installation
+## Installation
 ------------
 1. Add to composer
 

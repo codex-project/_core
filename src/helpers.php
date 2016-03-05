@@ -1,6 +1,6 @@
 <?php
 /**
- * Part of the Sebwite PHP packages.
+ * Part of the Codex Project PHP packages.
  *
  * License and copyright information bundled with this package in the LICENSE file
  */
@@ -25,7 +25,7 @@ if (!function_exists('version')) {
 if (!function_exists('codex')) {
     /**
      * codex method
-     * @return \Codex\Core\Factory
+     * @return \Codex\Core\Codex
      */
     function codex()
     {

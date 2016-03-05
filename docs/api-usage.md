@@ -4,6 +4,9 @@ subtitle: Codex Documentation
 -->
 
 You can access the API by either using the binding, contract or facade.
+
+Check out the [Filters & Hooks](filters-hooks) documentaiton.
+
 ### Api access
 ###### Contract
 ```php
@@ -15,7 +18,7 @@ public function __construct(Codex $codex){
 
 ###### Facade 
 ```php
-$dir = Codex::getRootDir();
+$dir = codex()->getRootDir();
 ```
 
 ###### Binding
@@ -38,7 +41,7 @@ $url        = $codex->url($project = null, $ref = null, $doc = null);
 # @var boolean $hasProject
 $hasProject = $codex->projects->has('codex-core');
 
-# @var \Codex\Core\Project $project 
+/** @var \Codex\Core\Projects\Project $project */ 
 $project    = $codex->projects->get('codex-core');
 
 # @var \Codex\Core\Components\Factory\Projects $projects 
@@ -86,5 +89,4 @@ $document->setAttributes(array $attr = [])
 $document->mergeAttributes(array $attr = [])
 $document->getProject()
 $document->setPath($path)
-
 ```

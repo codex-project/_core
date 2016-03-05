@@ -13,10 +13,12 @@ use Codex\Core\Documents\Document;
 use Codex\Core\Exception\ConfigFileNotPublished;
 use Codex\Core\Log\Writer;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Filesystem\FilesystemAdapter;
 use League\Flysystem\Filesystem as Flysystem;
 use Monolog\Logger as Monolog;
-use Sebwite\Support\ServiceProvider;
+use ReflectionClass;
+use Laradic\Support\ServiceProvider;
 
 /**
  * This is the class CodexServiceProvider.
@@ -24,13 +26,13 @@ use Sebwite\Support\ServiceProvider;
  * @package        Codex\Core
  * @author         Sebwite
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
+ *
  */
 class CodexServiceProvider extends ServiceProvider
 {
     protected $dir = __DIR__;
 
     protected $configFiles = [ 'codex' ];
-
 
     protected $bindings = [
         'codex.document.html' => Documents\HtmlDocument::class,
@@ -50,19 +52,29 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $singletons = [
-        'codex' => Codex::class,
+        'codex'        => Codex::class,
+        'codex.addons' => Addons\AddonRepository::class,
     ];
 
     protected $aliases = [
-        'codex'     => Contracts\Codex::class,
-        'codex.log' => Contracts\Log::class,
+        'codex'        => Contracts\Codex::class,
+        'codex.log'    => Contracts\Log::class,
+        'codex.addons' => Contracts\Addons::class,
     ];
 
     public function boot()
     {
-        $app = parent::boot();
+        $app   = parent::boot();
+        /** @var Codex $codex */
         $codex = $app->make('codex');
+        $codex->addons()->run();
         return $app;
+    }
+
+    public function booting(Application $app)
+    {
+        $codex = $app->make('codex');
+
     }
 
     public function register()
@@ -73,6 +85,8 @@ class CodexServiceProvider extends ServiceProvider
             $this->ensureConfig();
         }
 
+        #$this->registerAnnotations();
+
         $this->registerLogger();
 
         $this->registerCodexBinding();
@@ -81,11 +95,42 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerDefaultFilesystem();
 
-        $this->app->resolving('codex.document.html', function(Document $document){
+        $this->app->resolving('codex.document.html', function (Document $document) {
             $document->filters()->put('attributes', AttributesFilter::class);
         });
 
         return $app;
+    }
+
+    protected function registerAnnotations()
+    {
+        return;
+        $globs   = $this->app->make('fs')->globule(__DIR__ . '/Tryout/**');
+        $driver  = new \Doctrine\Common\Persistence\Mapping\Driver\PHPDriver($globs);
+        $classes = $driver->getAllClassNames();
+
+        foreach ( $classes as $key => $class ) {
+
+            $reader = new \Doctrine\Common\Annotations\AnnotationReader();
+
+            $annotationReader = new \Doctrine\Common\Annotations\CachedReader(
+                $reader,
+                new \Doctrine\Common\Cache\ArrayCache()
+            );
+
+            $reflClass  = new ReflectionClass("\\Entities\\$reportableClass");
+            $annotation = $annotationReader->getClassAnnotation(
+                $reflClass,
+                'Custom_Annotation'
+            );
+            if ( is_null($annotation) ) {
+                unset($classes[ $key ]);
+            }
+        }
+
+
+        return;
+        #$reader->getMethodAnnotations();
     }
 
     protected function ensureConfig()

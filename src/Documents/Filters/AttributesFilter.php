@@ -8,7 +8,7 @@
 
 use Codex\Core\Documents\Document;
 use Codex\Core\Documents\Filter;
-use Sebwite\Support\Collection;
+use Laradic\Support\Collection;
 use Symfony\Component\Yaml\Yaml;
 
 /**

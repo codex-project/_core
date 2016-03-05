@@ -1,6 +1,6 @@
 <?php
 /**
- * Part of the Sebwite PHP packages.
+ * Part of the Codex Project PHP packages.
  *
  * License and copyright information bundled with this package in the LICENSE file
  */
@@ -11,9 +11,9 @@ namespace Codex\Core\Projects;
 use Codex\Core\Contracts;
 use Codex\Core\Exception\ProjectNotFoundException;
 use Codex\Core\Traits;
-use Sebwite\Support\Filesystem;
-use Sebwite\Support\Path;
-use Sebwite\Support\Str;
+use Laradic\Support\Filesystem;
+use Laradic\Support\Path;
+use Laradic\Support\Str;
 use Symfony\Component\Finder\Finder;
 
 class Projects implements
@@ -32,7 +32,7 @@ class Projects implements
      * Projects constructor.
      *
      * @param \Codex\Core\Contracts\Codex|\Codex\Core\Codex $parent
-     * @param \Sebwite\Support\Filesystem                   $files
+     * @param \Laradic\Support\Filesystem                   $files
      */
     public function __construct(Contracts\Codex $parent, Filesystem $files)
     {

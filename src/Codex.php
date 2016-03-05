@@ -1,6 +1,6 @@
 <?php
 /**
- * Part of the Sebwite PHP packages.
+ * Part of the Codex Project PHP packages.
  *
  * License and copyright information bundled with this package in the LICENSE file
  */
@@ -17,8 +17,7 @@ use Herrera\Version\Parser;
 use Herrera\Version\Version;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\View\View;
-use Sebwite\Support\Filesystem;
+use Laradic\Support\Filesystem;
 
 
 /**
@@ -71,31 +70,30 @@ class Codex implements
      */
     protected $rootDir;
 
-    protected $documents = [];
-
-    protected $hookPoints = [ ];
-
+    protected $addons;
 
     # Config
 
     /**
-     * @param \Illuminate\Contracts\Container\Container                             $container
-     * @param \Illuminate\Contracts\Filesystem\Filesystem                           $files
-     * @param \Illuminate\Contracts\Config\Repository                               $config
-     * @param \Illuminate\Contracts\Cache\Repository                                $cache
-     * @param \Codex\Core\Contracts\Log                                             $log
-     * @param \Codex\Core\Contracts\Menus\MenuFactory|\Components\Menus\MenuFactory $menus The menu factory
+     * Codex constructor.
+     *
+     * @param \Illuminate\Contracts\Container\Container $container
+     * @param \Codex\Core\Contracts\Addons              $addons
+     * @param \Laradic\Support\Filesystem               $files
+     * @param \Illuminate\Contracts\Cache\Repository    $cache
+     * @param \Codex\Core\Contracts\Log                 $log
+     * @param array                                     $config
      */
-    public function __construct(Container $container, Filesystem $files, Cache $cache, Contracts\Log $log, array $config = [ ])
+    public function __construct(Container $container, Contracts\Addons $addons, Filesystem $files, Cache $cache, Contracts\Log $log, array $config = [ ])
     {
         $this->setContainer($container);
         $this->setConfig($config);
         $this->setFiles($files);
 
-        $this->documents = collection();
-        $this->cache     = $cache;
-        $this->rootDir   = config('codex.root_dir');
-        $this->log       = $log;
+        $this->addons  = $addons;
+        $this->cache   = $cache;
+        $this->rootDir = config('codex.root_dir');
+        $this->log     = $log;
 
         // 'factory:ready' is called after parameters have been set as class properties.
         $this->hookPoint('construct', [ $this ]);
@@ -103,6 +101,15 @@ class Codex implements
 
         // 'factory:done' called after all factory operations have completed.
         $this->hookPoint('constructed', [ $this ]);
+    }
+
+    /**
+     * addons method
+     * @return \Codex\Core\Contracts\Addons|\Codex\Core\Addons\AddonRepository
+     */
+    public function addons()
+    {
+        return $this->addons;
     }
 
     # Helper functions
@@ -121,7 +128,8 @@ class Codex implements
     /** Add a view to a view stack */
     public function stack($viewName, $data = null, $appendTo = 'codex::layouts.default')
     {
-        $this->container->make('events')->listen('composing: ' . $appendTo, function (View $view) use ($viewName, $data) {
+        $this->container->make('events')->listen('composing: ' . $appendTo, function ($view) use ($viewName, $data) {
+            /** @var \Illuminate\Contracts\View\View $view */
 
             if ( $data instanceof \Closure ) {
                 $data = $this->container->call($data, [ $this ]);
@@ -250,8 +258,11 @@ class Codex implements
     }
 
 
+    protected $documents = [ ];
+
     public function registerDocument($name, $extensions, $handler)
     {
+        #codex()->projects->get('codex')->documents->get('index')->
         $this->documents->put($name, compact('name', 'extensions', 'handler'));
         return $this;
     }
@@ -273,6 +284,8 @@ class Codex implements
             });
         }
     }
+
+    protected $hookPointsa = [ ];
 
     public function registerHook($point, $callable)
     {

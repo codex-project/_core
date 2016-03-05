@@ -21,7 +21,7 @@
         <link href="{{ asset('vendor/codex/styles/themes/theme-codex.css') }}" type="text/css" rel="stylesheet" id="theme-style">
     @show
 
-    @stack('styles')
+    @section('styles')@show
 
 </head>
 
@@ -43,8 +43,8 @@
     @show
 
     <script src="{{ asset('vendor/codex/bower_components/jstree/dist/jstree.js') }}"></script>
-    
-    @stack('scripts')
+
+    @section('scripts')@show
 
     @section('init-script')
         <script>
@@ -60,7 +60,8 @@
         </script>
     @show
 
-    @stack('init-scripts')
+    @section('init-scripts')@show
+
 
     @section('boot-script')
         <script>
