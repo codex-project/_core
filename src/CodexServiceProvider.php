@@ -9,6 +9,7 @@
 namespace Codex\Core;
 
 use AttributesFilter;
+use Codex\Core\Contracts\Codex;
 use Codex\Core\Documents\Document;
 use Codex\Core\Exception\ConfigFileNotPublished;
 use Codex\Core\Log\Writer;
@@ -141,6 +142,12 @@ class CodexServiceProvider extends ServiceProvider
         $this->app->when(Codex::class)
             ->needs('$config')
             ->give($this->app[ 'config' ][ 'codex' ]);
+
+        $this->app->resolving('codex', function (Codex $codex) {
+            /** @var \Codex\Core\Codex $codex */
+            $codex->registerDocument('html', Documents\HtmlDocument::class);
+            $codex->registerFilter('attributes', AttributesFilter::class);
+        });
     }
 
     protected function registerDefaultFilesystem()

@@ -11,5 +11,6 @@ namespace Codex\Core\Documents;
 
 interface Filter
 {
+    public static function getName();
 
 }

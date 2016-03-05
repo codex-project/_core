@@ -4,7 +4,7 @@
  *
  * License and copyright information bundled with this package in the LICENSE file
  */
-
+namespace Codex\Core\Documents\Filters;
 
 use Codex\Core\Documents\Document;
 use Codex\Core\Documents\Filter;
@@ -53,6 +53,11 @@ class AttributesFilter implements Filter
         $document->setContent($content);
 
         return $this;
+    }
+
+    public static function getName()
+    {
+        // TODO: Implement getName() method.
     }
 }
 

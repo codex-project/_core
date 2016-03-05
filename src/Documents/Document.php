@@ -64,19 +64,13 @@ abstract class Document implements
 
     protected $filters;
 
-    public function getName()
-    {
-        return $this->pathName;
-    }
-
-
     public function __construct(Codex $codex, Project $project, $path, $pathName)
     {
         $this->setCodex($codex);
         $this->project  = $project;
         $this->path     = $path;
         $this->pathName = $pathName;
-        $this->filters = collection();
+        $this->filters  = collection();
 
         $this->setFiles($project->getFiles());
 
@@ -93,7 +87,6 @@ abstract class Document implements
         $this->hookPoint('document:done', [ $this ]);
     }
 
-
     /**
      * Render the document.
      *
@@ -104,36 +97,38 @@ abstract class Document implements
      */
     public function render()
     {
-        $this->hookPoint('document:render', [ $this ]);
+        $this->hookPoint('render', [ $this ]);
+        return $this->content;
+    }
 
+    protected function runFilters($only = null)
+    {
         $fsettings = $this->project->config('filters');
         $filters   = $this->filters->only($this->project->config('filters.enabled'));
+        if(is_array($only)){
+            $filters = $filters->only($only);
+        }
         $container = $this->getCodex()->getContainer();
 
+        foreach ( $filters->toArray() as $name => $filter ) {
+            $settings = collection(isset($fsettings[ $name ]) ? $fsettings[ $name ] : [ ]);
+            $params   = [
+                'document' => $this,
+                'settings' => $settings,
+            ];
 
-            foreach ( $filters->toArray() as $name => $filter ) {
-                $settings = collection(isset($fsettings[ $name ]) ? $fsettings[ $name ] : [ ]);
-                $params = [
-                    'document' => $this,
-                    'settings' => $settings
-                ];
-
-                if ( $filter instanceof \Closure ) {
-                    $container->call($filter, $params);
-                } else {
-                    $container->make($filter, $params);
-                }
+            if ( $filter instanceof \Closure ) {
+                $container->call($filter, $params);
+            } else {
+                $container->make($filter, $params);
             }
-
-
-        return $this->content;
+        }
     }
 
     public function filters()
     {
         return $this->filters;
     }
-
 
     /**
      * Get a attribute using dot notation
@@ -149,16 +144,6 @@ abstract class Document implements
     }
 
     /**
-     * Get the url to this document
-     *
-     * @return string
-     */
-    public function url()
-    {
-        return $this->codex->url($this->project, $this->project->getRef(), $this->pathName);
-    }
-
-    /**
      * Returns an array of parent menu items
      *
      * @return array
@@ -169,6 +154,17 @@ abstract class Document implements
     }
 
     /**
+     * Get the url to this document
+     *
+     * @return string
+     */
+    public function url()
+    {
+        return $this->codex->url($this->project, $this->project->getRef(), $this->pathName);
+    }
+
+
+    /**
      * get the path value.
      *
      * @return string
@@ -176,6 +172,29 @@ abstract class Document implements
     public function getPath()
     {
         return $this->path;
+    }
+
+    /**
+     * Set the path value.
+     *
+     * @param  string $path
+     *
+     * @return Document
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * getName method
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->pathName;
     }
 
     /**
@@ -243,24 +262,10 @@ abstract class Document implements
     /**
      * Get the document's project.
      *
-     * @return \Codex\Core\Project
+     * @return \Codex\Core\Projects\Project
      */
     public function getProject()
     {
         return $this->project;
-    }
-
-    /**
-     * Set the path value.
-     *
-     * @param  string $path
-     *
-     * @return Document
-     */
-    public function setPath($path)
-    {
-        $this->path = $path;
-
-        return $this;
     }
 }
