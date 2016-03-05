@@ -9,18 +9,23 @@
 namespace Codex\Core\Addons;
 
 use Codex\Core\Addons\Scanner\Scanner;
-use Codex\Core\Contracts\Addons;
-use Codex\Core\Traits\CodexTrait;
-use Doctrine\Common\Annotations as A;
+use Codex\Core\Contracts;
+use Codex\Core\Traits;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Laradic\Support\Filesystem;
 use Laradic\Support\Path;
 use ReflectionClass;
 
-class AddonRepository implements Addons
+class Addons implements
+    Contracts\Addons,
+    Contracts\Hookable
 {
-    use CodexTrait;
+    use
+        Traits\HookableTrait,
+        Traits\CodexTrait,
+        Traits\FilesTrait,
+        Traits\ConfigTrait;
 
     protected $annotations = [
         Annotations\Addon::class,
@@ -49,16 +54,40 @@ class AddonRepository implements Addons
     protected $hooks;
 
     /**
-     * AddonRepository constructor.
+     * @var \Doctrine\Common\Annotations\AnnotationReader
      */
-    public function __construct()
+    protected $reader;
+
+    /**
+     * Addons constructor.
+     *
+     * @param \Codex\Core\Contracts\Codex $codex
+     * @param \Laradic\Support\Filesystem $files
+     */
+    public function __construct(Contracts\Codex $codex, Filesystem $files)
     {
+        $this->setCodex($codex);
+        $this->setFiles($files);
+
         $this->providers  = collection();
         $this->addons     = collection();
         $this->documents  = collection();
         $this->extensions = collection();
         $this->filters    = collection();
         $this->hooks      = collection();
+
+
+        //$this->hookPoint('addons:construct');
+
+        $this->reader = new AnnotationReader();
+
+        foreach ( Filesystem::create()->globule(__DIR__ . '/Annotations/*.php') as $filePath ) {
+            AnnotationRegistry::registerFile($filePath);
+        }
+
+        $found = $this->resolve();
+
+        $this->hookPoint('addons:constructed');
     }
 
     /**
@@ -110,20 +139,14 @@ class AddonRepository implements Addons
     }
 
 
-    public function run()
+    public function resolve()
     {
         $found = collect();
-
-        foreach ( Filesystem::create()->globule(__DIR__ . '/Annotations/*.php') as $filePath ) {
-            AnnotationRegistry::registerFile($filePath);
-        }
-
-        $reader = new AnnotationReader();
 
         foreach ( $this->providers as $name => $provider ) {
             $path    = (new ReflectionClass($provider))->getFileName();
             $dir     = Path::getDirectory($path);
-            $scanner = (new Scanner($reader))->scan($this->annotations)->in($dir);
+            $scanner = (new Scanner($this->reader))->scan($this->annotations)->in($dir);
 
             foreach ( $scanner as $file ) {
                 /** @var \Codex\Core\Addons\Scanner\ClassFileInfo $file */
@@ -138,6 +161,8 @@ class AddonRepository implements Addons
                 ]);
             }
         }
+
+        return $found;
     }
 
 

@@ -29,8 +29,9 @@ abstract class AddonServiceProvider extends ServiceProvider
         $this->treeBuilder = new TreeBuilder();
         $app->booting(function(Application $app){
             /** @var \Codex\Core\Contracts\Codex|\Codex\Core\Codex $codex */
-            $codex = $app->make('codex');
-            $codex->addons()->providers()->put($this->getName(), $this);
+            #$codex = $app->make('codex');
+            #$codex->addons()->providers()->put($this->getName(), $this);
+            #$codex->addons()->addons()->put($this->getName(), $this);
         });
     }
 
@@ -40,19 +41,7 @@ abstract class AddonServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $class          = get_called_class();
-        $classReflector = new ReflectionClass($class);
-        $classFile      = $classReflector->getFileName();
-        $segments       = explode(DIRECTORY_SEPARATOR, $classFile);
-        $namespace      = $classReflector->getNamespaceName();
 
-        $path = stringy($classFile)
-            ->removeRight('.php')
-            ->removeRight(last($segments))
-            ->removeRight(DIRECTORY_SEPARATOR);
-
-
-        $dir = Path::getDirectory($classFile);
 
         return $this->app;
     }

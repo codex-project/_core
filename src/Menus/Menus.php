@@ -10,7 +10,6 @@ namespace Codex\Core\Menus;
 
 
 use Codex\Core\Contracts;
-use Codex\Core\Contracts\Codex;
 use Codex\Core\Support\Collection;
 use Codex\Core\Traits;
 use Illuminate\Contracts\Routing\UrlGenerator;
@@ -61,7 +60,7 @@ class Menus implements
      * @param \Illuminate\Contracts\Routing\UrlGenerator    $url
      * @param \Illuminate\Contracts\View\View               $view
      */
-    public function __construct(Codex $parent, Router $router, UrlGenerator $url, View $view)
+    public function __construct(Contracts\Codex $parent, Router $router, UrlGenerator $url, View $view)
     {
         $this->setCodex($parent);
         $this->setFiles($parent->getFiles());

@@ -17,23 +17,35 @@ trait ExtendableTrait
 {
     use ContainerTrait;
 
-    protected $extensions = [ ];
+    protected $_macros = [ ];
 
-    protected $components = [ ];
+    protected $_extensions = [ ];
 
-    protected $componentInstances = [ ];
+    protected $extensionInstances = [ ];
 
     public function extensions()
     {
-        return array_keys($this->extensions);
+        return array_merge(array_keys($this->getExtenableProperty('macros')), array_keys($this->getExtenableProperty('extensions')));
+    }
+
+    protected function getExtenableProperty($type)
+    {
+        $property = property_exists($this, $type) ? $type : "_{$type}";
+        return $this->{$property};
     }
 
     public function extend($name, $extension)
     {
-        if (is_string($extension) && !Str::contains($extension, '@')) {
-            $this->components[ $name ] = $extension;
+        if ( is_string($extension) && !Str::contains($extension, '@') ) {
+            if ( array_key_exists($name, $this->getExtenableProperty('macros')) ) {
+                throw new \InvalidArgumentException("Cannot extend [macro][{$name}] as [extension] because it already exists as [macro]. You can only replace [macro][{$name}] with an [macro]");
+            }
+            $this->getExtenableProperty('extensions')[ $name ] = $extension;
         } else {
-            $this->extensions[ $name ] = $extension;
+            if ( array_key_exists($name, $this->getExtenableProperty('extensions')) ) {
+                throw new \InvalidArgumentException("Cannot extend [extension][{$name}] as [macro] because it already exists as [extension]. You can only replace [extension][{$name}] with an [extension]");
+            }
+            $this->getExtenableProperty('macros')[ $name ] = $extension;
         }
     }
 
@@ -47,14 +59,14 @@ trait ExtendableTrait
      *
      * @return mixed
      */
-    protected function callExtension($name, $parameters)
+    protected function callMacro($name, $parameters)
     {
-        $callback = $this->extensions[ $name ];
+        $callback = $this->getExtenableProperty('macros')[ $name ];
 
-        if ($callback instanceof Closure) {
+        if ( $callback instanceof Closure ) {
             return call_user_func_array($callback->bindTo($this, get_class($this)), $parameters);
-        } elseif (is_string($callback) && Str::contains($callback, '@')) {
-            return $this->callClassBasedExtension($callback, $parameters);
+        } elseif ( is_string($callback) && Str::contains($callback, '@') ) {
+            return $this->callClassBasedMacro($callback, $parameters);
         }
     }
 
@@ -63,16 +75,17 @@ trait ExtendableTrait
      * callClassBasedExtension method
      *
      * @private
+     *
      * @param $callback
      * @param $parameters
      *
      * @return mixed
      */
-    protected function callClassBasedExtension($callback, $parameters)
+    protected function callClassBasedMacro($callback, $parameters)
     {
         list($class, $method) = explode('@', $callback);
         $instance = $this->getContainer()->make($class, [
-            'parent' => $this
+            'parent' => $this,
         ]);
 
         return call_user_func_array([ $instance, $method ], $parameters);
@@ -82,37 +95,38 @@ trait ExtendableTrait
      * getClassInstanceExtension method
      *
      * @param $name
+     *
      * @private
      *
      * @return mixed
      */
-    protected function getClassInstanceExtension($name)
+    protected function getExtensionClassInstance($name)
     {
-        $extension = $this->components[ $name ];
+        $extension = $this->getExtenableProperty('extensions')[ $name ];
 
-        if (is_string($extension) && class_exists($extension)) {
-            if (!array_key_exists($name, $this->componentInstances)) {
-                $this->componentInstances[ $name ] = $this->getContainer()->make($extension, [
-                    'parent' => $this
+        if ( is_string($extension) && class_exists($extension) ) {
+            if ( !array_key_exists($name, $this->extensionInstances) ) {
+                $this->extensionInstances[ $name ] = $this->getContainer()->make($extension, [
+                    'parent' => $this,
                 ]);
             }
 
-            return $this->componentInstances[ $name ];
+            return $this->extensionInstances[ $name ];
         }
     }
 
     public function __call($name, array $params = [ ])
     {
-        if (array_key_exists($name, $this->extensions)) {
-            return $this->callExtension($name, $params);
+        if ( array_key_exists($name, $this->getExtenableProperty('macros')) ) {
+            return $this->callMacro($name, $params);
         }
         throw new BadMethodCallException("Method [$name] does not exist.");
     }
 
     public function __get($name)
     {
-        if (array_key_exists($name, $this->components)) {
-            return $this->getClassInstanceExtension($name);
+        if ( array_key_exists($name, $this->getExtenableProperty('extensions')) ) {
+            return $this->getExtensionClassInstance($name);
         }
     }
 

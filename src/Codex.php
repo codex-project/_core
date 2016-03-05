@@ -10,7 +10,6 @@ namespace Codex\Core;
 
 
 use Codex\Core\Contracts;
-use Codex\Core\Documents\Document;
 use Codex\Core\Projects\Project;
 use Codex\Core\Traits;
 use Herrera\Version\Parser;
@@ -49,6 +48,13 @@ class Codex implements
         Traits\FilesTrait,
         Traits\ConfigTrait;
 
+    protected $extensions = [
+        'projects' => Projects\Projects::class,
+        'menus'    => Menus\Menus::class,
+        'theme'    => Theme\Theme::class,
+        #'addons'   => Addons\Addons::class,
+    ];
+
     /**
      * The codex log writer instance
      *
@@ -84,32 +90,20 @@ class Codex implements
      * @param \Codex\Core\Contracts\Log                 $log
      * @param array                                     $config
      */
-    public function __construct(Container $container, Contracts\Addons $addons, Filesystem $files, Cache $cache, Contracts\Log $log, array $config = [ ])
+    public function __construct(Container $container, Filesystem $files, Cache $cache, Contracts\Log $log, array $config = [ ])
     {
         $this->setContainer($container);
         $this->setConfig($config);
         $this->setFiles($files);
 
-        $this->addons  = $addons;
         $this->cache   = $cache;
         $this->rootDir = config('codex.root_dir');
         $this->log     = $log;
 
-        // 'factory:ready' is called after parameters have been set as class properties.
-        $this->hookPoint('construct', [ $this ]);
-
+        $this->addons = $container->make('codex.addons', [$this, $files]);
 
         // 'factory:done' called after all factory operations have completed.
         $this->hookPoint('constructed', [ $this ]);
-    }
-
-    /**
-     * addons method
-     * @return \Codex\Core\Contracts\Addons|\Codex\Core\Addons\AddonRepository
-     */
-    public function addons()
-    {
-        return $this->addons;
     }
 
     # Helper functions
@@ -255,46 +249,6 @@ class Codex implements
         $this->log = $log;
 
         return $this;
-    }
-
-
-    protected $documents = [ ];
-
-    public function registerDocument($name, $extensions, $handler)
-    {
-        #codex()->projects->get('codex')->documents->get('index')->
-        $this->documents->put($name, compact('name', 'extensions', 'handler'));
-        return $this;
-    }
-
-    /**
-     * getExtensions method
-     * @return \Illuminate\Support\Collection
-     */
-    public function getDocuments()
-    {
-        return $this->documents;
-    }
-
-    public function registerFilter($name, $class, $documents = null)
-    {
-        foreach ( $documents as $document ) {
-            $this->getContainer()->resolving($document, function (Document $document) use ($name, $class) {
-                $document->filters()->put($name, $class);
-            });
-        }
-    }
-
-    protected $hookPointsa = [ ];
-
-    public function registerHook($point, $callable)
-    {
-        collect($this->hookPoints)->get($point);
-    }
-
-    public function registerHookPoint($point, $class)
-    {
-        $this->hookPoints[ $point ] = $class;
     }
 
 }

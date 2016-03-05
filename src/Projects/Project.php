@@ -7,6 +7,7 @@
 namespace Codex\Core\Projects;
 
 use Codex\Core\Contracts;
+use Codex\Core\Documents\Documents;
 use Codex\Core\Traits;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
@@ -23,7 +24,7 @@ use vierbergenlars\SemVer\version;
  * @copyright      Copyright (c) 2015, Robin Radic. All rights reserved
  *
  * @property \Codex\Core\Documents\Documents $documents
- * @property \Codex\Core\Documents\Documents $documents
+ * @property \Codex\Core\Documents\Documents $documents2
  *
  */
 class Project implements
@@ -40,6 +41,9 @@ class Project implements
         Traits\FilesTrait,
         Traits\ConfigTrait;
 
+    protected $extensions = [
+        'documents' => Documents::class,
+    ];
 
     const SHOW_MASTER_BRANCH = 0;
     const SHOW_LAST_VERSION = 1;

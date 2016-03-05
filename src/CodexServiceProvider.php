@@ -12,13 +12,12 @@ use AttributesFilter;
 use Codex\Core\Documents\Document;
 use Codex\Core\Exception\ConfigFileNotPublished;
 use Codex\Core\Log\Writer;
-use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Laradic\Support\ServiceProvider;
 use League\Flysystem\Filesystem as Flysystem;
 use Monolog\Logger as Monolog;
-use ReflectionClass;
-use Laradic\Support\ServiceProvider;
 
 /**
  * This is the class CodexServiceProvider.
@@ -40,20 +39,9 @@ class CodexServiceProvider extends ServiceProvider
         'codex.menu'          => Menus\Menu::class,
     ];
 
-    protected $extensions = [
-        'codex'         => [
-            'projects' => Projects\Projects::class,
-            'menus'    => Menus\Menus::class,
-            'theme'    => Theme\Theme::class,
-        ],
-        'codex.project' => [
-            'documents' => Documents\Documents::class,
-        ],
-    ];
-
     protected $singletons = [
         'codex'        => Codex::class,
-        'codex.addons' => Addons\AddonRepository::class,
+        'codex.addons' => Addons\Addons::class,
     ];
 
     protected $aliases = [
@@ -64,16 +52,15 @@ class CodexServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $app   = parent::boot();
+        $app = parent::boot();
         /** @var Codex $codex */
-        $codex = $app->make('codex');
-        $codex->addons()->run();
+       # $codex =
+        #$codex->addons()->resolve();
         return $app;
     }
 
     public function booting(Application $app)
     {
-        $codex = $app->make('codex');
 
     }
 
@@ -85,13 +72,9 @@ class CodexServiceProvider extends ServiceProvider
             $this->ensureConfig();
         }
 
-        #$this->registerAnnotations();
-
         $this->registerLogger();
 
         $this->registerCodexBinding();
-
-        $this->registerExtensions();
 
         $this->registerDefaultFilesystem();
 
@@ -100,37 +83,6 @@ class CodexServiceProvider extends ServiceProvider
         });
 
         return $app;
-    }
-
-    protected function registerAnnotations()
-    {
-        return;
-        $globs   = $this->app->make('fs')->globule(__DIR__ . '/Tryout/**');
-        $driver  = new \Doctrine\Common\Persistence\Mapping\Driver\PHPDriver($globs);
-        $classes = $driver->getAllClassNames();
-
-        foreach ( $classes as $key => $class ) {
-
-            $reader = new \Doctrine\Common\Annotations\AnnotationReader();
-
-            $annotationReader = new \Doctrine\Common\Annotations\CachedReader(
-                $reader,
-                new \Doctrine\Common\Cache\ArrayCache()
-            );
-
-            $reflClass  = new ReflectionClass("\\Entities\\$reportableClass");
-            $annotation = $annotationReader->getClassAnnotation(
-                $reflClass,
-                'Custom_Annotation'
-            );
-            if ( is_null($annotation) ) {
-                unset($classes[ $key ]);
-            }
-        }
-
-
-        return;
-        #$reader->getMethodAnnotations();
     }
 
     protected function ensureConfig()
@@ -189,24 +141,6 @@ class CodexServiceProvider extends ServiceProvider
         $this->app->when(Codex::class)
             ->needs('$config')
             ->give($this->app[ 'config' ][ 'codex' ]);
-    }
-
-    /**
-     * registerExtensions method
-     *
-     * @param $app
-     */
-    protected function registerExtensions()
-    {
-        $this->app->booting(function (LaravelApplication $app) {
-            foreach ( $this->extensions as $name => $extensions ) {
-                $app->resolving($name, function (Contracts\Extendable $instance) use ($extensions) {
-                    foreach ( $extensions as $binding => $extension ) {
-                        $instance->extend($binding, $extension);
-                    }
-                });
-            }
-        });
     }
 
     protected function registerDefaultFilesystem()

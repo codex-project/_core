@@ -22,6 +22,10 @@ class Documents implements
     use Traits\HookableTrait,
         Traits\CodexTrait;
 
+    protected $extensions = [
+
+    ];
+
     /**
      * @var \Illuminate\Support\Collection
      */
