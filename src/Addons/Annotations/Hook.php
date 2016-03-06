@@ -10,7 +10,7 @@ use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
  * @Annotation
- * @Target("CLASS")
+ * @Target({"CLASS", "METHOD"})
  */
 final class Hook
 {

@@ -9,4 +9,8 @@ class AddonType extends Enum
     const FILTER = 'filter';
     const HOOK = 'hook';
 
+    public static function make($name)
+    {
+        return new static($name);
+    }
 }

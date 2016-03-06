@@ -8,6 +8,7 @@
 
 namespace Codex\Core\Addons\Annotations;
 
+use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
@@ -21,4 +22,10 @@ final class Filter
      * @var string
      */
     public $name;
+
+    /**
+     * @Required
+     * @var array
+     */
+    public $for = array();
 }

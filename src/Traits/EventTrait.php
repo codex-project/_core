@@ -97,8 +97,8 @@ trait EventTrait
     protected function fireEvent($event, $halt = true)
     {
         $method = $halt ? 'until' : 'fire';
-
-        return static::getDispatcher()->$method(static::getEventName($event), $this);
+        $name = static::getEventName($event);
+        return static::getDispatcher()->$method($name, [$name, $this]);
     }
 
 

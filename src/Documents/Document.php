@@ -9,6 +9,7 @@
 namespace Codex\Core\Documents;
 
 
+use Codex\Core\Addons\Addons;
 use Codex\Core\Contracts;
 use Codex\Core\Contracts\Codex;
 use Codex\Core\Exception\DocumentNotFoundException;
@@ -62,12 +63,24 @@ abstract class Document implements
      */
     protected $pathName;
 
-    protected $filters;
+    protected $type;
 
-    public function __construct(Codex $codex, Project $project, $path, $pathName)
+
+    /**
+     * Document constructor.
+     *
+     * @param \Codex\Core\Contracts\Codex|\Codex\Core\Codex $codex
+     * @param \Codex\Core\Projects\Project                  $project
+     * @param                                               $path
+     * @param                                               $pathName
+     *
+     * @throws \Codex\Core\Exception\DocumentNotFoundException
+     */
+    public function __construct(Codex $codex, Project $project, $type, $path, $pathName)
     {
         $this->setCodex($codex);
         $this->project  = $project;
+        $this->type     = $type;
         $this->path     = $path;
         $this->pathName = $pathName;
         $this->filters  = collection();
@@ -98,36 +111,26 @@ abstract class Document implements
     public function render()
     {
         $this->hookPoint('render', [ $this ]);
+        $this->runFilters();
         return $this->content;
     }
 
     protected function runFilters($only = null)
     {
         $fsettings = $this->project->config('filters');
-        $filters   = $this->filters->only($this->project->config('filters.enabled'));
-        if(is_array($only)){
-            $filters = $filters->only($only);
-        }
         $container = $this->getCodex()->getContainer();
 
-        foreach ( $filters->toArray() as $name => $filter ) {
+        foreach ( Addons::getFilters() as $name => $filter ) {
+
             $settings = collection(isset($fsettings[ $name ]) ? $fsettings[ $name ] : [ ]);
-            $params   = [
+
+            $params = [
                 'document' => $this,
                 'settings' => $settings,
             ];
 
-            if ( $filter instanceof \Closure ) {
-                $container->call($filter, $params);
-            } else {
-                $container->make($filter, $params);
-            }
+            $container->call($filter['class'], $params, 'handle');
         }
-    }
-
-    public function filters()
-    {
-        return $this->filters;
     }
 
     /**

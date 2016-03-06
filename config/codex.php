@@ -89,5 +89,7 @@ return [
         'path' => storage_path('logs/codex.log'),
     ],
 
+    'debug' => env('CODEX_DEBUG', false),
+
     'stubs_path' => __DIR__ . '/../resources/stubs',
 ];

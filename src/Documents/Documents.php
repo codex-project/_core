@@ -10,7 +10,6 @@ namespace Codex\Core\Documents;
 
 
 use Codex\Core\Addons\Addons;
-use Codex\Core\Addons\AddonType;
 use Codex\Core\Contracts;
 use Codex\Core\Contracts\Codex;
 use Codex\Core\Exception\DocumentNotFoundException;
@@ -60,8 +59,8 @@ class Documents implements
      *
      * @param string $pathName
      *
-     * @return \Codex\Core\Documents\Document
-     * @throws \Codex\Core\Exception\DocumentNotFoundException
+     * @return mixed
+     * @ throws \Codex\Core\Exception\DocumentNotFoundException
      */
     public function get($pathName = '')
     {
@@ -72,12 +71,13 @@ class Documents implements
         }
 
         if ( !$this->items->has($pathName) ) {
-            $this->items->put($pathName, $this->getCodex()->getContainer()->make($document['class'], [
+            $this->items->put($pathName, $this->getCodex()->getContainer()->make($document[ 'class' ], [
                 'codex'     => $this->getCodex(),
                 'project'   => $this->getProject(),
-                'path'      => $document['path'],
+                'type'      => $document[ 'type' ],
+                'path'      => $document[ 'path' ],
                 'pathName'  => $pathName,
-                'extension' => $document['extension'],
+                'extension' => $document[ 'extension' ],
             ]));
 
             $this->hookPoint('project:document', [ $this->items->get($pathName) ]);
@@ -95,13 +95,11 @@ class Documents implements
         $pathName = $pathName ?: 'index';
 
 
-
-        foreach ( $this->getDocuments() as $name => $document ) {
-            $class = $document['class'];
-            foreach($document['extensions'] as $extension) {
+        foreach ( Addons::getDocuments() as $name => $document ) {
+            foreach ( $document[ 'extensions' ] as $extension ) {
                 $path = $this->project->refPath("{$pathName}.{$extension}");
                 if ( $this->project->getFiles()->exists($path) ) {
-                    return compact('extension', 'path', 'type', 'class');
+                    return array_merge($document, compact('extension', 'path'));
                 }
             }
         }
@@ -121,23 +119,5 @@ class Documents implements
     public function has($pathName = null)
     {
         return $this->resolvePathName($pathName) !== false;
-    }
-
-    public static function getType($type)
-    {
-        return Addons::get($type);
-    }
-
-    public function getDocuments()
-    {
-        $extensions = [ ];
-        $documents  = Addons::get(AddonType::DOCUMENT);
-        foreach ( $documents as $i => $document ) {
-            foreach ( $document[ 'annotations' ][ 'class' ] as $doc ) {
-                /** @var \Codex\Core\Addons\Annotations\Document $doc */
-                $extensions[$doc->name] = ['extensions' => $doc->extensions, 'class' => $document['class']];
-            }
-        }
-        return $extensions;
     }
 }

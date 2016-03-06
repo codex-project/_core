@@ -56,11 +56,10 @@ class CodexServiceProvider extends ServiceProvider
 
     public function register()
     {
-        Addons::init();
         $app = parent::register();
 
-        if ( config('app.debug', false) === false ) {
-            $this->ensureConfig();
+        if($app['config']['app.debug'] && $app['config']['codex.debug']) {
+            $this->registerDebugEventListener();
         }
 
         $this->registerLogger();
@@ -114,6 +113,19 @@ class CodexServiceProvider extends ServiceProvider
             $flysystemAdapter    = new Filesystem\Local($config[ 'root' ]);
             $flysystemFilesystem = new Flysystem($flysystemAdapter);
             return new FilesystemAdapter($flysystemFilesystem);
+        });
+    }
+
+    protected function registerDebugEventListener()
+    {
+        $start = microtime();
+        $previous = microtime();
+        $this->app->make('events')->listen('codex:*', function ($name, $class) use ($start, $previous) {
+            $since = round(microtime() - $previous, 3);
+            $previous = microtime();
+            print "- ({$since}) - {$name} \n";
+            #\Kint::$maxLevels = 2;
+            #d(func_get_args());
         });
     }
 

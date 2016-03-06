@@ -127,12 +127,12 @@ class Projects implements
     }
 
     /**
-     * Returns a project instance for the given name
+     * get method
      *
      * @param $name
      *
-     * @return \Codex\Core\Projects\Project
-     * @throws \Codex\Core\Exception\ProjectNotFoundException
+     * @return mixed
+     * @ throws \Codex\Core\Exception\ProjectNotFoundException
      */
     public function get($name)
     {

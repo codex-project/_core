@@ -8,7 +8,6 @@ namespace Codex\Core\Documents\Filters;
 
 use Codex\Core\Documents\Document;
 use Codex\Core\Documents\Filter;
-use Laradic\Support\Collection;
 use Symfony\Component\Yaml\Yaml;
 
 /**
