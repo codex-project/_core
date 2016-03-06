@@ -8,12 +8,8 @@
 
 namespace Codex\Core;
 
-use AttributesFilter;
-use Codex\Core\Contracts\Codex;
-use Codex\Core\Documents\Document;
-use Codex\Core\Exception\ConfigFileNotPublished;
+use Codex\Core\Addons\Addons;
 use Codex\Core\Log\Writer;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Laradic\Support\ServiceProvider;
@@ -41,32 +37,26 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $singletons = [
-        'codex'        => Codex::class,
-        'codex.addons' => Addons\Addons::class,
+        'codex' => Codex::class,
     ];
 
     protected $aliases = [
-        'codex'        => Contracts\Codex::class,
-        'codex.log'    => Contracts\Log::class,
-        'codex.addons' => Contracts\Addons::class,
+        'codex'     => Contracts\Codex::class,
+        'codex.log' => Contracts\Log::class,
     ];
 
     public function boot()
     {
         $app = parent::boot();
         /** @var Codex $codex */
-       # $codex =
+        # $codex =
         #$codex->addons()->resolve();
         return $app;
     }
 
-    public function booting(Application $app)
-    {
-
-    }
-
     public function register()
     {
+        Addons::init();
         $app = parent::register();
 
         if ( config('app.debug', false) === false ) {
@@ -79,40 +69,9 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerDefaultFilesystem();
 
-        $this->app->resolving('codex.document.html', function (Document $document) {
-            $document->filters()->put('attributes', AttributesFilter::class);
-        });
-
         return $app;
     }
 
-    protected function ensureConfig()
-    {
-
-        if ( !$this->hasPublishedConfig() ) {
-            $this->publishConfigFile();
-        }
-        if ( !$this->hasPublishedConfig() ) {
-            throw ConfigFileNotPublished::in($this)->filePath($this->getPublishedConfigPath());
-        }
-    }
-
-    protected function hasPublishedConfig()
-    {
-        $fs = $this->app->make('fs');
-        return $fs->exists($this->getPublishedConfigPath()) || $fs->isFile($this->getPublishedConfigPath());
-    }
-
-    protected function getPublishedConfigPath()
-    {
-        return config_path('codex.php');
-    }
-
-    protected function publishConfigFile()
-    {
-        $fs = $this->app->make('fs');
-        $fs->copy($this->getConfigFilePath('codex'), $this->getPublishedConfigPath());
-    }
 
     /**
      * registerLogger method
@@ -142,12 +101,6 @@ class CodexServiceProvider extends ServiceProvider
         $this->app->when(Codex::class)
             ->needs('$config')
             ->give($this->app[ 'config' ][ 'codex' ]);
-
-        $this->app->resolving('codex', function (Codex $codex) {
-            /** @var \Codex\Core\Codex $codex */
-            $codex->registerDocument('html', Documents\HtmlDocument::class);
-            $codex->registerFilter('attributes', AttributesFilter::class);
-        });
     }
 
     protected function registerDefaultFilesystem()

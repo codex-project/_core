@@ -6,16 +6,13 @@
  */
 namespace Codex\Core\Contracts;
 
-use Herrera\Version\Version;
-use Illuminate\Contracts\Cache\Repository as Cache;
-
 
 /**
  * This is the class Codex.
  *
  * @package        Codex\Core
- * @author Sebwite
- * @copyright Copyright (c) 2015, Sebwite. All rights reserved
+ * @author         Sebwite
+ * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
  *
  * @property \Codex\Core\Theme\Theme       $theme
  * @property \Codex\Core\Theme\Assets      $assets

@@ -17,7 +17,7 @@ trait HookableTrait
     {
         $namespace = static::getEventNamespace();
         $name = last(explode('\\', get_class()));
-        return "{$namespace}: {$name}.{$event}";
+        return "{$namespace}:{$event}";
     }
 
     protected static function hook($event, $callback, $priority = 1)

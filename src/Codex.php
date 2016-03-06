@@ -76,7 +76,6 @@ class Codex implements
      */
     protected $rootDir;
 
-    protected $addons;
 
     # Config
 
@@ -99,8 +98,6 @@ class Codex implements
         $this->cache   = $cache;
         $this->rootDir = config('codex.root_dir');
         $this->log     = $log;
-
-        $this->addons = $container->make('codex.addons', [$this, $files]);
 
         // 'factory:done' called after all factory operations have completed.
         $this->hookPoint('constructed', [ $this ]);

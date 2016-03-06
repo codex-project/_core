@@ -9,11 +9,22 @@
 namespace Codex\Core\Addons\Annotations;
 
 use Doctrine\Common\Annotations\Annotation\Target;
+
 /**
  * @Annotation
  * @Target("CLASS")
  */
-class Document
+final class Document
 {
+    /**
+     * @Required
+     * @var string
+     */
+    public $name;
 
+    /**
+     * @Required
+     * @var array<string>
+     */
+    public $extensions = array();
 }
