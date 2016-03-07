@@ -42,6 +42,7 @@ trait EventTrait
      * Sets the event dispatcher instance.
      *
      * @param  \Illuminate\Events\Dispatcher $dispatcher
+     *
      * @return $this
      */
     public static function setDispatcher(Dispatcher $dispatcher)
@@ -75,6 +76,7 @@ trait EventTrait
      * @param  string          $event
      * @param  \Closure|string $callback
      * @param  int             $priority
+     *
      * @return void
      */
     protected static function registerEventListener($event, $callback, $priority = 0)
@@ -88,17 +90,19 @@ trait EventTrait
     }
 
     /**
-     * Fire the given event for the model.
+     * fireEvent method
      *
-     * @param  string $event
-     * @param  bool   $halt
+     * @param       $event
+     * @param array $args
+     * @param bool  $halt
+     *
      * @return mixed
      */
-    protected function fireEvent($event, $halt = true)
+    protected function fireEvent($event, array $args = [ ], $halt = true)
     {
         $method = $halt ? 'until' : 'fire';
-        $name = static::getEventName($event);
-        return static::getDispatcher()->$method($name, [$name, $this]);
+        $name   = static::getEventName($event);
+        return static::getDispatcher()->$method($name, $args);
     }
 
 

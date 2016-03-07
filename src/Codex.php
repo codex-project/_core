@@ -176,6 +176,21 @@ class Codex implements
         return Parser::toVersion(app()->version());
     }
 
+    protected $routeExclusions = [];
+    public function routeExclusion($name)
+    {
+        $this->routeExclusions[] = $name; //        $document->where('projectSlug', '^((?!' . Extender::getExcludedProjectNames(true) . ').*?)$');
+    }
+
+    public function hasRouteExclusions()
+    {
+        return count($this->routeExclusions) > 0;
+    }
+
+    public function getRouteExclusions()
+    {
+        return $this->routeExclusions;
+    }
     # Getters / setters
 
     /**

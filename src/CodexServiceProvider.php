@@ -8,7 +8,6 @@
 
 namespace Codex\Core;
 
-use Codex\Core\Addons\Addons;
 use Codex\Core\Log\Writer;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Filesystem\FilesystemAdapter;
@@ -30,11 +29,11 @@ class CodexServiceProvider extends ServiceProvider
 
     protected $configFiles = [ 'codex' ];
 
-    protected $viewDirs = ['views' => 'codex' ];
+    protected $viewDirs = [ 'views' => 'codex' ];
 
     protected $providers = [
         Providers\RouteServiceProvider::class,
-        \Radic\BladeExtensions\BladeExtensionsServiceProvider::class
+        \Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
     ];
 
     protected $bindings = [
@@ -65,15 +64,15 @@ class CodexServiceProvider extends ServiceProvider
     {
         $app = parent::register();
 
-        if($app['config']['app.debug'] && $app['config']['codex.debug']) {
-            $this->registerDebugEventListener();
-        }
-
         $this->registerLogger();
 
         $this->registerCodexBinding();
 
         $this->registerDefaultFilesystem();
+
+        if ( $app[ 'config' ][ 'codex.dev' ] && class_exists('Codex\Dev\DevServiceProvider') ) {
+            $this->app->register('Codex\Dev\DevServiceProvider');
+        }
 
         return $app;
     }
@@ -123,20 +122,5 @@ class CodexServiceProvider extends ServiceProvider
         });
     }
 
-    protected function registerDebugEventListener()
-    {
-        $start = microtime();
-        $previous = microtime();
-        $this->app->make('events')->listen('codex:*', function ($name, $class) use ($start, $previous) {
-
-                $since    = round(microtime() - $previous, 3);
-                $previous = microtime();
-            if($this->app->runningInConsole()) {
-                print "- ({$since}) - {$name} \n";
-            }
-            #\Kint::$maxLevels = 2;
-            #d(func_get_args());
-        });
-    }
 
 }

@@ -59,7 +59,7 @@ class Documents implements
      *
      * @param string $pathName
      *
-     * @return mixed
+     * @return Document
      * @ throws \Codex\Core\Exception\DocumentNotFoundException
      */
     public function get($pathName = '')

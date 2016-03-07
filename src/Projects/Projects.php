@@ -28,6 +28,8 @@ class Projects implements
 
     protected $items;
 
+    protected $project;
+
     /**
      * Projects constructor.
      *

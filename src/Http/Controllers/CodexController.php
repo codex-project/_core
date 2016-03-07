@@ -42,6 +42,7 @@ class CodexController extends Controller
     {
         $this->hookPoint('controller:index');
 
+
         return redirect(route('codex.document', [
             'projectSlug' => $this->codex->config('default_project'),
         ]));
@@ -77,7 +78,7 @@ class CodexController extends Controller
         }
 
         $document = $project->documents->get($path);
-        $res      = $this->hookPoint('controller:document', [ $this, $project, $document ]);
+        $res      = $this->hookPoint('controller:document', [ $project, $document ]);
 
         # prepare view
         $content    = $document->render();

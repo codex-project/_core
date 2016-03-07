@@ -25,10 +25,15 @@ if (!function_exists('version')) {
 if (!function_exists('codex')) {
     /**
      * codex method
-     * @return \Codex\Core\Codex
+     * @return \Codex\Core\Codex|mixed
      */
-    function codex()
+    function codex($ext = null)
     {
-        return app('codex');
+        $codex = app('codex');
+        if($ext === null){
+            return $codex;
+        }
+
+        return $codex->{$ext};
     }
 }

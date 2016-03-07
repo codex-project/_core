@@ -33,6 +33,13 @@ return [
     */
     'base_route'                  => env('CODEX_BASE_ROUTE', 'codex'),
 
+    'routing' => [
+        'base_route' => env('CODEX_BASE_ROUTE', 'codex'),
+        'ignore_project_names' => [
+            '_debugbar'
+        ],
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Default Project

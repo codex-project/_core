@@ -8,7 +8,9 @@
 
 namespace Codex\Core\Addons;
 
+use Codex\Core\Addons\Annotations\Hook;
 use Codex\Core\Addons\Scanner\Scanner;
+use Codex\Core\Codex;
 use Codex\Core\Contracts;
 use Codex\Core\Support\Collection;
 use Codex\Core\Traits;
@@ -56,39 +58,6 @@ class Addons
         static::$initialised = true;
     }
 
-    protected static function scanDirectory($dir)
-    {
-        $provides = [ ];
-        foreach ( static::$annotations as $type => $annotationClass ) {
-            $methodName = 'handle' . ucfirst($type);
-            $scanner    = (new Scanner(static::$reader))->scan([ $annotationClass ])->in($dir);
-            foreach ( $scanner as $file ) {
-                /** @var \Codex\Core\Addons\Scanner\ClassFileInfo $file */
-                $provide = [
-                    'type'        => $type,
-                    'class'       => $file->getClassName(),
-                    'file'        => $file->getFilename(),
-                    'annotations' => Collection::make([
-                        'class'      => $file->getClassAnnotations(),
-                        'method'     => $file->getMethodAnnotations(),
-                        'properties' => $file->getPropertyAnnotations(),
-                    ]),
-                ];
-
-                if ( method_exists(static::class, $methodName) ) {
-                    forward_static_call_array(static::class . '::' . $methodName, [ $provide ]);
-                }
-
-                if ( !array_key_exists($type, static::$addons) ) {
-                    static::$addons[ $type ] = [ ];
-                }
-                static::$addons[ $type ][] = $provide;
-                $provides[]                = $provide;
-            }
-        }
-        return $provides;
-    }
-
     public static function register($providers)
     {
         static::init();
@@ -108,6 +77,66 @@ class Addons
             $provides                                  = static::scanDirectory($dir);
             static::$providers[ $provider->getName() ] = compact('provider', 'provides');
         }
+    }
+
+    protected static function scanDirectory($dir)
+    {
+        $provides = [ ];
+        foreach ( static::$annotations as $type => $annotationClass ) {
+            $methodName = 'handle' . ucfirst($type);
+            $scanner    = (new Scanner(static::$reader))->scan([ $annotationClass ])->in($dir);
+            foreach ( $scanner as $file ) {
+                /** @var \Codex\Core\Addons\Scanner\ClassFileInfo $file */
+                $provide = [
+                    'type'        => $type,
+                    'class'       => $file->getClassName(),
+                    'file'        => $file->getFilename(),
+                    'annotations' => Collection::make([
+                        'class'      => $file->getClassAnnotations(),
+                        'method'     => $file->getMethodAnnotations(),
+                        'properties' => $file->getPropertyAnnotations(),
+                    ]),
+                ];
+
+
+                if ( method_exists(static::class, $methodName) || static::hasMacro($methodName) ) {
+
+                    forward_static_call_array(static::class . '::' . $methodName, [ $provide ]);
+                }
+
+                if ( !array_key_exists($type, static::$addons) ) {
+                    static::$addons[ $type ] = [ ];
+                }
+                static::$addons[ $type ][] = $provide;
+                $provides[]                = $provide;
+            }
+        }
+        return $provides;
+    }
+
+    public static function handleHook(array $provide)
+    {
+        foreach($provide['annotations']['class'] as $hook){
+            if(!$hook instanceof Hook){
+                continue;
+            }
+            Codex::hook($hook->name[0], function() use ($provide) {
+                app()->call($provide['class'], func_get_args(), 'handle');
+            });
+        }
+
+        foreach($provide['annotations']['method'] as $method => $hooks){
+            foreach($hooks as $hook) {
+                if ( !$hook instanceof Hook ) {
+                    continue;
+                }
+                Codex::hook($hook->name[0], function () use ($provide, $method) {
+                    $args = func_get_args();
+                    app()->call($provide[ 'class' ], $args, $method);
+                });
+            }
+        }
+        return $provide;
     }
 
     public static function getDocuments()
