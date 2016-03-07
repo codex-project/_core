@@ -26,7 +26,7 @@ class ProjectNotFoundException extends CodexException
             $project = $project->getName();
         }
 
-        return $ex->because("Could not find project [{$project}]");
+        return $this->because("Could not find project [{$project}]");
     }
 
 }

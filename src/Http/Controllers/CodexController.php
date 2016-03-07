@@ -1,9 +1,11 @@
 <?php
 namespace Codex\Core\Http\Controllers;
 
-use Codex\Core\Exceptions\DocumentNotFoundException;
-use Codex\Core\Exceptions\ProjectNotFoundException;
-use Codex\Core\Traits\Hookable;
+use Codex\Core\Contracts\Codex;
+use Codex\Core\Exception\DocumentNotFoundException;
+use Codex\Core\Exception\ProjectNotFoundException;
+use Codex\Core\Traits\HookableTrait;
+use Illuminate\Contracts\View\Factory as View;
 
 /**
  * This is the CodexController.
@@ -15,7 +17,21 @@ use Codex\Core\Traits\Hookable;
  */
 class CodexController extends Controller
 {
-    use Hookable;
+    use HookableTrait;
+
+    /**
+     * CodexController constructor.
+     *
+     * @param \Codex\Core\Contracts\Codex|\Codex\Core\Codex $codex
+     * @param \Illuminate\Contracts\View\Factory            $view
+     */
+    public function __construct(Codex $codex, View $view)
+    {
+        $this->hookPoint('controller:construct');
+        parent::__construct($codex, $view);
+        $this->hookPoint('controller:constructed');
+    }
+
 
     /**
      * Redirect to the default project and version.
@@ -24,10 +40,10 @@ class CodexController extends Controller
      */
     public function index()
     {
-        $this->runHook('controller:index', [ $this ]);
+        $this->hookPoint('controller:index');
 
         return redirect(route('codex.document', [
-            'projectSlug' => $this->codex->config('default_project')
+            'projectSlug' => $this->codex->config('default_project'),
         ]));
     }
 
@@ -43,29 +59,25 @@ class CodexController extends Controller
     public function document($projectSlug, $ref = null, $path = '')
     {
         # get project
-        if (!$this->codex->projects->has($projectSlug)) {
-            throw ProjectNotFoundException::project($projectSlug)->toHttpException();
+        if ( !$this->codex->projects->has($projectSlug) ) {
+            throw ProjectNotFoundException::in($this)->project($projectSlug)->toHttpException();
         }
         $project = $this->codex->projects->get($projectSlug);
 
         # get ref (version)
-        if (is_null($ref)) {
+        if ( is_null($ref) ) {
             $ref = $project->getDefaultRef();
         }
         $project->setRef($ref);
         $path = $path === '' ? 'index' : $path;
 
         # get document
-        if (!$project->documents->has($path)) {
+        if ( !$project->documents->has($path) ) {
             throw DocumentNotFoundException::document($path)->inProject($project)->toHttpException();
         }
 
         $document = $project->documents->get($path);
-        $res      = $this->runHook('controller:document', [ $this, $project, $document ]);
-
-        if ($this->isResponse($res)) {
-            return $res;
-        }
+        $res      = $this->hookPoint('controller:document', [ $this, $project, $document ]);
 
         # prepare view
         $content    = $document->render();
@@ -78,7 +90,7 @@ class CodexController extends Controller
 
     public function markdown()
     {
-        if (!request()->has('code')) {
+        if ( !request()->has('code') ) {
             return abort(500, 'You did not provide the [code]');
         }
         $code = request()->get('code');

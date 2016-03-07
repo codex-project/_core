@@ -10,6 +10,7 @@ namespace Codex\Core\Exception;
 
 
 use Exception;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CodexException extends Exception
 {
@@ -45,5 +46,10 @@ class CodexException extends Exception
         $exception = new static;
         $exception->setClass($class);
         return $exception;
+    }
+
+    public function toHttpException()
+    {
+        return new HttpException(404, $this->getMessage());
     }
 }

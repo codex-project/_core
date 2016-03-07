@@ -131,7 +131,7 @@ class Projects implements
      *
      * @param $name
      *
-     * @return mixed
+     * @return Project
      * @ throws \Codex\Core\Exception\ProjectNotFoundException
      */
     public function get($name)

@@ -30,6 +30,13 @@ class CodexServiceProvider extends ServiceProvider
 
     protected $configFiles = [ 'codex' ];
 
+    protected $viewDirs = ['views' => 'codex' ];
+
+    protected $providers = [
+        Providers\RouteServiceProvider::class,
+        \Radic\BladeExtensions\BladeExtensionsServiceProvider::class
+    ];
+
     protected $bindings = [
         'codex.document.html' => Documents\HtmlDocument::class,
         'codex.project'       => Projects\Project::class,
@@ -121,9 +128,12 @@ class CodexServiceProvider extends ServiceProvider
         $start = microtime();
         $previous = microtime();
         $this->app->make('events')->listen('codex:*', function ($name, $class) use ($start, $previous) {
-            $since = round(microtime() - $previous, 3);
-            $previous = microtime();
-            print "- ({$since}) - {$name} \n";
+
+                $since    = round(microtime() - $previous, 3);
+                $previous = microtime();
+            if($this->app->runningInConsole()) {
+                print "- ({$since}) - {$name} \n";
+            }
             #\Kint::$maxLevels = 2;
             #d(func_get_args());
         });
