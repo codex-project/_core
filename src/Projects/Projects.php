@@ -160,7 +160,7 @@ class Projects implements
     /**
      * Return all found projects.
      *
-     * @return \Codex\Core\Project[]
+     * @return \Codex\Core\Projects\Project[]
      */
     public function all()
     {
