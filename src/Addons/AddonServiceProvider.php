@@ -9,6 +9,7 @@
 namespace Codex\Core\Addons;
 
 
+use Codex\Core\Addons\Exception\AddonProviderException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -19,15 +20,25 @@ abstract class AddonServiceProvider extends ServiceProvider
 
     protected $depends;
 
-    protected $treeBuilder;
+    protected $config;
 
     public function __construct(Application $app)
     {
         parent::__construct($app);
-        $this->treeBuilder = new TreeBuilder();
-        $app->booting(function(Application $app){
-            Addons::register($this);
+
+        $app->booting(function (Application $app) {
+            $app['codex']->getAddons()->add($this);
         });
+        if ( !property_exists($this, 'name') ) {
+            throw AddonProviderException::namePropertyNotDefined();
+        }
+
+        $config = $this->config = new TreeBuilder();
+        #$config->root('filters')->
+    }
+
+    protected function defineConfig($root)
+    {
     }
 
     public function register()
@@ -47,8 +58,6 @@ abstract class AddonServiceProvider extends ServiceProvider
     {
         return $this->depends;
     }
-
-
 
 
 }

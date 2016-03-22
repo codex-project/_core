@@ -103,6 +103,15 @@ class Codex implements
         $this->hookPoint('constructed', [ $this ]);
     }
 
+    /**
+     * getAddons method
+     * @return Addons\Addons
+     */
+    public function getAddons()
+    {
+        return $this->container->make('codex.addons');
+    }
+
     # Helper functions
 
     public function mergeDefaultProjectConfig($config)

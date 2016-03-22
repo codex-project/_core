@@ -9,7 +9,6 @@
 namespace Codex\Core\Documents;
 
 
-use Codex\Core\Addons\Addons;
 use Codex\Core\Contracts;
 use Codex\Core\Contracts\Codex;
 use Codex\Core\Exception\DocumentNotFoundException;
@@ -120,16 +119,19 @@ abstract class Document implements
         $fsettings = $this->project->config('filters');
         $container = $this->getCodex()->getContainer();
 
-        foreach ( Addons::getFilters() as $name => $filter ) {
 
-            $settings = collection(isset($fsettings[ $name ]) ? $fsettings[ $name ] : [ ]);
+        $enabledFilters = $this->getProject()->config('filters.enabled', []);
+        foreach ( $this->getCodex()->getAddons()->getFilters()->whereIn('name', $enabledFilters) as $filter ) {
 
+            $settings = collection(isset($fsettings[ $filter[ 'name' ] ]) ? $fsettings[ $filter[ 'name' ] ] : [ ]);
+
+            $this->hookPoint('filter:before:' . $filter['name'], [$this, $filter, $settings]);
             $params = [
                 'document' => $this,
                 'settings' => $settings,
             ];
-
-            $container->call($filter['class'], $params, 'handle');
+            $container->call($filter[ 'class' ], $params, 'handle');
+            $this->hookPoint('filter:after:' . $filter['name'], [$this, $filter, $settings]);
         }
     }
 

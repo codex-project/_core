@@ -21,7 +21,8 @@
         "myclabs/php-enum": "~1.4",
         "symfony/config": "~3.0",
         "doctrine/common": "~2.6",
-        "doctrine/annotations": "~1.2"
+        "doctrine/annotations": "~1.2",
+        "marc-mabe/php-enum": "~2.2"
     },
     "require-dev": {
         "orchestra/testbench": "~3.2"

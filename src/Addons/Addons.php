@@ -1,21 +1,12 @@
 <?php
-/**
- * Part of the $author$ PHP packages.
- *
- * License and copyright information bundled with this package in the LICENSE file
- */
-
-
 namespace Codex\Core\Addons;
 
-use Codex\Core\Addons\Annotations\Hook;
+use Codex\Core\Addons\Scanner\ClassFileInfo;
+use Codex\Core\Addons\Scanner\Finder;
 use Codex\Core\Addons\Scanner\Scanner;
-use Codex\Core\Codex;
-use Codex\Core\Contracts;
-use Codex\Core\Support\Collection;
-use Codex\Core\Traits;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\Macroable;
 use Laradic\Support\Filesystem;
 use Laradic\Support\Path;
@@ -26,161 +17,153 @@ class Addons
     use Macroable;
 
     /** @var array */
-    protected static $annotations = [
+    protected $annotations = [
         AddonType::DOCUMENT => Annotations\Document::class,
-        AddonType::FILTER   => Annotations\Filter::class,
         AddonType::HOOK     => Annotations\Hook::class,
+        AddonType::FILTER   => Annotations\Filter::class,
+        'filter-config'     => Annotations\FilterConfig::class,
     ];
 
-    /** @var AddonServiceProvider[] */
-    protected static $providers = [ ];
+    /** @var \Laradic\Support\Filesystem */
+    protected $fs;
 
-    /** @var bool */
-    protected static $initialised = false;
-
-    /** @var array */
-    protected static $addons = [ ];
+    /** @var \Illuminate\Contracts\Foundation\Application */
+    protected $app;
 
     /** @var \Doctrine\Common\Annotations\AnnotationReader */
-    protected static $reader;
+    protected $reader;
 
-    protected static function init()
+    protected $addons = [ ];
+
+    protected $filters = [ ];
+
+    protected $hooks = [ ];
+
+    protected $documents = [ ];
+
+    /**
+     * Adds constructor.
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param \Laradic\Support\Filesystem                  $fs
+     */
+    public function __construct(Application $app, Filesystem $fs)
     {
-        if ( static::$initialised ) {
-            return;
-        }
+        $this->app    = $app;
+        $this->fs     = $fs;
+        $this->reader = new AnnotationReader();
 
-        static::$reader = new AnnotationReader();
-
-        foreach ( Filesystem::create()->globule(__DIR__ . '/Annotations/*.php') as $filePath ) {
+        foreach ( $fs->globule(__DIR__ . '/Annotations/*.php') as $filePath ) {
             AnnotationRegistry::registerFile($filePath);
         }
-        static::$initialised = true;
     }
 
-    public static function register($providers)
+
+    public function add(AddonServiceProvider $provider)
     {
-        static::init();
+        $path           = (new ReflectionClass($provider))->getFileName();
+        $dir            = Path::getDirectory($path);
+        $this->addons[] = [
+            'provider' => $provider,
+            'name'     => $provider->getName(),
+            'depends'  => $provider->getDepends(),
+            'path'     => $path,
+            'dir'      => $dir,
+        ];
+        $this->scanDirectory($dir);
+    }
 
-        /** @var AddonServiceProvider[] $providers */
-        if ( !is_array($providers) ) {
-            $providers = [ $providers ];
-        }
-
-        foreach ( $providers as $provider ) {
-            if ( array_key_exists($provider->getName(), static::$providers) ) {
-                continue;
-            }
-
-            $path                                      = (new ReflectionClass($provider))->getFileName();
-            $dir                                       = Path::getDirectory($path);
-            $provides                                  = static::scanDirectory($dir);
-            static::$providers[ $provider->getName() ] = compact('provider', 'provides');
+    public function scanDirectory($path)
+    {
+        foreach ( $this->scanner()->in($path) as $file ) {
+            $this->resolveFileAnnotation($file);
         }
     }
 
-    protected static function scanDirectory($dir)
+    protected function resolveFileAnnotation(ClassFileInfo $file)
     {
-        $provides = [ ];
-        foreach ( static::$annotations as $type => $annotationClass ) {
-            $methodName = 'handle' . ucfirst($type);
-            $scanner    = (new Scanner(static::$reader))->scan([ $annotationClass ])->in($dir);
-            foreach ( $scanner as $file ) {
-                /** @var \Codex\Core\Addons\Scanner\ClassFileInfo $file */
-                $provide = [
-                    'type'        => $type,
-                    'class'       => $file->getClassName(),
-                    'file'        => $file->getFilename(),
-                    'annotations' => Collection::make([
-                        'class'      => $file->getClassAnnotations(),
-                        'method'     => $file->getMethodAnnotations(),
-                        'properties' => $file->getPropertyAnnotations(),
-                    ]),
+        $types = [
+            'class'    => $file->getClassAnnotations(),
+            'method'   => $file->getMethodAnnotations(),
+            'property' => $file->getPropertyAnnotations(),
+        ];
+        foreach ( $types as $type => $annotations ) {
+            foreach ( $annotations as $annotation ) {
+                $info = [
+                    'type'       => $type,
+                    'annotation' => $annotation,
+                    'class'      => $file->getClassName(),
+                    'file'       => $file->getFilename(),
                 ];
-
-
-                if ( method_exists(static::class, $methodName) || static::hasMacro($methodName) ) {
-
-                    forward_static_call_array(static::class . '::' . $methodName, [ $provide ]);
+                switch ( true ) {
+                    case $annotation instanceof Annotations\Document:
+                        $this->documents[ $file->getClassName() ] = array_merge($info, [
+                            'name'       => $annotation->name,
+                            'extensions' => $annotation->extensions,
+                        ]);
+                        break;
+                    case $annotation instanceof Annotations\Hook:
+                        $this->hooks[ $file->getClassName() ] = array_merge($info, [
+                            'name' => $annotation->name,
+                        ]);
+                        break;
+                    case $annotation instanceof Annotations\Filter:
+                        $this->filters[ $file->getClassName() ] = array_merge($info, [
+                            'name'   => $annotation->name,
+                            'for'    => $annotation->for,
+                            'config' => [ ],
+                        ]);
+                        break;
+                    case $annotation instanceof Annotations\FilterConfig:
+                        $this->filters[ $file->getClassName() ] = array_merge($info, [
+                            'name' => $annotation->name,
+                            'for'  => $annotation->for,
+                        ]);
+                        break;
                 }
-
-                if ( !array_key_exists($type, static::$addons) ) {
-                    static::$addons[ $type ] = [ ];
-                }
-                static::$addons[ $type ][] = $provide;
-                $provides[]                = $provide;
             }
         }
-        return $provides;
     }
 
-    public static function handleHook(array $provide)
+    protected function scanner($annotationClass = null)
     {
-        foreach($provide['annotations']['class'] as $hook){
-            if(!$hook instanceof Hook){
-                continue;
-            }
-            Codex::hook($hook->name[0], function() use ($provide) {
-                app()->call($provide['class'], func_get_args(), 'handle');
-            });
+        if ( $annotationClass === null ) {
+            $annotationClass = array_values($this->annotations);
         }
-
-        foreach($provide['annotations']['method'] as $method => $hooks){
-            foreach($hooks as $hook) {
-                if ( !$hook instanceof Hook ) {
-                    continue;
-                }
-                Codex::hook($hook->name[0], function () use ($provide, $method) {
-                    $args = func_get_args();
-                    app()->call($provide[ 'class' ], $args, $method);
-                });
-            }
+        if ( !is_array($annotationClass) ) {
+            $annotationClass = [ $annotationClass ];
         }
-        return $provide;
+        $scanner = new Scanner($this->reader);
+        return $scanner->scan($annotationClass);
     }
 
-    public static function getDocuments()
+    protected function find(AddonType $type = null)
     {
-        $documents = [ ];
-        foreach ( static::get(AddonType::DOCUMENT) as $i => $document ) {
-            foreach ( $document[ 'annotations' ][ 'class' ] as $doc ) {
-                /** @var \Codex\Core\Addons\Annotations\Document $doc */
-                $documents[ $doc->name ] = [
-                    'type'       => $doc->name,
-                    'extensions' => $doc->extensions,
-                    'class'      => $document[ 'class' ],
-                ];
-            }
+        $finder = new Finder();
+        $finder->setReader($this->reader);
+        if ( $type !== null ) {
+            return $finder->containsAtLeastOneOf($this->annotations[ $type->getValue() ]);
         }
-        return $documents;
-    }
-
-    public static function getFilters($for = [ ])
-    {
-        $for = is_string($for) ? [ $for ] : $for;
-
-        $filters = [ ];
-        foreach ( static::get(AddonType::FILTER) as $i => $filter ) {
-            foreach ( $filter[ 'annotations' ][ 'class' ] as $f ) {
-                /** @var \Codex\Core\Addons\Annotations\Filter $f */
-                if ( count($for) > 0 && !in_array($f->for, $for, true) ) {
-                    continue;
-                }
-                $filters[ $f->name ] = [
-                    'for'   => $f->for,
-                    'class' => $filter[ 'class' ],
-                ];
-            }
+        foreach ( $this->annotations as $type => $annotation ) {
+            $finder->containsAtLeastOneOf($annotation);
         }
-        return $filters;
+        return $finder;
     }
 
-    public static function getHooks()
+
+    public function getDocuments()
     {
+        return collect($this->documents);
     }
 
-    public static function get($type)
+    public function getFilters()
     {
-        return static::$addons[ $type ];
+        return collect($this->filters);
     }
+
+    public function getHooks()
+    {
+        return collect($this->hooks);
+    }
+
 }

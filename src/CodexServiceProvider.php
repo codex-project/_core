@@ -43,13 +43,16 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $singletons = [
-        'codex' => Codex::class,
+        'codex'        => Codex::class,
+        'codex.addons' => Addons\Addons::class,
     ];
 
     protected $aliases = [
-        'codex'     => Contracts\Codex::class,
-        'codex.log' => Contracts\Log::class,
+        'codex'              => Contracts\Codex::class,
+        'codex.log'          => Contracts\Log::class,
+        Addons\Addons::class => Addons\Addons::class,
     ];
+
 
     public function boot()
     {
@@ -71,7 +74,7 @@ class CodexServiceProvider extends ServiceProvider
         $this->registerDefaultFilesystem();
 
         if ( $app[ 'config' ][ 'codex.dev' ] && class_exists('Codex\Dev\DevServiceProvider') ) {
-            $this->app->register('Codex\Dev\DevServiceProvider');
+          #  $this->app->register('Codex\Dev\DevServiceProvider');
         }
 
         return $app;
