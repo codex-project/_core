@@ -2,50 +2,26 @@
 
 
 return [
-
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Display name
-    |--------------------------------------------------------------------------
-    |
-    */
-    'display_name'                => env('CODEX_DISPLAY_NAME', 'Codex'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Root directory
-    |--------------------------------------------------------------------------
-    |
-    */
-    'root_dir'                    => env('CODEX_ROOT_DIR', base_path('resources/docs')),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Route Base
-    |--------------------------------------------------------------------------
-    |
-    | You may define a base route for your Codex documentation here. By default
-    | it is set to "codex", but you may leave this empty if you wish to use
-    | Codex as a stand alone application.
-    |
-    */
-    'base_route'                  => env('CODEX_BASE_ROUTE', 'codex'),
-
-    'routing' => [
-        'base_route' => env('CODEX_BASE_ROUTE', 'codex'),
+    'display_name' => env('CODEX_DISPLAY_NAME', 'Codex'),
+    'docs_dir'     => env('CODEX_ROOT_DIR', base_path('resources/docs')),
+    'routing'      => [
+        'base_route'           => env('CODEX_BASE_ROUTE', 'codex'),
+        'provider'             => 'Codex\\Core\\Providers\\RouteServiceProvider',
         'ignore_project_names' => [
-            '_debugbar'
+            '_debugbar',
         ],
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Default Project
-    |--------------------------------------------------------------------------
-    |
-    */
+    'log' => [
+        'enabled' => true,
+        'path'    => storage_path('logs/codex.log'),
+    ],
+    'dev' => [
+        'enabled'      => env('CODEX_DEV_ENABLED', false),
+        'debugbar'     => true,
+        'log_handlers' => true,
+        'print_events' => true
+    ],
+    'stubs_path'                  => __DIR__ . '/../resources/stubs',
     'default_project'             => env('CODEX_DEFAULT_PROJECT', 'codex'),
 
     /*
@@ -92,11 +68,4 @@ return [
         ],
     ],
 
-    'log' => [
-        'path' => storage_path('logs/codex.log'),
-    ],
-
-    'debug' => env('CODEX_DEBUG', false),
-
-    'stubs_path' => __DIR__ . '/../resources/stubs',
 ];

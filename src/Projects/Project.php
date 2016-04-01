@@ -12,7 +12,7 @@ use Codex\Core\Traits;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Filesystem\FilesystemManager;
-use Laradic\Support\Str;
+use Sebwite\Support\Str;
 use Symfony\Component\Yaml\Yaml;
 use vierbergenlars\SemVer\version;
 
@@ -120,7 +120,7 @@ class Project implements
         $this->projects   = $projects;
         $this->name       = $name;
         $this->setConfig($config);
-        $this->path = $path = path_join($codex->getRootDir(), $name);
+        $this->path = $path = path_join($codex->getDocsDir(), $name);
 
         $this->hookPoint('project:construct', [ $this ]);
 
@@ -173,7 +173,7 @@ class Project implements
         if ( $this->getDiskName() === $this->getDefaultDiskName() ) {
             $default = [
                 'driver' => 'codex-local',
-                'root'   => $this->codex->getRootDir() . DIRECTORY_SEPARATOR . $this->getName(),
+                'root'   => $this->codex->getDocsDir() . DIRECTORY_SEPARATOR . $this->getName(),
             ];
         }
 

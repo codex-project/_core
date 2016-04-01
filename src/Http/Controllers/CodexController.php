@@ -86,7 +86,9 @@ class CodexController extends Controller
 
         $this->view->share('project', $project);
 
-        return $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
+        $view = $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
+        $res  = $this->hookPoint('controller:view', [ $project, $document, $view ]);
+        return $view;
     }
 
     public function markdown()

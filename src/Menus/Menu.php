@@ -15,7 +15,7 @@ use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Routing\Router;
-use Laradic\Support\Filesystem;
+use Sebwite\Support\Filesystem;
 
 class Menu implements
     Contracts\Extendable,

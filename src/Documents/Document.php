@@ -64,12 +64,23 @@ abstract class Document implements
 
     protected $type;
 
+    protected $appliedFilters;
+
+    /**
+     * @return \Sebwite\Support\Collection|\Sebwite\Support\Collection
+     */
+    public function getAppliedFilters()
+    {
+        return $this->appliedFilters;
+    }
+
 
     /**
      * Document constructor.
      *
      * @param \Codex\Core\Contracts\Codex|\Codex\Core\Codex $codex
      * @param \Codex\Core\Projects\Project                  $project
+     * @param                                               $type
      * @param                                               $path
      * @param                                               $pathName
      *
@@ -78,11 +89,11 @@ abstract class Document implements
     public function __construct(Codex $codex, Project $project, $type, $path, $pathName)
     {
         $this->setCodex($codex);
-        $this->project  = $project;
-        $this->type     = $type;
-        $this->path     = $path;
-        $this->pathName = $pathName;
-        $this->filters  = collection();
+        $this->project        = $project;
+        $this->type           = $type;
+        $this->path           = $path;
+        $this->pathName       = $pathName;
+        $this->appliedFilters = collect();
 
         $this->setFiles($project->getFiles());
 
@@ -109,8 +120,9 @@ abstract class Document implements
      */
     public function render()
     {
-        $this->hookPoint('render', [ $this ]);
+        $this->hookPoint('document:render', [ $this ]);
         $this->runFilters();
+        $this->hookPoint('document:rendered', [ $this ]);
         return $this->content;
     }
 
@@ -123,15 +135,15 @@ abstract class Document implements
         $enabledFilters = $this->getProject()->config('filters.enabled', []);
         foreach ( $this->getCodex()->getAddons()->getFilters()->whereIn('name', $enabledFilters) as $filter ) {
 
-            $settings = collection(isset($fsettings[ $filter[ 'name' ] ]) ? $fsettings[ $filter[ 'name' ] ] : [ ]);
+            $settings = collect(isset($fsettings[ $filter[ 'name' ] ]) ? $fsettings[ $filter[ 'name' ] ] : [ ]);
 
-            $this->hookPoint('filter:before:' . $filter['name'], [$this, $filter, $settings]);
+            $this->hookPoint('document:filter:before:' . $filter['name'], [$this, $filter, $settings]);
             $params = [
                 'document' => $this,
                 'settings' => $settings,
             ];
             $container->call($filter[ 'class' ], $params, 'handle');
-            $this->hookPoint('filter:after:' . $filter['name'], [$this, $filter, $settings]);
+            $this->hookPoint('document:filter:after:' . $filter['name'], [$this, $filter, $settings]);
         }
     }
 

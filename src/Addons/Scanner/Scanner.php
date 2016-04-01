@@ -93,7 +93,7 @@ class Scanner implements \IteratorAggregate
                         || $classInspector->containsPropertyAnnotation($annotation)) {
 
                         $result[] = new ClassFileInfo($file, $classInspector);
-                        break;
+                        continue;
                     }
                 }
 

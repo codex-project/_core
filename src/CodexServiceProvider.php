@@ -11,7 +11,8 @@ namespace Codex\Core;
 use Codex\Core\Log\Writer;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Filesystem\FilesystemAdapter;
-use Laradic\Support\ServiceProvider;
+
+use Sebwite\Support\ServiceProvider;
 use League\Flysystem\Filesystem as Flysystem;
 use Monolog\Logger as Monolog;
 
@@ -31,8 +32,11 @@ class CodexServiceProvider extends ServiceProvider
 
     protected $viewDirs = [ 'views' => 'codex' ];
 
+    protected $commands = [
+        'codex.list' => Console\ListCommand::class
+    ];
+
     protected $providers = [
-        Providers\RouteServiceProvider::class,
         \Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
     ];
 
@@ -53,19 +57,17 @@ class CodexServiceProvider extends ServiceProvider
         Addons\Addons::class => Addons\Addons::class,
     ];
 
-
-    public function boot()
-    {
-        $app = parent::boot();
-        /** @var Codex $codex */
-        # $codex =
-        #$codex->addons()->resolve();
-        return $app;
-    }
+    protected $weaklings = [
+        'fs' => \Sebwite\Filesystem\Filesystem::class
+    ];
 
     public function register()
     {
         $app = parent::register();
+
+        if($this->app['config']['codex.dev.enabled'] === true){
+            $this->app->register('Codex\Dev\DevServiceProvider');
+        }
 
         $this->registerLogger();
 
@@ -73,9 +75,7 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerDefaultFilesystem();
 
-        if ( $app[ 'config' ][ 'codex.dev' ] && class_exists('Codex\Dev\DevServiceProvider') ) {
-          #  $this->app->register('Codex\Dev\DevServiceProvider');
-        }
+        $this->registerRouting();
 
         return $app;
     }
@@ -113,16 +113,16 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerDefaultFilesystem()
     {
-        $config = $this->app->make('config');
-        $config->get('codex.filesystems');
-        $config->set('codex.filesystems.local');
-        $fsm = $this->app->make('filesystem');
-        $fsm->extend('codex-local', function (LaravelApplication $app, array $config = [ ]) use ($fsm) {
-            #return new Filesystem\Local($config['root']);
+        $this->app->make('filesystem')->extend('codex-local', function (LaravelApplication $app, array $config = [ ]) {
             $flysystemAdapter    = new Filesystem\Local($config[ 'root' ]);
             $flysystemFilesystem = new Flysystem($flysystemAdapter);
             return new FilesystemAdapter($flysystemFilesystem);
         });
+    }
+
+    protected function registerRouting()
+    {
+        $this->app->register($this->app[ 'config' ][ 'codex.routing.provider' ]);
     }
 
 

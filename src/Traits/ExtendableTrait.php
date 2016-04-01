@@ -11,7 +11,7 @@ namespace Codex\Core\Traits;
 
 use BadMethodCallException;
 use Closure;
-use Laradic\Support\Str;
+use Sebwite\Support\Str;
 
 trait ExtendableTrait
 {

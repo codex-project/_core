@@ -11,9 +11,9 @@ namespace Codex\Core\Projects;
 use Codex\Core\Contracts;
 use Codex\Core\Exception\ProjectNotFoundException;
 use Codex\Core\Traits;
-use Laradic\Support\Filesystem;
-use Laradic\Support\Path;
-use Laradic\Support\Str;
+use Sebwite\Support\Filesystem;
+use Sebwite\Support\Path;
+use Sebwite\Support\Str;
 use Symfony\Component\Finder\Finder;
 
 class Projects implements
@@ -34,7 +34,7 @@ class Projects implements
      * Projects constructor.
      *
      * @param \Codex\Core\Contracts\Codex|\Codex\Core\Codex $parent
-     * @param \Laradic\Support\Filesystem                   $files
+     * @param \Sebwite\Support\Filesystem                   $files
      */
     public function __construct(Contracts\Codex $parent, Filesystem $files)
     {
@@ -70,7 +70,7 @@ class Projects implements
         $menu     = $this->codex->menus->add('projects');
         $finder   = new Finder();
         $projects = $finder
-            ->in($this->getCodex()->getRootDir())
+            ->in($this->getCodex()->getDocsDir())
             ->files()
             ->name('config.php')
             ->depth('<= 1')

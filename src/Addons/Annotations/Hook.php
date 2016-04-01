@@ -16,7 +16,7 @@ final class Hook
 {
 
     /**
-     * @var array
+     * @var string
      */
     public $name;
 }

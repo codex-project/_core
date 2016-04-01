@@ -11,7 +11,8 @@ use Doctrine\Common\Annotations\Annotation\Target;
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  *
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({"PROPERTY","METHOD"})
+ * 
  */
 final class FilterConfig
 {

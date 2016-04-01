@@ -16,7 +16,7 @@ use Herrera\Version\Parser;
 use Herrera\Version\Version;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Container\Container;
-use Laradic\Support\Filesystem;
+use Illuminate\Filesystem\Filesystem;
 
 
 /**
@@ -74,7 +74,7 @@ class Codex implements
      *
      * @var string
      */
-    protected $rootDir;
+    protected $docsDir;
 
 
     # Config
@@ -84,7 +84,7 @@ class Codex implements
      *
      * @param \Illuminate\Contracts\Container\Container $container
      * @param \Codex\Core\Contracts\Addons              $addons
-     * @param \Laradic\Support\Filesystem               $files
+     * @param \Sebwite\Support\Filesystem               $files
      * @param \Illuminate\Contracts\Cache\Repository    $cache
      * @param \Codex\Core\Contracts\Log                 $log
      * @param array                                     $config
@@ -96,7 +96,7 @@ class Codex implements
         $this->setFiles($files);
 
         $this->cache   = $cache;
-        $this->rootDir = config('codex.root_dir');
+        $this->docsDir = config('codex.docs_dir');
         $this->log     = $log;
 
         // 'factory:done' called after all factory operations have completed.
@@ -219,9 +219,9 @@ class Codex implements
      *
      * @return string
      */
-    public function getRootDir()
+    public function getDocsDir()
     {
-        return $this->rootDir;
+        return $this->docsDir;
     }
 
     /**

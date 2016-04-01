@@ -74,7 +74,7 @@ class Documents implements
             $this->items->put($pathName, $this->getCodex()->getContainer()->make($document[ 'class' ], [
                 'codex'     => $this->getCodex(),
                 'project'   => $this->getProject(),
-                'type'      => $document[ 'type' ],
+                'type'      => $document[ 'name' ],
                 'path'      => $document[ 'path' ],
                 'pathName'  => $pathName,
                 'extension' => $document[ 'extension' ],
@@ -111,6 +111,7 @@ class Documents implements
      */
     public function getProject()
     {
+
         return $this->project;
     }
 
