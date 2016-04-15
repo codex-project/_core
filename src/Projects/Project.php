@@ -132,6 +132,16 @@ class Project implements
         $this->hookPoint('project:constructed', [ $this ]);
     }
 
+    public function setActive()
+    {
+        $this->projects->setActive($this);
+        return $this;
+    }
+
+    public function isActive()
+    {
+        return $this->projects->getActive() === $this;
+    }
     public function getDefaultDiskName()
     {
         return 'codex-local-' . $this->getName();
@@ -294,11 +304,11 @@ class Project implements
      */
     public function getSidebarMenu()
     {
-
+        return $this->getCodex()->menus->get('sidebar');
         $path  = $this->refPath('menu.yml');
         $yaml  = $this->getFiles()->get($path);
         $array = Yaml::parse($yaml);
-        $this->getCodex()->menus->forget('sidebar');
+
 
         $menu = $this->setupSidebarMenu($array[ 'menu' ]);
         $this->hookPoint('project:documents-menu', [ $this, $menu ]);

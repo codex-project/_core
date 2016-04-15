@@ -126,7 +126,7 @@ class Menu implements
      * @param array  $meta
      * @param array  $attributes
      *
-     *@return \Codex\Core\Components\Menu\Node
+     *@return \Codex\Core\Menus\Node
      */
     public function add($id, $value, $parent = 'root', array $meta = [ ], array $attributes = [ ])
     {

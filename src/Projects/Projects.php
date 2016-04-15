@@ -15,6 +15,7 @@ use Sebwite\Support\Filesystem;
 use Sebwite\Support\Path;
 use Sebwite\Support\Str;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Yaml;
 
 class Projects implements
     Contracts\Projects,
@@ -28,7 +29,7 @@ class Projects implements
 
     protected $items;
 
-    protected $project;
+    protected $activeProject;
 
     /**
      * Projects constructor.
@@ -51,8 +52,23 @@ class Projects implements
         $this->hookPoint('projects:done', [$this]);
     }
 
-    public function create()
+    public function setActive($project)
     {
+        if(!$project instanceof Project){
+            $project = $this->get($project);
+        }
+        $this->activeProject = $project;
+        $this->resolveProjectSidebarMenu($project);
+    }
+
+    public function hasActive()
+    {
+        return $this->activeProject !== null;
+    }
+
+    public function getActive()
+    {
+        return $this->activeProject;
     }
 
     /**
@@ -170,6 +186,44 @@ class Projects implements
     public function toArray()
     {
         return $this->items->all();
+    }
+
+    protected function resolveProjectSidebarMenu(Project $project, $items = null, $parentId = 'root')
+    {
+        if($items === null ) {
+            $path  = $project->refPath('menu.yml');
+            $yaml  = $project->getFiles()->get($path);
+            $items = Yaml::parse($yaml)['menu'];
+            $this->codex->menus->forget('sidebar');
+        }
+        $menu = $this->codex->menus->add('sidebar');
+        $this->hookPoint('projects:sidebar:resolve', [ $this, $menu ]);
+
+        foreach ( $items as $item ) {
+            $link = '#';
+            if ( array_key_exists('document', $item) ) {
+                // remove .md extension if present
+                $path = Str::endsWith($item[ 'document' ], '.md', false) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
+                $link = $this->codex->url($project, $project->getRef(), $path);
+            } elseif ( array_key_exists('href', $item) ) {
+                $link = $item[ 'href' ];
+            }
+
+            $id = md5($item[ 'name' ] . $link);
+
+            $node = $menu->add($id, $item[ 'name' ], $parentId);
+            $node->setAttribute('href', $link);
+            $node->setAttribute('id', $id);
+
+            if ( isset($item[ 'icon' ]) ) {
+                $node->setMeta('icon', $item[ 'icon' ]);
+            }
+
+            if ( isset($item[ 'children' ]) ) {
+                $this->resolveProjectSidebarMenu($project, $item[ 'children' ], $id);
+            }
+        }
+
     }
 
 }

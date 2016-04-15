@@ -79,7 +79,7 @@ class Menus implements
      *
      * @param string $id
      *
-     * @return \Codex\Core\Menu
+     * @return \Codex\Core\Menus\Menu
      */
     public function add($id)
     {

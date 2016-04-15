@@ -99,6 +99,10 @@ abstract class Document implements
 
         $this->hookPoint('document:ready', [ $this ]);
 
+        if($this->codex->projects->hasActive() === false){
+            $project->setActive();
+        }
+
         $this->attributes = $codex->config('default_document_attributes');
 
         if ( !$this->getFiles()->exists($this->getPath()) ) {

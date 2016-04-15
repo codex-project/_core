@@ -21,7 +21,7 @@
 @stop
 
 @section('sidebar-menu')
-    {!! $project->getSidebarMenu()->render() !!}
+    {!! $codex->menus->get('sidebar')->render() !!}
 @stop
 
 @push('init-scripts')
