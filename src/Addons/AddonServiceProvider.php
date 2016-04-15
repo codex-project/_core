@@ -11,7 +11,7 @@ namespace Codex\Core\Addons;
 
 use Codex\Core\Addons\Exception\AddonProviderException;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\ServiceProvider;
+use Sebwite\Support\ServiceProvider;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 abstract class AddonServiceProvider extends ServiceProvider
@@ -32,18 +32,15 @@ abstract class AddonServiceProvider extends ServiceProvider
         if ( !property_exists($this, 'name') ) {
             throw AddonProviderException::namePropertyNotDefined();
         }
+    }
 
-        $config = $this->config = new TreeBuilder();
-        #$config->root('filters')->
+    public function isEnabled()
+    {
+        return true;
     }
 
     protected function defineConfig($root)
     {
-    }
-
-    public function register()
-    {
-        return $this->app;
     }
 
     public function getName()

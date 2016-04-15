@@ -33,7 +33,7 @@ class CodexServiceProvider extends ServiceProvider
     protected $viewDirs = [ 'views' => 'codex' ];
 
     protected $commands = [
-        'codex.list' => Console\ListCommand::class
+        #'codex.list' => Console\ListCommand::class
     ];
 
     protected $providers = [

@@ -12,5 +12,5 @@
 @section('page-subtitle', $document->attr('subtitle', null))
 
 @section('content')
-    {!! $content !!}
+   asd {!! $content !!}
 @stop

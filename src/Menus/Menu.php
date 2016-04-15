@@ -70,15 +70,18 @@ class Menu implements
      */
     protected $menus;
 
+    protected $id;
+
     /**
-     * @param \Codex\Core\Contracts\Menus\MenuFactory     $menus
-     * @param \Illuminate\Contracts\Filesystem\Filesystem $files
-     * @param \Illuminate\Contracts\Cache\Repository      $cache
-     * @param \Illuminate\Routing\Router                  $router
-     * @param \Illuminate\Contracts\Routing\UrlGenerator  $url
-     * @param \Illuminate\Contracts\View\Factory          $viewFactory
+     * @param \Codex\Core\Contracts\Menus\MenuFactory|\Codex\Core\Menus\Menus         $menus
+     * @param \Illuminate\Contracts\Filesystem\Filesystem|\Sebwite\Support\Filesystem $files
+     * @param \Illuminate\Contracts\Cache\Repository                                  $cache
+     * @param \Illuminate\Routing\Router                                              $router
+     * @param \Illuminate\Contracts\Routing\UrlGenerator                              $url
+     * @param \Illuminate\Contracts\View\Factory                                      $viewFactory
+     * @param                                                                         $id
      */
-    public function __construct(Menus $menus, Filesystem $files, Cache $cache, Router $router, UrlGenerator $url, ViewFactory $viewFactory, $id = '')
+    public function __construct(Menus $menus, Filesystem $files, Cache $cache, Router $router, UrlGenerator $url, ViewFactory $viewFactory, $id )
     {
         $this->menus       = $menus;
         $this->cache       = $cache;
@@ -86,6 +89,7 @@ class Menu implements
         $this->url         = $url;
         $this->files       = $files;
         $this->viewFactory = $viewFactory;
+        $this->id = $id;
         $this->view        = 'codex::menus.' . $id;
         $this->items       = new Collection();
 
@@ -253,5 +257,25 @@ class Menu implements
 
         return $node;
     }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the id value
+     *
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+
 
 }

@@ -9,21 +9,22 @@
 namespace Codex\Core\Exception;
 
 use Codex\Core\Documents\Document;
-use Codex\Core\Project;
+use Codex\Core\Projects\Project;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DocumentNotFoundException extends \Exception
 {
     public static function document($document)
     {
-        if ($document instanceof Document) {
+        if ( $document instanceof Document ) {
             $document = $document->getName();
         }
         return new static("Could not find document [{$document}]");
     }
+
     public function inProject($project)
     {
-        if ($project instanceof Project) {
+        if ( $project instanceof Project ) {
             $project = $project->getName();
         }
         $this->message .= " in project [{$project}]";

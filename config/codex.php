@@ -24,6 +24,8 @@ return [
     'stubs_path'                  => __DIR__ . '/../resources/stubs',
     'default_project'             => env('CODEX_DEFAULT_PROJECT', 'codex'),
 
+    'theme' => 'laravel', // null, 'laravel', 'angular', 'material'
+
     /*
     |--------------------------------------------------------------------------
     | Default Project Attributes

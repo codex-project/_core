@@ -27,9 +27,9 @@ class CodexController extends Controller
      */
     public function __construct(Codex $codex, View $view)
     {
-        $this->hookPoint('controller:construct');
+        $this->hookPoint('controller:construct', [$codex, $view]);
         parent::__construct($codex, $view);
-        $this->hookPoint('controller:constructed');
+        $this->hookPoint('controller:constructed', [$codex, $view]);
     }
 
 
@@ -78,7 +78,7 @@ class CodexController extends Controller
         }
 
         $document = $project->documents->get($path);
-        $res      = $this->hookPoint('controller:document', [ $project, $document ]);
+        $res      = $this->hookPoint('controller:document', [ $document, $this->codex, $project ]);
 
         # prepare view
         $content    = $document->render();
@@ -87,7 +87,7 @@ class CodexController extends Controller
         $this->view->share('project', $project);
 
         $view = $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
-        $res  = $this->hookPoint('controller:view', [ $project, $document, $view ]);
+        $res  = $this->hookPoint('controller:view', [ $view, $this->codex, $project, $document ]);
         return $view;
     }
 

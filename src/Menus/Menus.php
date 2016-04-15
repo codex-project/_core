@@ -116,7 +116,7 @@ class Menus implements
      * @param string $id
      * @param null   $default
      *
-     * @return \Codex\Core\Menu
+     * @return \Codex\Core\Menus\Menu
      */
     public function get($id, $default = null)
     {

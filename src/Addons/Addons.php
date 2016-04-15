@@ -10,9 +10,9 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\Macroable;
+use ReflectionClass;
 use Sebwite\Support\Filesystem;
 use Sebwite\Support\Path;
-use ReflectionClass;
 use Symfony\Component\Finder\SplFileInfo;
 
 class Addons
@@ -24,6 +24,7 @@ class Addons
         AddonType::DOCUMENT => Annotations\Document::class,
         AddonType::HOOK     => Annotations\Hook::class,
         AddonType::FILTER   => Annotations\Filter::class,
+        AddonType::THEME    => Annotations\Theme::class,
         'filter-config'     => Annotations\FilterConfig::class,
     ];
 
@@ -73,8 +74,11 @@ class Addons
             'depends'  => $provider->getDepends(),
             'path'     => $path,
             'dir'      => $dir,
+            'enabled' => $provider->isEnabled()
         ];
-        $this->scanDirectory($dir);
+        if($provider->isEnabled()) {
+            $this->scanDirectory($dir);
+        }
     }
 
     public function scanDirectory($path)
@@ -88,7 +92,7 @@ class Addons
     {
         $className = static::getClassNameFromFile($path);
         #$reader    = new AnnotationReader();
-        $file      = new SplFileInfo($path,$path,$path);
+        $file      = new SplFileInfo($path, $path, $path);
         $inspector = new ClassInspector($className, $this->reader);
         return new ClassFileInfo($file, $inspector);
     }

@@ -8,6 +8,7 @@ class AddonType extends Enum
     const DOCUMENT = 'document';
     const FILTER = 'filter';
     const HOOK = 'hook';
+    const THEME = 'theme';
 
     public static function make($name)
     {
