@@ -10,6 +10,8 @@ namespace Codex\Core;
 
 
 use Codex\Core\Contracts;
+use Codex\Core\Documents\Document;
+use Codex\Core\Http\Controllers\CodexController;
 use Codex\Core\Projects\Project;
 use Codex\Core\Traits;
 use Herrera\Version\Parser;
@@ -50,8 +52,7 @@ class Codex implements
 
     protected $extensions = [
         'projects' => Projects\Projects::class,
-        'menus'    => Menus\Menus::class,
-        'theme'    => Theme\Theme::class,
+        'menus'    => Menus\Menus::class
         #'addons'   => Addons\Addons::class,
     ];
 
@@ -98,7 +99,7 @@ class Codex implements
         $this->cache   = $cache;
         $this->docsDir = config('codex.docs_dir');
         $this->log     = $log;
-
+        $this->addThemeHook();
         // 'factory:done' called after all factory operations have completed.
         $this->hookPoint('constructed', [ $this ]);
     }
@@ -110,6 +111,32 @@ class Codex implements
     public function getAddons()
     {
         return $this->container->make('codex.addons');
+    }
+
+    protected $themes = [ ];
+
+    public function registerTheme($name, $views = [ ])
+    {
+        $this->themes[ $name ] = $views;
+    }
+
+    protected function addThemeHook()
+    {
+        $this->getAddons()->hook('controller:document', function (CodexController $controller, Document $document, Codex $codex, Project $project) {
+            $name = config('codex.theme', 'default');
+            if ( array_key_exists($name, $this->themes) ) {
+                $theme = collect($this->themes[ $name ]);
+                foreach ( $theme->get('menus', [ ]) as $id => $view ) {
+                    $codex->menus->has($id) && $codex->menus->get($id)->setView($view);
+                }
+                $views = [ 'layout', 'view' ];
+                foreach ( $views as $view ) {
+                    if ( $theme->has($view) ) {
+                        $document->setAttribute($view, $theme->get($view));
+                    }
+                }
+            }
+        });
     }
 
     # Helper functions
@@ -185,7 +212,8 @@ class Codex implements
         return Parser::toVersion(app()->version());
     }
 
-    protected $routeExclusions = [];
+    protected $routeExclusions = [ ];
+
     public function routeExclusion($name)
     {
         $this->routeExclusions[] = $name; //        $document->where('projectSlug', '^((?!' . Extender::getExcludedProjectNames(true) . ').*?)$');

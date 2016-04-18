@@ -280,6 +280,12 @@ abstract class Document implements
         return $this;
     }
 
+    public function setAttribute($key, $value)
+    {
+        data_set($this->attributes, $key, $value);
+        return $this;
+    }
+
     /**
      * Get the document's project.
      *
