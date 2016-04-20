@@ -11,6 +11,7 @@ use Codex\Core\Documents\Documents;
 use Codex\Core\Traits;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Filesystem\FilesystemManager;
 use Sebwite\Support\Str;
 use Symfony\Component\Yaml\Yaml;
@@ -30,7 +31,8 @@ use vierbergenlars\SemVer\version;
 class Project implements
     Contracts\Extendable,
     Contracts\Hookable,
-    Contracts\Bootable
+    Contracts\Bootable,
+    Arrayable
 {
     use Traits\ExtendableTrait,
         Traits\HookableTrait,
@@ -478,5 +480,19 @@ class Project implements
     public function getVersions()
     {
         return $this->versions;
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'name' => $this->getName(),
+            'config' => $this->getConfig(),
+            'versions' => $this->refs
+        ];
     }
 }

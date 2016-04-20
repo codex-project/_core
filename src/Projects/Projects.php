@@ -185,7 +185,7 @@ class Projects implements
 
     public function toArray()
     {
-        return $this->items->all();
+        return $this->items->toArray();
     }
 
     protected function resolveProjectSidebarMenu(Project $project, $items = null, $parentId = 'root')

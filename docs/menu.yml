@@ -3,6 +3,10 @@ menu:
     icon: fa fa-eye
     document: index
 
+  - name: Markdown test page
+    icon: fa fa-code
+    document: markdown-test-page
+
   - name: Install &amp; Config
     icon: fa fa-cogs
     document: installation-configuration

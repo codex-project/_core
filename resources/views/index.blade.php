@@ -1,4 +1,4 @@
-@extends(codex('theme')->layout)
+@extends('codex::layouts.default')
 
 @section('content')
 

@@ -16,35 +16,24 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
     @show
 
-    @section('stylesheets')
-        <link href="{{ asset('vendor/codex/styles/stylesheet.css') }}" type="text/css" rel="stylesheet">
-        <link href="{{ asset('vendor/codex/styles/themes/theme-codex.css') }}" type="text/css" rel="stylesheet" id="theme-style">
-    @show
+    @stack('stylesheets')
 
-    @section('styles')@show
+    @stack('styles')
 
 </head>
 
-<body class="@yield('bodyClass', 'page-loading page-header-fixed page-footer-fixed page-edged page-sidebar-condensed page-sidebar-fixed')">
-
-    @section('page-loader')
-        <div id="page-loader">
-            <div class="loader loader-page"></div>
-        </div>
-    @show
+<body class="@yield('bodyClass', '')">
 
     @yield('body')
-
 
     @section('javascripts')
         <script src="{{ asset('vendor/codex/scripts/vendor.js') }}"></script>
         <script src="{{ asset('vendor/codex/scripts/codex.js') }}"></script>
-        <script src="{{ asset('vendor/codex/scripts/addons.js') }}"></script>
     @show
 
     <script src="{{ asset('vendor/codex/bower_components/jstree/dist/jstree.js') }}"></script>
 
-    @section('scripts')@show
+    @stack('scripts')
 
     @section('init-script')
         <script>
@@ -60,7 +49,7 @@
         </script>
     @show
 
-    @section('init-scripts')@show
+    @stack('init-scripts')
 
 
     @section('boot-script')

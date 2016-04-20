@@ -6,9 +6,24 @@
     </style>
 @endpush
 
+@section('bodyClass', 'page-loading page-header-fixed page-footer-fixed page-edged page-sidebar-condensed page-sidebar-fixed')
 
+@push('stylesheets')
+<link href="{{ asset('vendor/codex/styles/stylesheet.css') }}" type="text/css" rel="stylesheet">
+<link href="{{ asset('vendor/codex/styles/themes/theme-codex.css') }}" type="text/css" rel="stylesheet" id="theme-style">
+@endpush
+
+@push('javascripts')
+<script src="{{ asset('vendor/codex/scripts/addons.js') }}"></script>
+@endpush
 
 @section('body')
+
+    @section('page-loader')
+        <div id="page-loader">
+            <div class="loader loader-page"></div>
+        </div>
+    @show
 
     @section('page-header')
     <div class="page-header navbar navbar-fixed-top">
