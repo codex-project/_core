@@ -19,4 +19,9 @@ class Collection extends \Illuminate\Support\Collection
         }
         return $item;
     }
+
+    public function set($key, $value = null)
+    {
+        data_set($this->items, $key, $value);
+    }
 }

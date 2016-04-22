@@ -99,7 +99,7 @@ abstract class Document implements
 
         $this->hookPoint('document:ready', [ $this ]);
 
-        if($this->codex->projects->hasActive() === false){
+        if ( $this->codex->projects->hasActive() === false ) {
             $project->setActive();
         }
 
@@ -132,22 +132,18 @@ abstract class Document implements
 
     protected function runFilters($only = null)
     {
-        $fsettings = $this->project->config('filters');
-        $container = $this->getCodex()->getContainer();
+        $projectConfig = $this->project->getConfig();
+        $container     = $this->getCodex()->getContainer();
 
-
-        $enabledFilters = $this->getProject()->config('filters.enabled', []);
-        foreach ( $this->getCodex()->getAddons()->getFilters()->whereIn('name', $enabledFilters) as $filter ) {
-
-            $settings = collect(isset($fsettings[ $filter[ 'name' ] ]) ? $fsettings[ $filter[ 'name' ] ] : [ ]);
-
-            $this->hookPoint('document:filter:before:' . $filter['name'], [$this, $filter, $settings]);
+        foreach ( $this->getCodex()->getAddons()->getFilters()->whereIn('name', $projectConfig->getEnabledFilters()) as $filter ) {
+            $settings = $projectConfig->getFilterConfig($filter[ 'name' ]);
+            $this->hookPoint('document:filter:before:' . $filter[ 'name' ], [ $this, $filter, $settings ]);
             $params = [
                 'document' => $this,
                 'settings' => $settings,
             ];
             $container->call($filter[ 'class' ], $params, 'handle');
-            $this->hookPoint('document:filter:after:' . $filter['name'], [$this, $filter, $settings]);
+            $this->hookPoint('document:filter:after:' . $filter[ 'name' ], [ $this, $filter, $settings ]);
         }
     }
 

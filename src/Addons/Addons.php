@@ -6,12 +6,16 @@ use Codex\Core\Addons\Scanner\ClassFileInfo;
 use Codex\Core\Addons\Scanner\ClassInspector;
 use Codex\Core\Addons\Scanner\Finder;
 use Codex\Core\Addons\Scanner\Scanner;
+use Codex\Core\Codex;
+use Codex\Core\Documents\Document;
+use Codex\Core\Http\Controllers\CodexController;
+use Codex\Core\Projects\Project;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\Macroable;
 use ReflectionClass;
-use Sebwite\Support\Filesystem;
+use Sebwite\Filesystem\Filesystem;
 use Sebwite\Support\Path;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -45,6 +49,8 @@ class Addons
 
     protected $documents = [ ];
 
+    protected $themes = [];
+
     /**
      * Adds constructor.
      *
@@ -61,6 +67,8 @@ class Addons
         foreach ( $fs->globule(__DIR__ . '/Annotations/*.php') as $filePath ) {
             AnnotationRegistry::registerFile($filePath);
         }
+
+        $this->addThemeHook();
     }
 
 
@@ -200,6 +208,31 @@ class Addons
         }
     }
 
+    protected function addThemeHook()
+    {
+        $this->hook('controller:document', function (CodexController $controller, Document $document, Codex $codex, Project $project) {
+
+            $name = config('codex.theme', 'default');
+            if ( array_key_exists($name, $this->themes) ) {
+                $theme = collect($this->themes[ $name ]);
+                foreach ( $theme->get('menus', [ ]) as $id => $view ) {
+                    $codex->menus->has($id) && $codex->menus->get($id)->setView($view);
+                }
+                $views = [ 'layout', 'view' ];
+                foreach ( $views as $view ) {
+                    if ( $theme->has($view) ) {
+                        $document->setAttribute($view, $theme->get($view));
+                    }
+                }
+            }
+        });
+    }
+
+    public function registerTheme($name, array $views = [ ])
+    {
+        $this->themes[$name] = $views;
+        return $this;
+    }
 
     /**
      * hook method

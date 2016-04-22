@@ -10,37 +10,35 @@ namespace Codex\Core\Addons;
 
 
 use Codex\Core\Addons\Exception\AddonProviderException;
+use Codex\Core\CodexServiceProvider;
 use Illuminate\Contracts\Foundation\Application;
 use Sebwite\Support\ServiceProvider;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 abstract class AddonServiceProvider extends ServiceProvider
 {
     protected $name;
 
-    protected $depends;
+    protected $asdf;
 
-    protected $config;
+    protected $depends = [];
+
+    protected $config = [];
 
     public function __construct(Application $app)
     {
         parent::__construct($app);
 
-        $app->booting(function (Application $app) {
-            $app['codex']->getAddons()->add($this);
-        });
-        if ( !property_exists($this, 'name') ) {
+        // make sure the codex services are registered before we register our own stuff
+        $this->providers[] = CodexServiceProvider::class;
+
+        if ( !property_exists($this, 'name') || $this->name === null ) {
             throw AddonProviderException::namePropertyNotDefined();
         }
     }
 
-    public function isEnabled()
+    public function booted()
     {
-        return true;
-    }
-
-    protected function defineConfig($root)
-    {
+        $this->app['codex.addons']->add($this);
     }
 
     public function getName()
@@ -49,12 +47,28 @@ abstract class AddonServiceProvider extends ServiceProvider
     }
 
     /**
-     * @return mixed
+     * @return string[]|array
      */
     public function getDepends()
     {
         return $this->depends;
     }
+
+    protected function hook($name, $listener)
+    {
+        $this->app[ 'codex.addons' ]->hook($name, $listener);
+    }
+
+    protected function theme($name, $views = [ ])
+    {
+        $this->app['codex.addons']->registerTheme($name, $views);
+    }
+
+    public function isEnabled()
+    {
+        return true;
+    }
+
 
 
 }

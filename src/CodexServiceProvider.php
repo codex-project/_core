@@ -74,6 +74,7 @@ class CodexServiceProvider extends ServiceProvider
         $this->registerCodexBinding();
 
         $this->registerDefaultFilesystem();
+
         if($this->app['config']['codex.routing.enabled'] === true) {
             $this->registerRouting();
         }

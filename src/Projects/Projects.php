@@ -11,7 +11,7 @@ namespace Codex\Core\Projects;
 use Codex\Core\Contracts;
 use Codex\Core\Exception\ProjectNotFoundException;
 use Codex\Core\Traits;
-use Sebwite\Support\Filesystem;
+use Sebwite\Filesystem\Filesystem;
 use Sebwite\Support\Path;
 use Sebwite\Support\Str;
 use Symfony\Component\Finder\Finder;

@@ -1,123 +1,74 @@
-@extends('codex::layouts.base')
+<!DOCTYPE html><!--[if IE 8]>
+<html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="en"><!--<![endif]-->
+<head>
+    <title>
+        @section('title')
+            {{ config('codex.display_name') }}
+        @show
+    </title>
 
-@push('styles')
-    <style type="text/css">
+    @stack('meta')
 
-    </style>
-@endpush
+    @stack('stylesheets')
 
-@section('bodyClass', 'page-loading page-header-fixed page-footer-fixed page-edged page-sidebar-condensed page-sidebar-fixed')
+    @stack('styles')
 
-@push('stylesheets')
-<link href="{{ asset('vendor/codex/styles/stylesheet.css') }}" type="text/css" rel="stylesheet">
-<link href="{{ asset('vendor/codex/styles/themes/theme-codex.css') }}" type="text/css" rel="stylesheet" id="theme-style">
-@endpush
+</head>
 
-@push('javascripts')
-<script src="{{ asset('vendor/codex/scripts/addons.js') }}"></script>
-@endpush
+<body class="@yield('bodyClass', '')">
 
 @section('body')
 
-    @section('page-loader')
-        <div id="page-loader">
-            <div class="loader loader-page"></div>
-        </div>
-    @show
+    <header>
+        @stack('page-actions')
+        @stack('header-top-menu')
+    </header>
 
-    @section('page-header')
-    <div class="page-header navbar navbar-fixed-top">
-        <div class="page-header-inner">
-            <div class="page-logo">
-                <div class="logo-packadic pull-left">{{ config('codex.display_name') }}</div>
-                @section('page-header-sidebar-toggle')
-                <div data-toggle="tooltip" title="Toggle the sidebar menu" data-layout-api="sidebar-toggle" data-placement="right" class="menu-toggler sidebar-toggler"></div>
-                @show
-            </div><a href="javascript:;" data-toggle="collapse" data-target=".navbar-collapse" class="menu-toggler responsive-toggler"></a>
+    <aside>
+        @section('sidebar-menu')
+        @show
+    </aside>
 
-            @section('page-header-actions')
-                <div class="page-actions">
-                    @stack('page-actions')
-                </div>
-
-                <div class="page-top">
-                    <div class="top-menu">
-                        <ul class="nav navbar-nav pull-right">
-                            @stack('header-top-menu')
-                        </ul>
-                    </div>
-                </div>
-
+    <nav>
+        <ul>
+            @section('breadcrumb')
+                <li><a href="{{ route('codex.index') }}">Home</a><i class="fa fa-arrow-right"></i></li>
             @show
+        </ul>
+    </nav>
 
-            <div class="pull-right">
-                @if(isset($quickSidebar) && $quickSidebar === true)
-                    <div data-layout-api="qs-toggle" data-toggle="tooltip" title="Toggle the quick sidebar menu" data-placement="left" data-offset="0 10px" class="nav-link quick-sidebar-toggler"></div>
-                @endif
-            </div>
+    @if (isset($errors) && count($errors) > 0)
+        <div class="page-alerts page-alerts-top">
+            @include('codex::partials/errors')
         </div>
-    </div>
-    @show
+    @endif
 
-    @yield('page-clearfix', '<div class="clearfix"></div>')
+    <article>
+        <header>
+            <h1>@yield('page-title')<small> @yield('page-subtitle', '')</small></h1>
+        </header>
+    </article>
 
-    @section('page-container')
-    <div class="page-container">
+    <footer>
 
-        @section('page-sidebar-wrapper')
-        <div class="page-sidebar-wrapper">
-            <div class="page-sidebar navbar-collapse">
-                <ul class="page-sidebar-menu">
-                    @section('sidebar-menu')
-                    @show
-                </ul>
-            </div>
-        </div>
-        @show
+    </footer>
 
-        @section('page-content-wrapper')
-        <div class="page-content-wrapper">
-            <div class="page-content">
 
-                @section('page-errors')
-                    @if (isset($errors) && count($errors) > 0)
-                    <div class="page-alerts page-alerts-top">
-                        @include('codex::partials/errors')
-                    </div>
-                    @endif
-                @show
 
-                @section('page-head')
-                <div class="page-head">
-                    <div class="page-title">
-                        <h1>@yield('page-title')<small> @yield('page-subtitle', '')</small></h1>
-                    </div>
-                </div>
-                @show
 
-                @section('page-breadcrumb')
-                <ul class="page-breadcrumb breadcrumb">
-                    @section('breadcrumb')
-                        <li><a href="{{ route('codex.index') }}">Home</a><i class="fa fa-arrow-right"></i></li>
-                    @show
-                </ul>
-                @show
+@show
 
-                <div class="page-content-seperator"></div>
-                <div class="page-content-inner">
-                    @yield('content')
-                </div>
-            </div>
-        </div>
-        @show
-    </div>
-    @show
+@stack('javascripts')
 
-    @section('page-footer')
-    <div class="page-footer">
-        <div class="page-footer-inner">Copyright {{ date('Y') }} &copy; {{ config('codex.display_name') }}</div>
-        <div class="scroll-to-top"></div>
-    </div>
-    @show
+@stack('scripts')
 
-@stop
+@stack('init-scripts')
+
+@stack('boot-scripts')
+
+</body>
+</html>

@@ -10,7 +10,3 @@
 
 @section('page-title', $document->attr('title'))
 @section('page-subtitle', $document->attr('subtitle', null))
-
-@section('content')
-   asd {!! $content !!}
-@stop

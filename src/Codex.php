@@ -99,7 +99,6 @@ class Codex implements
         $this->cache   = $cache;
         $this->docsDir = config('codex.docs_dir');
         $this->log     = $log;
-        $this->addThemeHook();
         // 'factory:done' called after all factory operations have completed.
         $this->hookPoint('constructed', [ $this ]);
     }
@@ -113,30 +112,10 @@ class Codex implements
         return $this->container->make('codex.addons');
     }
 
-    protected $themes = [ ];
-
     public function registerTheme($name, $views = [ ])
     {
-        $this->themes[ $name ] = $views;
-    }
-
-    protected function addThemeHook()
-    {
-        $this->getAddons()->hook('controller:document', function (CodexController $controller, Document $document, Codex $codex, Project $project) {
-            $name = config('codex.theme', 'default');
-            if ( array_key_exists($name, $this->themes) ) {
-                $theme = collect($this->themes[ $name ]);
-                foreach ( $theme->get('menus', [ ]) as $id => $view ) {
-                    $codex->menus->has($id) && $codex->menus->get($id)->setView($view);
-                }
-                $views = [ 'layout', 'view' ];
-                foreach ( $views as $view ) {
-                    if ( $theme->has($view) ) {
-                        $document->setAttribute($view, $theme->get($view));
-                    }
-                }
-            }
-        });
+        $this->getAddons()->registerTheme($name, $views); //themes[ $name ] = $views;
+        return $this;
     }
 
     # Helper functions

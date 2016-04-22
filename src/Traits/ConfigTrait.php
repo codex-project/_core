@@ -42,7 +42,7 @@ trait ConfigTrait
         if ($value === null && is_array($key)) {
             $this->config = $key;
         } else {
-            $this->config = array_set($this->config, $key, $value);
+            array_set($this->config, $key, $value);
         }
 
         return $this;

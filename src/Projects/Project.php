@@ -302,7 +302,7 @@ class Project implements
     /**
      * Returns the menu for this project
      *
-     * @return \Codex\Core\Menu
+     * @return \Codex\Core\Menus\Menu
      */
     public function getSidebarMenu()
     {
@@ -494,5 +494,23 @@ class Project implements
             'config' => $this->getConfig(),
             'versions' => $this->refs
         ];
+    }
+
+    /**
+     * getConfig method
+     * @return \Codex\Core\Projects\ProjectConfig
+     */
+    public function getConfig()
+    {
+        return $this->getContainer()->make(ProjectConfig::class, ['config' => $this->config]);
+    }
+
+    /**
+     * getDisplayName method
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        return $this->config('display_name', $this->getName());
     }
 }

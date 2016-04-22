@@ -25,7 +25,7 @@ __Underscore__
 ```
   
 #### SH
-```sh
+```bash
 php artisan vendor:publish --tag=config
 php artisan vendor:publish --tag=assets
 php artisan vendor:publish --tag=views
