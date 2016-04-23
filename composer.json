@@ -18,7 +18,7 @@
         "symfony/yaml": "~2.7|~3.0",
         "vierbergenlars/php-semver": "3.0.*",
         "nicmart/tree": "0.2.*",
-        "radic/blade-extensions": "~6.2",
+        "radic/blade-extensions": "~6.2.3",
         "myclabs/php-enum": "~1.4",
         "symfony/config": "~3.0",
         "doctrine/common": "~2.6",
