@@ -95,7 +95,7 @@ class Documents implements
         $pathName = $pathName ?: 'index';
 
 
-        foreach ( $this->getCodex()->getAddons()->getDocuments() as $document ) {
+        foreach ( $this->getCodex()->getAddons()->documents() as $document ) {
             foreach ( $document[ 'extensions' ] as $extension ) {
                 $path = $this->project->refPath("{$pathName}.{$extension}");
                 if ( $this->project->getFiles()->exists($path) ) {

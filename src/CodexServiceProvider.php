@@ -8,8 +8,11 @@
 
 namespace Codex\Core;
 
+use Codex\Core\Addons\Factory;
+use Codex\Core\Addons\Repository;
 use Codex\Core\Log\Writer;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Filesystem\FilesystemAdapter;
 
 use Sebwite\Support\ServiceProvider;
@@ -48,7 +51,11 @@ class CodexServiceProvider extends ServiceProvider
 
     protected $singletons = [
         'codex'        => Codex::class,
-        'codex.addons' => Addons\Addons::class,
+        'codex.addons' => Addons\Addons::class
+    ];
+
+    protected $shared = [
+        'codex.addons.factory' => Addons\Factory::class
     ];
 
     protected $aliases = [
@@ -75,11 +82,24 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerDefaultFilesystem();
 
+        $this->registerAddons();
+
         if($this->app['config']['codex.routing.enabled'] === true) {
             $this->registerRouting();
         }
 
         return $app;
+    }
+
+    protected function registerAddons()
+    {
+        $this->app->singleton('codex.factory', function(Application $app){
+            $factory = new Factory($app, $app['fs'], $repository = new Repository());
+            $annotations = ['config', 'document', 'filter', 'hook', 'theme'];
+            foreach($annotations as $annotation){
+                $factory->registerAnnotation($annotation, 'Codex\Core\Addons\Annotations\\' . ucfirst($annotation));
+            }
+        });
     }
 
 

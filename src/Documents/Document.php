@@ -132,18 +132,12 @@ abstract class Document implements
 
     protected function runFilters($only = null)
     {
-        $projectConfig = $this->project->getConfig();
-        $container     = $this->getCodex()->getContainer();
+        #$projectConfig = $this->project->getConfig();
 
-        foreach ( $this->getCodex()->getAddons()->getFilters()->whereIn('name', $projectConfig->getEnabledFilters()) as $filter ) {
-            $settings = $projectConfig->getFilterConfig($filter[ 'name' ]);
-            $this->hookPoint('document:filter:before:' . $filter[ 'name' ], [ $this, $filter, $settings ]);
-            $params = [
-                'document' => $this,
-                'settings' => $settings,
-            ];
-            $container->call($filter[ 'class' ], $params, 'handle');
-            $this->hookPoint('document:filter:after:' . $filter[ 'name' ], [ $this, $filter, $settings ]);
+        foreach ( $this->project->getConfig()->getEnabledFilters($this) as $filter ) {
+            $this->hookPoint('document:filter:before:' . $filter->getName(), [ $this, $filter ]);
+            $filter->run($this);
+            $this->hookPoint('document:filter:after:' . $filter->getName(), [ $this, $filter ]);
         }
     }
 
@@ -290,5 +284,10 @@ abstract class Document implements
     public function getProject()
     {
         return $this->project;
+    }
+
+    public function getType()
+    {
+        return $this->type;
     }
 }

@@ -2,12 +2,14 @@
 namespace Codex\Core\Projects;
 
 use ArrayAccess;
+use Codex\Core\Addons\Types\FilterType;
 use Codex\Core\Codex;
+use Codex\Core\Documents\Document;
+use Codex\Core\Support\Collection;
 use Codex\Core\Traits\CodexTrait;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use JsonSerializable;
-use Codex\Core\Support\Collection;
 
 /**
  * This is the class ProjectConfig.
@@ -34,7 +36,22 @@ class ProjectConfig implements ArrayAccess, Arrayable, JsonSerializable, Jsonabl
         return $this->config->get('default', '');
     }
 
-    public function getEnabledFilters()
+    /**
+     * getEnabledFilters method
+     *
+     * @param \Codex\Core\Documents\Document|null $document
+     *
+     * @return FilterType[]
+     *
+     */
+    public function getEnabledFilters(Document $document)
+    {
+        return $this->config->get('filters.enabled', [ ])->transform(function ($name) use ($document) {
+            return $this->codex->getAddons()->getFilter($name, $document->getType());
+        });
+    }
+
+    public function getEnabledFilterNames()
     {
         return $this->config->get('filters.enabled', [ ])->toArray();
     }
@@ -90,7 +107,7 @@ class ProjectConfig implements ArrayAccess, Arrayable, JsonSerializable, Jsonabl
      */
     public function toArray()
     {
-        // TODO: Implement toArray() method.
+        return $this->config->toArray();
     }
 
     /**
@@ -109,7 +126,7 @@ class ProjectConfig implements ArrayAccess, Arrayable, JsonSerializable, Jsonabl
      */
     public function offsetExists($offset)
     {
-        // TODO: Implement offsetExists() method.
+        return $this->config->has($offset);
     }
 
     /**
@@ -125,7 +142,7 @@ class ProjectConfig implements ArrayAccess, Arrayable, JsonSerializable, Jsonabl
      */
     public function offsetGet($offset)
     {
-        // TODO: Implement offsetGet() method.
+        return $this->config->get($offset);
     }
 
     /**
@@ -187,9 +204,9 @@ class ProjectConfig implements ArrayAccess, Arrayable, JsonSerializable, Jsonabl
         return $this->toArray();
     }
 
-    public function __call($name, $arguments = [])
+    public function __call($name, $arguments = [ ])
     {
-        return call_user_func_array($name, $arguments);
+        return call_user_func_array([ $this->config, $name ], $arguments);
     }
 
 
