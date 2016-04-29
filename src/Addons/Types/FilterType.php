@@ -68,6 +68,7 @@ class FilterType extends BaseType
         if ( property_exists($filter, 'type') ) {
             $filter->type = $this;
         }
+        $this->merge($document->getProject()->getConfig()->getFilterConfig($this->name));
         return app()->call([$filter, 'handle'], compact('document'));
     }
 }

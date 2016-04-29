@@ -8,11 +8,9 @@
 
 namespace Codex\Core;
 
-use Codex\Core\Addons\Factory;
-use Codex\Core\Addons\Repository;
+use Codex\Core\Config\Repository;
 use Codex\Core\Log\Writer;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Filesystem\FilesystemAdapter;
 
 use Sebwite\Support\ServiceProvider;
@@ -35,10 +33,6 @@ class CodexServiceProvider extends ServiceProvider
 
     protected $viewDirs = [ 'views' => 'codex' ];
 
-    protected $commands = [
-        #'codex.list' => Console\ListCommand::class
-    ];
-
     protected $providers = [
         \Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
     ];
@@ -54,14 +48,9 @@ class CodexServiceProvider extends ServiceProvider
         'codex.addons' => Addons\Addons::class
     ];
 
-    protected $shared = [
-        'codex.addons.factory' => Addons\Factory::class
-    ];
-
     protected $aliases = [
         'codex'              => Contracts\Codex::class,
         'codex.log'          => Contracts\Log::class,
-        Addons\Addons::class => Addons\Addons::class,
     ];
 
     protected $weaklings = [
@@ -78,28 +67,15 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerLogger();
 
-        $this->registerCodexBinding();
+        $this->registerCodex();
 
         $this->registerDefaultFilesystem();
-
-        $this->registerAddons();
 
         if($this->app['config']['codex.routing.enabled'] === true) {
             $this->registerRouting();
         }
 
         return $app;
-    }
-
-    protected function registerAddons()
-    {
-        $this->app->singleton('codex.factory', function(Application $app){
-            $factory = new Factory($app, $app['fs'], $repository = new Repository());
-            $annotations = ['config', 'document', 'filter', 'hook', 'theme'];
-            foreach($annotations as $annotation){
-                $factory->registerAnnotation($annotation, 'Codex\Core\Addons\Annotations\\' . ucfirst($annotation));
-            }
-        });
     }
 
 
@@ -126,11 +102,11 @@ class CodexServiceProvider extends ServiceProvider
      *
      * @param $app
      */
-    protected function registerCodexBinding()
+    protected function registerCodex()
     {
         $this->app->when(Codex::class)
             ->needs('$config')
-            ->give($this->app[ 'config' ][ 'codex' ]);
+            ->give($this->app['config']['codex']);
     }
 
     protected function registerDefaultFilesystem()

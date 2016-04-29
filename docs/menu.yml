@@ -14,7 +14,7 @@ menu:
   - name: Getting started
     icon: fa fa-coffee
     children:
-      - name: Documentation Structure
+      - name: Structure
         document: getting-started/documentation-structure
 
   - name: Filters &amp; Hooks

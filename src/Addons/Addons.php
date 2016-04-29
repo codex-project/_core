@@ -277,6 +277,8 @@ class Addons
     {
         $filter = $this->filters('where', 'name', $name)->whereHas('for', $for)->last();
         $filter = new FilterType($name, $filter['class'], $filter['for']);
+
+        // default config
         $this->configs('where', 'type', 'filter')->where('name', $name)->each(function($config) use ($filter) {
             if(isset($config['method'])){
                 $data = $this->app->call($config['method']);
@@ -285,6 +287,7 @@ class Addons
             }
             $filter->merge($data);
         });
+
         return $filter;
     }
 
