@@ -2,6 +2,7 @@
 namespace Codex\Core\Addons\Types;
 
 use Codex\Core\Documents\Document;
+use Codex\Core\Support\Collection;
 
 class FilterType extends BaseType
 {
@@ -32,7 +33,7 @@ class FilterType extends BaseType
 
     public function getConfig()
     {
-        return $this->get();
+        return new Collection($this->get());
     }
 
     public function get($key = null, $default = null)

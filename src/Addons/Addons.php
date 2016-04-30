@@ -6,9 +6,7 @@ use Codex\Core\Addons\Scanner\ClassFileInfo;
 use Codex\Core\Addons\Scanner\ClassInspector;
 use Codex\Core\Addons\Scanner\Finder;
 use Codex\Core\Addons\Scanner\Scanner;
-use Codex\Core\Addons\Types\DocumentType;
 use Codex\Core\Addons\Types\FilterType;
-use Codex\Core\Addons\Types\HookType;
 use Codex\Core\Addons\Types\Type;
 use Codex\Core\Codex;
 use Codex\Core\Documents\Document;
@@ -53,7 +51,7 @@ class Addons
         Type::CONFIG => Annotations\Config::class
     ];
 
-    /** @var \Sebwite\Support\Filesystem */
+    /** @var \Sebwite\Filesystem\Filesystem */
     protected $fs;
 
     /** @var \Illuminate\Contracts\Foundation\Application */
@@ -87,8 +85,11 @@ class Addons
             AnnotationRegistry::registerFile($filePath);
         }
 
+        $this->scanDirectory(path_join(__DIR__, 'Filters'));
         $this->addThemeHook();
     }
+
+
 
 
     public function add(AddonServiceProvider $provider)

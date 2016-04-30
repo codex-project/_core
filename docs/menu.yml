@@ -3,19 +3,9 @@ menu:
     icon: fa fa-eye
     document: index
 
-  - name: Markdown test page
-    icon: fa fa-code
-    document: markdown-test-page
-
   - name: Install &amp; Config
     icon: fa fa-cogs
     document: installation-configuration
-
-  - name: Getting started
-    icon: fa fa-coffee
-    children:
-      - name: Structure
-        document: getting-started/documentation-structure
 
   - name: Filters &amp; Hooks
     icon: fa fa-filter
@@ -24,6 +14,21 @@ menu:
   - name: Api usage
     icon: fa fa-code
     document: api-usage
+
+  - name: Preview Pages
+    icon: fa fa-code
+    children:
+      - name: Typography
+        document: preview-pages/typography
+
+      - name: Code blocks
+        document: preview-pages/code
+
+  - name: Getting started
+    icon: fa fa-coffee
+    children:
+      - name: Structure
+        document: getting-started/documentation-structure
 
   - name: Customize &amp; Extend
     icon: fa fa-coffee

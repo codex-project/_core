@@ -18,11 +18,9 @@ abstract class AddonServiceProvider extends ServiceProvider
 {
     protected $name;
 
-    protected $asdf;
+    protected $depends = [ ];
 
-    protected $depends = [];
-
-    protected $config = [];
+    protected $scanDirs = true;
 
     public function __construct(Application $app)
     {
@@ -31,14 +29,33 @@ abstract class AddonServiceProvider extends ServiceProvider
         // make sure the codex services are registered before we register our own stuff
         $this->providers[] = CodexServiceProvider::class;
 
-        if ( !property_exists($this, 'name') || $this->name === null ) {
+        // Ensure the 'name' property exists and is set.
+        if ( ! property_exists($this, 'name') || $this->name === null ) {
             throw AddonProviderException::namePropertyNotDefined();
         }
     }
 
     public function booted()
     {
-        $this->app['codex.addons']->add($this);
+        $this->app[ 'codex.addons' ]->add($this);
+    }
+
+    public function booting()
+    {
+        $fileName = "codex-addon.{$this->name}";
+        // ensure this config file is not already included.
+        if ( $this->configFiles !== null && in_array($fileName, $this->configFiles, true) ) {
+            return;
+        }
+        $fs          = $this->app->make('files');
+        $searchPaths = [ 'config', 'resources/config', 'src/config' ];
+        foreach ( $searchPaths as $searchPath ) {
+            if ( $fs->exists($configFilePath = path_join($this->rootDir, $searchPath, $fileName)) ) {
+                $this->registerConfigFiles($fileName, path_join($this->rootDir, $searchPath));
+                $this->bootConfigFiles($fileName, path_join($this->rootDir, $searchPath));
+                break;
+            }
+        }
     }
 
     public function getName()
@@ -61,14 +78,17 @@ abstract class AddonServiceProvider extends ServiceProvider
 
     protected function theme($name, $views = [ ])
     {
-        $this->app['codex.addons']->registerTheme($name, $views);
+        $this->app[ 'codex.addons' ]->registerTheme($name, $views);
     }
 
+    /**
+     * isEnabled method
+     * @return bool
+     */
     public function isEnabled()
     {
         return true;
     }
-
 
 
 }

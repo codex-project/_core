@@ -124,9 +124,9 @@ abstract class Document implements
      */
     public function render()
     {
-        $this->hookPoint('document:render', [ $this ]);
+        $this->hookPoint('document:render');
         $this->runFilters();
-        $this->hookPoint('document:rendered', [ $this ]);
+        $this->hookPoint('document:rendered');
         return $this->content;
     }
 
