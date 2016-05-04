@@ -2,7 +2,7 @@
 namespace Codex\Core\Projects;
 
 use ArrayAccess;
-use Codex\Core\Addons\Types\FilterType;
+use Codex\Core\Addons\Types\FilterData;
 use Codex\Core\Codex;
 use Codex\Core\Documents\Document;
 use Codex\Core\Support\Collection;
@@ -36,19 +36,10 @@ class ProjectConfig implements ArrayAccess, Arrayable, JsonSerializable, Jsonabl
         return $this->config->get('default', '');
     }
 
-    /**
-     * getEnabledFilters method
-     *
-     * @param \Codex\Core\Documents\Document|null $document
-     *
-     * @return FilterType[]
-     *
-     */
-    public function getEnabledFilters(Document $document)
+
+    public function getEnabledFilters()
     {
-        return $this->config->get('filters.enabled', [ ])->transform(function ($name) use ($document) {
-            return $this->codex->getAddons()->getFilter($name, $document->getType());
-        });
+        return $this->config->get('filters.enabled', [ ])->toArray();
     }
 
     public function getEnabledFilterNames()
@@ -58,7 +49,11 @@ class ProjectConfig implements ArrayAccess, Arrayable, JsonSerializable, Jsonabl
 
     public function getFilterConfig($name)
     {
-        return $this->config->get("filters.{$name}", [ ])->toArray();
+        $config = $this->config->get("filters.{$name}", []);
+        if(!$config instanceof Collection){
+            $config = new Collection((array) $config);
+        }
+        return $config;
     }
 
     public function getEnabledHooks()

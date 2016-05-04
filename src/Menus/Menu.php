@@ -93,11 +93,11 @@ class Menu implements
         $this->view        = 'codex::menus.' . $id;
         $this->items       = new Collection();
 
-        $this->hookPoint('menu:ready', [ $this ]);
+        $this->hookPoint('menu:construct', [ $id ]);
 
         $this->items->put('root', new Node('root', $this, 'root'));
 
-        $this->hookPoint('menu:done', [ $this ]);
+        $this->hookPoint('menu:constructed', [ $id ]);
     }
 
     /**

@@ -11,9 +11,9 @@ namespace Codex\Core;
 
 use Codex\Core\Contracts;
 use Codex\Core\Documents\Document;
-use Codex\Core\Http\Controllers\CodexController;
 use Codex\Core\Projects\Project;
 use Codex\Core\Traits;
+use Codex\Core\Traits\ExtendableTrait;
 use Herrera\Version\Parser;
 use Herrera\Version\Version;
 use Illuminate\Contracts\Cache\Repository as Cache;
@@ -26,14 +26,11 @@ use Illuminate\Filesystem\Filesystem;
  *
  * @package        Codex\Core
  * @author         Sebwite
+ * @property-read \Codex\Core\Addons\Addons       $addons
+ * @property-read \Codex\Core\Projects\Projects   $projects
+ * @property-read \Codex\Core\Menus\Menus         $menus
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
  *
- *
- *
- * @property \Codex\Core\Theme\Theme       $theme
- * @property \Codex\Core\Theme\Assets      $assets
- * @property \Codex\Core\Projects\Projects $projects
- * @property \Codex\Core\Menus\Menus       $menus
  *
  */
 class Codex implements
@@ -48,13 +45,10 @@ class Codex implements
         Traits\BootableTrait,
 
         Traits\FilesTrait,
-        Traits\ConfigTrait;
+        Traits\ConfigTrait {
+        ExtendableTrait::__get as ___get;
+    }
 
-    protected $extensions = [
-        'projects' => Projects\Projects::class,
-        'menus'    => Menus\Menus::class
-        #'addons'   => Addons\Addons::class,
-    ];
 
     /**
      * The codex log writer instance
@@ -78,7 +72,10 @@ class Codex implements
     protected $docsDir;
 
 
-    # Config
+    protected $extensions = [
+        'projects' => Projects\Projects::class,
+        'menus'    => Menus\Menus::class
+    ];
 
     /**
      * Codex constructor.
@@ -99,39 +96,19 @@ class Codex implements
         $this->cache   = $cache;
         $this->docsDir = config('codex.docs_dir');
         $this->log     = $log;
+
         // 'factory:done' called after all factory operations have completed.
         $this->hookPoint('constructed', [ $this ]);
     }
 
-    /**
-     * getAddons method
-     * @return Addons\Addons
+    /** Add a view to a view stack
+     *
+     * @param        $viewName
+     * @param null   $data
+     * @param string $appendTo
+     *
+     * @return $this
      */
-    public function getAddons()
-    {
-        return $this->container->make('codex.addons');
-    }
-
-    public function registerTheme($name, $views = [ ])
-    {
-        $this->getAddons()->registerTheme($name, $views); //themes[ $name ] = $views;
-        return $this;
-    }
-
-    # Helper functions
-
-    public function mergeDefaultProjectConfig($config)
-    {
-        $this->setConfig(
-            'default_project_config',
-            array_replace_recursive(
-                $this->config('default_project_config'),
-                is_array($config) ? $config : config($config)
-            )
-        );
-    }
-
-    /** Add a view to a view stack */
     public function stack($viewName, $data = null, $appendTo = 'codex::layouts.default')
     {
         $this->container->make('events')->listen('composing: ' . $appendTo, function ($view) use ($viewName, $data) {
@@ -143,7 +120,7 @@ class Codex implements
             } elseif ( $data === null ) {
                 $data = [ ];
             }
-            if ( !is_array($data) ) {
+            if ( ! is_array($data) ) {
                 throw new \InvalidArgumentException("appendSectionsView data is not a array");
             }
             $view->getFactory()->make($viewName, $data)->render();
@@ -165,9 +142,9 @@ class Codex implements
     {
         $uri = $this->config('base_route');
 
-        if ( !is_null($project) ) {
+        if ( ! is_null($project) ) {
 
-            if ( !$project instanceof Project ) {
+            if ( ! $project instanceof Project ) {
                 $project = $this->projects->get($project);
             }
 
@@ -183,33 +160,6 @@ class Codex implements
     }
 
     /**
-     * getLaravelVersion method
-     * @return Version
-     */
-    public function getLaravelVersion()
-    {
-        return Parser::toVersion(app()->version());
-    }
-
-    protected $routeExclusions = [ ];
-
-    public function routeExclusion($name)
-    {
-        $this->routeExclusions[] = $name; //        $document->where('projectSlug', '^((?!' . Extender::getExcludedProjectNames(true) . ').*?)$');
-    }
-
-    public function hasRouteExclusions()
-    {
-        return count($this->routeExclusions) > 0;
-    }
-
-    public function getRouteExclusions()
-    {
-        return $this->routeExclusions;
-    }
-    # Getters / setters
-
-    /**
      * Writes a log message to the codex log file
      *
      * @param       $level
@@ -218,7 +168,37 @@ class Codex implements
      */
     public function log($level, $message, $context = [ ])
     {
-        return $this->log->log($level, $message, $context);
+        $this->log->log($level, $message, $context);
+    }
+
+
+
+
+    protected function mergeDefaults($key, $config, $method)
+    {
+        $config = is_array($config) ? $config : config($config);
+        #if($this->config($key) == null)
+        $this->setConfig($key, call_user_func_array($method, [ $this->config($key), $config ]));
+    }
+
+    public function mergeDefaultProjectConfig($config, $method = 'array_replace_recursive')
+    {
+        $this->mergeDefaults('default_project_config', $config, $method);
+    }
+
+    public function mergeDefaultDocumentAttributes($config, $method = 'array_replace_recursive')
+    {
+        $this->mergeDefaults('default_document_attributes', $config, $method);
+    }
+
+
+    /**
+     * getLaravelVersion method
+     * @return Version
+     */
+    public function getLaravelVersion()
+    {
+        return Parser::toVersion(app()->version());
     }
 
     /**
@@ -277,6 +257,15 @@ class Codex implements
         $this->log = $log;
 
         return $this;
+    }
+
+
+    public function __get($name)
+    {
+        if ( $name === 'addons' ) {
+            return $this->container->make('codex.addons');
+        }
+        return $this->___get($name);
     }
 
 }

@@ -1,52 +1,41 @@
 menu:
   - name: Overview
-    icon: fa fa-eye
     document: index
 
-  - name: Install &amp; Config
-    icon: fa fa-cogs
-    document: installation-configuration
+  - name: Installation
+    document: installation
 
-  - name: Filters &amp; Hooks
-    icon: fa fa-filter
-    document: filters-hooks
+  - name: Addons
+    document: official-addons
 
-  - name: Api usage
-    icon: fa fa-code
-    document: api-usage
 
-  - name: Preview Pages
-    icon: fa fa-code
+  - name: Preview pages
+    icon: fa fa-eye
     children:
       - name: Typography
         document: preview-pages/typography
 
-      - name: Code blocks
-        document: preview-pages/code
+      - name: Syntax highlighting
+        document: preview-pages/syntax-highlight
 
-  - name: Getting started
-    icon: fa fa-coffee
+
+  - name: Extending
+    icon: fa fa-code
     children:
-      - name: Structure
-        document: getting-started/documentation-structure
+      - name: API
+        document: extending/api
 
-  - name: Customize &amp; Extend
-    icon: fa fa-coffee
-    children:
-
-      - name: Themes
-        document: customize/themes
+      - name: Documents
+        document: extending/documents
 
       - name: Filters
-        document: customize/hooks
+        document: extending/filters
 
       - name: Hooks
-        document: customize/hooks
+        document: extending/hooks
 
-      - name: Components
-        document: customize/hooks
-
-
+      - name: Themes
+        document: extending/themes
 
   - name: Contributing
     icon: fa fa-eye

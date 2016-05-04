@@ -12,6 +12,7 @@ namespace Codex\Core\Menus;
 use Codex\Core\Contracts;
 use Codex\Core\Support\Collection;
 use Codex\Core\Traits;
+use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\View\Factory as View;
 use Illuminate\Routing\Router;
@@ -60,11 +61,11 @@ class Menus implements
      * @param \Illuminate\Contracts\Routing\UrlGenerator    $url
      * @param \Illuminate\Contracts\View\View               $view
      */
-    public function __construct(Contracts\Codex $parent, Router $router, UrlGenerator $url, View $view)
+    public function __construct(Contracts\Codex $parent, Router $router, Cache $cache, UrlGenerator $url, View $view)
     {
         $this->setCodex($parent);
         $this->setFiles($parent->getFiles());
-        $this->cache  = $parent->getCache();
+        $this->cache  = $cache;
         $this->router = $router;
         $this->url    = $url;
         $this->view   = $view;
@@ -92,7 +93,7 @@ class Menus implements
             'id'    => $id,
         ]);
 
-        $this->hookPoint('menus:add', [ $this, $menu ]);
+        $this->hookPoint('menus:add', [ $id, $menu ]);
         $this->items->put($id, $menu);
 
         return $menu;
@@ -134,6 +135,30 @@ class Menus implements
     {
         $this->hookPoint('menu-factory:forget', [ $this, $id ]);
         $this->items->forget($id);
+
+        return $this;
+    }
+
+    /**
+     * Get cache.
+     *
+     * @return Cache
+     */
+    public function getCache()
+    {
+        return $this->cache;
+    }
+
+    /**
+     * Set cache.
+     *
+     * @param  \Illuminate\Cache\CacheManager $cache
+     *
+     * @return Factory
+     */
+    public function setCache($cache)
+    {
+        $this->cache = $cache;
 
         return $this;
     }

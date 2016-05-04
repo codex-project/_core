@@ -24,8 +24,7 @@ final class Filter
     public $name;
 
     /**
-     * @Required
-     * @var array
+     * @var int
      */
-    public $for = array();
+    public $priority = 10;
 }

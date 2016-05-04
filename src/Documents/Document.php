@@ -13,9 +13,11 @@ use Codex\Core\Contracts;
 use Codex\Core\Contracts\Codex;
 use Codex\Core\Exception\DocumentNotFoundException;
 use Codex\Core\Projects\Project;
+
+use Codex\Core\Support\Collection;
 use Codex\Core\Traits;
 
-abstract class Document implements
+class Document implements
     Contracts\Extendable,
     Contracts\Hookable,
     Contracts\Bootable
@@ -26,8 +28,7 @@ abstract class Document implements
         Traits\BootableTrait,
 
         Traits\CodexTrait,
-        Traits\FilesTrait,
-        Traits\ConfigTrait;
+        Traits\FilesTrait;
 
     /**
      * The document attributes. Defaults can be set in the config, documents can use frontmatter to customize it.
@@ -62,18 +63,14 @@ abstract class Document implements
      */
     protected $pathName;
 
-    protected $type;
+    protected $extension;
 
+
+    /** @var \Codex\Core\Support\Collection  */
     protected $appliedFilters;
 
-    /**
-     * @return \Sebwite\Support\Collection|\Sebwite\Support\Collection
-     */
-    public function getAppliedFilters()
-    {
-        return $this->appliedFilters;
-    }
 
+    protected $rendered = false;
 
     /**
      * Document constructor.
@@ -86,14 +83,14 @@ abstract class Document implements
      *
      * @throws \Codex\Core\Exception\DocumentNotFoundException
      */
-    public function __construct(Codex $codex, Project $project, $type, $path, $pathName)
+    public function __construct(Codex $codex, Project $project, $path, $pathName)
     {
         $this->setCodex($codex);
         $this->project        = $project;
-        $this->type           = $type;
         $this->path           = $path;
         $this->pathName       = $pathName;
-        $this->appliedFilters = collect();
+        $this->extension      = path_get_extension($path);
+        $this->appliedFilters = new Collection();
 
         $this->setFiles($project->getFiles());
 
@@ -124,20 +121,31 @@ abstract class Document implements
      */
     public function render()
     {
+        if($this->rendered){
+            return $this->content;
+        }
         $this->hookPoint('document:render');
         $this->runFilters();
+        $this->rendered = true;
         $this->hookPoint('document:rendered');
         return $this->content;
     }
 
-    protected function runFilters($only = null)
+    protected function runFilters()
     {
-        #$projectConfig = $this->project->getConfig();
+        $enabledFilters = $this->project->config('filters.enabled', []);
 
-        foreach ( $this->project->getConfig()->getEnabledFilters($this) as $filter ) {
-            $this->hookPoint('document:filter:before:' . $filter->getName(), [ $this, $filter ]);
-            $filter->run($this);
-            $this->hookPoint('document:filter:after:' . $filter->getName(), [ $this, $filter ]);
+        foreach (  $this->codex->addons->filters('whereIn', 'name', $enabledFilters) as $data ) {
+
+            $filter = app()->build($data['class']);
+            if ( property_exists($filter, 'config') ) {
+                $filter->config = new Collection($this->project->config('filters.' . $data['name'], []));
+            }
+
+            $this->hookPoint('document:filter:before:' . $data['name'], [ $filter ]);
+            app()->call([ $filter, 'handle' ], ['document' => $this]);
+            $this->appliedFilters->add($data);
+            $this->hookPoint('document:filter:after:' . $data['name'], [ $filter ]);
         }
     }
 
@@ -286,8 +294,26 @@ abstract class Document implements
         return $this->project;
     }
 
-    public function getType()
+    public function getExtension()
     {
-        return $this->type;
+        return $this->extension;
     }
+
+    /**
+     * @return boolean
+     */
+    public function isRendered()
+    {
+        return $this->rendered;
+    }
+
+    /**
+     * getAppliedFilters method
+     * @return \Codex\Core\Support\Collection
+     */
+    public function getAppliedFilters()
+    {
+        return $this->appliedFilters;
+    }
+
 }

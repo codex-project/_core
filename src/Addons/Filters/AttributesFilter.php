@@ -1,10 +1,9 @@
 <?php
 namespace Codex\Core\Addons\Filters;
 
-use Codex\Core\Addons\Annotations\Config;
 use Codex\Core\Addons\Annotations\Filter;
-use Codex\Core\Addons\Types\FilterType;
 use Codex\Core\Documents\Document;
+use Codex\Core\Support\Collection;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -15,24 +14,13 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright Copyright (c) 2015, Codex Project
  * @license   https://tldrlegal.com/license/mit-license MIT License
  *
- * @Filter("attributes", for={"html", "markdown"})
+ * @Filter("attributes", priority=0)
  *
  */
 class AttributesFilter
 {
-    /** @var FilterType */
-    public $type;
-
-    /**
-     * @Config(type = "filter", name = "attributes")
-     * @var array
-     */
-    public $config = [
-        'tags' => [
-            ['open' => '<!--*', 'close' => '--*>'], // html
-            ['open' => '---', 'close' => '---'], // markdown (frontmatter)
-        ]
-    ];
+    /** @var Collection */
+    public $config;
 
     /**
      * handle method
@@ -41,7 +29,7 @@ class AttributesFilter
      */
     public function handle(Document $document)
     {
-        /* https://regex101.com/r/kD5jK5/1 */
+
         $this->pattern($document, '/^(?:<!--*|---)([\w\W]*?)(?:--*>|---)/');
     }
 

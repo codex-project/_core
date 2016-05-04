@@ -9,7 +9,6 @@
 namespace Codex\Core\Documents;
 
 
-use Codex\Core\Addons\Addons;
 use Codex\Core\Contracts;
 use Codex\Core\Contracts\Codex;
 use Codex\Core\Exception\DocumentNotFoundException;
@@ -41,7 +40,7 @@ class Documents implements
         $this->project = $parent;
         $this->setCodex($codex);
 
-        $this->hookPoint('constructed');
+        $this->hookPoint('documents:constructed');
     }
 
     /**
@@ -59,31 +58,29 @@ class Documents implements
      *
      * @param string $pathName
      *
-     * @return Document
-     * @ throws \Codex\Core\Exception\DocumentNotFoundException
+     * @return mixed
+     * @throws \Codex\Core\Exception\DocumentNotFoundException
      */
     public function get($pathName = '')
     {
-        $document = $this->resolvePathName($pathName);
+        $path = $this->resolvePathName($pathName);
 
-        if ( $document === false ) {
+        if ( $path === false ) {
             throw DocumentNotFoundException::document($pathName);
         }
 
-        if ( !$this->items->has($pathName) ) {
-            $this->items->put($pathName, $this->getCodex()->getContainer()->make($document[ 'class' ], [
+        if ( ! $this->items->has($pathName) ) {
+            $this->items->put($pathName, $this->getCodex()->getContainer()->make('codex.document', [
                 'codex'     => $this->getCodex(),
                 'project'   => $this->getProject(),
-                'type'      => $document[ 'name' ],
-                'path'      => $document[ 'path' ],
-                'pathName'  => $pathName,
-                'extension' => $document[ 'extension' ],
+                'path'      => $path,
+                'pathName'  => $pathName
             ]));
 
             $this->hookPoint('project:document', [ $this->items->get($pathName) ]);
         }
 
-        if ( !$this->items->has($pathName) ) {
+        if ( ! $this->items->has($pathName) ) {
             throw DocumentNotFoundException::document($pathName);
         }
 
@@ -94,13 +91,10 @@ class Documents implements
     {
         $pathName = $pathName ?: 'index';
 
-
-        foreach ( $this->getCodex()->getAddons()->documents() as $document ) {
-            foreach ( $document[ 'extensions' ] as $extension ) {
-                $path = $this->project->refPath("{$pathName}.{$extension}");
-                if ( $this->project->getFiles()->exists($path) ) {
-                    return array_merge($document, compact('extension', 'path'));
-                }
+        foreach ( $this->project->config('extensions', []) as $extension ) {
+            $path = $this->project->refPath("{$pathName}.{$extension}");
+            if ( $this->project->getFiles()->exists($path) ) {
+                return $path;
             }
         }
         return false;

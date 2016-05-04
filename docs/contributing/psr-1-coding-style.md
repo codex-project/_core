@@ -1,10 +1,8 @@
-/*
-Title:  PSR-1 Coding Style Guide
-Author: The Codex Project
-*/
+---
+title:  PSR-1 Coding Style Guide
+author: The Codex Project
+---
 
-PSR-1 Coding Style Guide
-========================
 
 This section of the standard comprises what should be considered the standard coding elements that are required to ensure a high level of technical interoperability between shared PHP code.
 

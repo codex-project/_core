@@ -25,7 +25,10 @@ return [
     'stubs_path'      => __DIR__ . '/../resources/stubs',
     'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
 
-    'theme'                       => 'laravel', // null, 'laravel', 'angular', 'material'
+    'theme' => 'laravel', // null, 'laravel', 'angular', 'material'
+
+    'manifest_path'               => storage_path('codex.json'),
+    'addons'                      => [ 'markdown' ],
 
     /*
     |--------------------------------------------------------------------------
@@ -58,14 +61,18 @@ return [
         'description' => '',
         'default'     => \Codex\Core\Projects\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
         'custom'      => null,
+        'extensions'  => [ 'md', 'markdown', 'html' ],
         'filters'     => [
-            'enabled' => [ ], // 'front_matter', 'parsedown'
-            'front_matter' => [ ],
-            'parsedown'    => [ 'fenced_code_lang_class' => 'hljs lang-{LANG}'], //'prettyprint lang-{LANG}'
+            'enabled'    => [ ],
+            'attributes' => [
+                'tags' => [
+                    [ 'open' => '<!--*', 'close' => '--*>' ], // html
+                    [ 'open' => '---', 'close' => '---' ], // markdown (frontmatter)
+                ],
+            ],
         ],
         'hooks'       => [
             'enabled' => [ ],
-            // '{hookName}' => [ hookSettings ]
         ],
     ],
 

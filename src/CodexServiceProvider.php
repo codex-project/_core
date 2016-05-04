@@ -8,14 +8,12 @@
 
 namespace Codex\Core;
 
-use Codex\Core\Config\Repository;
 use Codex\Core\Log\Writer;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Filesystem\FilesystemAdapter;
-
-use Sebwite\Support\ServiceProvider;
 use League\Flysystem\Filesystem as Flysystem;
 use Monolog\Logger as Monolog;
+use Sebwite\Support\ServiceProvider;
 
 /**
  * This is the class CodexServiceProvider.
@@ -38,40 +36,43 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $bindings = [
-        'codex.document.html' => Documents\HtmlDocument::class,
-        'codex.project'       => Projects\Project::class,
-        'codex.menu'          => Menus\Menu::class,
+        'codex.document' => Documents\Document::class,
+        'codex.project'  => Projects\Project::class,
+        'codex.menu'     => Menus\Menu::class,
     ];
 
     protected $singletons = [
-        'codex'        => Codex::class,
-        'codex.addons' => Addons\Addons::class
+        'codex.addons' => Addons\Addons::class,
     ];
 
     protected $aliases = [
-        'codex'              => Contracts\Codex::class,
-        'codex.log'          => Contracts\Log::class,
+        'codex.log' => Contracts\Log::class,
     ];
 
     protected $weaklings = [
-        'fs' => \Sebwite\Filesystem\Filesystem::class
+        'fs' => \Sebwite\Filesystem\Filesystem::class,
+    ];
+
+    protected $codexExtensions = [
+        'projects' => Projects\Projects::class,
+        'menus'    => Menus\Menus::class
     ];
 
     public function register()
     {
+        $this->registerCodex();
+
         $app = parent::register();
 
-        if($this->app['config']['codex.dev.enabled'] === true){
+        if ( $this->app[ 'config' ][ 'codex.dev.enabled' ] === true ) {
             $this->app->register('Codex\Dev\DevServiceProvider');
         }
 
         $this->registerLogger();
 
-        $this->registerCodex();
-
         $this->registerDefaultFilesystem();
 
-        if($this->app['config']['codex.routing.enabled'] === true) {
+        if ( $this->app[ 'config' ][ 'codex.routing.enabled' ] === true ) {
             $this->registerRouting();
         }
 
@@ -104,9 +105,21 @@ class CodexServiceProvider extends ServiceProvider
      */
     protected function registerCodex()
     {
-        $this->app->when(Codex::class)
-            ->needs('$config')
-            ->give($this->app['config']['codex']);
+        $this->app->singleton('codex', function (LaravelApplication $app) {
+            /** @var Codex $codex */
+            $codex = $app->build(Codex::class, [
+                'config' => $app[ 'config' ][ 'codex' ],
+            ]);
+            foreach ( $this->codexExtensions as $name => $extension ) {
+                $codex->extend($name, $extension);
+            }
+
+
+            return $codex;
+        });
+
+        $this->app->alias('codex',  Contracts\Codex::class);
+        $this->app->alias('codex',  Codex::class);
     }
 
     protected function registerDefaultFilesystem()
