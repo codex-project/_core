@@ -23,8 +23,16 @@ class AttributesFilter
     /** @var Collection */
     public $config;
 
-    /** @Defaults */
-    public $defaults = 'codex-addon.markdown.defaults';
+    /**
+     * @Defaults()
+     * @var array
+     */
+    public $defaults = [
+        'tags' => [
+            [ 'open' => '<!--*', 'close' => '--*>' ], // html
+            [ 'open' => '---', 'close' => '---' ], // markdown (frontmatter)
+        ],
+    ];
 
     /**
      * handle method

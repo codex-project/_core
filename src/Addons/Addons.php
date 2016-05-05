@@ -62,6 +62,7 @@ class Addons
 
     protected $scanner;
 
+    /** @var \Illuminate\Foundation\Application */
     protected $app;
 
 
@@ -110,25 +111,19 @@ class Addons
                 $this->themes->add($file, $annotation);
             }
         }
-        foreach ( $file->getMethodAnnotations() as $method => $annotations ) {
-            if ( count($annotations) === 0 ) {
-                continue;
-            }
+        foreach ( $file->getMethodAnnotations(true) as $method => $annotations ) {
             foreach ( $annotations as $annotation ) {
                 if ( $annotation instanceof Annotations\Hook ) {
                     $this->hooks->add($file, $annotation, $method);
                 } elseif ( $annotation instanceof Annotations\Defaults ) {
-                #    $this->defaults->add($file, $annotation, $method, 'method');
+                    #    $this->defaults->add($file, $annotation, $method, 'method');
                 }
             }
         }
-        foreach ( $file->getPropertyAnnotations() as $property => $annotations ) {
-            if ( count($annotations) === 0 ) {
-                continue;
-            }
+        foreach ( $file->getPropertyAnnotations(true) as $property => $annotations ) {
             foreach ( $annotations as $annotation ) {
                 if ( $annotation instanceof Annotations\Defaults ) {
-                   # $this->defaults()->add($file, $annotation, $property, 'property');
+                    # $this->defaults()->add($file, $annotation, $property, 'property');
                 }
             }
         }
@@ -158,8 +153,8 @@ class Addons
     protected function mergeDefaults($key, $config, $method)
     {
         $config = is_array($config) ? $config : config($config);
-        $this->app->booting(function($app) use ($key, $config, $method) {
-            $app['codex']->setConfig($key, call_user_func_array($method, [ $app['codex']->config($key), $config ]));
+        $this->app->booted(function ($app) use ($key, $config, $method) {
+            $app[ 'codex' ]->setConfig($key, call_user_func_array($method, [ $app[ 'codex' ]->config($key), $config ]));
         });
     }
 
@@ -181,8 +176,6 @@ class Addons
         return $this->fs;
     }
 
-
-
     public static function __callStatic($method, array $parameters = [ ])
     {
         $instance = static::getInstance();
@@ -192,10 +185,11 @@ class Addons
         throw new BadMethodCallException("Method $method does not exist in class " . static::class);
     }
 
+    protected $collections = [ 'filters', 'themes', 'hooks', 'defaults' ];
+
     public function __call($method, array $parameters = [ ])
     {
-        $collections = [ 'filters', 'themes', 'hooks', 'defaults' ];
-        if ( in_array($method, $collections, true) ) {
+        if ( in_array($method, $this->collections, true) ) {
             $collection = $this->{$method};
             $args       = count($parameters);
             if ( $args === 0 ) {
@@ -206,5 +200,13 @@ class Addons
             }
         }
         throw new BadMethodCallException("Method $method does not exist in class " . get_class($this));
+    }
+
+    public function __get($name)
+    {
+        if ( in_array($name, $this->collections, true) ) {
+            return $this->{$name};
+        }
+        throw new \RuntimeException("property $name not found");
     }
 }

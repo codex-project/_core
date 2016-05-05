@@ -27,9 +27,9 @@ class CodexController extends Controller
      */
     public function __construct(Codex $codex, View $view)
     {
-        $this->hookPoint('controller:construct', [$codex, $view]);
+        $this->hookPoint('controller:construct', [ $codex, $view ]);
         parent::__construct($codex, $view);
-        $this->hookPoint('controller:constructed', [$codex, $view]);
+        $this->hookPoint('controller:constructed', [ $codex, $view ]);
     }
 
 
@@ -60,7 +60,7 @@ class CodexController extends Controller
     public function document($projectSlug, $ref = null, $path = '')
     {
         # get project
-        if ( !$this->codex->projects->has($projectSlug) ) {
+        if ( ! $this->codex->projects->has($projectSlug) ) {
             throw ProjectNotFoundException::project($projectSlug)->toHttpException();
         }
         $project = $this->codex->projects->get($projectSlug);
@@ -73,7 +73,7 @@ class CodexController extends Controller
         $path = $path === '' ? 'index' : $path;
 
         # get document
-        if ( !$project->documents->has($path) ) {
+        if ( ! $project->documents->has($path) ) {
             throw DocumentNotFoundException::document($path)->inProject($project)->toHttpException();
         }
 
@@ -88,12 +88,22 @@ class CodexController extends Controller
 
         $view = $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
         $res  = $this->hookPoint('controller:view', [ $view, $this->codex, $project, $document ]);
+        $this->dbg();
         return $view;
+    }
+
+    public function dbg()
+    {
+        if ( app()->bound('debugbar') ) {
+            $d = app('debugbar');
+            $c = $this->codex;
+            $d->addMessage($c->config());
+        }
     }
 
     public function markdown()
     {
-        if ( !request()->has('code') ) {
+        if ( ! request()->has('code') ) {
             return abort(500, 'You did not provide the [code]');
         }
         $code = request()->get('code');

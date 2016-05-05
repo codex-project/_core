@@ -73,7 +73,7 @@ class CodexServiceProvider extends ServiceProvider
         $log->info('init');
 
         if ( $this->app[ 'config' ][ 'codex.dev.enabled' ] === true ) {
-           # $this->app->register('Codex\Dev\DevServiceProvider');
+           $this->app->register('Codex\Dev\DevServiceProvider');
         }
 
         if ( $this->app[ 'config' ][ 'codex.routing.enabled' ] === true ) {

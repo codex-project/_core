@@ -40,9 +40,9 @@ class ClassFileInfo extends SplFileInfo
      */
     private $classInspector = null;
 
-    public function __construct (SplFileInfo $fileInfo, ClassInspector $classInspector)
+    public function __construct(SplFileInfo $fileInfo, ClassInspector $classInspector)
     {
-        $this->fileInfo = $fileInfo;
+        $this->fileInfo       = $fileInfo;
         $this->classInspector = $classInspector;
     }
 
@@ -51,19 +51,50 @@ class ClassFileInfo extends SplFileInfo
         return $this->classInspector->getClassName();
     }
 
-    public function getClassAnnotations()
+    protected function filter($annotations, $filterEmpty = false, $filterAnnotations = null)
     {
-        return $this->classInspector->getClassAnnotations();
+        return array_filter($annotations, function ($b) use ($filterEmpty, $filterAnnotations) {
+            if ( $filterEmpty && empty($b) ) {
+                return false;
+            }
+
+            if ( $filterAnnotations !== null ) {
+                if ( is_object($b) ) {
+                    return in_array(get_class($b), (array)$filterAnnotations, true);
+                } elseif ( is_array($b) ) {
+                    $pass = false;
+                    foreach ( $b as $name => $obj ) {
+                        $class = get_class($obj);
+                        foreach ( (array)$filterAnnotations as $annotation ) {
+                            if ( $class === $annotation ) {
+                                $pass = true;
+                            }
+                        }
+                    }
+                    return $pass;
+                }
+            }
+            return true;
+        });
     }
 
-    public function getMethodAnnotations()
+    public function getClassAnnotations($filterEmpty = false, $filterAnnotations = null)
     {
-        return $this->classInspector->getMethodAnnotations();
+        return $this->filter($this->classInspector->getClassAnnotations(), $filterEmpty, $filterAnnotations);
     }
 
-    public function getPropertyAnnotations()
+    public function getMethodAnnotations($filterEmpty = false, $filterAnnotations = null)
     {
-        return $this->classInspector->getPropertyAnnotations();
+        return $this->filter($this->classInspector->getMethodAnnotations(), $filterEmpty, $filterAnnotations);
+        $a = $this->classInspector->getMethodAnnotations();
+        return $filter === false ? $a : array_filter($a, create_function('$b', 'return ! empty($b);'));
+    }
+
+    public function getPropertyAnnotations($filterEmpty = false, $filterAnnotations = null)
+    {
+        return $this->filter($this->classInspector->getPropertyAnnotations(), $filterEmpty, $filterAnnotations);
+        $a = $this->classInspector->getPropertyAnnotations();
+        return $filter === false ? $a : array_filter($a, create_function('$b', 'return ! empty($b);'));
     }
 
     public function getPath()

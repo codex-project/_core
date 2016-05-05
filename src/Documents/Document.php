@@ -135,17 +135,16 @@ class Document implements
     {
         $enabledFilters = $this->project->config('filters.enabled', []);
 
-        foreach (  $this->codex->addons->filters('whereIn', 'name', $enabledFilters) as $data ) {
+        foreach (  $this->codex->addons->filters('getSorted', $enabledFilters) as $filter ) {
 
-            $filter = app()->build($data['class']);
-            if ( property_exists($filter, 'config') ) {
-                $filter->config = new Collection($this->project->config('filters.' . $data['name'], []));
+            if ( $filter['has_config'] && property_exists($filter['instance'], 'config') ) {
+                $filter['instance']->config = new Collection($this->project->config('filters.' . $filter['name'], []));
             }
 
-            $this->hookPoint('document:filter:before:' . $data['name'], [ $filter ]);
-            app()->call([ $filter, 'handle' ], ['document' => $this]);
-            $this->appliedFilters->add($data);
-            $this->hookPoint('document:filter:after:' . $data['name'], [ $filter ]);
+            $this->hookPoint('document:filter:before:' . $filter['name'], [ $filter['instance'],  $filter ]);
+            app()->call([ $filter['instance'], 'handle' ], ['document' => $this]);
+            $this->appliedFilters->add($filter);
+            $this->hookPoint('document:filter:after:' . $filter['name'], [ $filter['instance'], $filter ]);
         }
     }
 

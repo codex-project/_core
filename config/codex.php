@@ -64,13 +64,7 @@ return [
         'custom'      => null,
         'extensions'  => [ 'md', 'markdown', 'html' ],
         'filters'     => [
-            'enabled'    => [ ],
-            'attributes' => [
-                'tags' => [
-                    [ 'open' => '<!--*', 'close' => '--*>' ], // html
-                    [ 'open' => '---', 'close' => '---' ], // markdown (frontmatter)
-                ],
-            ],
+            'enabled'    => [ ]
         ],
         'hooks'       => [
             'enabled' => [ ],
