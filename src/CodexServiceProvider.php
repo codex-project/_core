@@ -60,17 +60,21 @@ class CodexServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->registerCodex();
-
         $app = parent::register();
 
-        if ( $this->app[ 'config' ][ 'codex.dev.enabled' ] === true ) {
-            $this->app->register('Codex\Dev\DevServiceProvider');
-        }
-
-        $this->registerLogger();
+        $app->instance('codex.addons', Addons\Addons::getInstance());
 
         $this->registerDefaultFilesystem();
+
+        $this->registerCodex();
+
+        $log = $this->registerLogger();
+
+        $log->info('init');
+
+        if ( $this->app[ 'config' ][ 'codex.dev.enabled' ] === true ) {
+           # $this->app->register('Codex\Dev\DevServiceProvider');
+        }
 
         if ( $this->app[ 'config' ][ 'codex.routing.enabled' ] === true ) {
             $this->registerRouting();
@@ -98,28 +102,10 @@ class CodexServiceProvider extends ServiceProvider
         return $log;
     }
 
-    /**
-     * registerCodexBinding method
-     *
-     * @param $app
-     */
     protected function registerCodex()
     {
-        $this->app->singleton('codex', function (LaravelApplication $app) {
-            /** @var Codex $codex */
-            $codex = $app->build(Codex::class, [
-                'config' => $app[ 'config' ][ 'codex' ],
-            ]);
-            foreach ( $this->codexExtensions as $name => $extension ) {
-                $codex->extend($name, $extension);
-            }
-
-
-            return $codex;
-        });
-
+        $this->share('codex', Codex::class, [], true);
         $this->app->alias('codex',  Contracts\Codex::class);
-        $this->app->alias('codex',  Codex::class);
     }
 
     protected function registerDefaultFilesystem()

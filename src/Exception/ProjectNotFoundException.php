@@ -19,14 +19,14 @@ class ProjectNotFoundException extends CodexException
      *
      * @return static
      */
-    public function project($project)
+    public static function project($project)
     {
         //$ex = static::in($project instanceof Project ? $project : get_called_class());
         if ( $project instanceof Project ) {
             $project = $project->getName();
         }
 
-        return $this->because("Could not find project [{$project}]");
+        return static::because("Could not find project [{$project}]");
     }
 
 }

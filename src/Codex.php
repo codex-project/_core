@@ -87,15 +87,17 @@ class Codex implements
      * @param \Codex\Core\Contracts\Log                 $log
      * @param array                                     $config
      */
-    public function __construct(Container $container, Filesystem $files, Cache $cache, Contracts\Log $log, array $config = [ ])
+    public function __construct(Container $container, Filesystem $files, Cache $cache, Contracts\Log $log)
     {
         $this->setContainer($container);
-        $this->setConfig($config);
+        $this->setConfig(config('codex'));
         $this->setFiles($files);
 
         $this->cache   = $cache;
         $this->docsDir = config('codex.docs_dir');
         $this->log     = $log;
+
+        $this->addons->findAndRegisterAll();
 
         // 'factory:done' called after all factory operations have completed.
         $this->hookPoint('constructed', [ $this ]);

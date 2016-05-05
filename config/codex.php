@@ -28,6 +28,7 @@ return [
     'theme' => 'laravel', // null, 'laravel', 'angular', 'material'
 
     'manifest_path'               => storage_path('codex.json'),
+
     'addons'                      => [ 'markdown' ],
 
     /*

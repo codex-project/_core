@@ -61,7 +61,7 @@ class CodexController extends Controller
     {
         # get project
         if ( !$this->codex->projects->has($projectSlug) ) {
-            throw ProjectNotFoundException::in($this)->project($projectSlug)->toHttpException();
+            throw ProjectNotFoundException::project($projectSlug)->toHttpException();
         }
         $project = $this->codex->projects->get($projectSlug);
 

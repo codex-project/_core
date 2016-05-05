@@ -21,9 +21,9 @@ class CodexException extends Exception
         parent::__construct($message, $code, $previous);
     }
 
-    public function because($reason)
+    public static function because($reason)
     {
-        return $this->setMessage($reason);
+        return new static($reason);
     }
 
     public function setMessage($message)

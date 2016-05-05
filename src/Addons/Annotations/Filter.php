@@ -27,4 +27,16 @@ final class Filter
      * @var int
      */
     public $priority = 10;
+
+    /**
+     * A public property name
+     * @var bool|string
+     */
+    public $config = false;
+
+    /**
+     * @var string|bool
+     */
+    public $replace = false;
+
 }

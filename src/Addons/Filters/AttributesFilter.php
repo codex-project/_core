@@ -1,6 +1,7 @@
 <?php
 namespace Codex\Core\Addons\Filters;
 
+use Codex\Core\Addons\Annotations\Defaults;
 use Codex\Core\Addons\Annotations\Filter;
 use Codex\Core\Documents\Document;
 use Codex\Core\Support\Collection;
@@ -21,6 +22,9 @@ class AttributesFilter
 {
     /** @var Collection */
     public $config;
+
+    /** @Defaults */
+    public $defaults = 'codex-addon.markdown.defaults';
 
     /**
      * handle method

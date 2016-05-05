@@ -1,26 +1,12 @@
 <?php
 namespace Codex\Core\Addons;
 
-use Closure;
+use BadMethodCallException;
+use Codex\Core\Addons\Annotations;
 use Codex\Core\Addons\Scanner\ClassFileInfo;
-use Codex\Core\Addons\Scanner\ClassInspector;
-use Codex\Core\Addons\Scanner\Finder;
-use Codex\Core\Addons\Scanner\Scanner;
-use Codex\Core\Addons\Types\FilterData;
-use Codex\Core\Documents\Document;
-use Codex\Core\Menus\Menu;
-use Codex\Core\Menus\Menus;
-use Codex\Core\Support\Collection;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Container\Container;
 use Illuminate\Support\Traits\Macroable;
-use ReflectionClass;
 use Sebwite\Filesystem\Filesystem;
-use Sebwite\Support\Path;
-use Sebwite\Support\Util;
-use Symfony\Component\Finder\SplFileInfo;
-
 
 /**
  * This is the class Addons.
@@ -29,123 +15,99 @@ use Symfony\Component\Finder\SplFileInfo;
  * @author         CLI
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  *
- * @method Collection|mixed documents(...$params)
- * @method Collection|mixed filters(...$params)
- * @method Collection|mixed hooks(...$params)
- * @method Collection|mixed providers(...$params)
- * @method Collection|mixed configs(...$params)
- * @method Collection|mixed themes(...$params)
+ * @method HookAddons hooks(...$params)
+ * @method FilterAddons filters(...$params)
+ * @method ThemeAddons themes(...$params)
+ * @method DefaultsAddons defaults(...$params)
+ *
+ * @property FilterAddons   $filters
+ * @property HookAddons     $hooks
+ * @property ThemeAddons    $themes
+ * @property DefaultsAddons $defaults
+ *
  */
 class Addons
 {
     use Macroable;
+
+
     const HOOK = 'hook';
     const THEME = 'theme';
     const FILTER = 'filter';
 
-    /** @var array */
-    protected $annotations = [
-        self::HOOK   => Annotations\Hook::class,
-        self::FILTER => Annotations\Filter::class,
-        self::THEME  => Annotations\Theme::class,
-    ];
+
+    /** @var Addons */
+    static protected $instance;
+
+    /** @var \Codex\Core\Support\Collection */
+    protected $filters;
+
+    /** @var \Codex\Core\Support\Collection */
+    protected $themes;
+
+    /** @var \Codex\Core\Support\Collection */
+    protected $hooks;
+
+    /** @var \Codex\Core\Support\Collection */
+    protected $defaults;
 
     /** @var \Sebwite\Filesystem\Filesystem */
     protected $fs;
 
-    /** @var \Illuminate\Contracts\Foundation\Application */
+    protected $paths;
+
+    protected $manifestPath;
+
+    protected $registered = [ ];
+
+    protected $scanner;
+
     protected $app;
 
-    /** @var \Doctrine\Common\Annotations\AnnotationReader */
-    protected $reader;
 
-    protected $items = [ ];
-
-    protected $types = [ ];
-
-    /**
-     * Adds constructor.
-     *
-     * @param \Illuminate\Contracts\Foundation\Application $app
-     * @param \Sebwite\Support\Filesystem                  $fs
-     */
-    public function __construct(Application $app, Filesystem $fs)
+    protected function __construct()
     {
-        $this->app    = $app;
-        $this->fs     = $fs;
-        $this->reader = new AnnotationReader();
-        $this->types  = [ 'documents', 'filters', 'hooks', 'providers', 'configs', 'themes' ];
+        $this->filters  = new FilterAddons([ ], $this);
+        $this->hooks    = new HookAddons([ ], $this);
+        $this->defaults = new DefaultsAddons([ ], $this);
+        $this->themes   = new ThemeAddons([ ], $this);
+        $this->scanner  = new AddonScanner();
+        $this->fs       = new Filesystem();
+        $this->app      = Container::getInstance();
 
-        foreach ( $this->types as $type ) {
-            $this->items[ $type ] = new Collection();
-        }
-
-        foreach ( $fs->globule(__DIR__ . '/Annotations/*.php') as $filePath ) {
-            AnnotationRegistry::registerFile($filePath);
-        }
-
-        $this->scanDirectory(path_join(__DIR__, 'Filters'));
-        $this->addThemeHook();
+        $this->registerInPath(__DIR__ . '/Filters');
+        $this->themes->hookTheme();
     }
 
-
-    public function add(AddonServiceProvider $provider)
+    public static function getInstance()
     {
-        $path = (new ReflectionClass($provider))->getFileName();
-        $dir  = Path::getDirectory($path);
-        $this->providers()->add([
-            'provider' => $provider,
-            'name'     => $provider->getName(),
-            'depends'  => $provider->getDepends(),
-            'path'     => $path,
-            'dir'      => $dir,
-            'enabled'  => $provider->isEnabled(),
-        ]);
-        if ( $provider->isEnabled() ) {
-            $this->scanDirectory($dir);
+        if ( static::$instance === null ) {
+            static::$instance = new static;
+        }
+        return static::$instance;
+    }
+
+    public function findAndRegisterAll()
+    {
+        foreach ( $this->scanner->findAll() as $file ) {
+            $this->register($file);
         }
     }
 
-    public function scanDirectory($path)
+    public function register(ClassFileInfo $file)
     {
-        foreach ( $this->scanner()->in($path) as $file ) {
-            $this->handleFileAnnotations($file);
+        $class = $file->getClassName();
+        if ( array_key_exists($class, $this->registered) ) {
+            return;
         }
-    }
-
-    public function scanFile($path)
-    {
-        $className = Util::getClassNameFromFile($path);
-        #$reader    = new AnnotationReader();
-        $file      = new SplFileInfo($path, $path, $path);
-        $inspector = new ClassInspector($className, $this->reader);
-        return new ClassFileInfo($file, $inspector);
-    }
-
-    protected function getType($annotation)
-    {
-        foreach($this->annotations as $type => $class){
-            if($annotation === $class){
-                return $type;
-            }
-        }
-        return false;
-    }
-
-    protected function handleFileAnnotations(ClassFileInfo $file)
-    {
-        $class    = $file->getClassName();
-        $data = compact('class', 'file');
+        $this->registered[ $class ] = $file;
         foreach ( $file->getClassAnnotations() as $annotation ) {
-            $data = array_merge($data, (array) $annotation);
             if ( $annotation instanceof Annotations\Filter ) {
-                $this->filters()->set($class, $data);
+                $this->filters->add($file, $annotation);
             } elseif ( $annotation instanceof Annotations\Hook ) {
-                $data['listener'] = $class;
-                $this->hooks()->add($data);
-                $this->hook($data['name'], $data['listener']);
-            } elseif ($annotation instanceof Annotations\Theme){
-                $this->themes()->set($data['name'], $data);
+                $this->hooks->add($file, $annotation);
+            } elseif ( $annotation instanceof Annotations\Theme ) {
+                $this->themes->add($file, $annotation);
             }
         }
         foreach ( $file->getMethodAnnotations() as $method => $annotations ) {
@@ -154,110 +116,95 @@ class Addons
             }
             foreach ( $annotations as $annotation ) {
                 if ( $annotation instanceof Annotations\Hook ) {
-                    $listener = "{$class}@{$method}";
-                    $data = array_merge($data, compact('listener', 'method'), (array)$annotation);
-                    $this->hooks()->add($data);
-                    $this->hook($data['name'], $data['listener']);
+                    $this->hooks->add($file, $annotation, $method);
+                } elseif ( $annotation instanceof Annotations\Defaults ) {
+                #    $this->defaults->add($file, $annotation, $method, 'method');
                 }
             }
         }
-        return;
         foreach ( $file->getPropertyAnnotations() as $property => $annotations ) {
             if ( count($annotations) === 0 ) {
                 continue;
             }
             foreach ( $annotations as $annotation ) {
-
+                if ( $annotation instanceof Annotations\Defaults ) {
+                   # $this->defaults()->add($file, $annotation, $property, 'property');
+                }
             }
         }
     }
 
-    protected function addThemeHook()
+    public function registerAtPath($filePath)
     {
-        $this->hook('menus:add', function (Menus $menus, $id, Menu $menu) {
-            $name = $menus->getCodex()->config('theme', 'default');
-            $view = $this->themes('get', "{$name}.menus.{$id}", null);
-            if ( $view ) {
-                $menu->setView($view);
-            }
-        });
+        $file = $this->scanner->scanFile($filePath);
+        if ( $file instanceof ClassFileInfo ) {
+            $this->register($file);
+            return true;
+        }
+        return false;
+    }
+
+    public function registerInPath($path)
+    {
+        $registered = 0;
+        foreach ( $this->scanner->scanDirectory($path) as $info ) {
+            $this->register($info);
+            $registered++;
+        }
+        return $registered;
+    }
 
 
-        app()->booted(function ($app) {
-            $name  = codex()->config('theme', 'default');
-            $views = [ 'layout', 'view' ];
-            foreach ( $views as $view ) {
-                $viewFile = $this->themes("get", "{$name}.{$view}", null);
-                if ( $view ) {
-                    codex()->mergeDefaultDocumentAttributes([ $view => $viewFile ]);
-                }
-            }
+    protected function mergeDefaults($key, $config, $method)
+    {
+        $config = is_array($config) ? $config : config($config);
+        $this->app->booting(function($app) use ($key, $config, $method) {
+            $app['codex']->setConfig($key, call_user_func_array($method, [ $app['codex']->config($key), $config ]));
         });
     }
 
-    public function registerTheme($name, array $views = [ ])
+    public function mergeDefaultProjectConfig($config, $method = 'array_replace_recursive')
     {
-        $this->themes()->set($name, $views);
-        return $this;
+        $this->mergeDefaults('default_project_config', $config, $method);
+    }
+
+    public function mergeDefaultDocumentAttributes($config, $method = 'array_replace_recursive')
+    {
+        $this->mergeDefaults('default_document_attributes', $config, $method);
     }
 
     /**
-     * hook method
-     *
-     * @param string         $name
-     * @param string|Closure $hook
-     *
-     * @return Addons
+     * @return Filesystem
      */
-    public function hook($name, $hook)
+    public function getFs()
     {
-        $this->app[ 'events' ]->listen("codex:{$name}", $hook);
-        return $this;
-    }
-
-    protected function scanner($annotationClass = null)
-    {
-        if ( $annotationClass === null ) {
-            $annotationClass = array_values($this->annotations);
-        }
-        if ( ! is_array($annotationClass) ) {
-            $annotationClass = [ $annotationClass ];
-        }
-        $scanner = new Scanner($this->reader);
-        return $scanner->scan($annotationClass);
-    }
-
-    protected function find($type = null)
-    {
-        $finder = new Finder();
-        $finder->setReader($this->reader);
-        if ( $type !== null ) {
-            return $finder->containsAtLeastOneOf($this->annotations[ $type ]);
-        }
-        foreach ( $this->annotations as $type => $annotation ) {
-            $finder->containsAtLeastOneOf($annotation);
-        }
-        return $finder;
+        return $this->fs;
     }
 
 
-    public function __call($name, $params = [ ])
+
+    public static function __callStatic($method, array $parameters = [ ])
     {
-        if ( in_array($name, $this->types, true) ) {
-            $item    = $this->items[ $name ];
-            $iparams = count($params);
-            if ( $iparams === 0 ) {
-                return $item;
-            }
-            if ( $iparams === 1 ) {
-                return $item[ $params[ 0 ] ];
-            }
-            if ( $iparams > 1 ) {
-                $method = array_shift($params);
-                return call_user_func_array([ $item, $method ], $params);
+        $instance = static::getInstance();
+        if ( method_exists($instance, $method) ) {
+            return call_user_func_array([ $instance, $method ], $parameters);
+        }
+        throw new BadMethodCallException("Method $method does not exist in class " . static::class);
+    }
+
+    public function __call($method, array $parameters = [ ])
+    {
+        $collections = [ 'filters', 'themes', 'hooks', 'defaults' ];
+        if ( in_array($method, $collections, true) ) {
+            $collection = $this->{$method};
+            $args       = count($parameters);
+            if ( $args === 0 ) {
+                return $collection;
+            } else {
+                $method = array_shift($parameters);
+                return call_user_func_array([ $collection, $method ], $parameters);
             }
         }
+        throw new BadMethodCallException("Method $method does not exist in class " . get_class($this));
     }
-
-
 }

@@ -155,7 +155,7 @@ class Projects implements
     public function get($name)
     {
         if (!$this->has($name)) {
-            throw ProjectNotFoundException::in($this)->project($name);
+            throw ProjectNotFoundException::project($name);
         }
 
         return $this->items->get($name);
