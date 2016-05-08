@@ -35,4 +35,6 @@ class Controller extends BaseController
         $this->view  = $view;
         $view->share('codex', $codex);
     }
+
+
 }

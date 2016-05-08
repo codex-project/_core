@@ -1,8 +1,9 @@
 <!---
-title: Codex Documentation
-subtitle: Overview   
+title: Overview
+subtitle: Codex Documentation   
 -->
 
+# Overview
 
 #### Composer
 ```JSON

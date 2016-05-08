@@ -35,6 +35,10 @@ class CodexServiceProvider extends ServiceProvider
         \Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
     ];
 
+    protected $commands = [
+
+    ];
+
     protected $bindings = [
         'codex.document' => Documents\Document::class,
         'codex.project'  => Projects\Project::class,

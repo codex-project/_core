@@ -51,6 +51,7 @@
         <header>
             <h1>@yield('page-title')<small> @yield('page-subtitle', '')</small></h1>
         </header>
+        @yield('content', '')
     </article>
 
     <footer>

@@ -2,6 +2,7 @@
 namespace Codex\Core\Addons;
 
 use Codex\Core\Addons\Scanner\ClassFileInfo;
+use Codex\Core\Documents\Document;
 use Codex\Core\Exception\CodexException;
 
 class ThemeAddons extends AbstractAddonCollection
@@ -11,40 +12,14 @@ class ThemeAddons extends AbstractAddonCollection
         parent::__construct($items, $addons);
     }
 
+    protected $active;
 
     public function add(ClassFileInfo $file, $annotation)
     {
         $theme = app()->build($class = $file->getClassName());
-        /** @noinspection PhpParamsInspection */
-        $provider = new AddonServiceProvider($this->app);
-        $path     = $file->getPath();
-
-        for ( $current = 0; $current < 4; $current++ ) {
-            if ( $this->addons->getFs()->exists(path_join($path, 'composer.json')) ) {
-                break;
-            }
-            $path = path_get_directory($path);
-        }
-
-        if ( $path === $file->getPath() ) {
-            throw CodexException::because('Could not resolve root dir');
-        }
-
-        $provider->setRootDir($path);
-
-        if ( property_exists($theme, 'config') ) {
-            $provider->setConfigFiles((array)$theme->config);
-        }
-
-        if ( property_exists($theme, 'assets') ) {
-            $provider->setAssetDirs((array)$theme->assets);
-        }
-
-        if ( property_exists($theme, 'views') ) {
-            $provider->setViewDirs((array)$theme->views);
-        }
-
-        $data             = array_merge(compact('provider', 'theme', 'file', 'class'), (array)$annotation);
+        $provider = $this->createProvider($file, $theme);
+        $views = [];
+        $data             = array_merge(compact('views', 'provider', 'theme', 'file', 'class'), (array)$annotation);
         $data[ 'active' ] = false;
         $this->set($annotation->name, $data);
     }
@@ -55,35 +30,31 @@ class ThemeAddons extends AbstractAddonCollection
         $data = $this->get($name);
         $this->app->register($data[ 'provider' ]);
 
-        if ( method_exists($data[ 'theme' ], 'getViews') ) {
-            $this->set("{$name}.views", $data[ 'theme' ]->getViews());
+        if ( method_exists($data[ 'theme' ], $data['method']) ) {
+            $views = call_user_func([$data['theme'], $data['method']]);
+            $this->set("{$name}.views", $views);
         }
         $this->set("{$name}.active", true);
+        $this->active = $name;
+        return $data;
+    }
+
+    public function getActive()
+    {
+        return $this->get($this->active);
     }
 
     public function hookTheme()
     {
-        $this->addons->hooks()->hook('menus:add', function ($menus, $id, $menu) {
-            $name = codex()->config('theme', 'laravel');
-            $view = $this->get("{$name}.views.menus.{$id}", null);
-            if ( $view ) {
-                $menu->setView($view);
-            }
-        });
-
-        app()->booting(function ($app) {
-            $name = codex()->config('theme', 'default');
-            $this->activateTheme($name);
-        });
-
-        app()->booted(function ($app) {
+        $this->addons->hooks->hook('document:render', function(Document $document){
             $name  = codex()->config('theme', 'default');
-            $views = [ 'layout', 'view' ];
-            foreach ( $views as $view ) {
-                $viewFile = $this->get("{$name}.views.{$view}", null);
-                if ( $view ) {
-                    codex()->mergeDefaultDocumentAttributes([ $view => $viewFile ]);
-                }
+            $this->activateTheme($name);
+            $active = $this->getActive();
+            $document->setAttribute('views.layout', $active->get('views.layout', $document->attr('views.layout')));
+            $document->setAttribute('views.document', $active->get('views.document', $document->attr('views.document')));
+            $menus = $document->getCodex()->menus;
+            foreach($active->get('views.menus', []) as $id => $view){
+                $menus->has($id) && $menus->get($id)->setView($view);
             }
         });
     }

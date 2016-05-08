@@ -161,4 +161,21 @@ class AddonServiceProvider extends ServiceProvider
         return $this;
     }
 
+    protected $addon;
+
+    public function setAddon($instance)
+    {
+        $this->addon = $instance;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAddon()
+    {
+        return $this->addon;
+    }
+
+
+
 }

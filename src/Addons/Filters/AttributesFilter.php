@@ -28,10 +28,12 @@ class AttributesFilter
      * @var array
      */
     public $defaults = [
-        'tags' => [
-            [ 'open' => '<!--*', 'close' => '--*>' ], // html
+        'tags'    => [
+            [ 'open' => '<!--*', 'close' => '--*>' ], // html, markdown
             [ 'open' => '---', 'close' => '---' ], // markdown (frontmatter)
         ],
+        'remove_tags' => true,
+        'add_extra_data' => true
     ];
 
     /**
@@ -41,29 +43,48 @@ class AttributesFilter
      */
     public function handle(Document $document)
     {
-
-        $this->pattern($document, '/^(?:<!--*|---)([\w\W]*?)(?:--*>|---)/');
+        $this->process($document);
     }
 
-    protected function pattern(Document $document, $pattern)
+    protected function addInformationalAttributes(Document $document)
+    {
+        $document->getFiles()->lastModified($document->getPath());
+    }
+
+    protected function getTagsPattern()
+    {
+        $open  = [ ];
+        $close = [ ];
+        foreach ( $this->config[ 'tags' ] as $tag ) {
+            $open[]  = $tag[ 'open' ];
+            $close[] = $tag[ 'close' ];
+        }
+        return '/^(?:' . implode('|', $open) . ')([\w\W]*?)(?:' . implode('|', $close) . ')/';
+    }
+
+    protected function process(Document $document)
     {
         $content = $document->getContent();
-
+        $pattern = $this->getTagsPattern();
         if ( preg_match($pattern, $content, $matches) === 1 ) {
             // not really required when using html doc tags. But in case it's frontmatter, it should be removed
-            $content = preg_replace($pattern, '', $content);
-            $data    = Yaml::parse($matches[ 1 ]);
+            if ( $this->config[ 'remove_tags' ] === true ) {
+                $content = preg_replace($pattern, '', $content);
+            }
+            $data = Yaml::parse($matches[ 1 ]);
             if ( is_array($data) ) {
                 $attributes = array_replace_recursive($document->getAttributes(), $data);
 
                 $document->setAttributes($attributes);
             }
         }
-
-        $document->setContent($content);
+        if ( $this->config[ 'remove_tags' ] === true ) {
+            $document->setContent($content);
+        }
 
         return $this;
     }
+
 
 }
 

@@ -48,6 +48,31 @@ class CodexException extends Exception
         return $exception;
     }
 
+    public static function configFileMissing($desc = '')
+    {
+        return new static('[Config File Missing] ' . $desc);
+    }
+
+    public static function documentNotFound($desc = '')
+    {
+        return new static('[Document Not Found] ' . $desc);
+    }
+
+    public static function projectNotFound($desc = '')
+    {
+        return new static('[Project Not Found] ' . $desc);
+    }
+
+    public static function manifestNotFound($desc = '')
+    {
+        return new static('[Manifest Not Found] ' . $desc);
+    }
+
+    public static function manifestParse($desc = '')
+    {
+        return new static('[Manifest Parse] ' . $desc);
+    }
+
     public function toHttpException()
     {
         return new HttpException(404, $this->getMessage());

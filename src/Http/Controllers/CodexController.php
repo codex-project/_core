@@ -2,8 +2,10 @@
 namespace Codex\Core\Http\Controllers;
 
 use Codex\Core\Contracts\Codex;
+use Codex\Core\Exception\CodexHttpException;
 use Codex\Core\Exception\DocumentNotFoundException;
 use Codex\Core\Exception\ProjectNotFoundException;
+use Codex\Core\Traits\ExtendableTrait;
 use Codex\Core\Traits\HookableTrait;
 use Illuminate\Contracts\View\Factory as View;
 
@@ -61,7 +63,7 @@ class CodexController extends Controller
     {
         # get project
         if ( ! $this->codex->projects->has($projectSlug) ) {
-            throw ProjectNotFoundException::project($projectSlug)->toHttpException();
+            throw CodexHttpException::projectNotFound($projectSlug);
         }
         $project = $this->codex->projects->get($projectSlug);
 
@@ -70,11 +72,11 @@ class CodexController extends Controller
             $ref = $project->getDefaultRef();
         }
         $project->setRef($ref);
-        $path = $path === '' ? 'index' : $path;
+        $path = $path === '' ? $project->config('index') : $path;
 
         # get document
         if ( ! $project->documents->has($path) ) {
-            throw DocumentNotFoundException::document($path)->inProject($project)->toHttpException();
+            throw CodexHttpException::documentNotFound($path);
         }
 
         $document = $project->documents->get($path);
@@ -86,7 +88,7 @@ class CodexController extends Controller
 
         $this->view->share('project', $project);
 
-        $view = $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
+        $view = $this->view->make($document->attr('views.document'), compact('project', 'document', 'content', 'breadcrumb'));
         $res  = $this->hookPoint('controller:view', [ $view, $this->codex, $project, $document ]);
         $this->dbg();
         return $view;

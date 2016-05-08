@@ -2,9 +2,10 @@
 
 
 return [
-    'display_name'    => env('CODEX_DISPLAY_NAME', 'Codex'),
-    'docs_dir'        => env('CODEX_ROOT_DIR', base_path('resources/docs')),
-    'routing'         => [
+    'display_name'                => env('CODEX_DISPLAY_NAME', 'Codex'),
+    'docs_dir'                    => env('CODEX_ROOT_DIR', base_path('resources/docs')),
+    'default_project'             => env('CODEX_DEFAULT_PROJECT', 'codex'),
+    'routing'                     => [
         'enabled'              => true,
         'base_route'           => env('CODEX_BASE_ROUTE', 'codex'),
         'provider'             => 'Codex\\Core\\Providers\\RouteServiceProvider',
@@ -12,23 +13,19 @@ return [
             '_debugbar',
         ],
     ],
-    'log'             => [
+    'log'                         => [
         'enabled' => true,
         'path'    => storage_path('logs/codex.log'),
     ],
-    'dev'             => [
+    'dev'                         => [
         'enabled'      => env('CODEX_DEV_ENABLED', false),
         'debugbar'     => true,
         'log_handlers' => true,
         'print_events' => true,
     ],
-    'stubs_path'      => __DIR__ . '/../resources/stubs',
-    'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
-
-    'theme' => 'laravel', // null, 'laravel', 'angular', 'material'
-
+    'stubs_path'                  => __DIR__ . '/../resources/stubs',
+    'theme'                       => 'laravel', // null, 'laravel', 'angular', 'material'
     'manifest_path'               => storage_path('codex.json'),
-
     'addons'                      => [ 'markdown' ],
 
     /*
@@ -42,11 +39,21 @@ return [
     |
     */
     'default_document_attributes' => [
-        'author'   => 'John Doe',
-        'title'    => 'Documentation',
-        'subtitle' => '',
-        'layout'   => 'codex::layouts.document',
-        'view'     => 'codex::document',
+        'author'          => 'John Doe',
+        'title'           => '',
+        'subtitle'        => '',
+        'views'           => [
+            'layout'   => 'codex::layouts.default',
+            'document' => 'codex::document',
+            'menus'    => [
+                'sidebar'  => 'codex::menus.sidebar',
+                'projects' => 'codex::menus.projects',
+                'versions' => 'codex::menus.versions',
+            ],
+        ],
+        'disable_filters' => [ ],
+        'filters'         => [
+        ],
     ],
 
     /*
@@ -62,9 +69,11 @@ return [
         'description' => '',
         'default'     => \Codex\Core\Projects\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
         'custom'      => null,
+        'first'       => '',
+        'index'       => 'index',
         'extensions'  => [ 'md', 'markdown', 'html' ],
         'filters'     => [
-            'enabled'    => [ ]
+            'enabled' => [ ],
         ],
         'hooks'       => [
             'enabled' => [ ],
