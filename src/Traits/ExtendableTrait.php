@@ -28,7 +28,7 @@ trait ExtendableTrait
         return array_merge(array_keys($this->getExtenableProperty('macros')), array_keys($this->getExtenableProperty('extensions')));
     }
 
-    public function getExtenableProperty($type)
+    public function &getExtenableProperty($type)
     {
         $property = property_exists($this, $type) ? $type : "_{$type}";
         return $this->{$property};

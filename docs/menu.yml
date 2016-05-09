@@ -15,6 +15,9 @@ menu:
       - name: Typography
         document: preview-pages/typography
 
+      - name: ToC Tree
+        document: preview-pages/toc-tree
+
       - name: Syntax highlighting
         document: preview-pages/syntax-highlight
 

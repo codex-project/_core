@@ -29,14 +29,21 @@ final class Filter
     public $priority = 10;
 
     /**
-     * A public property name
-     * @var bool|string
+     * (optional) The property name of the default configuration this filter has. During runtime, this will be replaced with the actual, processed config Collection
+     * @var string
      */
-    public $config = false;
+    public $config;
 
     /**
-     * @var string|bool
+     * If this filter replaces another (like extending), note its name here
+     * @var string
      */
-    public $replace = false;
+    public $replace ;
+
+    /**
+     * The method that will be called when running the filter.
+     * @var string
+     */
+    public $method = 'handle';
 
 }

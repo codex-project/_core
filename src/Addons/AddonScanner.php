@@ -5,8 +5,6 @@ use Codex\Core\Addons\Scanner\ClassFileInfo;
 use Codex\Core\Addons\Scanner\ClassInspector;
 use Codex\Core\Addons\Scanner\Scanner;
 use Codex\Core\Exception\CodexException;
-use Codex\Core\Exception\ManifestNotFoundException;
-use Codex\Core\Exception\ManifestParseException;
 use Codex\Core\Support\Collection;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
@@ -33,7 +31,6 @@ class AddonScanner
         Annotations\Hook::class,
         Annotations\Filter::class,
         Annotations\Theme::class,
-        Annotations\Defaults::class,
     ];
 
 
@@ -61,11 +58,11 @@ class AddonScanner
 
     protected function reloadManifest()
     {
-        if ( ! $this->fs->exists($this->manifestPath) ) {
+        if ( !$this->fs->exists($this->manifestPath) ) {
             throw CodexException::manifestNotFound($this->manifestPath);
         }
         $raw            = $this->fs->get($this->manifestPath);
-        $data = json_decode($raw, true);
+        $data           = json_decode($raw, true);
         $this->manifest = new Collection($data);
         if ( $this->manifest->isEmpty() ) {
             throw CodexException::manifestParse('empty manifest file');
@@ -101,7 +98,7 @@ class AddonScanner
 
     protected function createAnnotationScanner($annotationClass)
     {
-        if ( ! is_array($annotationClass) ) {
+        if ( !is_array($annotationClass) ) {
             $annotationClass = [ $annotationClass ];
         }
         $scanner = new Scanner($this->reader);

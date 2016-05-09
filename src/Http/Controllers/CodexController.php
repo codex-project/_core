@@ -3,9 +3,6 @@ namespace Codex\Core\Http\Controllers;
 
 use Codex\Core\Contracts\Codex;
 use Codex\Core\Exception\CodexHttpException;
-use Codex\Core\Exception\DocumentNotFoundException;
-use Codex\Core\Exception\ProjectNotFoundException;
-use Codex\Core\Traits\ExtendableTrait;
 use Codex\Core\Traits\HookableTrait;
 use Illuminate\Contracts\View\Factory as View;
 
@@ -62,7 +59,7 @@ class CodexController extends Controller
     public function document($projectSlug, $ref = null, $path = '')
     {
         # get project
-        if ( ! $this->codex->projects->has($projectSlug) ) {
+        if ( !$this->codex->projects->has($projectSlug) ) {
             throw CodexHttpException::projectNotFound($projectSlug);
         }
         $project = $this->codex->projects->get($projectSlug);
@@ -75,7 +72,7 @@ class CodexController extends Controller
         $path = $path === '' ? $project->config('index') : $path;
 
         # get document
-        if ( ! $project->documents->has($path) ) {
+        if ( !$project->documents->has($path) ) {
             throw CodexHttpException::documentNotFound($path);
         }
 
@@ -105,7 +102,7 @@ class CodexController extends Controller
 
     public function markdown()
     {
-        if ( ! request()->has('code') ) {
+        if ( !request()->has('code') ) {
             return abort(500, 'You did not provide the [code]');
         }
         $code = request()->get('code');

@@ -10,10 +10,8 @@ namespace Codex\Core;
 
 
 use Codex\Core\Contracts;
-use Codex\Core\Documents\Document;
 use Codex\Core\Projects\Project;
 use Codex\Core\Traits;
-use Codex\Core\Traits\ExtendableTrait;
 use Herrera\Version\Parser;
 use Herrera\Version\Version;
 use Illuminate\Contracts\Cache\Repository as Cache;
@@ -26,9 +24,9 @@ use Illuminate\Filesystem\Filesystem;
  *
  * @package        Codex\Core
  * @author         Sebwite
- * @property-read \Codex\Core\Addons\Addons       $addons
- * @property-read \Codex\Core\Projects\Projects   $projects
- * @property-read \Codex\Core\Menus\Menus         $menus
+ * @property-read \Codex\Core\Addons\Addons     $addons
+ * @property-read \Codex\Core\Projects\Projects $projects
+ * @property-read \Codex\Core\Menus\Menus       $menus
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
  *
  *
@@ -46,7 +44,7 @@ class Codex implements
 
         Traits\FilesTrait,
         Traits\ConfigTrait {
-        ExtendableTrait::__get as ___get;
+        Traits\ExtendableTrait::__get as ___get;
     }
 
 
@@ -71,11 +69,6 @@ class Codex implements
      */
     protected $docsDir;
 
-
-    protected $extensions = [
-        'projects' => Projects\Projects::class,
-        'menus'    => Menus\Menus::class
-    ];
 
     /**
      * Codex constructor.
@@ -122,7 +115,7 @@ class Codex implements
             } elseif ( $data === null ) {
                 $data = [ ];
             }
-            if ( ! is_array($data) ) {
+            if ( !is_array($data) ) {
                 throw new \InvalidArgumentException("appendSectionsView data is not a array");
             }
             $view->getFactory()->make($viewName, $data)->render();
@@ -144,9 +137,9 @@ class Codex implements
     {
         $uri = $this->config('base_route');
 
-        if ( ! is_null($project) ) {
+        if ( !is_null($project) ) {
 
-            if ( ! $project instanceof Project ) {
+            if ( !$project instanceof Project ) {
                 $project = $this->projects->get($project);
             }
 
@@ -172,8 +165,6 @@ class Codex implements
     {
         $this->log->log($level, $message, $context);
     }
-
-
 
 
     protected function mergeDefaults($key, $config, $method)

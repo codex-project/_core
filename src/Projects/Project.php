@@ -7,7 +7,6 @@
 namespace Codex\Core\Projects;
 
 use Codex\Core\Contracts;
-use Codex\Core\Documents\Documents;
 use Codex\Core\Traits;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
@@ -43,9 +42,6 @@ class Project implements
         Traits\FilesTrait,
         Traits\ConfigTrait;
 
-    protected $extensions = [
-        'documents' => Documents::class,
-    ];
 
     const SHOW_MASTER_BRANCH = 0;
     const SHOW_LAST_VERSION = 1;
@@ -144,6 +140,7 @@ class Project implements
     {
         return $this->projects->getActive() === $this;
     }
+
     public function getDefaultDiskName()
     {
         return 'codex-local-' . $this->getName();
@@ -490,9 +487,9 @@ class Project implements
     public function toArray()
     {
         return [
-            'name' => $this->getName(),
-            'config' => $this->getConfig(),
-            'versions' => $this->refs
+            'name'     => $this->getName(),
+            'config'   => $this->getConfig(),
+            'versions' => $this->refs,
         ];
     }
 
@@ -502,7 +499,7 @@ class Project implements
      */
     public function getConfig()
     {
-        return $this->getContainer()->make(ProjectConfig::class, ['config' => $this->config]);
+        return $this->getContainer()->make(ProjectConfig::class, [ 'config' => $this->config ]);
     }
 
     /**

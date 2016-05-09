@@ -18,12 +18,10 @@ use Sebwite\Filesystem\Filesystem;
  * @method HookAddons hooks(...$params)
  * @method FilterAddons filters(...$params)
  * @method ThemeAddons themes(...$params)
- * @method DefaultsAddons defaults(...$params)
  *
  * @property FilterAddons   $filters
  * @property HookAddons     $hooks
  * @property ThemeAddons    $themes
- * @property DefaultsAddons $defaults
  *
  */
 class Addons
@@ -70,13 +68,13 @@ class Addons
     {
         $this->filters  = new FilterAddons([ ], $this);
         $this->hooks    = new HookAddons([ ], $this);
-        $this->defaults = new DefaultsAddons([ ], $this);
         $this->themes   = new ThemeAddons([ ], $this);
+
         $this->scanner  = new AddonScanner();
         $this->fs       = new Filesystem();
         $this->app      = Container::getInstance();
 
-        $this->registerInPath(__DIR__ . '/Filters');
+       #- $this->registerInPath(__DIR__ . '/Filters');
         $this->themes->hookTheme();
     }
 
@@ -115,16 +113,11 @@ class Addons
             foreach ( $annotations as $annotation ) {
                 if ( $annotation instanceof Annotations\Hook ) {
                     $this->hooks->add($file, $annotation, $method);
-                } elseif ( $annotation instanceof Annotations\Defaults ) {
-                    #    $this->defaults->add($file, $annotation, $method, 'method');
                 }
             }
         }
         foreach ( $file->getPropertyAnnotations(true) as $property => $annotations ) {
             foreach ( $annotations as $annotation ) {
-                if ( $annotation instanceof Annotations\Defaults ) {
-                    # $this->defaults()->add($file, $annotation, $property, 'property');
-                }
             }
         }
     }

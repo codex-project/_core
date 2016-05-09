@@ -10,6 +10,7 @@ abstract class AbstractAddonCollection extends \Illuminate\Support\Collection
     /** @var Addons */
     protected $addons;
 
+    /** @var Container  */
     protected $app;
 
     public function __construct($items = [ ], $addons = null)

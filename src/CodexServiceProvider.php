@@ -9,6 +9,7 @@
 namespace Codex\Core;
 
 use Codex\Core\Log\Writer;
+use Codex\Core\Projects\Project;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Filesystem\FilesystemAdapter;
 use League\Flysystem\Filesystem as Flysystem;
@@ -57,16 +58,12 @@ class CodexServiceProvider extends ServiceProvider
         'fs' => \Sebwite\Filesystem\Filesystem::class,
     ];
 
-    protected $codexExtensions = [
-        'projects' => Projects\Projects::class,
-        'menus'    => Menus\Menus::class
-    ];
 
     public function register()
     {
         $app = parent::register();
 
-        $app->instance('codex.addons', Addons\Addons::getInstance());
+        $this->app->instance('codex.addons', $addons = Addons\Addons::getInstance());
 
         $this->registerDefaultFilesystem();
 
@@ -108,8 +105,18 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerCodex()
     {
+
+        $this->app['codex.addons']->hooks->hook('constructed', function(Codex $codex){
+            $codex->extend('projects', Projects\Projects::class);
+            $codex->extend('menus', Menus\Menus::class);
+        });
+
         $this->share('codex', Codex::class, [], true);
         $this->app->alias('codex',  Contracts\Codex::class);
+
+        $this->app['codex.addons']->hooks->hook('project:construct', function(Project $project){
+            $project->extend('documents', Documents\Documents::class);
+        });
     }
 
     protected function registerDefaultFilesystem()
