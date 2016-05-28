@@ -22,3 +22,5 @@ Route::group(['prefix' => 'api/v1', 'namespace' => 'API\V1', 'as' => 'api.v1.'],
     Route::get('projects/{project?}', ['as' => 'projects', 'uses' => 'CodexApiController@projects']);
     Route::get('documents/{document?}', ['as' => 'documents', 'uses' => 'CodexApiController@documents']);
 });
+
+

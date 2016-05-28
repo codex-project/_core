@@ -81,7 +81,7 @@ class Menu implements
      * @param \Illuminate\Contracts\View\Factory                                      $viewFactory
      * @param                                                                         $id
      */
-    public function __construct(Menus $menus, Filesystem $files, Cache $cache, Router $router, UrlGenerator $url, ViewFactory $viewFactory, $id )
+    public function __construct(Menus $menus, Filesystem $files, Cache $cache, Router $router, UrlGenerator $url, ViewFactory $viewFactory, $id)
     {
         $this->menus       = $menus;
         $this->cache       = $cache;
@@ -89,8 +89,8 @@ class Menu implements
         $this->url         = $url;
         $this->files       = $files;
         $this->viewFactory = $viewFactory;
-        $this->id = $id;
-        $this->view        = 'codex::menus.' . $id;
+        $this->id          = $id;
+        $this->view        = $menus->getCodex()->view("menus.{$id}");
         $this->items       = new Collection();
 
         $this->hookPoint('menu:construct', [ $id ]);
@@ -109,7 +109,7 @@ class Menu implements
     {
         $vars = [
             'menu'  => $this,
-            'items' => $this->get('root')->getChildren()
+            'items' => $this->get('root')->getChildren(),
         ];
 
         $rendered = $this->viewFactory->make($this->view)->with($vars)->render();
@@ -126,7 +126,7 @@ class Menu implements
      * @param array  $meta
      * @param array  $attributes
      *
-     *@return \Codex\Core\Menus\Node
+     * @return \Codex\Core\Menus\Node
      */
     public function add($id, $value, $parent = 'root', array $meta = [ ], array $attributes = [ ])
     {
@@ -134,7 +134,7 @@ class Menu implements
         $node->setMeta($meta);
         $node->setAttribute($attributes);
 
-        if (! is_null($parent) and $this->items->has($parent)) {
+        if ( !is_null($parent) and $this->items->has($parent) ) {
             $parentNode = $this->items->get($parent);
             $parentNode->addChild($node);
             $node->setParent($parentNode);
@@ -150,6 +150,7 @@ class Menu implements
      * Checks if a menu item exists
      *
      * @param $id
+     *
      * @return bool
      */
     public function has($id)
@@ -163,7 +164,7 @@ class Menu implements
      * @param string     $id
      * @param null|mixed $default
      *
-     *@return \Codex\Core\Components\Menu\Node
+     * @return \Codex\Core\Components\Menu\Node
      */
     public function get($id, $default = null)
     {
@@ -194,6 +195,7 @@ class Menu implements
      * Set the view value
      *
      * @param mixed $view
+     *
      * @return Menu
      */
     public function setView($view)
@@ -209,7 +211,7 @@ class Menu implements
      *
      * @param \Codex\Core\Components\Menu\Node $item
      *
-     *@return array
+     * @return array
      */
     public function getBreadcrumbTo(Node $item)
     {
@@ -220,12 +222,13 @@ class Menu implements
      * Get breadcrumbs to the Node that has the href
      *
      * @param $href
+     *
      * @return array
      */
     public function getBreadcrumbToHref($href)
     {
         $item = $this->findItemByHref($href);
-        if ($item) {
+        if ( $item ) {
             return $this->getBreadcrumbTo($item);
         } else {
             return [ ];
@@ -237,7 +240,7 @@ class Menu implements
      *
      * @param $href
      *
-     *@return \Codex\Core\Components\Menu\Node|null
+     * @return \Codex\Core\Components\Menu\Node|null
      */
     public function findItemByHref($href)
     {
@@ -245,11 +248,11 @@ class Menu implements
         $found = $this->items->filter(function (Node $item) use ($href) {
 
 
-            if ($item->hasAttribute('href') && $item->attribute('href') === $href) {
+            if ( $item->hasAttribute('href') && $item->attribute('href') === $href ) {
                 return true;
             }
         });
-        if ($found->isEmpty()) {
+        if ( $found->isEmpty() ) {
             return null;
         }
         /** @var Node $node */
@@ -275,7 +278,6 @@ class Menu implements
     {
         $this->id = $id;
     }
-
 
 
 }

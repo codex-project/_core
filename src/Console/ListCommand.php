@@ -1,7 +1,8 @@
 <?php
 namespace Codex\Core\Console;
 
-use Codex\Console\Commands\Command;
+
+use Sebwite\Console\Command;
 
 class ListCommand extends Command
 {

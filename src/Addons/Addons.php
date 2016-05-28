@@ -63,19 +63,35 @@ class Addons
     /** @var \Illuminate\Foundation\Application */
     protected $app;
 
+    protected $views = [
+        'layout'   => 'codex::layouts.default',
+        'document' => 'codex::document',
+        'menus'    => [
+            'sidebar'  => 'codex::menus.sidebar',
+            'projects' => 'codex::menus.projects',
+            'versions' => 'codex::menus.versions',
+        ],
+    ];
+
+    public function view($name, $view = null)
+    {
+        if($view === null) {
+            return data_get($this->views, $name);
+        }
+        data_set($this->views, $name, $view);
+        return $this;
+    }
 
     protected function __construct()
     {
         $this->filters  = new FilterAddons([ ], $this);
         $this->hooks    = new HookAddons([ ], $this);
-        $this->themes   = new ThemeAddons([ ], $this);
+      #  $this->themes   = new ThemeAddons([ ], $this);
 
         $this->scanner  = new AddonScanner();
         $this->fs       = new Filesystem();
         $this->app      = Container::getInstance();
 
-       #- $this->registerInPath(__DIR__ . '/Filters');
-        $this->themes->hookTheme();
     }
 
     public static function getInstance()
@@ -105,8 +121,6 @@ class Addons
                 $this->filters->add($file, $annotation);
             } elseif ( $annotation instanceof Annotations\Hook ) {
                 $this->hooks->add($file, $annotation);
-            } elseif ( $annotation instanceof Annotations\Theme ) {
-                $this->themes->add($file, $annotation);
             }
         }
         foreach ( $file->getMethodAnnotations(true) as $method => $annotations ) {
@@ -178,7 +192,7 @@ class Addons
         throw new BadMethodCallException("Method $method does not exist in class " . static::class);
     }
 
-    protected $collections = [ 'filters', 'themes', 'hooks', 'defaults' ];
+    protected $collections = [ 'filters', 'themes', 'hooks'  ];
 
     public function __call($method, array $parameters = [ ])
     {

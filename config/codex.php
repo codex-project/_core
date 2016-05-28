@@ -8,7 +8,6 @@ return [
     'routing'                     => [
         'enabled'              => true,
         'base_route'           => env('CODEX_BASE_ROUTE', 'codex'),
-        'provider'             => 'Codex\\Core\\Providers\\RouteServiceProvider',
         'ignore_project_names' => [
             '_debugbar',
         ],
@@ -24,36 +23,12 @@ return [
         'print_events' => true,
     ],
     'stubs_path'                  => __DIR__ . '/../resources/stubs',
-    'theme'                       => 'laravel', // null, 'laravel', 'angular', 'material'
+   # 'theme'                       => 'default', // null, 'laravel', 'angular', 'material'
     'manifest_path'               => storage_path('codex.json'),
-    'addons'                      => [ 'markdown' ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Default Project Attributes
-    |--------------------------------------------------------------------------
-    |
-    | These values will be merged with any frontmatter attributes your
-    | documentation pages may have. Feel free to add or remove any
-    | attributes as you see fit for your documentation needs.
-    |
-    */
-    'default_document_attributes' => [
-        'author'          => 'John Doe',
-        'title'           => '',
-        'subtitle'        => '',
-        'views'           => [
-            'layout'   => 'codex::layouts.default',
-            'document' => 'codex::document',
-            'menus'    => [
-                'sidebar'  => 'codex::menus.sidebar',
-                'projects' => 'codex::menus.projects',
-                'versions' => 'codex::menus.versions',
-            ],
-        ],
-        'disable_filters' => [ ],
-        'filters'         => [
-        ],
+    'extensions'                  => [
+        'md'       => 'codex.document',
+        'markdown' => 'codex.document',
+        'html'     => 'codex.document',
     ],
 
     /*
@@ -75,8 +50,25 @@ return [
         'filters'     => [
             'enabled' => [ ],
         ],
-        'hooks'       => [
-            'enabled' => [ ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Document Attributes
+    |--------------------------------------------------------------------------
+    |
+    | These values will be merged with any frontmatter attributes your
+    | documentation pages may have. Feel free to add or remove any
+    | attributes as you see fit for your documentation needs.
+    |
+    */
+    'default_document_attributes' => [
+        'author'          => 'John Doe',
+        'title'           => '',
+        'subtitle'        => '',
+        'view'        => null,
+        'disable_filters' => [ ],
+        'filters'         => [
         ],
     ],
 

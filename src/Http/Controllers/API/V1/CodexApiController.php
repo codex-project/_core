@@ -3,7 +3,7 @@ namespace Codex\Core\Http\Controllers\API\V1;
 
 use Codex\Core\Http\Controllers\Controller;
 
-class CodexApiController extends Controller
+class CodexApiController extends ApiController
 {
     public function projects($project = null)
     {

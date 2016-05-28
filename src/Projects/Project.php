@@ -6,6 +6,7 @@
  */
 namespace Codex\Core\Projects;
 
+
 use Codex\Core\Contracts;
 use Codex\Core\Traits;
 use Illuminate\Contracts\Config\Repository;
@@ -25,6 +26,7 @@ use vierbergenlars\SemVer\version;
  *
  * @property \Codex\Core\Documents\Documents $documents
  * @property \Codex\Core\Documents\Documents $documents2
+ * @property \Codex\Addon\Defaults\Phpdoc\PhpdocDocument $getPhpdoc
  *
  */
 class Project implements
@@ -120,14 +122,14 @@ class Project implements
         $this->setConfig($config);
         $this->path = $path = path_join($codex->getDocsDir(), $name);
 
-        $this->hookPoint('project:construct', [ $this ]);
+        $this->hookPoint('project:construct');
 
         $this->diskName = $this->getDefaultDiskName();
         $this->setDisk();
         $this->resolveRefs();
 
         # Resolve menu
-        $this->hookPoint('project:constructed', [ $this ]);
+        $this->hookPoint('project:constructed');
     }
 
     public function setActive()
@@ -355,7 +357,7 @@ class Project implements
     protected function setupSidebarMenu($items, $parentId = 'root')
     {
         /**
-         * @var Codex\Core\Menu $menu
+         * @var \Codex\Core\Menus\Menu $menu
          */
         $menu = $this->codex->menus->add('sidebar');
 

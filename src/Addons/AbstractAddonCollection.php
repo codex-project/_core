@@ -4,13 +4,14 @@ namespace Codex\Core\Addons;
 use Codex\Core\Addons\Scanner\ClassFileInfo;
 use Codex\Core\Exception\CodexException;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Foundation\Application;
 
 abstract class AbstractAddonCollection extends \Illuminate\Support\Collection
 {
     /** @var Addons */
     protected $addons;
 
-    /** @var Container  */
+    /** @var Application  */
     protected $app;
 
     public function __construct($items = [ ], $addons = null)
@@ -22,11 +23,7 @@ abstract class AbstractAddonCollection extends \Illuminate\Support\Collection
 
     public function get($key, $default = null)
     {
-        $item = data_get($this->items, $key, $default);
-        if ( is_array($item) ) {
-            return static::make($item);
-        }
-        return $item;
+        return data_get($this->items, $key, $default);
     }
 
     public function set($key, $value = null)

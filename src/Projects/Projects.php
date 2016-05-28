@@ -27,8 +27,10 @@ class Projects implements
         Traits\CodexTrait,
         Traits\ContainerTrait;
 
+    /** @var \Illuminate\Support\Collection  */
     protected $items;
 
+    /** @var Project|null */
     protected $activeProject;
 
     /**
@@ -59,6 +61,7 @@ class Projects implements
         }
         $this->activeProject = $project;
         $this->resolveProjectSidebarMenu($project);
+        $this->hookPoint('projects:active', [ $project ]);
     }
 
     public function hasActive()
@@ -66,6 +69,10 @@ class Projects implements
         return $this->activeProject !== null;
     }
 
+    /**
+     * getActive method
+     * @return \Codex\Core\Projects\Project|null
+     */
     public function getActive()
     {
         return $this->activeProject;
@@ -197,7 +204,7 @@ class Projects implements
             $this->codex->menus->forget('sidebar');
         }
         $menu = $this->codex->menus->add('sidebar');
-        $this->hookPoint('projects:sidebar:resolve', [ $this, $menu ]);
+
 
         foreach ( $items as $item ) {
             $link = '#';
@@ -223,7 +230,7 @@ class Projects implements
                 $this->resolveProjectSidebarMenu($project, $item[ 'children' ], $id);
             }
         }
-
+        $this->hookPoint('projects:sidebar:resolve', [ $menu ]);
     }
 
 }

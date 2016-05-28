@@ -108,6 +108,8 @@ class Document implements
 
         $this->content = $this->getFiles()->get($this->getPath());
 
+        $this->attr('view', null) === null && $this->setAttribute('view', $codex->view('document'));
+
         $this->hookPoint('document:done', [ $this ]);
     }
 

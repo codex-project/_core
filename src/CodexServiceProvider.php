@@ -37,7 +37,7 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $commands = [
-
+        Console\ListCommand::class
     ];
 
     protected $bindings = [
@@ -130,7 +130,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerRouting()
     {
-        $this->app->register($this->app[ 'config' ][ 'codex.routing.provider' ]);
+        $this->app->register(Http\RouteServiceProvider::class);
     }
 
 

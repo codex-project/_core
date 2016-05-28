@@ -73,12 +73,11 @@ class Codex implements
     /**
      * Codex constructor.
      *
-     * @param \Illuminate\Contracts\Container\Container $container
-     * @param \Codex\Core\Contracts\Addons              $addons
-     * @param \Sebwite\Support\Filesystem               $files
-     * @param \Illuminate\Contracts\Cache\Repository    $cache
-     * @param \Codex\Core\Contracts\Log                 $log
-     * @param array                                     $config
+     * @param \Illuminate\Contracts\Container\Container $container The container instance
+     * @param \Illuminate\Filesystem\Filesystem         $files     The filesystem instance
+     * @param \Illuminate\Contracts\Cache\Repository    $cache     The cache instance
+     * @param \Codex\Core\Contracts\Log                 $log       The log instance
+     *
      */
     public function __construct(Container $container, Filesystem $files, Cache $cache, Contracts\Log $log)
     {
@@ -96,13 +95,14 @@ class Codex implements
         $this->hookPoint('constructed', [ $this ]);
     }
 
-    /** Add a view to a view stack
+    /**
+     * Add a view to a view stack
      *
-     * @param        $viewName
-     * @param null   $data
-     * @param string $appendTo
+     * @param string     $viewName The namespaced name of the view
+     * @param array|null $data     (optional) The view data array
+     * @param string     $appendTo
      *
-     * @return $this
+     * @return Codex
      */
     public function stack($viewName, $data = null, $appendTo = 'codex::layouts.default')
     {
@@ -127,9 +127,9 @@ class Codex implements
     /**
      * Generate a URL to a project's default page and version.
      *
-     * @param  Project|string $project A Project instance or projectName, will auto-resolve
-     * @param  null|string    $ref
-     * @param  null|string    $doc
+     * @param  Project|string $project A Project class instance or project name
+     * @param  null|string    $ref     The ref to generate the URL for. If not provided it'll use the default ref
+     * @param  null|string    $doc     The document to generate the URL for.
      *
      * @return string
      */
@@ -166,24 +166,10 @@ class Codex implements
         $this->log->log($level, $message, $context);
     }
 
-
-    protected function mergeDefaults($key, $config, $method)
+    public function view($name)
     {
-        $config = is_array($config) ? $config : config($config);
-        #if($this->config($key) == null)
-        $this->setConfig($key, call_user_func_array($method, [ $this->config($key), $config ]));
+        return $this->addons->view($name);
     }
-
-    public function mergeDefaultProjectConfig($config, $method = 'array_replace_recursive')
-    {
-        $this->mergeDefaults('default_project_config', $config, $method);
-    }
-
-    public function mergeDefaultDocumentAttributes($config, $method = 'array_replace_recursive')
-    {
-        $this->mergeDefaults('default_document_attributes', $config, $method);
-    }
-
 
     /**
      * getLaravelVersion method

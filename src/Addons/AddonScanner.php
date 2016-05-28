@@ -29,8 +29,7 @@ class AddonScanner
     /** @var array */
     protected $annotations = [
         Annotations\Hook::class,
-        Annotations\Filter::class,
-        Annotations\Theme::class,
+        Annotations\Filter::class
     ];
 
 

@@ -58,34 +58,40 @@ class CodexController extends Controller
      */
     public function document($projectSlug, $ref = null, $path = '')
     {
-        # get project
+        // get project
         if ( !$this->codex->projects->has($projectSlug) ) {
             throw CodexHttpException::projectNotFound($projectSlug);
         }
         $project = $this->codex->projects->get($projectSlug);
 
-        # get ref (version)
+
+        // share project in views
+        $this->view->share('project', $project);
+
+
+        // get ref (version)
         if ( is_null($ref) ) {
             $ref = $project->getDefaultRef();
         }
         $project->setRef($ref);
         $path = $path === '' ? $project->config('index') : $path;
 
-        # get document
+
+        // get document
         if ( !$project->documents->has($path) ) {
             throw CodexHttpException::documentNotFound($path);
         }
-
         $document = $project->documents->get($path);
         $res      = $this->hookPoint('controller:document', [ $document, $this->codex, $project ]);
 
-        # prepare view
+
+        // prepare view
         $content    = $document->render();
         $breadcrumb = $document->getBreadcrumb();
 
-        $this->view->share('project', $project);
 
-        $view = $this->view->make($document->attr('views.document'), compact('project', 'document', 'content', 'breadcrumb'));
+
+        $view = $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
         $res  = $this->hookPoint('controller:view', [ $view, $this->codex, $project, $document ]);
         $this->dbg();
         return $view;
