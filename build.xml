@@ -59,13 +59,9 @@
         <delete dir="${project.basedir}/phpdoc"/>
     </target>
 
-    <target name="bower-install" description="Run bower to get the latest codex-theme">
+    <target name="theme" description="do theme">
         <delete dir="${project.basedir}/resources/assets"/>
-        <exec command="bower install" dir="${project.basedir}" logoutput="true" passthru="true"/>
+        <exec command="npm install; bower install; grunt dist" dir="${project.basedir}/theme" logoutput="true" passthru="true"/>
     </target>
 
-    <target name="bower-link" description="Run bower to get the latest codex-theme">
-        <delete dir="${project.basedir}/resources/assets"/>
-        <exec command="bower link codex-theme" dir="${project.basedir}" logoutput="true" passthru="true"/>
-    </target>
 </project>

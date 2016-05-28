@@ -1,75 +1,42 @@
-<!DOCTYPE html><!--[if IE 8]>
-<html class="ie8" lang="en"><![endif]-->
-<!--[if IE 9]>
-<html lang="en" class="ie9"><![endif]-->
-<!--[if !IE]><!-->
-<html lang="en"><!--<![endif]-->
-<head>
-    <title>
-        @section('title')
-            {{ config('codex.display_name') }}
-        @show
-    </title>
+@extends('codex::layouts.codex-base')
 
-    @stack('meta')
+@push('header')
+    <div class="responsive-sidebar-nav">
+        <a href="#" class="toggle-slide menu-link btn">&#9776;</a>
+    </div>
+    @section('menu-versions')
+        @include('codex::partials.header.versions')
+    @show
 
-    @stack('stylesheets')
+    @section('menu-projects')
+        {!! $codex->menus->get('projects')->render() !!}
+    @show
+@endpush
 
-    @stack('styles')
 
-</head>
+@push('content')
 
-<body class="@yield('bodyClass', '')">
+    @section('menu-sidebar')
+        {!! $codex->menus->get('sidebar')->render() !!}
+    @show
 
-@section('body')
+    @section('breadcrumb')
+        @parent
+        @include('codex::partials.breadcrumb')
+    @show
 
-    <header>
-        @stack('page-actions')
-        @stack('header-top-menu')
-    </header>
-
-    <aside>
-        @section('sidebar-menu')
-        @show
-    </aside>
-
-    <nav>
-        <ul>
-            @section('breadcrumb')
-                <li><a href="{{ route('codex.index') }}">Home</a><i class="fa fa-arrow-right"></i></li>
-            @show
-        </ul>
-    </nav>
-
-    @if (isset($errors) && count($errors) > 0)
-        <div class="page-alerts page-alerts-top">
-            @include('codex::partials/errors')
-        </div>
-    @endif
-
-    <article>
-        <header>
-            <h1>@yield('page-title')<small> @yield('page-subtitle', '')</small></h1>
-        </header>
-        @yield('content', '')
+    <article class="@yield('articleClass', '')">
+        @yield('content')
     </article>
+@endpush
 
-    <footer>
-
+@push('footer')
+    @section('scroll-to-top')
+    <a href="#" class="scrollToTop"></a>
+    @show
+    @section('footer')
+    <footer class="main">
+        <p>Copyright &copy; {{ config('codex.display_name') }}.</p>
     </footer>
-
-
-
-
-@show
-
-@stack('javascripts')
-
-@stack('scripts')
-
-@stack('init-scripts')
-
-@stack('boot-scripts')
-
-</body>
-</html>
+    @show
+@endpush

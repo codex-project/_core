@@ -1,25 +1,12 @@
-@foreach($items as $item)
-    @if($item->meta('hidden', false) === true)
-        @continue
-    @endif
-    @if($item->hasChildren())
-        <div class="dropdown-submenu">
-            <a href="#" class="dropdown-item">
-                {{ $item->getValue() }}
-            </a>
-            <div class="dropdown-menu">
-                @include($menu->getView(), [
-                    'items' => $item->getChildren(),
-                    'menu' => $menu
-                ])
-            </div>
-        </div>
-    @else
-        <a href="{{ $item->attribute('href', '#') }}" class="dropdown-item">
-            @if($item->meta('icon', false) !== false)
-                <i class="{{ $item->meta('icon') }}"></i>
-            @endif
-            {{ $item->getValue() }}
+<ul class="main-nav">
+    <li class="dropdown community-dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            {{--@yield('projectName', isset($project) ? $project->config('display_name') : 'Project')--}}
+            Projects
+            <span class="caret"></span>
         </a>
-    @endif
-@endforeach
+        <ul class="dropdown-menu" role="menu">
+            @include('codex::menus.projects-child')
+        </ul>
+    </li>
+</ul>

@@ -27,6 +27,7 @@ use Illuminate\Filesystem\Filesystem;
  * @property-read \Codex\Core\Addons\Addons     $addons
  * @property-read \Codex\Core\Projects\Projects $projects
  * @property-read \Codex\Core\Menus\Menus       $menus
+ * @property-read \Codex\Core\Theme             $theme
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
  *
  *

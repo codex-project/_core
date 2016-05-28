@@ -1,4 +1,4 @@
-@extends($document->attr('views.layout'))
+@extends('codex::layouts.default')
 
 @section('title')
     {{ $document->attr('title') }}
@@ -8,8 +8,13 @@
     @parent
 @stop
 
-@section('page-title', $document->attr('title'))
-@section('page-subtitle', $document->attr('subtitle', null))
+
 @section('content')
+
+    <header>
+        <small>{{ $document->attr('subtitle', '') }}</small>
+        <h1>{{ $document->attr('title') }}
+        </h1>
+    </header>
     {!! $content !!}
 @stop

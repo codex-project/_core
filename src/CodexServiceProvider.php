@@ -37,7 +37,7 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $commands = [
-        Console\ListCommand::class
+        Console\ListCommand::class,
     ];
 
     protected $bindings = [
@@ -74,7 +74,7 @@ class CodexServiceProvider extends ServiceProvider
         $log->info('init');
 
         if ( $this->app[ 'config' ][ 'codex.dev.enabled' ] === true ) {
-           $this->app->register('Codex\Dev\DevServiceProvider');
+            $this->app->register('Codex\Dev\DevServiceProvider');
         }
 
         if ( $this->app[ 'config' ][ 'codex.routing.enabled' ] === true ) {
@@ -106,15 +106,16 @@ class CodexServiceProvider extends ServiceProvider
     protected function registerCodex()
     {
 
-        $this->app['codex.addons']->hooks->hook('constructed', function(Codex $codex){
+        $this->app[ 'codex.addons' ]->hooks->hook('constructed', function (Codex $codex) {
             $codex->extend('projects', Projects\Projects::class);
             $codex->extend('menus', Menus\Menus::class);
+            $codex->extend('theme', Theme::class);
         });
 
-        $this->share('codex', Codex::class, [], true);
-        $this->app->alias('codex',  Contracts\Codex::class);
+        $this->share('codex', Codex::class, [ ], true);
+        $this->app->alias('codex', Contracts\Codex::class);
 
-        $this->app['codex.addons']->hooks->hook('project:construct', function(Project $project){
+        $this->app[ 'codex.addons' ]->hooks->hook('project:construct', function (Project $project) {
             $project->extend('documents', Documents\Documents::class);
         });
     }
