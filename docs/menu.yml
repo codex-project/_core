@@ -2,11 +2,17 @@ menu:
   - name: Overview
     document: index
 
-  - name: Installation
-    document: installation
+  - name: Getting started
+    icon: fa fa-eye
+    children:
+      - name: Installation
+        document: getting-started/installation
 
-  - name: Addons
-    document: official-addons
+      - name: Creating a project
+        document: getting-started/creating-a-project
+
+      - name: Using addons
+        document: getting-started/using-addons
 
 
   - name: Preview pages
@@ -22,23 +28,33 @@ menu:
         document: preview-pages/syntax-highlight
 
 
-  - name: Extending
+  - name: Addons
+    icon: fa fa-puzzle-piece
+    children:
+      - name: Markdown
+        document: addons/markdown
+
+      - name: Git
+        document: addons/git
+
+      - name: PHPDoc
+        document: addons/phpdoc
+
+
+  - name: Develop
     icon: fa fa-code
     children:
       - name: API
-        document: extending/api
-
-      - name: Documents
-        document: extending/documents
+        document: develop/api
 
       - name: Filters
-        document: extending/filters
+        document: develop/filters
 
       - name: Hooks
-        document: extending/hooks
+        document: develop/hooks
 
       - name: Themes
-        document: extending/themes
+        document: develop/themes
 
   - name: Contributing
     icon: fa fa-eye

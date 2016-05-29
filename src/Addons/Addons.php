@@ -17,11 +17,9 @@ use Sebwite\Filesystem\Filesystem;
  *
  * @method HookAddons hooks(...$params)
  * @method FilterAddons filters(...$params)
- * @method ThemeAddons themes(...$params)
  *
  * @property FilterAddons   $filters
  * @property HookAddons     $hooks
- * @property ThemeAddons    $themes
  *
  */
 class Addons

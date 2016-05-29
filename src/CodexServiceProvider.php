@@ -39,7 +39,8 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $commands = [
-        #    Console\ListCommand::class,
+        Console\ListCommand::class,
+        Console\CreateCommand::class,
     ];
 
     protected $bindings = [
