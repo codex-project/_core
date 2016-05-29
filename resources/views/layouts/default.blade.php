@@ -15,7 +15,8 @@
 
 
 @push('content')
- <a class="sidebar-toggle" data-action='sidebar-toggle' title='Toggle sidebar'><i class="fa fa-list"></i></a>
+
+    <a class="sidebar-toggle" data-action='sidebar-toggle' title='Toggle sidebar'><i class="fa fa-list"></i></a>
     @section('menu-sidebar')
         {!! $codex->menus->get('sidebar')->render() !!}
     @show
@@ -25,7 +26,7 @@
         @include('codex::partials.breadcrumb')
     @show
 
-    <article class="@yield('articleClass', '')">
+    <article class="content @yield('articleClass', '')">
         @yield('content')
     </article>
 @endpush

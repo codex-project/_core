@@ -32,12 +32,14 @@ class CodexServiceProvider extends ServiceProvider
 
     protected $viewDirs = [ 'views' => 'codex' ];
 
+    protected $assetDirs = [ 'assets' => 'codex' ];
+
     protected $providers = [
         \Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
     ];
 
     protected $commands = [
-    #    Console\ListCommand::class,
+        #    Console\ListCommand::class,
     ];
 
     protected $bindings = [
