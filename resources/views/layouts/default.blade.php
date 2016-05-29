@@ -15,7 +15,7 @@
 
 
 @push('content')
-
+ <a class="sidebar-toggle" data-action='sidebar-toggle' title='Toggle sidebar'><i class="fa fa-list"></i></a>
     @section('menu-sidebar')
         {!! $codex->menus->get('sidebar')->render() !!}
     @show

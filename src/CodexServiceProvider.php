@@ -37,7 +37,7 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $commands = [
-        Console\ListCommand::class,
+    #    Console\ListCommand::class,
     ];
 
     protected $bindings = [
@@ -73,13 +73,11 @@ class CodexServiceProvider extends ServiceProvider
 
         $log->info('init');
 
-        if ( $this->app[ 'config' ][ 'codex.dev.enabled' ] === true ) {
-            $this->app->register('Codex\Dev\DevServiceProvider');
-        }
-
         if ( $this->app[ 'config' ][ 'codex.routing.enabled' ] === true ) {
             $this->registerRouting();
         }
+
+        $addons->registerInPath(__DIR__ . '/Addons/Filters');
 
         return $app;
     }
