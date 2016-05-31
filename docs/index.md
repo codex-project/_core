@@ -9,8 +9,8 @@ Most of it's features are provided by addons. Codex is extenable, themeable, hac
 
 
 ## Laravel
-Codex is a PHP application based on Laravel 5 and can be installed as stand-alone or sub-component in your own (Laravel) project.
-
+[Codex](#phpdoc:Codex\Core\Codex) is a PHP application based on Laravel 5 and can be installed as stand-alone or sub-component in your own (Laravel) project.
+[CodexController](#phpdoc:Codex\Core\Http\Controllers\CodexController)
 
 ## Addon based
 As previously mentioned, most of the features are provided by Addons. This makes Codex capable of doing anything you'd like. Here's a few to give you a better picture:
