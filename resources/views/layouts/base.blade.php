@@ -13,7 +13,7 @@
 
     @stack('meta')
 
-    {!! codex('theme')->renderJsData() !!}
+    {!! codex('theme')->renderData() !!}
 
     @stack('stylesheets')
 

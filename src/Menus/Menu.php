@@ -16,6 +16,8 @@ use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Routing\Router;
 use Sebwite\Filesystem\Filesystem;
+use Tree\Visitor\PostOrderVisitor;
+use Tree\Visitor\PreOrderVisitor;
 
 class Menu implements
     Contracts\Extendable,
@@ -72,6 +74,12 @@ class Menu implements
 
     protected $id;
 
+    const SORTER_PREORDER = PreOrderVisitor::class;
+    const SORTER_POSTORDER = PostOrderVisitor::class;
+
+    protected $sorter;
+
+
     /**
      * @param \Codex\Core\Contracts\Menus\MenuFactory|\Codex\Core\Menus\Menus         $menus
      * @param \Illuminate\Contracts\Filesystem\Filesystem|\Sebwite\Support\Filesystem $files
@@ -101,16 +109,45 @@ class Menu implements
     }
 
     /**
+     * @return mixed
+     */
+    public function getSorter()
+    {
+        return $this->sorter;
+    }
+
+    /**
+     * Set the sorter value
+     *
+     * @param mixed $sorter
+     */
+    public function setSorter($sorter)
+    {
+        $this->sorter = $sorter;
+    }
+
+    /**
      * Renders the menu using the defined view
      *
      * @return string
      */
-    public function render()
+    public function render($sorter = null)
     {
+        /** @var Node $root */
+        $root = $this->get('root');
+        $sorter = $sorter ?: $this->sorter;
+        if($sorter){
+            $items = $root->accept(new $sorter);
+        } else {
+            $items = $root->getChildren();
+        }
+
         $vars = [
             'menu'  => $this,
-            'items' => $this->get('root')->getChildren(),
+            'items' => $items
         ];
+
+        $this->hookPoint('menu:render', [$items, $sorter]);
 
         $rendered = $this->viewFactory->make($this->view)->with($vars)->render();
 

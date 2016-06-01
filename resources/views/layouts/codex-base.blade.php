@@ -10,8 +10,9 @@
 <!--[if lte IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="{{ asset('vendor/codex/styles/stylesheet.css') }}">
+{{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">--}}
+{{--<link rel="stylesheet" type="text/css" href="{{ asset('vendor/codex/styles/stylesheet.css') }}">--}}
+{!! codex('theme')->renderStylesheets() !!}
 <link rel="apple-touch-icon" href="{{ asset('vendor/codex/favicon.png') }}">
 @endpush
 
@@ -22,9 +23,10 @@
 @section('bodyClass', 'docs language-php')
 
 @push('javascripts')
-<script src="{{ asset('vendor/codex/scripts/vendor.js') }}"></script>
-<script src="{{ asset('vendor/codex/scripts/codex.js') }}"></script>
-<script src="{{ asset('vendor/codex/scripts/theme.js') }}"></script>
+{!! codex('theme')->renderJavascripts() !!}
+{{--<script src="{{ asset('vendor/codex/scripts/vendor.js') }}"></script>--}}
+{{--<script src="{{ asset('vendor/codex/scripts/codex.js') }}"></script>--}}
+{{--<script src="{{ asset('vendor/codex/scripts/theme.js') }}"></script>--}}
 @endpush
 
 @section('body')

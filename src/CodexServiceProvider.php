@@ -10,6 +10,7 @@ namespace Codex\Core;
 
 use Codex\Core\Log\Writer;
 use Codex\Core\Projects\Project;
+use Codex\Core\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Filesystem\FilesystemAdapter;
 use League\Flysystem\Filesystem as Flysystem;
@@ -26,6 +27,8 @@ use Sebwite\Support\ServiceProvider;
  */
 class CodexServiceProvider extends ServiceProvider
 {
+    use CodexProviderTrait;
+
     protected $dir = __DIR__;
 
     protected $configFiles = [ 'codex' ];
@@ -72,6 +75,8 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerCodex();
 
+        $this->registerAssets();
+
         $log = $this->registerLogger();
 
         $log->info('init');
@@ -107,7 +112,7 @@ class CodexServiceProvider extends ServiceProvider
     protected function registerCodex()
     {
 
-        $this->app[ 'codex.addons' ]->hooks->hook('constructed', function (Codex $codex) {
+        $this->codexHook('constructed', function (Codex $codex) {
             $codex->extend('projects', Projects\Projects::class);
             $codex->extend('menus', Menus\Menus::class);
             $codex->extend('theme', Theme::class);
@@ -116,7 +121,7 @@ class CodexServiceProvider extends ServiceProvider
         $this->share('codex', Codex::class, [ ], true);
         $this->app->alias('codex', Contracts\Codex::class);
 
-        $this->app[ 'codex.addons' ]->hooks->hook('project:construct', function (Project $project) {
+        $this->codexHook('project:construct', function (Project $project) {
             $project->extend('documents', Documents\Documents::class);
         });
     }
@@ -133,6 +138,18 @@ class CodexServiceProvider extends ServiceProvider
     protected function registerRouting()
     {
         $this->app->register(Http\RouteServiceProvider::class);
+    }
+
+    protected function registerAssets()
+    {
+        $this->codexHook('constructed', function(Codex $codex){
+            $codex->theme->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [], true);
+            $codex->theme->addStylesheet('theme', 'vendor/codex/styles/stylesheet', ['vendor']);
+            $codex->theme
+                ->addJavascript('vendor', 'vendor/codex/scripts/vendor')
+                ->addJavascript('codex', 'vendor/codex/scripts/codex', ['vendor'])
+                ->addJavascript('theme', 'vendor/codex/scripts/theme', ['codex']);
+        });
     }
 
 
