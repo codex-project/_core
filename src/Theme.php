@@ -1,7 +1,7 @@
 <?php
 namespace Codex\Core;
 
-use Codex\Core\Contracts\Codex;
+use Codex\Core\Contracts\Codex as CodexContract;
 use Codex\Core\Contracts\Extendable;
 use Codex\Core\Contracts\Hookable;
 use Codex\Core\Support\Collection;
@@ -29,16 +29,22 @@ class Theme implements
     /** @var \Codex\Core\Support\Collection */
     protected $stylesheets;
 
+    /** @var \Codex\Core\Support\Collection */
+    protected $scripts;
+
+    /** @var \Codex\Core\Support\Collection */
+    protected $styles;
+
     /**
      * Theme constructor.
      *
      * @param \Codex\Core\Contracts\Codex|\Codex\Core\Codex $parent
      */
-    public function __construct(Codex $parent)
+    public function __construct(CodexContract $parent)
     {
         $this->codex = $parent;
         $this->data  = new Collection;
-        $this->emptyAssets();
+        $this->reset();
     }
 
     /**
@@ -91,6 +97,15 @@ class Theme implements
         return $this;
     }
 
+    public function addScript($name, $value, array $depends = [ ], array $attr = [ ])
+    {
+        $this->scripts->set($name, compact('name', 'value', 'depends', 'attr'));
+    }
+    public function addStyle($name, $value, array $depends = [ ], array $attr = [ ])
+    {
+        $this->styles->set($name, compact('name', 'value', 'depends', 'attr'));
+    }
+
     /**
      * data method
      * @return \Codex\Core\Support\Collection
@@ -106,7 +121,7 @@ class Theme implements
      */
     public function javascripts()
     {
-        return $this->sortAssets($this->javascripts);
+        return $this->sorter($this->javascripts);
     }
 
     /**
@@ -115,7 +130,25 @@ class Theme implements
      */
     public function stylesheets()
     {
-        return $this->sortAssets($this->stylesheets);
+        return $this->sorter($this->stylesheets);
+    }
+
+    /**
+     * styles method
+     * @return \Codex\Core\Support\Collection
+     */
+    public function styles()
+    {
+        return $this->sorter($this->styles);
+    }
+
+    /**
+     * scripts method
+     * @return \Codex\Core\Support\Collection
+     */
+    public function scripts()
+    {
+        return $this->sorter($this->scripts);
     }
 
     /**
@@ -155,34 +188,62 @@ class Theme implements
     }
 
     /**
-     * Empties the assets. Removes all javascripts and stylesheets.
-     * @return Theme
+     * renderStyles method
+     * @return string
      */
-    public function emptyAssets()
+    public function renderStyles()
     {
-        $this->javascripts = new Collection;
-        $this->stylesheets = new Collection;
-        return $this;
+        $styles = [ ];
+        foreach ( $this->styles() as $style ) {
+            $styles[] = "<style type='text/css'>{$style['value']}</style>";
+        }
+        return implode("\n", $styles);
     }
 
     /**
+     * renderJavascripts method
+     * @return string
+     */
+    public function renderScripts()
+    {
+        $scripts = [ ];
+        foreach ( $this->scripts() as $js ) {
+            $scripts[] = "<script>{$js['value']}</script>";
+        }
+        return implode("\n", $scripts);
+    }
+
+
+    /**
+     * Empties the assets. Removes all javascripts and stylesheets.
+     * @return Theme
+     */
+    public function reset()
+    {
+        $this->javascripts = new Collection;
+        $this->stylesheets = new Collection;
+        $this->scripts     = new Collection;
+        $this->styles      = new Collection;
+        return $this;
+    }
+    /**
      * sortAssets method
      *
-     * @param array|Collection $assets
+     * @param array|Collection $all
      *
      * @return \Codex\Core\Support\Collection
      */
-    protected function sortAssets($assets = [ ])
+    protected function sorter($all = [ ])
     {
-        $assets = $assets instanceof Collection ? $assets : new Collection($assets);
+        $all    = $all instanceof Collection ? $all : new Collection($all);
         $sorter = new Sorter;
         $sorted = new Collection;
-        foreach ( $assets as $name => $asset ) {
-            $sorter->addItem($asset['name'], $asset['depends']);
+        foreach ( $all as $name => $asset ) {
+            $sorter->addItem($asset[ 'name' ], $asset[ 'depends' ]);
         }
 
-        foreach($sorter->sort() as $name){
-            $sorted->add($assets->where('name', $name)->first());
+        foreach ( $sorter->sort() as $name ) {
+            $sorted->add($all->where('name', $name)->first());
         }
 
         return $sorted;

@@ -9,7 +9,8 @@ Most of it's features are provided by addons. Codex is extenable, themeable, hac
 
 
 ## Laravel
-[Codex](#phpdoc:tooltip:Codex\Core\Codex) is a PHP application based on Laravel 5 and can be installed as stand-alone or sub-component in your own (Laravel) project.
+Codex is a PHP application based on Laravel 5 and can be installed as stand-alone or sub-component in your own (Laravel) project.
+[Codex::url](#phpdoc:popover:Codex\Core\Codex::url) can be invoked. 
 [CodexController](#phpdoc:Codex\Core\Http\Controllers\CodexController)
 
 ## Addon based
@@ -24,7 +25,6 @@ As previously mentioned, most of the features are provided by Addons. This makes
 
 ## How it works
 
-#### Flow
 **Codex** > **Projects** > **Versions** > **Documents** > **Filters**
 
 - Codex can provide documentation for multiple projects. 
@@ -32,6 +32,14 @@ As previously mentioned, most of the features are provided by Addons. This makes
 - Documents are passed trough filters, modifying it's content before displaying.
 
 To give you an understanding of filters, lets take the ToC filter as example. It takes all headings in a document and generates a table of content at the start ([example](#)).
+
+### Filters
+Filters can modify the content output of a document. For example, i have the `phpdoc` filter installed here. 
+Check these cool tooltips for example:
+[`CodexController`](#phpdoc:Codex\Core\Http\Controllers\CodexController)
+[`CodexController`](#phpdoc:popover:Codex\Core\Http\Controllers\CodexController)
+[`CodexController::document`](#phpdoc:popover:Codex\Core\Http\Controllers\CodexController::document) tooltip. 
+Easy to use: `[CodexController](#phpdoc:Codex\Core\Http\Controllers\CodexController::document)`.
 
 #### Configurable
 - Codex has many configurable settings to alter the overall working of the application.

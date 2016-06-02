@@ -54,26 +54,39 @@ class CodexServiceProvider extends ServiceProvider
 
     protected $singletons = [
         'codex.addons' => Addons\Addons::class,
+        'codex' => Codex::class
     ];
 
     protected $aliases = [
         'codex.log' => Contracts\Log::class,
+        'codex' => Contracts\Codex::class,
     ];
 
     protected $weaklings = [
         'fs' => \Sebwite\Filesystem\Filesystem::class,
     ];
 
+    /** @var Addons\Addons */
+    protected $addons;
+
+    public function boot()
+    {
+        $app = parent::boot();
+        $this->addons->registerInPath(__DIR__ . '/Addons/Filters');
+        $this->addons->findAndRegisterAll();
+        return $app;
+    }
 
     public function register()
     {
         $app = parent::register();
 
-        $this->app->instance('codex.addons', $addons = Addons\Addons::getInstance());
 
         $this->registerDefaultFilesystem();
 
         $this->registerCodex();
+
+        $this->app->instance('codex.addons', $this->addons = Addons\Addons::getInstance());
 
         $this->registerAssets();
 
@@ -84,8 +97,6 @@ class CodexServiceProvider extends ServiceProvider
         if ( $this->app[ 'config' ][ 'codex.routing.enabled' ] === true ) {
             $this->registerRouting();
         }
-
-        $addons->registerInPath(__DIR__ . '/Addons/Filters');
 
         return $app;
     }
@@ -112,14 +123,14 @@ class CodexServiceProvider extends ServiceProvider
     protected function registerCodex()
     {
 
-        $this->codexHook('constructed', function (Codex $codex) {
+        $this->codexHook('constructed', function (Contracts\Codex $codex) {
             $codex->extend('projects', Projects\Projects::class);
             $codex->extend('menus', Menus\Menus::class);
             $codex->extend('theme', Theme::class);
         });
 
-        $this->share('codex', Codex::class, [ ], true);
-        $this->app->alias('codex', Contracts\Codex::class);
+        #$this->share('codex', Codex::class, [ ], true);
+        #$this->app->alias('codex', Contracts\Codex::class);
 
         $this->codexHook('project:construct', function (Project $project) {
             $project->extend('documents', Documents\Documents::class);
@@ -142,7 +153,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerAssets()
     {
-        $this->codexHook('constructed', function(Codex $codex){
+        $this->codexHook('constructed', function(Contracts\Codex $codex){
             $codex->theme->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [], true);
             $codex->theme->addStylesheet('theme', 'vendor/codex/styles/stylesheet', ['vendor']);
             $codex->theme

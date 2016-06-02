@@ -90,8 +90,6 @@ class Codex implements
         $this->docsDir = config('codex.docs_dir');
         $this->log     = $log;
 
-        $this->addons->findAndRegisterAll();
-
         // 'factory:done' called after all factory operations have completed.
         $this->hookPoint('constructed', [ $this ]);
     }

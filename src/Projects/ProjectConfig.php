@@ -2,9 +2,7 @@
 namespace Codex\Core\Projects;
 
 use ArrayAccess;
-use Codex\Core\Addons\Types\FilterData;
-use Codex\Core\Codex;
-use Codex\Core\Documents\Document;
+use Codex\Core\Contracts\Codex;
 use Codex\Core\Support\Collection;
 use Codex\Core\Traits\CodexTrait;
 use Illuminate\Contracts\Support\Arrayable;

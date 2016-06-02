@@ -36,4 +36,20 @@ class Collection extends \Illuminate\Support\Collection
             return in_array($value, data_get($item, $key, [ ]), true);
         });
     }
+
+    public function forget($keys)
+    {
+        $keys = (array)$keys;
+        foreach ( $keys as $key ) {
+            $segments = explode('.', $key);
+            while ( count($segments) ) {
+                $segment = array_shift($segments);
+                $last    = count($segments) === 0;
+                $item    = &$this->items[ $segment ];
+                if ( $last ) {
+                    unset($item);
+                }
+            }
+        }
+    }
 }
