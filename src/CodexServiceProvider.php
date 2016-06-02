@@ -72,6 +72,7 @@ class CodexServiceProvider extends ServiceProvider
     public function boot()
     {
         $app = parent::boot();
+        $this->bootBladeDirectives();
         $this->addons->registerInPath(__DIR__ . '/Addons/Filters');
         $this->addons->findAndRegisterAll();
         return $app;
@@ -163,5 +164,16 @@ class CodexServiceProvider extends ServiceProvider
         });
     }
 
+    protected function bootBladeDirectives()
+    {
+        //Register the Starting Tag
+        \Blade::directive('spaceless', function() {
+            return '<?php ob_start() ?>';
+        });
+        //Register the Ending Tag
+        \Blade::directive('endspaceless', function() {
+            return "<?php echo preg_replace('/>\\s+</', '><', ob_get_clean()); ?>";
+        });
+    }
 
 }
