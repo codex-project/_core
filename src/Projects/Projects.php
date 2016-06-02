@@ -10,6 +10,7 @@ namespace Codex\Projects;
 
 use Codex\Contracts;
 use Codex\Exception\ProjectNotFoundException;
+use Codex\Support\Collection;
 use Codex\Traits;
 use Sebwite\Filesystem\Filesystem;
 use Sebwite\Support\Path;
@@ -27,7 +28,7 @@ class Projects implements
         Traits\CodexTrait,
         Traits\ContainerTrait;
 
-    /** @var \Illuminate\Support\Collection  */
+    /** @var \Codex\Support\Collection  */
     protected $items;
 
     /** @var Project|null */
@@ -45,7 +46,7 @@ class Projects implements
         $this->setContainer($parent->getContainer());
         $this->setFiles($files);
 
-        $this->items = collect();
+        $this->items = new Collection;
 
         $this->hookPoint('projects:ready', [$this]);
 

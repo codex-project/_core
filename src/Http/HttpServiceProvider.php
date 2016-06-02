@@ -20,7 +20,7 @@ class HttpServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'Codex\Core\Http';
+    protected $namespace = 'Codex\Http';
 
     /**
      * Boot Codex's route service provider.

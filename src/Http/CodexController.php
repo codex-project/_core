@@ -3,7 +3,6 @@ namespace Codex\Http;
 
 use Codex\Contracts\Codex;
 use Codex\Exception\CodexHttpException;
-use Codex\Http\Controllers\Redirect;
 use Codex\Traits\HookableTrait;
 use Illuminate\Contracts\View\Factory as View;
 

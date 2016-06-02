@@ -11,8 +11,6 @@
         "sebwite/filesystem": "1.0.*",
         "illuminate/contracts": "~5.0",
         "herrera-io/version": "~1.1",
-        "erusev/parsedown": "~1.5",
-        "erusev/parsedown-extra": "~0.7",
         "symfony/yaml": "~2.7|~3.0",
         "vierbergenlars/php-semver": "3.0.*",
         "nicmart/tree": "0.2.*",
@@ -25,10 +23,21 @@
         "illuminate/view": "~5.0",
         "illuminate/log": "~5.0",
         "illuminate/cache": "~5.0",
-        "marc-mabe/php-enum": "~2.2"
+        "marc-mabe/php-enum": "~2.2",
+        "erusev/parsedown-extra": "~0.7",
+        "michelf/php-markdown": "~1.6",
+        "cebe/markdown": "~1.1"
+    },
+    "suggest": {
+        "erusev/parsedown-extra": "Enables the parsedown renderer for the markdown filter (~0.7)",
+        "michelf/php-markdown": "Enables the michelf renderer for the markdown filter (~1.6)",
+        "cebe/markdown": "Enables the cebe renderer for the markdown filter (~1.1)"
     },
     "require-dev": {
-        "sebwite/testing": "1.0.*"
+        "sebwite/testing": "1.0.*",
+        "erusev/parsedown-extra": "~0.7",
+        "michelf/php-markdown": "~1.6",
+        "cebe/markdown": "~1.1"
     },
     "autoload": {
         "files": [

@@ -134,8 +134,7 @@ class Menus implements
     public function forget($id)
     {
         $this->hookPoint('menu-factory:forget', [ $this, $id ]);
-        $this->items->forget($id);
-
+        unset($this->items[$id]);
         return $this;
     }
 
