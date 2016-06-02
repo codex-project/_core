@@ -10,8 +10,6 @@ Most of it's features are provided by addons. Codex is extenable, themeable, hac
 
 ## Laravel
 Codex is a PHP application based on Laravel 5 and can be installed as stand-alone or sub-component in your own (Laravel) project.
-[Codex::url](#phpdoc:popover:Codex\Core\Codex::url) can be invoked. 
-[CodexController](#phpdoc:Codex\Core\Http\Controllers\CodexController)
 
 ## Addon based
 As previously mentioned, most of the features are provided by Addons. This makes Codex capable of doing anything you'd like. Here's a few to give you a better picture:
@@ -33,23 +31,31 @@ As previously mentioned, most of the features are provided by Addons. This makes
 
 To give you an understanding of filters, lets take the ToC filter as example. It takes all headings in a document and generates a table of content at the start ([example](#)).
 
-### Filters
+### Customs / extendables
+#### Filters
 Filters can modify the content output of a document. For example, i have the `phpdoc` filter installed here. 
-Check these cool tooltips for example:
-[`CodexController`](#phpdoc:Codex\Core\Http\Controllers\CodexController)
-[`CodexController`](#phpdoc:popover:Codex\Core\Http\Controllers\CodexController)
-[`CodexController::document`](#phpdoc:popover:Codex\Core\Http\Controllers\CodexController::document) tooltip. 
-Easy to use: `[CodexController](#phpdoc:Codex\Core\Http\Controllers\CodexController::document)`.
+The result is awesome:
 
-#### Configurable
+- [`CodexController`](#phpdoc:Codex\Http\CodexController)
+- [`CodexController`](#phpdoc:popover:Codex\Http\CodexController)
+- [`CodexController::document`](#phpdoc:popover:Codex\Http\CodexController::document) tooltip.
+
+Easy to use: `[CodexController::document](#phpdoc:Codex\Http\CodexController::document)`.
+
+#### Hooks
+
+#### Documents
+
+#### Projects
+
+### Configurable
 - Codex has many configurable settings to alter the overall working of the application.
 - Each project has individual configuration using the `config.php`
 - Documents can be configured using Frontmatter or similar attribute configuration methods.  
 - Each filter can be configured both in the project configuration or document attributes.
 
 
-#### Structure
-###### Files
+### File Structure
 ```
 - docs
     - my-awesome-project
