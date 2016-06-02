@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Core\Addons\Filters\Toc;
+namespace Codex\Addons\Filters\Toc;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Tree\Node\Node;

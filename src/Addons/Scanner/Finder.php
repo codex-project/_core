@@ -20,12 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace Codex\Core\Addons\Scanner;
+namespace Codex\Addons\Scanner;
 
+use Codex\Addons\Exception\AnnotationScannerException;
+use Codex\Addons\Exception\UnsupportedMethodCallException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
-use Codex\Core\Addons\Exception\AnnotationScannerException;
-use Codex\Core\Addons\Exception\UnsupportedMethodCallException;
 use Symfony\Component\Finder\Finder as BaseFinder;
 
 /**

@@ -6,7 +6,7 @@
  */
 
 
-namespace Codex\Core\Menus;
+namespace Codex\Menus;
 
 
 class Node extends \Tree\Node\Node
@@ -17,7 +17,7 @@ class Node extends \Tree\Node\Node
     protected $id;
 
     /**
-     * @var \Codex\Core\Menu
+     * @var \Codex\Menu
      */
     protected $menu;
 
@@ -32,10 +32,10 @@ class Node extends \Tree\Node\Node
     protected $attributes;
 
     /**
-     * @param mixed|null       $id
-     * @param \Codex\Core\Menu $menu
-     * @param null             $value
-     * @param array            $children
+     * @param mixed|null  $id
+     * @param \Codex\Menu $menu
+     * @param null        $value
+     * @param array       $children
      */
     public function __construct($id, Menu $menu, $value = null, array $children = [ ])
     {

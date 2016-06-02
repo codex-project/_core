@@ -1,8 +1,8 @@
 <?php
-namespace Codex\Core\Addons;
+namespace Codex\Addons;
 
-use Codex\Core\Addons\Scanner\ClassFileInfo;
-use Codex\Core\Exception\CodexException;
+use Codex\Addons\Scanner\ClassFileInfo;
+use Codex\Exception\CodexException;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
 

@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file
  */
-namespace Codex\Core\Log;
+namespace Codex\Log;
 
-use Codex\Core\Contracts\Log;
+use Codex\Contracts\Log;
 use Illuminate\Log\Writer as BaseWriter;
 use Monolog\Formatter\ChromePHPFormatter;
 use Monolog\Handler\ChromePHPHandler;

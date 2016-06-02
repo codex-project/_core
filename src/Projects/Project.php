@@ -4,11 +4,11 @@
  *
  * License and copyright information bundled with this package in the LICENSE file
  */
-namespace Codex\Core\Projects;
+namespace Codex\Projects;
 
 
-use Codex\Core\Contracts;
-use Codex\Core\Traits;
+use Codex\Contracts;
+use Codex\Traits;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
@@ -24,8 +24,8 @@ use vierbergenlars\SemVer\version;
  * @author         Robin Radic
  * @copyright      Copyright (c) 2015, Robin Radic. All rights reserved
  *
- * @property \Codex\Core\Documents\Documents $documents
- * @property \Codex\Core\Documents\Documents $documents2
+ * @property \Codex\Documents\Documents                  $documents
+ * @property \Codex\Documents\Documents                  $documents2
  * @property \Codex\Addon\Defaults\Phpdoc\PhpdocDocument $getPhpdoc
  *
  */
@@ -104,8 +104,8 @@ class Project implements
     /**
      * Project constructor.
      *
-     * @param \Codex\Core\Projects\Projects                 $projects
-     * @param \Codex\Core\Contracts\Codex|\Codex\Core\Codex $codex
+     * @param \Codex\Projects\Projects                      $projects
+     * @param \Codex\Contracts\Codex|\Codex\Codex           $codex
      * @param \Illuminate\Filesystem\FilesystemManager      $fsm
      * @param \Illuminate\Contracts\Config\Repository       $repository
      * @param \Illuminate\Contracts\Container\Container     $container
@@ -301,7 +301,7 @@ class Project implements
     /**
      * Returns the menu for this project
      *
-     * @return \Codex\Core\Menus\Menu
+     * @return \Codex\Menus\Menu
      */
     public function getSidebarMenu()
     {
@@ -337,7 +337,7 @@ class Project implements
      *
      * @param  string $name
      *
-     * @return \Codex\Core\Project
+     * @return \Codex\Project
      */
     public function setRef($name)
     {
@@ -352,12 +352,12 @@ class Project implements
      * @param array  $items The array converted from yaml
      * @param string $parentId
      *
-     * @return \Codex\Core\Menu
+     * @return \Codex\Menu
      */
     protected function setupSidebarMenu($items, $parentId = 'root')
     {
         /**
-         * @var \Codex\Core\Menus\Menu $menu
+         * @var \Codex\Menus\Menu $menu
          */
         $menu = $this->codex->menus->add('sidebar');
 
@@ -452,7 +452,7 @@ class Project implements
      *
      * @param  string $path
      *
-     * @return \Codex\Core\Project
+     * @return \Codex\Project
      */
     public function setPath($path)
     {
@@ -497,7 +497,7 @@ class Project implements
 
     /**
      * getConfig method
-     * @return \Codex\Core\Projects\ProjectConfig
+     * @return \Codex\Projects\ProjectConfig
      */
     public function getConfig()
     {

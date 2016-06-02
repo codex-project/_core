@@ -6,12 +6,12 @@
  */
 
 
-namespace Codex\Core\Traits;
+namespace Codex\Traits;
 
 
-use Codex\Core\Contracts\Bootable;
-use Codex\Core\Contracts\Hookable;
-use Codex\Core\Exception\ContractMissingException;
+use Codex\Contracts\Bootable;
+use Codex\Contracts\Hookable;
+use Codex\Exception\ContractMissingException;
 
 trait BootableTrait
 {

@@ -42,7 +42,7 @@ return [
     */
     'default_project_config'      => [
         'description' => '',
-        'default'     => \Codex\Core\Projects\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
+        'default'     => \Codex\Projects\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
         'custom'      => null,
         'first'       => '',
         'index'       => 'index',

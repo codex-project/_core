@@ -6,16 +6,15 @@
  */
 
 
-namespace Codex\Core\Documents;
+namespace Codex\Documents;
 
 
-use Codex\Core\Contracts;
-use Codex\Core\Contracts\Codex;
-use Codex\Core\Exception\DocumentNotFoundException;
-use Codex\Core\Projects\Project;
-
-use Codex\Core\Support\Collection;
-use Codex\Core\Traits;
+use Codex\Contracts;
+use Codex\Contracts\Codex;
+use Codex\Exception\DocumentNotFoundException;
+use Codex\Projects\Project;
+use Codex\Support\Collection;
+use Codex\Traits;
 
 class Document implements
     Contracts\Extendable,
@@ -52,7 +51,7 @@ class Document implements
     /**
      * The project instance
      *
-     * @var \Codex\Core\Project
+     * @var \Codex\Project
      */
     protected $project;
 
@@ -66,7 +65,7 @@ class Document implements
     protected $extension;
 
 
-    /** @var \Codex\Core\Support\Collection  */
+    /** @var \Codex\Support\Collection  */
     protected $appliedFilters;
 
 
@@ -75,13 +74,13 @@ class Document implements
     /**
      * Document constructor.
      *
-     * @param \Codex\Core\Contracts\Codex|\Codex\Core\Codex $codex
-     * @param \Codex\Core\Projects\Project                  $project
+     * @param \Codex\Contracts\Codex|\Codex\Codex           $codex
+     * @param \Codex\Projects\Project                       $project
      * @param                                               $type
      * @param                                               $path
      * @param                                               $pathName
      *
-     * @throws \Codex\Core\Exception\DocumentNotFoundException
+     * @throws \Codex\Exception\DocumentNotFoundException
      */
     public function __construct(Codex $codex, Project $project, $path, $pathName)
     {
@@ -285,7 +284,7 @@ class Document implements
     /**
      * Get the document's project.
      *
-     * @return \Codex\Core\Projects\Project
+     * @return \Codex\Projects\Project
      */
     public function getProject()
     {
@@ -307,7 +306,7 @@ class Document implements
 
     /**
      * getAppliedFilters method
-     * @return \Codex\Core\Support\Collection
+     * @return \Codex\Support\Collection
      */
     public function getAppliedFilters()
     {

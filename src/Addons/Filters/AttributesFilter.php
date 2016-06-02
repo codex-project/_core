@@ -1,9 +1,9 @@
 <?php
-namespace Codex\Core\Addons\Filters;
+namespace Codex\Addons\Filters;
 
-use Codex\Core\Addons\Annotations\Filter;
-use Codex\Core\Documents\Document;
-use Codex\Core\Support\Collection;
+use Codex\Addons\Annotations\Filter;
+use Codex\Documents\Document;
+use Codex\Support\Collection;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -32,7 +32,7 @@ class AttributesFilter
     /**
      * handle method
      *
-     * @param \Codex\Core\Documents\Document $document
+     * @param \Codex\Documents\Document $document
      */
     public function handle(Document $document)
     {

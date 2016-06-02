@@ -6,11 +6,11 @@
  */
 
 
-namespace Codex\Core\Menus;
+namespace Codex\Menus;
 
-use Codex\Core\Contracts;
-use Codex\Core\Support\Collection;
-use Codex\Core\Traits;
+use Codex\Contracts;
+use Codex\Support\Collection;
+use Codex\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\View\Factory as ViewFactory;
@@ -68,7 +68,7 @@ class Menu implements
     protected $viewFactory;
 
     /**
-     * @var \Codex\Core\Contracts\Menus\MenuFactory
+     * @var \Codex\Contracts\Menus\MenuFactory
      */
     protected $menus;
 
@@ -81,7 +81,7 @@ class Menu implements
 
 
     /**
-     * @param \Codex\Core\Contracts\Menus\MenuFactory|\Codex\Core\Menus\Menus         $menus
+     * @param \Codex\Contracts\Menus\MenuFactory|\Codex\Menus\Menus                   $menus
      * @param \Illuminate\Contracts\Filesystem\Filesystem|\Sebwite\Support\Filesystem $files
      * @param \Illuminate\Contracts\Cache\Repository                                  $cache
      * @param \Illuminate\Routing\Router                                              $router
@@ -163,7 +163,7 @@ class Menu implements
      * @param array  $meta
      * @param array  $attributes
      *
-     * @return \Codex\Core\Menus\Node
+     * @return \Codex\Menus\Node
      */
     public function add($id, $value, $parent = 'root', array $meta = [ ], array $attributes = [ ])
     {
@@ -201,7 +201,7 @@ class Menu implements
      * @param string     $id
      * @param null|mixed $default
      *
-     * @return \Codex\Core\Components\Menu\Node
+     * @return \Codex\Components\Menu\Node
      */
     public function get($id, $default = null)
     {
@@ -246,7 +246,7 @@ class Menu implements
     /**
      * Get breadcrumbs to the given Node
      *
-     * @param \Codex\Core\Components\Menu\Node $item
+     * @param \Codex\Components\Menu\Node $item
      *
      * @return array
      */
@@ -277,7 +277,7 @@ class Menu implements
      *
      * @param $href
      *
-     * @return \Codex\Core\Components\Menu\Node|null
+     * @return \Codex\Components\Menu\Node|null
      */
     public function findItemByHref($href)
     {

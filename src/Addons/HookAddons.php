@@ -1,8 +1,8 @@
 <?php
-namespace Codex\Core\Addons;
+namespace Codex\Addons;
 
-use Codex\Core\Addons\Annotations\Hook;
-use Codex\Core\Addons\Scanner\ClassFileInfo;
+use Codex\Addons\Annotations\Hook;
+use Codex\Addons\Scanner\ClassFileInfo;
 
 class HookAddons extends AbstractAddonCollection
 {
@@ -11,7 +11,7 @@ class HookAddons extends AbstractAddonCollection
     /**
      * add method
      *
-     * @param \Codex\Core\Addons\Scanner\ClassFileInfo $file
+     * @param \Codex\Addons\Scanner\ClassFileInfo      $file
      * @param                                          $annotation
      * @param string|null                              $method
      */

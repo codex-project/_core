@@ -20,10 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace Codex\Core\Addons\Scanner;
+namespace Codex\Addons\Scanner;
 
+use Codex\Addons\Exception\ClassNotFoundException;
 use Doctrine\Common\Annotations\Reader;
-use Codex\Core\Addons\Exception\ClassNotFoundException;
 
 /**
  * Class ClassInspector

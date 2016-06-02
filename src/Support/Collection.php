@@ -6,7 +6,7 @@
  */
 
 
-namespace Codex\Core\Support;
+namespace Codex\Support;
 
 
 class Collection extends \Illuminate\Support\Collection

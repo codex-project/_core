@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file
  */
-namespace Codex\Core\Traits;
+namespace Codex\Traits;
 
-use Codex\Core\Contracts\Codex;
+use Codex\Contracts\Codex;
 
 /**
  * This is the class ConfigTrait.
@@ -18,13 +18,13 @@ use Codex\Core\Contracts\Codex;
 trait CodexTrait
 {
     /**
-     * @var \Codex\Core\Contracts\Codex|\Codex\Core\Codex
+     * @var \Codex\Contracts\Codex|\Codex\Codex
      */
     protected $codex;
 
     /**
      * getCodex method
-     * @return \Codex\Core\Codex|\Codex\Core\Contracts\Codex
+     * @return \Codex\Codex|\Codex\Contracts\Codex
      */
     public function getCodex()
     {
@@ -34,7 +34,7 @@ trait CodexTrait
     /**
      * Set the codex value
      *
-     * @param \Codex\Core\Contracts\Codex $codex
+     * @param \Codex\Contracts\Codex $codex
      *
      * @return CodexTrait
      */

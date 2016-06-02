@@ -6,12 +6,12 @@
  */
 
 
-namespace Codex\Core\Menus;
+namespace Codex\Menus;
 
 
-use Codex\Core\Contracts;
-use Codex\Core\Support\Collection;
-use Codex\Core\Traits;
+use Codex\Contracts;
+use Codex\Support\Collection;
+use Codex\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\View\Factory as View;
@@ -56,10 +56,10 @@ class Menus implements
     /**
      * Menus constructor.
      *
-     * @param \Codex\Core\Contracts\Codex|\Codex\Core\Codex $parent
-     * @param \Illuminate\Routing\Router                    $router
-     * @param \Illuminate\Contracts\Routing\UrlGenerator    $url
-     * @param \Illuminate\Contracts\View\View               $view
+     * @param \Codex\Contracts\Codex|\Codex\Codex        $parent
+     * @param \Illuminate\Routing\Router                 $router
+     * @param \Illuminate\Contracts\Routing\UrlGenerator $url
+     * @param \Illuminate\Contracts\View\View            $view
      */
     public function __construct(Contracts\Codex $parent, Router $router, Cache $cache, UrlGenerator $url, View $view)
     {
@@ -80,7 +80,7 @@ class Menus implements
      *
      * @param string $id
      *
-     * @return \Codex\Core\Menus\Menu
+     * @return \Codex\Menus\Menu
      */
     public function add($id)
     {
@@ -117,7 +117,7 @@ class Menus implements
      * @param string $id
      * @param null   $default
      *
-     * @return \Codex\Core\Menus\Menu
+     * @return \Codex\Menus\Menu
      */
     public function get($id, $default = null)
     {

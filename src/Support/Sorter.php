@@ -4,10 +4,10 @@
  *
  * MIT License and copyright information bundled with this package in the LICENSE file
  */
-namespace Codex\Core\Support;
+namespace Codex\Support;
 
-use Codex\Core\Contracts\Dependable;
-use Codex\Core\Contracts\Sortable;
+use Codex\Contracts\Dependable;
+use Codex\Contracts\Sortable;
 
 /**
  * This is the Sorter.

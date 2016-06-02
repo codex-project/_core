@@ -1,7 +1,5 @@
 <?php
-namespace Codex\Core\Http\Controllers\API\V1;
-
-use Codex\Core\Http\Controllers\Controller;
+namespace Codex\Http;
 
 class CodexApiController extends ApiController
 {

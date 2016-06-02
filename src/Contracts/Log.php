@@ -1,6 +1,6 @@
 <?php
 
-namespace Codex\Core\Contracts;
+namespace Codex\Contracts;
 
 interface Log
 {

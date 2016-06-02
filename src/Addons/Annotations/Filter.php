@@ -6,7 +6,7 @@
  */
 
 
-namespace Codex\Core\Addons\Annotations;
+namespace Codex\Addons\Annotations;
 
 use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\Common\Annotations\Annotation\Target;

@@ -4,7 +4,7 @@
  *
  * License and copyright information bundled with this package in the LICENSE file
  */
-namespace Codex\Core\Traits;
+namespace Codex\Traits;
 
 /**
  * This is the class ConfigTrait.

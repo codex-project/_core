@@ -5,7 +5,7 @@
  * License and copyright information bundled with this package in the LICENSE file
  */
 
-namespace Codex\Core\Filesystem;
+namespace Codex\Filesystem;
 
 
 use FilesystemIterator;

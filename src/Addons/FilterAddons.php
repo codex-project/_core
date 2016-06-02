@@ -1,11 +1,11 @@
 <?php
-namespace Codex\Core\Addons;
+namespace Codex\Addons;
 
-use Codex\Core\Addons\Annotations\Filter;
-use Codex\Core\Addons\Scanner\ClassFileInfo;
-use Codex\Core\Documents\Document;
-use Codex\Core\Exception\CodexException;
-use Codex\Core\Support\Collection;
+use Codex\Addons\Annotations\Filter;
+use Codex\Addons\Scanner\ClassFileInfo;
+use Codex\Documents\Document;
+use Codex\Exception\CodexException;
+use Codex\Support\Collection;
 
 /**
  * This is the class FilterAddons.

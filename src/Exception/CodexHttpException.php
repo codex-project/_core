@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Core\Exception;
+namespace Codex\Exception;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 

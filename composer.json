@@ -28,19 +28,19 @@
         "marc-mabe/php-enum": "~2.2"
     },
     "require-dev": {
-        "orchestra/testbench": "~3.2"
+        "sebwite/testing": "1.0.*"
     },
     "autoload": {
         "files": [
             "src/helpers.php"
         ],
         "psr-4": {
-            "Codex\\Core\\": "src/"
+            "Codex\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Codex\\Tests\\Core\\": "tests"
+            "Codex\\Tests\\": "tests"
         }
     },
     "extra": {

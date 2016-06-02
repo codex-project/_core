@@ -6,11 +6,11 @@
  */
 
 
-namespace Codex\Core\Projects;
+namespace Codex\Projects;
 
-use Codex\Core\Contracts;
-use Codex\Core\Exception\ProjectNotFoundException;
-use Codex\Core\Traits;
+use Codex\Contracts;
+use Codex\Exception\ProjectNotFoundException;
+use Codex\Traits;
 use Sebwite\Filesystem\Filesystem;
 use Sebwite\Support\Path;
 use Sebwite\Support\Str;
@@ -36,8 +36,8 @@ class Projects implements
     /**
      * Projects constructor.
      *
-     * @param \Codex\Core\Contracts\Codex|\Codex\Core\Codex $parent
-     * @param \Sebwite\Support\Filesystem                   $files
+     * @param \Codex\Contracts\Codex|\Codex\Codex $parent
+     * @param \Sebwite\Support\Filesystem         $files
      */
     public function __construct(Contracts\Codex $parent, Filesystem $files)
     {
@@ -71,7 +71,7 @@ class Projects implements
 
     /**
      * getActive method
-     * @return \Codex\Core\Projects\Project|null
+     * @return \Codex\Projects\Project|null
      */
     public function getActive()
     {
@@ -89,7 +89,7 @@ class Projects implements
             return;
         }
         $this->hookPoint('projects:resolve', [$this]);
-        /** @var \Codex\Core\Menus\Menu $menu */
+        /** @var \Codex\Menus\Menu $menu */
         $menu     = $this->codex->menus->add('projects');
         $finder   = new Finder();
         $projects = $finder
@@ -107,7 +107,7 @@ class Projects implements
             $config = $this->getContainer()->make('fs')->getRequire($projectDir->getRealPath());
             $config = array_replace_recursive($this->getCodex()->config('default_project_config'), $config);
 
-            /** @var \Codex\Core\Projects\Project $project */
+            /** @var \Codex\Projects\Project $project */
             $project = $this->getContainer()->make('codex.project', [
                 'projects' => $this,
                 'name'   => $name,
@@ -183,7 +183,7 @@ class Projects implements
     /**
      * Return all found projects.
      *
-     * @return \Codex\Core\Projects\Project[]
+     * @return \Codex\Projects\Project[]
      */
     public function all()
     {

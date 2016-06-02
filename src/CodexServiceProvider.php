@@ -6,11 +6,11 @@
  */
 
 
-namespace Codex\Core;
+namespace Codex;
 
-use Codex\Core\Log\Writer;
-use Codex\Core\Projects\Project;
-use Codex\Core\Traits\CodexProviderTrait;
+use Codex\Log\Writer;
+use Codex\Projects\Project;
+use Codex\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Filesystem\FilesystemAdapter;
 use League\Flysystem\Filesystem as Flysystem;
@@ -107,7 +107,7 @@ class CodexServiceProvider extends ServiceProvider
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
      *
-     * @return \Codex\Core\Log\Writer
+     * @return \Codex\Log\Writer
      */
     protected function registerLogger()
     {
@@ -148,7 +148,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerRouting()
     {
-        $this->app->register(Http\RouteServiceProvider::class);
+        $this->app->register(Http\HttpServiceProvider::class);
     }
 
     protected function registerAssets()

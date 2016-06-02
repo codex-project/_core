@@ -9,7 +9,7 @@ Filters are..
 
 ```php
 class MyFilter {
-    public function handle(\Codex\Core\Documents\Document $document){
+    public function handle(\Codex\Documents\Document $document){
         
     }
 }

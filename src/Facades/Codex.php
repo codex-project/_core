@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Core\Facades;
+namespace Codex\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

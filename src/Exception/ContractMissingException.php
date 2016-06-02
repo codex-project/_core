@@ -6,7 +6,7 @@
  */
 
 
-namespace Codex\Core\Exception;
+namespace Codex\Exception;
 
 
 class ContractMissingException extends CodexException

@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Core\Addons\Filters\Toc;
+namespace Codex\Addons\Filters\Toc;
 
 class HeaderValue
 {
@@ -84,7 +84,7 @@ class HeaderValue
 
     /**
      * getHeader method
-     * @return \Codex\Core\Addons\Filters\Toc\Header|null
+     * @return \Codex\Addons\Filters\Toc\Header|null
      */
     public function getHeader()
     {

@@ -1,11 +1,11 @@
 <?php
-namespace Codex\Core\Addons;
+namespace Codex\Addons;
 
-use Codex\Core\Addons\Scanner\ClassFileInfo;
-use Codex\Core\Addons\Scanner\ClassInspector;
-use Codex\Core\Addons\Scanner\Scanner;
-use Codex\Core\Exception\CodexException;
-use Codex\Core\Support\Collection;
+use Codex\Addons\Scanner\ClassFileInfo;
+use Codex\Addons\Scanner\ClassInspector;
+use Codex\Addons\Scanner\Scanner;
+use Codex\Exception\CodexException;
+use Codex\Support\Collection;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Sebwite\Filesystem\Filesystem;
@@ -14,7 +14,7 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class AddonScanner
 {
-    /** @var \Codex\Core\Support\Collection */
+    /** @var \Codex\Support\Collection */
     protected $manifest;
 
     /** @var string */

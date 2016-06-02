@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Core\Exception;
+namespace Codex\Exception;
 
 class ManifestNotFoundException extends CodexException
 {

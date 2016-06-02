@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Core\Exception;
+namespace Codex\Exception;
 
 class ManifestParseException extends CodexException
 {

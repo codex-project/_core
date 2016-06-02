@@ -6,16 +6,16 @@
  */
 
 
-namespace Codex\Core\Documents;
+namespace Codex\Documents;
 
 
 use Closure;
-use Codex\Core\Contracts;
-use Codex\Core\Contracts\Codex;
-use Codex\Core\Exception\CodexException;
-use Codex\Core\Exception\DocumentNotFoundException;
-use Codex\Core\Projects\Project;
-use Codex\Core\Traits;
+use Codex\Contracts;
+use Codex\Contracts\Codex;
+use Codex\Exception\CodexException;
+use Codex\Exception\DocumentNotFoundException;
+use Codex\Projects\Project;
+use Codex\Traits;
 
 class Documents implements
     Contracts\Documents,
@@ -30,7 +30,7 @@ class Documents implements
     protected $items;
 
     /**
-     * @var \Codex\Core\Projects\Project
+     * @var \Codex\Projects\Project
      */
     protected $project;
 
@@ -48,7 +48,7 @@ class Documents implements
     /**
      * all method
      *
-     * @return \Codex\Core\Document[]
+     * @return \Codex\Document[]
      */
     public function all()
     {
@@ -61,7 +61,7 @@ class Documents implements
      * @param string $pathName
      *
      * @return Document
-     * @throws \Codex\Core\Exception\DocumentNotFoundException
+     * @throws \Codex\Exception\DocumentNotFoundException
      */
     public function get($pathName = '')
     {

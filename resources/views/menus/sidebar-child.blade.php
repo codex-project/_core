@@ -1,4 +1,4 @@
-<?php /** @var \Codex\Core\Menus\Menu[] $items */ ?>
+<?php /** @var \Codex\Menus\Menu[] $items */ ?>
 @foreach($items as $item)
     <li class="{{ $item->hasChildren() ? 'with-sub-menu' : '' }}">
         @if($item->hasChildren())

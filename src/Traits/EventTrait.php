@@ -6,7 +6,7 @@
  */
 
 
-namespace Codex\Core\Traits;
+namespace Codex\Traits;
 
 
 use Illuminate\Contracts\Events\Dispatcher;

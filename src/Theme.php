@@ -1,13 +1,13 @@
 <?php
-namespace Codex\Core;
+namespace Codex;
 
-use Codex\Core\Contracts\Codex as CodexContract;
-use Codex\Core\Contracts\Extendable;
-use Codex\Core\Contracts\Hookable;
-use Codex\Core\Support\Collection;
-use Codex\Core\Support\Sorter;
-use Codex\Core\Traits\ExtendableTrait;
-use Codex\Core\Traits\HookableTrait;
+use Codex\Contracts\Codex as CodexContract;
+use Codex\Contracts\Extendable;
+use Codex\Contracts\Hookable;
+use Codex\Support\Collection;
+use Codex\Support\Sorter;
+use Codex\Traits\ExtendableTrait;
+use Codex\Traits\HookableTrait;
 use Sebwite\Support\Str;
 
 class Theme implements
@@ -20,25 +20,25 @@ class Theme implements
     /** @var Collection */
     protected $data;
 
-    /** @var \Codex\Core\Contracts\Codex|\Codex\Core\Codex */
+    /** @var \Codex\Contracts\Codex|\Codex\Codex */
     protected $codex;
 
-    /** @var \Codex\Core\Support\Collection */
+    /** @var \Codex\Support\Collection */
     protected $javascripts;
 
-    /** @var \Codex\Core\Support\Collection */
+    /** @var \Codex\Support\Collection */
     protected $stylesheets;
 
-    /** @var \Codex\Core\Support\Collection */
+    /** @var \Codex\Support\Collection */
     protected $scripts;
 
-    /** @var \Codex\Core\Support\Collection */
+    /** @var \Codex\Support\Collection */
     protected $styles;
 
     /**
      * Theme constructor.
      *
-     * @param \Codex\Core\Contracts\Codex|\Codex\Core\Codex $parent
+     * @param \Codex\Contracts\Codex|\Codex\Codex $parent
      */
     public function __construct(CodexContract $parent)
     {
@@ -87,7 +87,7 @@ class Theme implements
      * @param array $depends
      * @param bool  $external
      *
-     * @return \Codex\Core\Theme
+     * @return \Codex\Theme
      */
     public function addStylesheet($name, $src, array $depends = [ ], $external = false)
     {
@@ -108,7 +108,7 @@ class Theme implements
 
     /**
      * data method
-     * @return \Codex\Core\Support\Collection
+     * @return \Codex\Support\Collection
      */
     public function data()
     {
@@ -117,7 +117,7 @@ class Theme implements
 
     /**
      * Get the javascripts collection
-     * @return \Codex\Core\Support\Collection
+     * @return \Codex\Support\Collection
      */
     public function javascripts()
     {
@@ -126,7 +126,7 @@ class Theme implements
 
     /**
      * Get the stylesheets collection
-     * @return \Codex\Core\Support\Collection
+     * @return \Codex\Support\Collection
      */
     public function stylesheets()
     {
@@ -135,7 +135,7 @@ class Theme implements
 
     /**
      * styles method
-     * @return \Codex\Core\Support\Collection
+     * @return \Codex\Support\Collection
      */
     public function styles()
     {
@@ -144,7 +144,7 @@ class Theme implements
 
     /**
      * scripts method
-     * @return \Codex\Core\Support\Collection
+     * @return \Codex\Support\Collection
      */
     public function scripts()
     {
@@ -231,7 +231,7 @@ class Theme implements
      *
      * @param array|Collection $all
      *
-     * @return \Codex\Core\Support\Collection
+     * @return \Codex\Support\Collection
      */
     protected function sorter($all = [ ])
     {

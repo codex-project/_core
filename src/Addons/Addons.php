@@ -1,9 +1,9 @@
 <?php
-namespace Codex\Core\Addons;
+namespace Codex\Addons;
 
 use BadMethodCallException;
-use Codex\Core\Addons\Annotations;
-use Codex\Core\Addons\Scanner\ClassFileInfo;
+use Codex\Addons\Annotations;
+use Codex\Addons\Scanner\ClassFileInfo;
 use Illuminate\Container\Container;
 use Illuminate\Support\Traits\Macroable;
 use Sebwite\Filesystem\Filesystem;
@@ -35,16 +35,16 @@ class Addons
     /** @var Addons */
     static protected $instance;
 
-    /** @var \Codex\Core\Support\Collection */
+    /** @var \Codex\Support\Collection */
     protected $filters;
 
-    /** @var \Codex\Core\Support\Collection */
+    /** @var \Codex\Support\Collection */
     protected $themes;
 
-    /** @var \Codex\Core\Support\Collection */
+    /** @var \Codex\Support\Collection */
     protected $hooks;
 
-    /** @var \Codex\Core\Support\Collection */
+    /** @var \Codex\Support\Collection */
     protected $defaults;
 
     /** @var \Sebwite\Filesystem\Filesystem */

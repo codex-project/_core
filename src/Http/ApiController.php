@@ -1,21 +1,21 @@
 <?php
-namespace Codex\Core\Http\Controllers\API\V1;
+namespace Codex\Http;
 
-use Codex\Core\Projects\Project;
+use Codex\Projects\Project;
 use Illuminate\Routing\Controller;
 
 class ApiController extends Controller
 {
-    /** @var \Codex\Core\Codex */
+    /** @var \Codex\Codex */
     protected $codex;
 
-    /** @var \Codex\Core\Addons\Addons */
+    /** @var \Codex\Addons\Addons */
     protected $addons;
 
-    /** @var \Codex\Core\Projects\Projects */
+    /** @var \Codex\Projects\Projects */
     protected $projects;
 
-    /** @var \Codex\Core\Menus\Menus */
+    /** @var \Codex\Menus\Menus */
     protected $menus;
 
     /** @var Project */

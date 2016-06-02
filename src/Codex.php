@@ -6,12 +6,12 @@
  */
 
 
-namespace Codex\Core;
+namespace Codex;
 
 
-use Codex\Core\Contracts;
-use Codex\Core\Projects\Project;
-use Codex\Core\Traits;
+use Codex\Contracts;
+use Codex\Projects\Project;
+use Codex\Traits;
 use Herrera\Version\Parser;
 use Herrera\Version\Version;
 use Illuminate\Contracts\Cache\Repository as Cache;
@@ -24,10 +24,10 @@ use Illuminate\Filesystem\Filesystem;
  *
  * @package        Codex\Core
  * @author         Sebwite
- * @property-read \Codex\Core\Addons\Addons     $addons
- * @property-read \Codex\Core\Projects\Projects $projects
- * @property-read \Codex\Core\Menus\Menus       $menus
- * @property-read \Codex\Core\Theme             $theme
+ * @property-read \Codex\Addons\Addons     $addons
+ * @property-read \Codex\Projects\Projects $projects
+ * @property-read \Codex\Menus\Menus       $menus
+ * @property-read \Codex\Theme             $theme
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
  *
  *
@@ -52,7 +52,7 @@ class Codex implements
     /**
      * The codex log writer instance
      *
-     * @var \Codex\Core\Contracts\Log
+     * @var \Codex\Contracts\Log
      */
     protected $log;
 
@@ -77,7 +77,7 @@ class Codex implements
      * @param \Illuminate\Contracts\Container\Container $container The container instance
      * @param \Illuminate\Filesystem\Filesystem         $files     The filesystem instance
      * @param \Illuminate\Contracts\Cache\Repository    $cache     The cache instance
-     * @param \Codex\Core\Contracts\Log                 $log       The log instance
+     * @param \Codex\Contracts\Log                      $log       The log instance
      *
      */
     public function __construct(Container $container, Filesystem $files, Cache $cache, Contracts\Log $log)

@@ -1,9 +1,10 @@
 <?php
-namespace Codex\Core\Http\Controllers;
+namespace Codex\Http;
 
-use Codex\Core\Contracts\Codex;
-use Codex\Core\Exception\CodexHttpException;
-use Codex\Core\Traits\HookableTrait;
+use Codex\Contracts\Codex;
+use Codex\Exception\CodexHttpException;
+use Codex\Http\Controllers\Redirect;
+use Codex\Traits\HookableTrait;
 use Illuminate\Contracts\View\Factory as View;
 
 /**
@@ -21,8 +22,8 @@ class CodexController extends Controller
     /**
      * CodexController constructor.
      *
-     * @param \Codex\Core\Contracts\Codex|\Codex\Core\Codex $codex
-     * @param \Illuminate\Contracts\View\Factory            $view
+     * @param \Codex\Contracts\Codex|\Codex\Codex $codex
+     * @param \Illuminate\Contracts\View\Factory  $view
      */
     public function __construct(Codex $codex, View $view)
     {

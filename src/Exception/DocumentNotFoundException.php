@@ -6,10 +6,10 @@
  */
 
 
-namespace Codex\Core\Exception;
+namespace Codex\Exception;
 
-use Codex\Core\Documents\Document;
-use Codex\Core\Projects\Project;
+use Codex\Documents\Document;
+use Codex\Projects\Project;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DocumentNotFoundException extends \Exception

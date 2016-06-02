@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Core\Traits;
+namespace Codex\Traits;
 
 use Sebwite\Support\ServiceProvider;
 
@@ -35,7 +35,7 @@ trait CodexProviderTrait
 
     /**
      * codex method
-     * @return \Codex\Core\Codex
+     * @return \Codex\Codex
      */
     protected function codex()
     {
@@ -44,10 +44,10 @@ trait CodexProviderTrait
 
     /**
      * addons method
-     * @return \Codex\Core\Addons\Addons
+     * @return \Codex\Addons\Addons
      */
     protected function codexAddons()
     {
-        return \Codex\Core\Addons\Addons::getInstance();
+        return \Codex\Addons\Addons::getInstance();
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Core\Console;
+namespace Codex\Console;
 
 class CodexConsoleTrait
 {

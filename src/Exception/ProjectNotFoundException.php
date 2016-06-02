@@ -6,9 +6,9 @@
  */
 
 
-namespace Codex\Core\Exception;
+namespace Codex\Exception;
 
-use Codex\Core\Projects\Project;
+use Codex\Projects\Project;
 
 class ProjectNotFoundException extends CodexException
 {

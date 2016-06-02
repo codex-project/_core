@@ -1,10 +1,10 @@
 <?php
-namespace Codex\Core\Projects;
+namespace Codex\Projects;
 
 use ArrayAccess;
-use Codex\Core\Contracts\Codex;
-use Codex\Core\Support\Collection;
-use Codex\Core\Traits\CodexTrait;
+use Codex\Contracts\Codex;
+use Codex\Support\Collection;
+use Codex\Traits\CodexTrait;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use JsonSerializable;
@@ -67,8 +67,8 @@ class ProjectConfig implements ArrayAccess, Arrayable, JsonSerializable, Jsonabl
     /**
      * ProjectConfig constructor.
      *
-     * @param \Codex\Core\Codex $codex
-     * @param Arrayable|array   $config
+     * @param \Codex\Codex    $codex
+     * @param Arrayable|array $config
      */
     public function __construct(Codex $codex, $config)
     {

@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Core\Addons\Exception;
+namespace Codex\Addons\Exception;
 
 class AddonProviderException extends \Exception
 {
