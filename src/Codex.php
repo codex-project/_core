@@ -10,6 +10,7 @@ namespace Codex;
 
 
 use Codex\Contracts;
+use Codex\Log\Writer;
 use Codex\Projects\Project;
 use Codex\Traits;
 use Herrera\Version\Parser;
@@ -20,7 +21,7 @@ use Illuminate\Filesystem\Filesystem;
 
 
 /**
- * This is the class Codex.
+ * This is the main Codex factory. It gives access to several sub-components and helper functions.
  *
  * @package        Codex\Core
  * @author         Sebwite
@@ -29,7 +30,7 @@ use Illuminate\Filesystem\Filesystem;
  * @property-read \Codex\Menus\Menus       $menus
  * @property-read \Codex\Theme             $theme
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
- *
+ * @hookPoint      constructed
  *
  */
 class Codex implements
@@ -99,7 +100,7 @@ class Codex implements
      *
      * @param string     $viewName The namespaced name of the view
      * @param array|null $data     (optional) The view data array
-     * @param string     $appendTo
+     * @param string     $appendTo (optional) The view to attach this to
      *
      * @return Codex
      */
@@ -156,22 +157,30 @@ class Codex implements
     /**
      * Writes a log message to the codex log file
      *
-     * @param       $level
-     * @param       $message
-     * @param array $context
+     * @param string $level   The log level
+     * @param string $message The message to log
+     * @param array  $context (optional) The context to log
      */
     public function log($level, $message, $context = [ ])
     {
         $this->log->log($level, $message, $context);
     }
 
+    /**
+     * Returns a Codex view name
+     *
+     * @param string $name The simple name
+     *
+     * @return string The namespaced view name
+     */
     public function view($name)
     {
         return $this->addons->view($name);
     }
 
     /**
-     * getLaravelVersion method
+     * Get laravel's version wrapped in a Version object
+     *
      * @return Version
      */
     public function getLaravelVersion()
@@ -180,7 +189,7 @@ class Codex implements
     }
 
     /**
-     * Get root directory.
+     * The path to the directory where all documentation projects reside
      *
      * @return string
      */
@@ -204,7 +213,7 @@ class Codex implements
      *
      * @param  \Illuminate\Cache\CacheManager $cache
      *
-     * @return Factory
+     * @return Codex
      */
     public function setCache($cache)
     {
@@ -214,9 +223,9 @@ class Codex implements
     }
 
     /**
-     * get log value
+     * Get the log instance
      *
-     * @return Log
+     * @return Writer
      */
     public function getLog()
     {
@@ -226,9 +235,9 @@ class Codex implements
     /**
      * Set the log value
      *
-     * @param Log $log
+     * @param Writer|mixed $log The log instance to replace
      *
-     * @return Factory
+     * @return Codex
      */
     public function setLog($log)
     {

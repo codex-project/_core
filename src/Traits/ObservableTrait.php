@@ -10,11 +10,12 @@ namespace Codex\Traits;
 
 
 /**
- * This is the class ObservableTrait.
+ * The ObservableTrait allows the class to be observed using the observer pattern. Requires the EventTrait to be present as well.
  *
  * @package        Codex\Core
  * @author         Robin Radic
  * @copyright      Copyright (c) 2015, Robin Radic. All rights reserved
+ * @see            \Codex\Traits\EventTrait The event trait is also required
  */
 trait ObservableTrait
 {
@@ -43,7 +44,7 @@ trait ObservableTrait
     /**
      * Get the observable event names.
      *
-     * @return array
+     * @return array The event names that can be observed
      */
     public function getObservableEvents()
     {
@@ -52,8 +53,6 @@ trait ObservableTrait
 
     /**
      * Remove all of the event listeners for the model.
-     *
-     * @return void
      */
     public function flushEventListeners()
     {
@@ -65,11 +64,10 @@ trait ObservableTrait
     }
 
     /**
-     * Add an observable event name.
+     * Adds one or more observable event names
      *
-     * @param  array|mixed $observables
+     * @param  array|string ...$observables The observable event names
      *
-     * @return void
      */
     public function addObservableEvents($observables)
     {

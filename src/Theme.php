@@ -35,6 +35,9 @@ class Theme implements
     /** @var \Codex\Support\Collection */
     protected $styles;
 
+    /** @var array  */
+    protected $bodyClass = [ ];
+
     /**
      * Theme constructor.
      *
@@ -69,7 +72,7 @@ class Theme implements
      * @param array $depends
      * @param bool  $external
      *
-     * @return $this
+     * @return \Codex\Theme
      */
     public function addJavascript($name, $src, array $depends = [ ], $external = false)
     {
@@ -97,13 +100,36 @@ class Theme implements
         return $this;
     }
 
+    /**
+     * addScript method
+     *
+     * @param       $name
+     * @param       $value
+     * @param array $depends
+     * @param array $attr
+     *
+     * @return Theme
+     */
     public function addScript($name, $value, array $depends = [ ], array $attr = [ ])
     {
         $this->scripts->set($name, compact('name', 'value', 'depends', 'attr'));
+        return $this;
     }
+
+    /**
+     * addStyle method
+     *
+     * @param       $name
+     * @param       $value
+     * @param array $depends
+     * @param array $attr
+     *
+     * @return Theme
+     */
     public function addStyle($name, $value, array $depends = [ ], array $attr = [ ])
     {
         $this->styles->set($name, compact('name', 'value', 'depends', 'attr'));
+        return $this;
     }
 
     /**
@@ -149,6 +175,49 @@ class Theme implements
     public function scripts()
     {
         return $this->sorter($this->scripts);
+    }
+
+    /**
+     * addBodyClass method
+     *
+     * @param string|array $class
+     */
+    public function addBodyClass($class)
+    {
+        $classes = is_array($class) ? $class : explode(' ', $class);
+        foreach ( $classes as $c ) {
+            if ( $this->hasBodyClass($c) === false ) {
+                $this->bodyClass[] = $c;
+            }
+        }
+    }
+
+    public function setBodyClass($val)
+    {
+        $this->bodyClass = $val;
+        return $this;
+    }
+
+    public function getBodyClass()
+    {
+        return $this->bodyClass;
+    }
+
+    public function renderBodyClass()
+    {
+        return implode(' ', $this->bodyClass);
+    }
+
+    public function hasBodyClass($class)
+    {
+        return in_array($class, $this->bodyClass, true);
+    }
+
+    public function removeBodyClass($classes)
+    {
+        $classes = is_array($classes) ? $classes : explode(' ', $classes);
+        $this->bodyClass = array_diff($this->bodyClass, $classes);
+        return $this;
     }
 
     /**
@@ -224,8 +293,10 @@ class Theme implements
         $this->stylesheets = new Collection;
         $this->scripts     = new Collection;
         $this->styles      = new Collection;
+        $this->body        = new Collection;
         return $this;
     }
+
     /**
      * sortAssets method
      *

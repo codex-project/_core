@@ -26,7 +26,7 @@
         @include('codex::partials.breadcrumb')
     @show
 
-    <article class="content @yield('articleClass', '')">
+    <article class="content @yield('articleClass', '')" data-layout="article">
         @yield('content')
     </article>
 @endpush
@@ -36,7 +36,7 @@
     <a href="#" class="scrollToTop"></a>
     @show
     @section('footer')
-    <footer class="main">
+    <footer class="main" data-layout="footer">
         <p>Copyright &copy; {{ config('codex.display_name') }}.</p>
     </footer>
     @show

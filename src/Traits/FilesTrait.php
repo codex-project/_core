@@ -7,7 +7,7 @@
 namespace Codex\Traits;
 
 /**
- * This is the class ConfigTrait.
+ * The FilesTrait provides get/set methods for a Filesystem instance.
  *
  * @package        Codex\Core
  * @author         Docit
@@ -18,7 +18,7 @@ trait FilesTrait
     protected $files;
 
     /**
-     * Get all files for the given project.
+     * Get the filesystem instance.
      *
      * @return \Illuminate\Contracts\Filesystem\Filesystem
      */
@@ -28,9 +28,9 @@ trait FilesTrait
     }
 
     /**
-     * setFiles method
+     * Set the filesystem instance
      *
-     * @param $files
+     * @param mixed|string|\Illuminate\Contracts\Filesystem\Filesystem $files The filesystem instance
      *
      * @return $this
      */

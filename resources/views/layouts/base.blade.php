@@ -13,7 +13,7 @@
 
     @stack('meta')
 
-    {!! codex('theme')->renderData() !!}
+    {!! codex()->theme->renderData() !!}
 
     @stack('stylesheets')
 
@@ -21,7 +21,7 @@
 
 </head>
 
-<body class="@yield('bodyClass', '')">
+<body class="{{ codex()->theme->renderBodyClass() }}">
 
 @section('body')
 
@@ -36,7 +36,7 @@
     </aside>
 
     <nav>
-        <ul>
+        <ul data-layout="breadcrumbs">
             @section('breadcrumb')
                 <li><a href="{{ route('codex.index') }}">Home</a><i class="fa fa-arrow-right"></i></li>
             @show

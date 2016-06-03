@@ -13,6 +13,14 @@ use Codex\Contracts\Bootable;
 use Codex\Contracts\Hookable;
 use Codex\Exception\ContractMissingException;
 
+/**
+ * The BootableTrait works similar to Eloquent Models. The traits that are added can include a bootTraitName function which will be called on initialisation of the object. Requires the EventTrait to be present aswell.
+ *
+ * @package        Codex\Traits
+ * @author         CLI
+ * @copyright      Copyright (c) 2015, CLI. All rights reserved
+ * @see \Codex\Traits\EventTrait The required EventTrait
+ */
 trait BootableTrait
 {
 
@@ -21,7 +29,7 @@ trait BootableTrait
     /**
      * Check if the model needs to be booted and if so, do it.
      *
-     * @return void
+     * @throws \Codex\Exception\ContractMissingException
      */
     protected function bootIfNotBooted()
     {
@@ -46,7 +54,7 @@ trait BootableTrait
     }
 
     /**
-     * The "booting" method of the model.
+     * The "boot" method of the model.
      *
      * @return void
      */
@@ -79,11 +87,22 @@ trait BootableTrait
         static::$booted = [ ];
     }
 
+    /**
+     * The wakeup magic method is used to boot the bootable stuff
+     * @throws \Codex\Exception\ContractMissingException
+     */
     public function __wakeup()
     {
         $this->bootIfNotBooted();
     }
 
+    /**
+     * Register a listener for the "booting" event of this class
+     *
+     * @param string|\Closure $callback
+     *
+     * @return string The class name
+     */
     public static function booting($callback)
     {
         static::registerEventListener('booting', $callback);
@@ -91,6 +110,13 @@ trait BootableTrait
         return static::class;
     }
 
+    /**
+     * Register a listener for the "booted" event of this class
+     *
+     * @param string|\Closure $callback
+     *
+     * @return string The class name
+     */
     public static function booted($callback)
     {
         static::registerEventListener('booted', $callback);

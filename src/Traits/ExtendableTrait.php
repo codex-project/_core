@@ -23,17 +23,34 @@ trait ExtendableTrait
 
     protected $extensionInstances = [ ];
 
+    /**
+     * Returns all registered extensions for this class
+     * @return array The registered extensions for this class
+     */
     public function extensions()
     {
         return array_merge(array_keys($this->getExtenableProperty('macros')), array_keys($this->getExtenableProperty('extensions')));
     }
 
+    /**
+     * This will return the property. It checks if the property name exists and will return it. If it doesn't exist, it will return the property prefixed with _ (underscore)
+     *
+     * @param string $type The property name
+     *
+     * @return mixed
+     */
     public function &getExtenableProperty($type)
     {
         $property = property_exists($this, $type) ? $type : "_{$type}";
         return $this->{$property};
     }
 
+    /**
+     * Extend the class with a class or method.
+     *
+     * @param string          $name      The name to register the extension under
+     * @param string|\Closure $extension The extension that should be used
+     */
     public function extend($name, $extension)
     {
         if ( is_string($extension) && !Str::contains($extension, '@') ) {
@@ -50,16 +67,16 @@ trait ExtendableTrait
     }
 
     /**
-     * callExtension method
+     * Calls a macro extension (method) with the given parameters
      *
-     * @private
+     * @internal
      *
-     * @param $name
-     * @param $parameters
+     * @param string $name       The name of the macro
+     * @param array  $parameters The optional parameters
      *
      * @return mixed
      */
-    protected function callMacro($name, $parameters)
+    protected function callMacro($name, $parameters = [ ])
     {
         $callback = $this->getExtenableProperty('macros')[ $name ];
 
@@ -72,16 +89,16 @@ trait ExtendableTrait
 
 
     /**
-     * callClassBasedExtension method
+     * Calls a macro extension that has been defined with a `Class[at]method` notation. This enabled dependency injection in the constructor of the extension.
      *
-     * @private
+     * @internal
      *
-     * @param $callback
-     * @param $parameters
+     * @param string $callback   The fqn class method string to call
+     * @param array  $parameters The optional parameters
      *
      * @return mixed
      */
-    protected function callClassBasedMacro($callback, $parameters)
+    protected function callClassBasedMacro($callback, $parameters = [ ])
     {
         list($class, $method) = explode('@', $callback);
         $instance = $this->getContainer()->make($class, [
@@ -92,11 +109,11 @@ trait ExtendableTrait
     }
 
     /**
-     * getClassInstanceExtension method
+     * This will return the instance of a class extension or otherwise instanciate it. It will only instantiate once then keeps it in memory.
      *
-     * @param $name
+     * @param string $name The name of the extension
      *
-     * @private
+     * @internal
      *
      * @return mixed
      */
@@ -115,6 +132,14 @@ trait ExtendableTrait
         }
     }
 
+    /**
+     * Allows macro extensions to be called
+     *
+     * @param string $name   The name of the extension
+     * @param array  $params The optional parameters
+     *
+     * @return mixed
+     */
     public function __call($name, array $params = [ ])
     {
         if ( array_key_exists($name, $this->getExtenableProperty('macros')) ) {
@@ -123,6 +148,13 @@ trait ExtendableTrait
         throw new BadMethodCallException("Method [$name] does not exist.");
     }
 
+    /**
+     * Allows class extensions to return it's value.
+     *
+     * @param string $name The name of the extension
+     *
+     * @return mixed
+     */
     public function __get($name)
     {
         if ( array_key_exists($name, $this->getExtenableProperty('extensions')) ) {

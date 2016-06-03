@@ -89,7 +89,7 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->app->instance('codex.addons', $this->addons = Addons\Addons::getInstance());
 
-        $this->registerAssets();
+        $this->registerTheme();
 
         $log = $this->registerLogger();
 
@@ -152,15 +152,21 @@ class CodexServiceProvider extends ServiceProvider
         $this->app->register(Http\HttpServiceProvider::class);
     }
 
-    protected function registerAssets()
+    protected function registerTheme()
     {
         $this->codexHook('constructed', function(Contracts\Codex $codex){
+            /** @var \Codex\Codex|\Codex\Contracts\Codex $codex */
             $codex->theme->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [], true);
             $codex->theme->addStylesheet('theme', 'vendor/codex/styles/stylesheet', ['vendor']);
             $codex->theme
                 ->addJavascript('vendor', 'vendor/codex/scripts/vendor')
                 ->addJavascript('codex', 'vendor/codex/scripts/codex', ['vendor'])
                 ->addJavascript('theme', 'vendor/codex/scripts/theme', ['codex']);
+            $codex->theme->addBodyClass('docs language-php');
+            $codex->theme->addScript('theme', <<<JS
+codex.theme.init();
+JS
+);
         });
     }
 

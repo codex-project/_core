@@ -7,7 +7,7 @@
 namespace Codex\Traits;
 
 /**
- * This is the class ConfigTrait.
+ * The ConfigTrait provides a class with a config method to request the set config. Also provides getter/setter for that.
  *
  * @package        Codex\Core
  * @author         Docit
