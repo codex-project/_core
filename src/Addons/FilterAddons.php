@@ -48,6 +48,9 @@ class FilterAddons extends AbstractAddonCollection
             );
             $instance->{$annotation->config} = new Collection($config);
         }
+        if(property_exists($instance, 'codex')){
+            $instance->codex = $document->getCodex();
+        }
         $this->app->call([$instance, $annotation->method], compact('document'));
     }
 

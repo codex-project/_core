@@ -26,7 +26,10 @@ class MarkdownFilter
         'renderer'  => 'Codex\Addons\Filters\Markdown\CodexMarkdownRenderer',
         'parsedown' => [
             'fenced_code_lang_class' => 'hljs lang-{LANG}',
-        ]
+        ],
+        'codex'     => [ ],
+        'cebe'      => [ ],
+        'php'       => [ ],
     ];
 
 
@@ -59,7 +62,7 @@ class MarkdownFilter
         app()->bind($binding, $this->config->get('renderer', Markdown\ParsedownRenderer::class));
         /** @var Markdown\RendererInterface $renderer */
         $renderer = app()->make($binding);
-        if ( ! $renderer instanceof $binding ) {
+        if ( !$renderer instanceof $binding ) {
             throw new \ErrorException("Renderer [{$renderer}] does not implement [{$binding}]");
         }
         if ( $this->config->has($renderer->getName()) ) {

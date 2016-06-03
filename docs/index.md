@@ -3,6 +3,10 @@ title: Overview
 subtitle: Codex Documentation   
 -->
 
+# Codex Documentation
+
+## Introduction
+
 Codex can be considered as a documentation reading application. Though, you'll notice it does quite a few things more then simply showing it.
 It can do things like transforming markdown or fetching documentation from a Bitbucket/Github repository whenever you push and much more.
 Most of it's features are provided by addons. Codex is extenable, themeable, hackable and simple to setup and use.
@@ -11,15 +15,8 @@ Most of it's features are provided by addons. Codex is extenable, themeable, hac
 ## Laravel
 Codex is a PHP application based on Laravel 5 and can be installed as stand-alone or sub-component in your own (Laravel) project.
 
-## Addon based
-As previously mentioned, most of the features are provided by Addons. This makes Codex capable of doing anything you'd like. Here's a few to give you a better picture:
-
-| Name     | Description                                                                                                |
-|:---------|:-----------------------------------------------------------------------------------------------------------|
-| Markdown | Enables Markdown support. It can use any Markdown PHP library using a simple interface                     |
-| Git      | Make a project pull it's documentation from Github or Bitbucket. Manually or automatically using a webhook |
-| Phpdoc   | Integrate PHPDoc into your project.                                                                        |
-
+## Documentation
+Head over to [codex-project.ninja](http://codex-project.ninja) for the full documentation (starting with this document) to get started.
 
 ## How it works
 
@@ -33,14 +30,30 @@ To give you an understanding of filters, lets take the ToC filter as example. It
 
 ### Customs / extendables
 #### Filters
-Filters can modify the content output of a document. For example, i have the `phpdoc` filter installed here. 
-The result is awesome:
+Filters can modify the content output of a document. 
 
-- [`CodexController`](#phpdoc:Codex\Http\CodexController)
-- [`CodexController`](#phpdoc:popover:Codex\Http\CodexController)
-- [`CodexController::document`](#phpdoc:popover:Codex\Http\CodexController::document) tooltip.
+##### Example: phpdoc
+- Mouse hover on the examples.
+- When clicked, takes you to the given documentation
 
-Easy to use: `[CodexController::document](#phpdoc:Codex\Http\CodexController::document)`.
+| Example                                                                             | Code                                                                                |
+|:------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------|
+| [`CodexController`](#phpdoc:Codex\Http\CodexController)                             | `[CodexController](#phpdoc:Codex\Http\CodexController)`                             |
+| [`CodexController`](#phpdoc:popover:Codex\Http\CodexController)                     | `[CodexController](#phpdoc:popover:Codex\Http\CodexController)`                     |
+| [`CodexController::document`](#phpdoc:popover:Codex\Http\CodexController::document) | `[CodexController::document](#phpdoc:popover:Codex\Http\CodexController::document)` |
+
+Simply adding to the project's `config.php` file:
+```php
+return [
+    'filters' => ['phpdoc' ], # replaces links in documents, as the above example shows
+    'phpdoc' => [
+        # enables the addon
+        # transforms phpdoc's structure.xml
+        # adds a menu item to the project (configurable)
+        'enabled' => true 
+    ]
+]
+```
 
 #### Hooks
 

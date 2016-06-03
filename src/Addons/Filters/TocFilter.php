@@ -18,6 +18,9 @@ use Illuminate\Contracts\View\Factory;
  */
 class TocFilter
 {
+    /** @var \Codex\Codex */
+    public $codex;
+
     /** @var Collection|array */
     public $config = [
         'disable'           => [ 1 ],
@@ -34,7 +37,6 @@ class TocFilter
 
     protected $slugs = [ ];
 
-
     /**
      * TocFilter constructor.
      *
@@ -49,7 +51,6 @@ class TocFilter
     {
         $content         = $document->getContent();
         $total           = preg_match_all($this->config[ 'regex' ], $content, $matches);
-        $headerLinkClass = $this->config[ 'header_link_class' ];
 //         create root
 //         for each header
 //         create node
@@ -93,8 +94,11 @@ class TocFilter
                 $slug = $this->makeSlug($text)
             );
 
-            $link        = $this->createHeaderLink($slug);
-            $replacement = "<h{$size}>{$link}{$text}</h{$size}>";
+            $link = '';
+            if ( $this->config[ 'header_link_show' ] === true ) {
+                $link = "<p><a name=\"{$slug}\" class=\"{$this->config['header_link_class']}\"></a></p>";
+            }
+            $replacement = "{$link}<h{$size}>{$text}</h{$size}>";
             $content     = str_replace($original, $replacement, $content);
 
             $prevSize = $size;
@@ -106,21 +110,13 @@ class TocFilter
             ->with('items', $rootNode->getChildren())
             ->render();
 
+        $this->addScript();
         $document->setContent("<ul class=\"{$this->config['list_class']}\">{$toc}</ul>".$content);
     }
 
     protected function createHeaderNode($size, $text)
     {
         return Header::make($size, $text);
-    }
-
-    protected function createHeaderLink($slug)
-    {
-        $text = '';
-        if ( $this->config[ 'header_link_show' ] === true ) {
-            $text = $this->config[ 'header_link_text' ];
-        }
-        return "<a name=\"{$slug}\" class=\"{$this->config['header_link_class']}\">{$text}</a>";
     }
 
     protected function isAllowedHeader($header)
@@ -135,5 +131,21 @@ class TocFilter
             return $this->makeSlug($text . '_' . str_random(1));
         }
         return $this->slugs[] = $slug;
+    }
+
+    protected function addScript()
+    {
+        $this->codex->theme->addScript('toc', <<<JS
+    $(function(){
+
+      $('.docs-wrapper').find('a[name]').each(function () {
+        var self = $(this);
+        var anchor = $('<a href="#' + this.name + '"/>').addClass(self.attr('class'));
+        self.attr('class', '');
+        $(this).parent().next('h2, h3, h4, h5, h6').wrapInner(anchor);
+      });
+    });
+JS
+        );
     }
 }
