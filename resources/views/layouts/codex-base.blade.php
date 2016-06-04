@@ -14,6 +14,7 @@
 <link rel="apple-touch-icon" href="{{ asset('vendor/codex/favicon.png') }}">
 @endpush
 
+
 @push('styles')
     {!! codex()->theme->renderStyles(); !!}
 @endpush
