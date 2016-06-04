@@ -41,10 +41,13 @@ return [
 php artisan vendor:publish --provider=Codex\Addon\Git\GitServiceProvider
 ```
 
-4. Alter the `config/services.php` file to include your connections
-The Git addon uses `sebwite/git` for API communication. 
-5. Refer to its documentation to learn more about the available `auth` methods available. 
-6. For example, both Bitbucket and Github can be configured to use BASIC auth. 
+### Configuration
+
+#### Service
+Alter the `config/services.php` file to include your connections. An example is shown below.
+
+> The Git addon uses `sebwite/git` for API communication. Refer to its documentation to learn more about the available authentication methods available.
+ 
 ```php
 return [
     // ...
@@ -59,40 +62,76 @@ return [
         'key'    => env('BITBUCKET_KEY', ''),
         'secret' => env('BITBUCKET_SECRET', '')
     ],
+    'bitbucket2' => [
+        'driver'      => 'bitbucket',
+        'auth'   => Sebwite\Git\Manager::AUTH_BASIC,
+        'key'    => env('BITBUCKET_KEY2', ''),
+        'secret' => env('BITBUCKET_SECRET2', '')
+    ],
 ]; 
 ```
 
-### Configuration
+#### Project
+A example of a projects git addon configuration. 
+```php
+return [
+    'display_name' => 'Codex',
+    'filters' => [
+        'enabled' => [ 'attributes', 'markdown', 'toc', 'replace_header', 'phpdoc', 'doctags' ],
+    ],
+    'git' => [
+        'enabled'    => true,
+        'owner'      => 'codex-project',
+        'repository' => 'core',
+        'connection' => 'github',           // github, bitbucket, bitbucket2
+        'sync'       => [
+            'constraints' => [
+                'branches' => [ 'master' ],
+                'versions' => '>=2.0.0',    // '1.x || >=2.5.0 || 5.0.0 - 7.2.3' (aka tags) 
+            ],
+            'paths'       => [
+                'docs'  => 'docs',
+                'menu'  => 'docs/menu.yml',
+                'index' => 'docs/index.md',
+            ],
+        ],
+        'webhook'    => [
+            'enabled' => true,
+            'secret'  => 'asorR#2jopwr'   // required for github only
+        ],
+    ],
+];
+```
 
-## Usage in project
+## Commands
+#### codex:git:sync
+This will sync the project with Codex
 
-## Javascript 
-```javascript
-$.phpdoc.api
+`php artisan codex:git:sync {projectName?}`
+
+## Webhook
+Working. Just need to finish this documentation..
 
 ## Ajax/REST API
 
 **Example URL:**
 GET `http://localhost/phpdoc/<project>/<version>/<endpoint>?param=value`
 
-
-### Endpoints
-
-#### entity
+##### entity
 - entity (string) 
 
-#### list
+##### list
 - full (boolean, optional, default=false)
  
-#### tree
+##### tree
 - full (boolean, optional, default=false)
 
-#### source
+##### source
 - entity (string)
 
-#### doc
+##### doc
 - entity (string)
 
-#### popover
+##### popover
 - name (string)
 
