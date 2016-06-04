@@ -179,16 +179,6 @@ class Codex implements
     }
 
     /**
-     * Get laravel's version wrapped in a Version object
-     *
-     * @return Version
-     */
-    public function getLaravelVersion()
-    {
-        return Parser::toVersion(app()->version());
-    }
-
-    /**
      * The path to the directory where all documentation projects reside
      *
      * @return string

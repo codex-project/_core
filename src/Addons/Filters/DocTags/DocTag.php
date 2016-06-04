@@ -78,7 +78,7 @@ class DocTag
 
         if ( preg_match_all('/^(\'|\")(.*?)(\'|\")$/', $arg, $matches) > 0 )
         {
-            return $matches[2][0];
+            return $matches[ 2 ][ 0 ];
         }
         elseif ( $arg === 'true' || $arg === 'false' )
         {
@@ -88,9 +88,9 @@ class DocTag
         {
             return (int)$arg;
         }
-        elseif(class_exists((string) $arg))
+        elseif ( class_exists((string)$arg) )
         {
-            return app((string) $arg);
+            return app((string)$arg);
         }
         else
         {
@@ -100,31 +100,37 @@ class DocTag
 
     protected function getCallable()
     {
-        if($this->handler instanceof Closure)
+        if ( $this->handler instanceof Closure )
         {
             return $this->handler;
         }
         else
         {
             // assuming its a @ string
-            list($class, $method) = explode('@', (string) $this->handler);
+            list($class, $method) = explode('@', (string)$this->handler);
             $instance = app()->make($class);
             return [ $instance, $method ];
         }
     }
 
+    public function canRun()
+    {
+        return $this->raw && $this->cleaned && $this->handler && $this->tag;
+    }
+
     public function run()
     {
-        if ( $this->raw && $this->cleaned && $this->handler && $this->tag )
+        if ( $this->canRun() )
         {
-            $content = $this->document->getContent();
-            $arguments = array_merge([$this->isClosing()], $this->arguments);
-            $result = call_user_func_array($this->getCallable(), $arguments);
-            $content = preg_replace('/' . preg_quote($this->raw, '/') . '/', $result, $content, 1);
+            $content   = $this->document->getContent();
+            $arguments = array_merge([ $this->isClosing() ], $this->arguments);
+            $result    = call_user_func_array($this->getCallable(), $arguments);
+            $content   = preg_replace('/' . preg_quote($this->raw, '/') . '/', $result, $content, 1);
             $this->document->setContent($content);
-        } else
+        }
+        else
         {
-            throw CodexException::because('DocTag cannot call because some properties havent been set');
+            throw CodexException::because('DocTag cannot call because some properties havent been set. Prevent the DocTag from running by using the canRun() method.');
         }
     }
 }

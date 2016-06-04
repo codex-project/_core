@@ -1,7 +1,7 @@
 {
     "name": "codex/core",
     "description": "The core package for codex. This is the minimum required package to get codex up and running.",
-    "keywords": ["framework", "laravel", "documentation", "docs", "markdown", "codex"],
+    "keywords": ["laravel", "documentation", "docs", "markdown", "codex"],
     "homepage": "http://codex-project.ninja",
     "authors": [{"name": "Robin Radic", "email": "robin@radic.nl"}],
     "license": "MIT",
@@ -10,34 +10,26 @@
         "sebwite/support": "2.0.*",
         "sebwite/filesystem": "1.0.*",
         "illuminate/contracts": "~5.0",
-        "herrera-io/version": "~1.1",
         "symfony/yaml": "~2.7|~3.0",
         "vierbergenlars/php-semver": "3.0.*",
         "nicmart/tree": "0.2.*",
         "radic/blade-extensions": "~6.2.3",
-        "myclabs/php-enum": "~1.4",
-        "symfony/config": "~3.0",
         "doctrine/common": "~2.6",
         "doctrine/annotations": "~1.2",
         "vlucas/phpdotenv": "^2.2",
         "illuminate/view": "~5.0",
         "illuminate/log": "~5.0",
         "illuminate/cache": "~5.0",
-        "marc-mabe/php-enum": "~2.2",
-        "erusev/parsedown-extra": "~0.7",
-        "michelf/php-markdown": "~1.6",
         "cebe/markdown": "~1.1"
     },
     "suggest": {
         "erusev/parsedown-extra": "Enables the parsedown renderer for the markdown filter (~0.7)",
-        "michelf/php-markdown": "Enables the michelf renderer for the markdown filter (~1.6)",
-        "cebe/markdown": "Enables the cebe renderer for the markdown filter (~1.1)"
+        "michelf/php-markdown": "Enables the michelf renderer for the markdown filter (~1.6)"
     },
     "require-dev": {
         "sebwite/testing": "1.0.*",
         "erusev/parsedown-extra": "~0.7",
-        "michelf/php-markdown": "~1.6",
-        "cebe/markdown": "~1.1"
+        "michelf/php-markdown": "~1.6"
     },
     "autoload": {
         "files": [

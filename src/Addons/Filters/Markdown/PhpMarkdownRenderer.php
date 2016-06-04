@@ -51,6 +51,6 @@ class PhpMarkdownRenderer implements RendererInterface
 
     public function getName()
     {
-        return 'michelf';
+        return 'phpmarkdown';
     }
 }
