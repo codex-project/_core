@@ -2,35 +2,39 @@
 
 
 return [
-    'display_name'                => env('CODEX_DISPLAY_NAME', 'Codex'),
-    'docs_dir'                    => env('CODEX_ROOT_DIR', base_path('resources/docs')),
-    'default_project'             => env('CODEX_DEFAULT_PROJECT', 'codex'),
-    'routing'                     => [
+    'display_name'    => env('CODEX_DISPLAY_NAME', 'Codex'),
+    'docs_dir'        => env('CODEX_ROOT_DIR', base_path('resources/docs')),
+    'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
+    'routing'         => [
         'enabled'              => true,
         'base_route'           => env('CODEX_BASE_ROUTE', 'codex'),
         'ignore_project_names' => [
             '_debugbar',
         ],
     ],
-    'log'                         => [
+    'log'             => [
         'enabled' => true,
         'path'    => storage_path('logs/codex.log'),
     ],
-    'dev'                         => [
+    'dev'             => [
         'enabled'      => env('CODEX_DEV_ENABLED', false),
         'debugbar'     => true,
         'log_handlers' => true,
         'print_events' => true,
     ],
-    'stubs_path'                  => __DIR__ . '/../resources/stubs',
-   # 'theme'                       => 'default', // null, 'laravel', 'angular', 'material'
-    'manifest_path'               => storage_path('codex.json'),
-    'extensions'                  => [
+    'stubs_path'      => __DIR__ . '/../resources/stubs',
+    # 'theme'                       => 'default', // null, 'laravel', 'angular', 'material'
+    'manifest_path'   => storage_path('codex.json'),
+    'extensions'      => [
         'md'       => 'codex.document',
         'markdown' => 'codex.document',
         'html'     => 'codex.document',
     ],
 
+    'doctags'                     => [
+        'table:responsive' => 'Codex\Addons\Filters\DocTags\Table@responsive',
+        'general:hide' => 'Codex\Addons\Filters\DocTags\General@hide',
+    ],
     /*
     |--------------------------------------------------------------------------
     | Default Project Configuration
@@ -66,7 +70,7 @@ return [
         'author'          => 'John Doe',
         'title'           => '',
         'subtitle'        => '',
-        'view'        => null,
+        'view'            => null,
         'disable_filters' => [ ],
         'filters'         => [
         ],

@@ -15,8 +15,10 @@ Most of it's features are provided by addons. Codex is extenable, themeable, hac
 ## Laravel
 Codex is a PHP application based on Laravel 5 and can be installed as stand-alone or sub-component in your own (Laravel) project.
 
+<!--*codex:general:hide*-->
 ## Documentation
 Head over to [codex-project.ninja](http://codex-project.ninja) for the full documentation (starting with this document) to get started.
+<!--*codex:/general:hide*-->
 
 ## How it works
 
@@ -36,11 +38,15 @@ Filters can modify the content output of a document.
 - Mouse hover on the examples.
 - When clicked, takes you to the given documentation
 
+<!--*codex:table:responsive(123, 'hello', true)*-->
+
 | Example                                                                             | Code                                                                                |
 |:------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------|
 | [`CodexController`](#phpdoc:Codex\Http\CodexController)                             | `[CodexController](#phpdoc:Codex\Http\CodexController)`                             |
 | [`CodexController`](#phpdoc:popover:Codex\Http\CodexController)                     | `[CodexController](#phpdoc:popover:Codex\Http\CodexController)`                     |
 | [`CodexController::document`](#phpdoc:popover:Codex\Http\CodexController::document) | `[CodexController::document](#phpdoc:popover:Codex\Http\CodexController::document)` |
+
+<!--*codex:/table:responsive*-->
 
 Simply adding to the project's `config.php` file:
 ```php

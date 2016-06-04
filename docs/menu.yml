@@ -1,10 +1,11 @@
 menu:
-  - name: Overview
-    document: index
-
   - name: Getting started
     icon: fa fa-eye
     children:
+
+      - name: Overview
+        document: index
+
       - name: Installation
         document: getting-started/installation
 
@@ -42,6 +43,28 @@ menu:
 
       - name: PHPDoc
         document: addons/phpdoc
+
+
+  - name: Filters
+    icon: fa fa-puzzle-piece
+    children:
+      - name: Markdown
+        document: filters/markdown
+
+      - name: PHPDoc
+        document: filters/phpdoc
+
+      - name: Attributes
+        document: filters/attributes
+
+      - name: Doctags
+        document: filters/doctags
+
+      - name: ToC
+        document: filters/toc
+
+      - name: Replace header
+        document: filters/replace-header
 
 
   - name: Develop
