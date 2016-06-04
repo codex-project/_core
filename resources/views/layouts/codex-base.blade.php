@@ -44,6 +44,7 @@
 
 @stop
 
+
 @push('scripts')
 <script>
     codex.init();
