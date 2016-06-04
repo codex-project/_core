@@ -1,1 +1,96 @@
-var __extends=this&&this.__extends||function(a,b){function c(){this.constructor=a}for(var d in b)b.hasOwnProperty(d)&&(a[d]=b[d]);a.prototype=null===b?Object.create(b):(c.prototype=b.prototype,new c)},codex;!function(a){var b;!function(b){!function(a){a[a.DEFAULT=0]="DEFAULT",a[a.WIDE=1]="WIDE",a[a.SMALL=2]="SMALL"}(b.LayoutMode||(b.LayoutMode={}));var c=b.LayoutMode,d=function(a){function b(){var b=this;a.call(this),this.$mode="default",this.$window=$(window),this.$document=$(document),this.$body=$("body"),this.$head=$("head"),$(function(){return b.setElements("nav","sidebar","wrapper","article","footer","breadcrumbs")}),this.bindEvents();var c=$(".docs article");$(function(){return c.hasClass("loaded")===!1&&c.addClass("loaded")})}return __extends(b,a),b.prototype.setElements=function(){for(var a=this,b=[],c=0;c<arguments.length;c++)b[c-0]=arguments[c];b.forEach(function(b){return a["$"+b]=$('[data-layout="'+b+'"]')})},b.prototype.$=function(a){return this.$body.find(a)},b.prototype.setLayoutMode=function(a){a===c.DEFAULT||a===c.SMALL||a===c.WIDE},b.prototype.hideSidebar=function(){this.$body.ensureClass("sidebar-closed")},b.prototype.showSidebar=function(){this.$body.removeClass("sidebar-closed")},b.prototype.bindEvents=function(){var a=this;this.$body.on("click",'a[data-action="sidebar-toggle"]',function(b){a.toggleSidebar()})},b.prototype.toggleSidebar=function(){this.$body.hasClass("sidebar-closed")?this.showSidebar():this.hideSidebar()},b}(a.util.EventEmitter);b.Layout=d}(b=a.theme||(a.theme={}))}(codex||(codex={}));var codex;!function(a){var b;!function(a){function b(){a.layout=new a.Layout}a.init=b}(b=a.theme||(a.theme={}))}(codex||(codex={}));
+var codex;
+(function (codex) {
+    var theme;
+    (function (theme) {
+        (function (LayoutMode) {
+            LayoutMode[LayoutMode["DEFAULT"] = 0] = "DEFAULT";
+            LayoutMode[LayoutMode["WIDE"] = 1] = "WIDE";
+            LayoutMode[LayoutMode["SMALL"] = 2] = "SMALL";
+        })(theme.LayoutMode || (theme.LayoutMode = {}));
+        var LayoutMode = theme.LayoutMode;
+        var Layout = (function () {
+            function Layout() {
+                this.$mode = 'default';
+                this.$window = $(window);
+                this.$document = $(document);
+                this.$body = $('body');
+                this.$head = $('head');
+                console.log('asdf', this);
+                this.setElements('nav', 'sidebar', 'wrapper', 'article', 'footer', 'breadcrumbs');
+                this.bindEvents();
+            }
+            Layout.prototype.setElements = function () {
+                var _this = this;
+                var elems = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    elems[_i - 0] = arguments[_i];
+                }
+                elems.forEach(function (elem) { return _this['$' + elem] = $('[data-layout="' + elem + '"]'); });
+            };
+            Layout.prototype.$ = function (sel) {
+                return this.$body.find(sel);
+            };
+            Layout.prototype.setLayoutMode = function (mode) {
+                if (mode === LayoutMode.DEFAULT) {
+                }
+                else if (mode === LayoutMode.SMALL) {
+                }
+                else if (mode === LayoutMode.WIDE) {
+                }
+            };
+            Layout.prototype.hideSidebar = function () {
+                this.$body.ensureClass('sidebar-closed');
+            };
+            Layout.prototype.showSidebar = function () {
+                this.$body.removeClass('sidebar-closed');
+            };
+            Layout.prototype.bindEvents = function () {
+                var _this = this;
+                console.log('bindEvents');
+                this.$body.on('click', 'a[data-action="sidebar-toggle"]', function (event) {
+                    _this.toggleSidebar();
+                });
+                $(function () {
+                    console.log('bindEvents2');
+                    _this.$article.hasClass('loaded') === false && _this.$article.addClass('loaded');
+                    $(window).scroll(function () {
+                        console.log('scor');
+                        if ($(this).scrollTop() > 100) {
+                            $('.scrollToTop').fadeIn();
+                        }
+                        else {
+                            $('.scrollToTop').fadeOut();
+                        }
+                    });
+                    $('.scrollToTop').click(function () {
+                        $('html, body').animate({ scrollTop: 0 }, 800);
+                        return false;
+                    });
+                });
+            };
+            Layout.prototype.toggleSidebar = function () {
+                if (this.$body.hasClass('sidebar-closed')) {
+                    this.showSidebar();
+                }
+                else {
+                    this.hideSidebar();
+                }
+            };
+            return Layout;
+        }());
+        theme.Layout = Layout;
+    })(theme = codex.theme || (codex.theme = {}));
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
+    var theme;
+    (function (theme) {
+        function init() {
+            theme.layout = new theme.Layout();
+            console.log('initing', theme.layout);
+        }
+        theme.init = init;
+        console.log('sdfsdf');
+    })(theme = codex.theme || (codex.theme = {}));
+})(codex || (codex = {}));
+//# sourceMappingURL=theme.js.map

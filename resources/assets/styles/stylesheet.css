@@ -4928,7 +4928,7 @@ footer.main .dropdown-menu {
   color: #444444;
   text-decoration: none;
   position: fixed;
-  bottom: 15px;
+  bottom: 7px;
   right: 15px;
   background: whiteSmoke;
   display: none;
@@ -4939,7 +4939,7 @@ footer.main .dropdown-menu {
   text-decoration: none;
 }
 
-@media (max-width: 720px) {
+@media (900px) {
   body .scrollToTop {
     width: 48px;
     height: 56px;

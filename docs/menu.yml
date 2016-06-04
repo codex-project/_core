@@ -14,6 +14,9 @@ menu:
       - name: Using addons
         document: getting-started/using-addons
 
+      - name: API Documentation
+        document: phpdoc
+
 
   - name: Preview pages
     icon: fa fa-eye
