@@ -25,11 +25,16 @@ if (!function_exists('version')) {
 if (!function_exists('codex')) {
     /**
      * codex method
+     *
+     * @param null|string $ext
+     *
      * @return \Codex\Codex
      */
     function codex($ext = null)
     {
+        /** @var \Codex\Codex $codex */
         $codex = app('codex');
+
         if($ext === null){
             return $codex;
         }

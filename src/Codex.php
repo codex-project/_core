@@ -29,7 +29,7 @@ use Illuminate\Filesystem\Filesystem;
  * @property-read \Codex\Menus\Menus       $menus    The menus instance
  * @property-read \Codex\Addon\Auth\Auth   $auth     The auth addon instance
  * @property-read \Codex\Theme             $theme    The theme instance
- * @property-read \Codex\Theme             $theme    The theme instance
+ * @property-read \Codex\Theme             $theme2    The theme instance
  *
  *
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
@@ -96,27 +96,25 @@ class Codex implements
         $this->log     = $log;
 
 
-
-
-
         // 'factory:done' called after all factory operations have completed.
         $this->hookPoint('constructed', [ $this ]);
     }
 
     /**
-     * Add a view to a view stack
+     * Push a view to a stack
      *
-     * @param string     $viewName The namespaced name of the view
-     * @param array|null $data     (optional) The view data array
-     * @param string     $appendTo (optional) The view to attach this to
+     * @param string     $stackName The name of the stack
+     * @param string     $viewName  The namespaced name of the view
+     * @param array|null $data      (optional) The view data array
+     * @param string     $appendTo  (optional) The view to attach this to
      *
      * @return Codex
      */
-    public function stack($viewName, $data = null, $appendTo = 'codex::layouts.default')
+    public function pushToStack($stackName, $viewName, $data = null, $appendTo = 'codex::layouts.default')
     {
-        $this->container->make('events')->listen('composing: ' . $appendTo, function ($view) use ($viewName, $data)
+        $this->container->make('events')->listen('composing: ' . $appendTo, function ($view) use ($stackName, $viewName, $data)
         {
-            /** @var \Illuminate\Contracts\View\View $view */
+            /** @var \Illuminate\View\View $view */
 
             if ( $data instanceof \Closure )
             {
@@ -131,7 +129,9 @@ class Codex implements
             {
                 throw new \InvalidArgumentException("appendSectionsView data is not a array");
             }
-            $view->getFactory()->make($viewName, $data)->render();
+
+            $content = $view->getFactory()->make($viewName, $data)->render();
+            $view->getFactory()->startPush($stackName, $content);
         });
 
         return $this;

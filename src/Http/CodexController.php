@@ -59,7 +59,8 @@ class CodexController extends Controller
     public function document($projectSlug, $ref = null, $path = '')
     {
         // get project
-        if ( !$this->codex->projects->has($projectSlug) ) {
+        if ( !$this->codex->projects->has($projectSlug) )
+        {
             throw CodexHttpException::projectNotFound($projectSlug);
         }
         $project = $this->codex->projects->get($projectSlug);
@@ -70,7 +71,8 @@ class CodexController extends Controller
 
 
         // get ref (version)
-        if ( is_null($ref) ) {
+        if ( is_null($ref) )
+        {
             $ref = $project->getDefaultRef();
         }
         $project->setRef($ref);
@@ -78,28 +80,38 @@ class CodexController extends Controller
 
 
         // get document
-        if ( !$project->documents->has($path) ) {
+        if ( !$project->documents->has($path) )
+        {
             throw CodexHttpException::documentNotFound($path);
         }
         $document = $project->documents->get($path);
+
         $res      = $this->hookPoint('controller:document', [ $document, $this->codex, $project ]);
+        if ( $res )
+        {
+            return $res;
+        }
 
 
         // prepare view
         $content    = $document->render();
         $breadcrumb = $document->getBreadcrumb();
-
-
-
         $view = $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
+
         $res  = $this->hookPoint('controller:view', [ $view, $this->codex, $project, $document ]);
+        if ( $res )
+        {
+            return $res;
+        }
+
         $this->dbg();
         return $view;
     }
 
     public function dbg()
     {
-        if ( app()->bound('debugbar') ) {
+        if ( app()->bound('debugbar') )
+        {
             $d = app('debugbar');
             $c = $this->codex;
             $d->addMessage($c->config());
@@ -108,7 +120,8 @@ class CodexController extends Controller
 
     public function markdown()
     {
-        if ( !request()->has('code') ) {
+        if ( !request()->has('code') )
+        {
             return abort(500, 'You did not provide the [code]');
         }
         $code = request()->get('code');

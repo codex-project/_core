@@ -14,4 +14,9 @@ class CodexHttpException extends HttpException
     {
         return new static($nr, '[Project Not Found] ' . $msg);
     }
+
+    public static function authDriverNotSupported($msg = '', $nr = 500)
+    {
+        return new static($nr, '[Auth Driver Not Supported] ' . $msg);
+    }
 }

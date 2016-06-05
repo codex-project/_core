@@ -18,6 +18,15 @@ trait CodexProviderTrait
         $this->codexAddons()->mergeDefaultProjectConfig($config, $method);
     }
 
+    /**
+     * addons method
+     * @return \Codex\Addons\Addons
+     */
+    protected function codexAddons()
+    {
+        return \Codex\Addons\Addons::getInstance();
+    }
+
     protected function codexDocumentAttributes($config, $method = 'array_replace_recursive')
     {
         $this->codexAddons()->mergeDefaultDocumentAttributes($config, $method);
@@ -39,15 +48,19 @@ trait CodexProviderTrait
      */
     protected function codex()
     {
-        return $this->app['codex'];
+        return $this->app[ 'codex' ];
     }
 
     /**
-     * addons method
-     * @return \Codex\Addons\Addons
+     * Register or gets a view name
+     *
+     * @param string            $key
+     * @param null|string|array $value
+     *
+     * @return string|null
      */
-    protected function codexAddons()
+    protected function codexView($key, $value = null)
     {
-        return \Codex\Addons\Addons::getInstance();
+        return $this->codexAddons()->view($key, $value);
     }
 }
