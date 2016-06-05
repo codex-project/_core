@@ -13,8 +13,6 @@ use Codex\Contracts;
 use Codex\Log\Writer;
 use Codex\Projects\Project;
 use Codex\Traits;
-use Herrera\Version\Parser;
-use Herrera\Version\Version;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Filesystem\Filesystem;
@@ -25,10 +23,15 @@ use Illuminate\Filesystem\Filesystem;
  *
  * @package        Codex\Core
  * @author         Sebwite
- * @property-read \Codex\Addons\Addons     $addons
- * @property-read \Codex\Projects\Projects $projects
- * @property-read \Codex\Menus\Menus       $menus
- * @property-read \Codex\Theme             $theme
+ *
+ * @property-read \Codex\Addons\Addons     $addons   The addons instance
+ * @property-read \Codex\Projects\Projects $projects The projects instance
+ * @property-read \Codex\Menus\Menus       $menus    The menus instance
+ * @property-read \Codex\Addon\Auth\Auth   $auth     The auth addon instance
+ * @property-read \Codex\Theme             $theme    The theme instance
+ * @property-read \Codex\Theme             $theme    The theme instance
+ *
+ *
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
  * @hookPoint      constructed
  *
@@ -45,7 +48,8 @@ class Codex implements
         Traits\BootableTrait,
 
         Traits\FilesTrait,
-        Traits\ConfigTrait {
+        Traits\ConfigTrait
+    {
         Traits\ExtendableTrait::__get as ___get;
     }
 
@@ -91,6 +95,10 @@ class Codex implements
         $this->docsDir = config('codex.docs_dir');
         $this->log     = $log;
 
+
+
+
+
         // 'factory:done' called after all factory operations have completed.
         $this->hookPoint('constructed', [ $this ]);
     }
@@ -106,16 +114,21 @@ class Codex implements
      */
     public function stack($viewName, $data = null, $appendTo = 'codex::layouts.default')
     {
-        $this->container->make('events')->listen('composing: ' . $appendTo, function ($view) use ($viewName, $data) {
+        $this->container->make('events')->listen('composing: ' . $appendTo, function ($view) use ($viewName, $data)
+        {
             /** @var \Illuminate\Contracts\View\View $view */
 
-            if ( $data instanceof \Closure ) {
+            if ( $data instanceof \Closure )
+            {
                 $data = $this->container->call($data, [ $this ]);
                 $data = is_array($data) ? $data : [ ];
-            } elseif ( $data === null ) {
+            }
+            elseif ( $data === null )
+            {
                 $data = [ ];
             }
-            if ( !is_array($data) ) {
+            if ( !is_array($data) )
+            {
                 throw new \InvalidArgumentException("appendSectionsView data is not a array");
             }
             $view->getFactory()->make($viewName, $data)->render();
@@ -137,9 +150,11 @@ class Codex implements
     {
         $uri = $this->config('base_route');
 
-        if ( !is_null($project) ) {
+        if ( !is_null($project) )
+        {
 
-            if ( !$project instanceof Project ) {
+            if ( !$project instanceof Project )
+            {
                 $project = $this->projects->get($project);
             }
 
@@ -239,7 +254,8 @@ class Codex implements
 
     public function __get($name)
     {
-        if ( $name === 'addons' ) {
+        if ( $name === 'addons' )
+        {
             return $this->container->make('codex.addons');
         }
         return $this->___get($name);

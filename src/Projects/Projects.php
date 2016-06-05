@@ -101,8 +101,6 @@ class Projects implements
             ->followLinks();
 
         foreach ($projects as $projectDir) {
-            # Make project
-
             /** @var \SplFileInfo $projectDir */
             $name   = Path::getDirectoryName($projectDir->getPath());
             $config = $this->getContainer()->make('fs')->getRequire($projectDir->getRealPath());
