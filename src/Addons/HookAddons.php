@@ -40,7 +40,7 @@ class HookAddons extends AbstractAddonCollection
                 $class = $listener;
             }
             $instance = $this->app->build($class);
-            call_user_func_array([ $instance, $method ], func_get_args());
+            return call_user_func_array([ $instance, $method ], func_get_args());
         });
     }
 

@@ -100,6 +100,11 @@ class Codex implements
         $this->hookPoint('constructed', [ $this ]);
     }
 
+    public function error($title, $text, $code = 500, $goBack = true)
+    {
+        return response(view($this->view('error'), compact('title', 'text', 'goBack'))->render(), $code);
+    }
+
     /**
      * Push a view to a stack
      *
@@ -259,6 +264,7 @@ class Codex implements
             return $this->container->make('codex.addons');
         }
         return $this->___get($name);
+
     }
 
 }

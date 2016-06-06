@@ -62,6 +62,7 @@ class Projects implements
         }
         $this->activeProject = $project;
         $this->resolveProjectSidebarMenu($project);
+        $this->codex->menus->get('projects')->setAttribute('title', $project->getDisplayName());
         $this->hookPoint('projects:active', [ $project ]);
     }
 
@@ -92,6 +93,8 @@ class Projects implements
         $this->hookPoint('projects:resolve', [$this]);
         /** @var \Codex\Menus\Menu $menu */
         $menu     = $this->codex->menus->add('projects');
+        $menu->setAttribute('title', 'Pick...');
+        $menu->setAttribute('subtitle', 'project');
         $finder   = new Finder();
         $projects = $finder
             ->in($this->getCodex()->getDocsDir())

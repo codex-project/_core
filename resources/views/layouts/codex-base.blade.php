@@ -6,22 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 @endpush
 
-@push('stylesheets')
-<!--[if lte IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-{!! codex()->theme->renderStylesheets() !!}
-<link rel="apple-touch-icon" href="{{ asset('vendor/codex/favicon.png') }}">
-@endpush
+@section('stylesheets')
+    @parent
+    <!--[if lte IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="apple-touch-icon" href="{{ asset('vendor/codex/favicon.png') }}">
+@show
 
 
-@push('styles')
-    {!! codex()->theme->renderStyles(); !!}
-@endpush
-
-@push('javascripts')
-    {!! codex()->theme->renderJavascripts() !!}
-@endpush
 
 @section('body')
     <nav class="main" data-layout="nav">
@@ -43,11 +36,3 @@
     @stack('footer')
 
 @stop
-
-
-@push('scripts')
-<script>
-    codex.init();
-</script>
-{!! codex()->theme->renderScripts() !!}
-@endpush

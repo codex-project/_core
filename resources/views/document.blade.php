@@ -1,4 +1,5 @@
 @extends('codex::layouts.default')
+{{--extends(codex()->view('layouts.default'))--}}
 
 @section('title')
     {{ $document->attr('title') }}

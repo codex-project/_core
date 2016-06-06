@@ -13,11 +13,17 @@
 
     @stack('meta')
 
-    {!! codex()->theme->renderData() !!}
+    @section('data')
+        {!! codex()->theme->renderData() !!}
+    @show
 
-    @stack('stylesheets')
+    @section('stylesheets')
+        {!! codex()->theme->renderStylesheets() !!}
+    @show
 
-    @stack('styles')
+    @section('styles')
+        {!! codex()->theme->renderStyles(); !!}
+    @show
 
 </head>
 
@@ -51,7 +57,9 @@
 
     <article>
         <header>
-            <h1>@yield('page-title')<small> @yield('page-subtitle', '')</small></h1>
+            <h1>@yield('page-title')
+                <small> @yield('page-subtitle', '')</small>
+            </h1>
         </header>
         @yield('content', '')
     </article>
@@ -60,14 +68,17 @@
 
     </footer>
 
-
-
-
 @show
 
-@stack('javascripts')
 
-@stack('scripts')
+
+@section('javascripts')
+    {!! codex()->theme->renderJavascripts() !!}
+@show
+
+@section('scripts')
+    {!! codex()->theme->renderScripts() !!}
+@show
 
 
 </body>

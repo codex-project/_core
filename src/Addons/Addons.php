@@ -62,12 +62,17 @@ class Addons
     protected $app;
 
     protected $views = [
+        'layouts'  => [
+            'base'    => 'codex::layouts.codex-base',
+            'default' => 'codex::layouts.default',
+        ],
         'layout'   => 'codex::layouts.default',
         'document' => 'codex::document',
+        'error'    => 'codex::error',
         'menus'    => [
             'sidebar'  => 'codex::menus.sidebar',
-            'projects' => 'codex::menus.projects',
-            'versions' => 'codex::menus.versions',
+            'projects' => 'codex::menus.header-dropdown',
+            'versions' => 'codex::menus.header-dropdown',
         ],
     ];
 

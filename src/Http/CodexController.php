@@ -61,7 +61,7 @@ class CodexController extends Controller
         // get project
         if ( !$this->codex->projects->has($projectSlug) )
         {
-            throw CodexHttpException::projectNotFound($projectSlug);
+            return $this->codex->error('Not found', 'The project could not be found', 404);
         }
         $project = $this->codex->projects->get($projectSlug);
 
@@ -82,7 +82,7 @@ class CodexController extends Controller
         // get document
         if ( !$project->documents->has($path) )
         {
-            throw CodexHttpException::documentNotFound($path);
+            return $this->codex->error('Not found', 'The document could not be found', 404);
         }
         $document = $project->documents->get($path);
 

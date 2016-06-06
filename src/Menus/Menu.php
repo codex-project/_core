@@ -30,7 +30,8 @@ class Menu implements
         Traits\BootableTrait,
 
         Traits\FilesTrait,
-        Traits\ConfigTrait;
+        Traits\ConfigTrait,
+        Traits\AttributesTrait;
 
     /**
      * @var \Illuminate\Contracts\Cache\Repository
@@ -100,6 +101,9 @@ class Menu implements
         $this->id          = $id;
         $this->view        = $menus->getCodex()->view("menus.{$id}");
         $this->items       = new Collection();
+        $this->attributes  = [
+            'title'    => ''
+        ];
 
         $this->hookPoint('menu:construct', [ $id ]);
 
@@ -134,22 +138,29 @@ class Menu implements
     public function render($sorter = null)
     {
         /** @var Node $root */
-        $root = $this->get('root');
+        $root   = $this->get('root');
         $sorter = $sorter ?: $this->sorter;
-        if($sorter){
+
+        $this->hookPoint('menu:render', [ $root, $sorter ]);
+
+        if ( $sorter )
+        {
             $items = $root->accept(new $sorter);
-        } else {
+        }
+        else
+        {
             $items = $root->getChildren();
         }
 
         $vars = [
             'menu'  => $this,
-            'items' => $items
+            'items' => $items,
         ];
 
-        $this->hookPoint('menu:render', [$items, $sorter]);
 
         $rendered = $this->viewFactory->make($this->view)->with($vars)->render();
+
+        $this->hookPoint('menu:rendered', [ $items, $sorter, $rendered ]);
 
         return $rendered;
     }
@@ -171,7 +182,8 @@ class Menu implements
         $node->setMeta($meta);
         $node->setAttribute($attributes);
 
-        if ( !is_null($parent) and $this->items->has($parent) ) {
+        if ( !is_null($parent) and $this->items->has($parent) )
+        {
             $parentNode = $this->items->get($parent);
             $parentNode->addChild($node);
             $node->setParent($parentNode);
@@ -265,9 +277,12 @@ class Menu implements
     public function getBreadcrumbToHref($href)
     {
         $item = $this->findItemByHref($href);
-        if ( $item ) {
+        if ( $item )
+        {
             return $this->getBreadcrumbTo($item);
-        } else {
+        }
+        else
+        {
             return [ ];
         }
     }
@@ -282,14 +297,17 @@ class Menu implements
     public function findItemByHref($href)
     {
 
-        $found = $this->items->filter(function (Node $item) use ($href) {
+        $found = $this->items->filter(function (Node $item) use ($href)
+        {
 
 
-            if ( $item->hasAttribute('href') && $item->attribute('href') === $href ) {
+            if ( $item->hasAttribute('href') && $item->attribute('href') === $href )
+            {
                 return true;
             }
         });
-        if ( $found->isEmpty() ) {
+        if ( $found->isEmpty() )
+        {
             return null;
         }
         /** @var Node $node */

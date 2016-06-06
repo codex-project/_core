@@ -9,7 +9,7 @@
                 {{ $item->getValue() }}
             </a>
             <div class="dropdown-menu">
-                @include('codex::menus.projects-child', [
+                @include('codex::menus.header-dropdown-child', [
                     'items' => $item->getChildren(),
                     'menu' => $menu
                 ])
@@ -17,7 +17,7 @@
         </div>
     @else
         <li>
-        <a href="{{ $item->attribute('href', '#') }}" class="dropdown-item a">
+        <a href="{{ $item->attribute('href', '#') }}" class="dropdown-item">
             @if($item->meta('icon', false) !== false)
                 <i class="{{ $item->meta('icon') }}"></i>
             @endif

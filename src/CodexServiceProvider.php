@@ -78,6 +78,7 @@ class CodexServiceProvider extends ServiceProvider
         $this->bootBladeDirectives();
         $this->addons->registerInPath(__DIR__ . '/Addons/Filters');
         $this->addons->findAndRegisterAll();
+        $this->codex()->projects->resolve();
         return $app;
     }
 
@@ -103,7 +104,7 @@ class CodexServiceProvider extends ServiceProvider
             $this->registerRouting();
         }
 
-        if ( $this->app[ 'config' ][ 'app.debug' ] === true )
+        if ( $this->app[ 'config' ][ 'codex.dev.enabled' ] === true )
         {
             $this->app->register(Dev\DevServiceProvider::class);
         }
@@ -176,10 +177,8 @@ class CodexServiceProvider extends ServiceProvider
                 ->addJavascript('codex', 'vendor/codex/scripts/codex', [ 'vendor' ])
                 ->addJavascript('theme', 'vendor/codex/scripts/theme', [ 'codex' ]);
             $codex->theme->addBodyClass('docs language-php');
-            $codex->theme->addScript('theme', <<<JS
-codex.theme.init();
-JS
-            );
+            $codex->theme->addScript('codex', 'codex.init();');
+            $codex->theme->addScript('theme', 'codex.theme.init();', ['codex']);
         });
     }
 

@@ -324,6 +324,10 @@ class Theme implements
     }
 
 
+    public function view($name, $view = null)
+    {
+        $this->codex->addons->view($name, $view);
+    }
 
 
     /**

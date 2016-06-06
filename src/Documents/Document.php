@@ -27,14 +27,9 @@ class Document implements
         Traits\BootableTrait,
 
         Traits\CodexTrait,
-        Traits\FilesTrait;
+        Traits\FilesTrait,
+        Traits\AttributesTrait;
 
-    /**
-     * The document attributes. Defaults can be set in the config, documents can use frontmatter to customize it.
-     *
-     * @var array
-     */
-    protected $attributes;
 
     /**
      * @var string
@@ -63,7 +58,6 @@ class Document implements
     protected $pathName;
 
     protected $extension;
-
 
     /** @var \Codex\Support\Collection  */
     protected $appliedFilters;
@@ -109,6 +103,8 @@ class Document implements
 
         $this->attr('view', null) === null && $this->setAttribute('view', $codex->view('document'));
 
+       # $this->bootIfNotBooted();
+
         $this->hookPoint('document:done', [ $this ]);
     }
 
@@ -144,19 +140,6 @@ class Document implements
             $this->appliedFilters->add($filter);
             $this->hookPoint('document:filter:after:' . $filter['name'], [ $filter['instance'], $filter ]);
         }
-    }
-
-    /**
-     * Get a attribute using dot notation
-     *
-     * @param  string    $key
-     * @param null|mixed $default
-     *
-     * @return array|null|mixed
-     */
-    public function attr($key = null, $default = null)
-    {
-        return is_null($key) ? $this->attributes : array_get($this->attributes, $key, $default);
     }
 
     /**
@@ -234,50 +217,6 @@ class Document implements
     {
         $this->content = $content;
 
-        return $this;
-    }
-
-    /**
-     * Get all document attributes.
-     *
-     * @return array
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-
-    /**
-     * Set the document attributes.
-     *
-     * @param  array $attributes
-     *
-     * @return Document
-     */
-    public function setAttributes($attributes)
-    {
-        $this->attributes = $attributes;
-
-        return $this;
-    }
-
-    /**
-     * mergeAttributes
-     *
-     * @param array $attributes
-     *
-     * @return $this
-     */
-    public function mergeAttributes(array $attributes)
-    {
-        $this->attributes = array_replace_recursive($this->attributes, $attributes);
-
-        return $this;
-    }
-
-    public function setAttribute($key, $value)
-    {
-        data_set($this->attributes, $key, $value);
         return $this;
     }
 
