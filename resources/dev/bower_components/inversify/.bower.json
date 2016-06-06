@@ -1,0 +1,15 @@
+{
+  "name": "inversify",
+  "homepage": "https://github.com/inversify/InversifyJS",
+  "version": "2.0.0-beta.1",
+  "_release": "2.0.0-beta.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.0.0-beta.1",
+    "commit": "98777c58fcb013dde74a19b11063d2d459d3287a"
+  },
+  "_source": "https://github.com/inversify/InversifyJS.git",
+  "_target": "2.0.0-beta.1",
+  "_originalSource": "inversify",
+  "_direct": true
+}

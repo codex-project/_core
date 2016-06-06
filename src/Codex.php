@@ -28,8 +28,8 @@ use Illuminate\Filesystem\Filesystem;
  * @property-read \Codex\Projects\Projects $projects The projects instance
  * @property-read \Codex\Menus\Menus       $menus    The menus instance
  * @property-read \Codex\Addon\Auth\Auth   $auth     The auth addon instance
- * @property-read \Codex\Theme             $theme    The theme instance
  * @property-read \Codex\Theme             $theme2    The theme instance
+ * @property-read \Codex\Theme             $theme    The theme instance
  *
  *
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved

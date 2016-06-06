@@ -38,6 +38,8 @@ class Theme implements
     /** @var array  */
     protected $bodyClass = [ ];
 
+
+
     /**
      * Theme constructor.
      *
@@ -63,6 +65,8 @@ class Theme implements
         $this->data->put($key, $value);
         return $this;
     }
+
+
 
     /**
      * addJavascript method
@@ -132,6 +136,8 @@ class Theme implements
         return $this;
     }
 
+
+
     /**
      * data method
      * @return \Codex\Support\Collection
@@ -177,10 +183,13 @@ class Theme implements
         return $this->sorter($this->scripts);
     }
 
+
+
     /**
      * addBodyClass method
      *
      * @param string|array $class
+     * @return Theme
      */
     public function addBodyClass($class)
     {
@@ -190,35 +199,68 @@ class Theme implements
                 $this->bodyClass[] = $c;
             }
         }
+        return $this;
     }
 
+    /**
+     * setBodyClass method
+     *
+     * @param $val
+     *
+     * @return $this
+     */
     public function setBodyClass($val)
     {
         $this->bodyClass = $val;
         return $this;
     }
 
+    /**
+     * getBodyClass method
+     * @return array
+     */
     public function getBodyClass()
     {
         return $this->bodyClass;
     }
 
+    /**
+     * renderBodyClass method
+     * @return string
+     */
     public function renderBodyClass()
     {
         return implode(' ', $this->bodyClass);
     }
 
+    /**
+     * hasBodyClass method
+     *
+     * @param $class
+     *
+     * @return bool
+     */
     public function hasBodyClass($class)
     {
         return in_array($class, $this->bodyClass, true);
     }
 
+    /**
+     * removeBodyClass method
+     *
+     * @param $classes
+     *
+     * @return $this
+     */
     public function removeBodyClass($classes)
     {
         $classes = is_array($classes) ? $classes : explode(' ', $classes);
         $this->bodyClass = array_diff($this->bodyClass, $classes);
         return $this;
     }
+
+
+
 
     /**
      * renderJsData method
@@ -241,7 +283,6 @@ class Theme implements
         }
         return implode("\n", $scripts);
     }
-
 
     /**
      * renderStylesheets method
@@ -281,6 +322,8 @@ class Theme implements
         }
         return implode("\n", $scripts);
     }
+
+
 
 
     /**

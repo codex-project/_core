@@ -32,8 +32,15 @@ class HookAddons extends AbstractAddonCollection
             if ( $hooks->has("{$id}.replaced") ) {
                 return;
             }
-            $listener = $this->app->build($hooks->get("{$id}.listener"));
-            call_user_func_array([ $listener, 'handle' ], func_get_args());
+            $listener = $hooks->get("{$id}.listener");
+            $method = 'handle';
+            if(str_contains($listener, '@')){
+                list($class, $method) = explode('@', $listener);
+            } else {
+                $class = $listener;
+            }
+            $instance = $this->app->build($class);
+            call_user_func_array([ $instance, $method ], func_get_args());
         });
     }
 
