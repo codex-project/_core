@@ -24,12 +24,12 @@ use Illuminate\Filesystem\Filesystem;
  * @package        Codex\Core
  * @author         Sebwite
  *
- * @property-read \Codex\Addons\Addons     $addons   The addons instance
- * @property-read \Codex\Projects\Projects $projects The projects instance
- * @property-read \Codex\Menus\Menus       $menus    The menus instance
- * @property-read \Codex\Addon\Auth\Auth   $auth     The auth addon instance
+ * @property-read \Codex\Addons\Addons     $addons    The addons instance
+ * @property-read \Codex\Projects\Projects $projects  The projects instance
+ * @property-read \Codex\Menus\Menus       $menus     The menus instance
+ * @property-read \Codex\Addon\Auth\Auth   $auth      The auth addon instance
  * @property-read \Codex\Theme             $theme2    The theme instance
- * @property-read \Codex\Theme             $theme    The theme instance
+ * @property-read \Codex\Theme             $theme     The theme instance
  *
  *
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
@@ -100,6 +100,18 @@ class Codex implements
         $this->hookPoint('constructed', [ $this ]);
     }
 
+    /**
+     * Creates a error response. To be used in controllers/middleware
+     *
+     * @param string   $title  The error title
+     * @param string   $text   The error text
+     * @param int      $code   The HTTP code. 500 Internal Server Error by default
+     * @param bool|int $goBack If set to false, it will not display the go back link. If set to a integer value, it will use the integer value as history.back parameter.
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     * @throws \Throwable
+     */
     public function error($title, $text, $code = 500, $goBack = true)
     {
         return response(view($this->view('error'), compact('title', 'text', 'goBack'))->render(), $code);
@@ -264,7 +276,6 @@ class Codex implements
             return $this->container->make('codex.addons');
         }
         return $this->___get($name);
-
     }
 
 }
