@@ -8,6 +8,7 @@
 
 namespace Codex;
 
+use Codex\Http\CodexController;
 use Codex\Log\Writer;
 use Codex\Projects\Project;
 use Codex\Traits\CodexProviderTrait;
@@ -61,12 +62,16 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $aliases = [
-        'codex.log' => Contracts\Log::class,
+        'codex.log' => Contracts\Log\Log::class,
         'codex'     => Contracts\Codex::class,
     ];
 
     protected $weaklings = [
         'fs' => \Sebwite\Filesystem\Filesystem::class,
+    ];
+
+    protected $middleware = [
+        Http\CodexMiddleware::class,
     ];
 
     /** @var Addons\Addons */
@@ -93,6 +98,8 @@ class CodexServiceProvider extends ServiceProvider
         $this->app->instance('codex.addons', $this->addons = Addons\Addons::getInstance());
 
         $this->registerTheme();
+
+        $this->registerJavascriptData();
 
         $log = $this->registerLogger();
 
@@ -153,7 +160,7 @@ class CodexServiceProvider extends ServiceProvider
     {
         $this->app->make('filesystem')->extend('codex-local', function (LaravelApplication $app, array $config = [ ])
         {
-            $flysystemAdapter    = new Filesystem\Local($config[ 'root' ]);
+            $flysystemAdapter = new Filesystem\Local($config[ 'root' ]);
             $flysystemFilesystem = new Flysystem($flysystemAdapter);
             return new FilesystemAdapter($flysystemFilesystem);
         });
@@ -177,7 +184,7 @@ class CodexServiceProvider extends ServiceProvider
                 ->addJavascript('theme', 'vendor/codex/scripts/theme', [ 'codex' ]);
             $codex->theme->addBodyClass('docs language-php');
             $codex->theme->addScript('codex', 'codex.init();');
-            $codex->theme->addScript('theme', 'codex.theme.init();', ['codex']);
+            $codex->theme->addScript('theme', 'codex.theme.init();', [ 'codex' ]);
         });
     }
 
@@ -192,6 +199,20 @@ class CodexServiceProvider extends ServiceProvider
         \Blade::directive('endspaceless', function ()
         {
             return "<?php echo preg_replace('/>\\s+</', '><', ob_get_clean()); ?>";
+        });
+    }
+
+    protected function registerJavascriptData()
+    {
+        $this->codexHook('controller:view', function (CodexController $controller, $view, Contracts\Codex $codex, Project $project, Documents\Document $document)
+        {
+            /** @var Codex $codex */
+            $theme = $codex->theme;
+            $theme->set('codex', $c = $codex->config()->only('display_name', 'doctags', 'extensions', 'default_project')->toArray());
+            $theme->set('project', $project->getName());
+            $theme->set('display_name', $project->getDisplayName());
+            $theme->set('document', $document->getName());
+            $theme->set('theme', $theme->toArray());
         });
     }
 

@@ -6,7 +6,7 @@
  */
 namespace Codex\Log;
 
-use Codex\Contracts\Log;
+use Codex\Contracts\Log\Log;
 use Illuminate\Log\Writer as BaseWriter;
 use Monolog\Formatter\ChromePHPFormatter;
 use Monolog\Handler\ChromePHPHandler;

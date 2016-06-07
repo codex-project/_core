@@ -17,9 +17,9 @@ use Codex\Support\Collection;
 use Codex\Traits;
 
 class Document implements
-    Contracts\Extendable,
-    Contracts\Hookable,
-    Contracts\Bootable
+    Contracts\Traits\Extendable,
+    Contracts\Traits\Hookable,
+    Contracts\Traits\Bootable
 {
     use Traits\ExtendableTrait,
         Traits\HookableTrait,
@@ -59,7 +59,7 @@ class Document implements
 
     protected $extension;
 
-    /** @var \Codex\Support\Collection  */
+    /** @var \Codex\Support\Collection */
     protected $appliedFilters;
 
 
@@ -79,23 +79,25 @@ class Document implements
     public function __construct(Codex $codex, Project $project, $path, $pathName)
     {
         $this->setCodex($codex);
-        $this->project        = $project;
-        $this->path           = $path;
-        $this->pathName       = $pathName;
-        $this->extension      = path_get_extension($path);
+        $this->project = $project;
+        $this->path = $path;
+        $this->pathName = $pathName;
+        $this->extension = path_get_extension($path);
         $this->appliedFilters = new Collection();
 
         $this->setFiles($project->getFiles());
 
         $this->hookPoint('document:ready', [ $this ]);
 
-        if ( $this->codex->projects->hasActive() === false ) {
+        if ( $this->codex->projects->hasActive() === false )
+        {
             $project->setActive();
         }
 
         $this->attributes = $codex->config('default_document_attributes');
 
-        if ( !$this->getFiles()->exists($this->getPath()) ) {
+        if ( !$this->getFiles()->exists($this->getPath()) )
+        {
             throw DocumentNotFoundException::document($this)->inProject($project);
         }
 
@@ -103,7 +105,7 @@ class Document implements
 
         $this->attr('view', null) === null && $this->setAttribute('view', $codex->view('document'));
 
-       # $this->bootIfNotBooted();
+        # $this->bootIfNotBooted();
 
         $this->hookPoint('document:done', [ $this ]);
     }
@@ -118,7 +120,8 @@ class Document implements
      */
     public function render()
     {
-        if($this->rendered){
+        if ( $this->rendered )
+        {
             return $this->content;
         }
         $this->hookPoint('document:render');
@@ -130,15 +133,15 @@ class Document implements
 
     protected function runFilters()
     {
-        $enabledFilters = $this->project->config('filters.enabled', []);
+        $enabledFilters = $this->project->config('filters.enabled', [ ]);
 
-        foreach (  $this->codex->addons->filters->getSorted($enabledFilters) as $filter ) {
-
-            $this->hookPoint('document:filter:before:' . $filter['name'], [ $filter['instance'],  $filter ]);
-            $this->codex->addons->filters->runFilter($filter['name'], $this);
+        foreach ( $this->codex->addons->filters->getSorted($enabledFilters) as $filter )
+        {
+            $this->hookPoint('document:filter:before:' . $filter[ 'name' ], [ $filter[ 'instance' ], $filter ]);
+            $this->codex->addons->filters->runFilter($filter[ 'name' ], $this);
             //app()->call([ $filter['instance'], 'handle' ], ['document' => $this]);
             $this->appliedFilters->add($filter);
-            $this->hookPoint('document:filter:after:' . $filter['name'], [ $filter['instance'], $filter ]);
+            $this->hookPoint('document:filter:after:' . $filter[ 'name' ], [ $filter[ 'instance' ], $filter ]);
         }
     }
 
@@ -189,6 +192,7 @@ class Document implements
 
     /**
      * getName method
+     *
      * @return string
      */
     public function getName()
@@ -245,6 +249,7 @@ class Document implements
 
     /**
      * getAppliedFilters method
+     *
      * @return \Codex\Support\Collection
      */
     public function getAppliedFilters()
@@ -252,4 +257,13 @@ class Document implements
         return $this->appliedFilters;
     }
 
+    public function toArray()
+    {
+        return [
+            'path'           => $this->path,
+            'pathName'       => $this->pathName,
+            'extension'      => $this->extension,
+            'appliedFilters' => $this->appliedFilters->pluck('name')->toArray(),
+        ];
+    }
 }

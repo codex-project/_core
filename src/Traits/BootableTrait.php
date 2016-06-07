@@ -9,8 +9,8 @@
 namespace Codex\Traits;
 
 
-use Codex\Contracts\Bootable;
-use Codex\Contracts\Hookable;
+use Codex\Contracts\Traits\Bootable;
+use Codex\Contracts\Traits\Hookable;
 use Codex\Exception\ContractMissingException;
 
 /**

@@ -1,15 +1,15 @@
 <?php
 /**
- * Part of the $author$ PHP packages.
+ * Part of the Codex Project PHP packages.
  *
  * License and copyright information bundled with this package in the LICENSE file
  */
 
 
-namespace Codex\Contracts;
+namespace Codex\Contracts\Traits;
 
 
-interface Projects
+interface Hookable
 {
 
 }

@@ -18,8 +18,8 @@ use Codex\Projects\Project;
 use Codex\Traits;
 
 class Documents implements
-    Contracts\Documents,
-    Contracts\Hookable
+    Contracts\Documents\Documents,
+    Contracts\Traits\Hookable
 {
     use Traits\HookableTrait,
         Traits\CodexTrait;

@@ -2,17 +2,19 @@
 namespace Codex;
 
 use Codex\Contracts\Codex as CodexContract;
-use Codex\Contracts\Extendable;
-use Codex\Contracts\Hookable;
+use Codex\Contracts\Traits\Extendable;
+use Codex\Contracts\Traits\Hookable;
 use Codex\Support\Collection;
 use Codex\Support\Sorter;
 use Codex\Traits\ExtendableTrait;
 use Codex\Traits\HookableTrait;
+use Illuminate\Contracts\Support\Arrayable;
 use Sebwite\Support\Str;
 
 class Theme implements
     Extendable,
-    Hookable
+    Hookable,
+    Arrayable
 {
     use ExtendableTrait,
         HookableTrait;
@@ -35,9 +37,8 @@ class Theme implements
     /** @var \Codex\Support\Collection */
     protected $styles;
 
-    /** @var array  */
+    /** @var array */
     protected $bodyClass = [ ];
-
 
 
     /**
@@ -48,7 +49,7 @@ class Theme implements
     public function __construct(CodexContract $parent)
     {
         $this->codex = $parent;
-        $this->data  = new Collection;
+        $this->data = new Collection;
         $this->reset();
     }
 
@@ -65,7 +66,6 @@ class Theme implements
         $this->data->put($key, $value);
         return $this;
     }
-
 
 
     /**
@@ -137,9 +137,9 @@ class Theme implements
     }
 
 
-
     /**
      * data method
+     *
      * @return \Codex\Support\Collection
      */
     public function data()
@@ -149,6 +149,7 @@ class Theme implements
 
     /**
      * Get the javascripts collection
+     *
      * @return \Codex\Support\Collection
      */
     public function javascripts()
@@ -158,6 +159,7 @@ class Theme implements
 
     /**
      * Get the stylesheets collection
+     *
      * @return \Codex\Support\Collection
      */
     public function stylesheets()
@@ -167,6 +169,7 @@ class Theme implements
 
     /**
      * styles method
+     *
      * @return \Codex\Support\Collection
      */
     public function styles()
@@ -176,6 +179,7 @@ class Theme implements
 
     /**
      * scripts method
+     *
      * @return \Codex\Support\Collection
      */
     public function scripts()
@@ -184,18 +188,20 @@ class Theme implements
     }
 
 
-
     /**
      * addBodyClass method
      *
      * @param string|array $class
+     *
      * @return Theme
      */
     public function addBodyClass($class)
     {
         $classes = is_array($class) ? $class : explode(' ', $class);
-        foreach ( $classes as $c ) {
-            if ( $this->hasBodyClass($c) === false ) {
+        foreach ( $classes as $c )
+        {
+            if ( $this->hasBodyClass($c) === false )
+            {
                 $this->bodyClass[] = $c;
             }
         }
@@ -217,6 +223,7 @@ class Theme implements
 
     /**
      * getBodyClass method
+     *
      * @return array
      */
     public function getBodyClass()
@@ -226,6 +233,7 @@ class Theme implements
 
     /**
      * renderBodyClass method
+     *
      * @return string
      */
     public function renderBodyClass()
@@ -260,10 +268,9 @@ class Theme implements
     }
 
 
-
-
     /**
      * renderJsData method
+     *
      * @return string
      */
     public function renderData()
@@ -273,12 +280,14 @@ class Theme implements
 
     /**
      * renderJavascripts method
+     *
      * @return string
      */
     public function renderJavascripts()
     {
         $scripts = [ ];
-        foreach ( $this->javascripts() as $js ) {
+        foreach ( $this->javascripts() as $js )
+        {
             $scripts[] = "<script src=\"{$js['src']}\"></script>";
         }
         return implode("\n", $scripts);
@@ -286,12 +295,14 @@ class Theme implements
 
     /**
      * renderStylesheets method
+     *
      * @return string
      */
     public function renderStylesheets()
     {
         $styles = [ ];
-        foreach ( $this->stylesheets() as $css ) {
+        foreach ( $this->stylesheets() as $css )
+        {
             $styles[] = "<link type='text/css' rel='stylesheet' href=\"{$css['src']}\"/>";
         }
         return implode("\n", $styles);
@@ -299,12 +310,14 @@ class Theme implements
 
     /**
      * renderStyles method
+     *
      * @return string
      */
     public function renderStyles()
     {
         $styles = [ ];
-        foreach ( $this->styles() as $style ) {
+        foreach ( $this->styles() as $style )
+        {
             $styles[] = "<style type='text/css'>{$style['value']}</style>";
         }
         return implode("\n", $styles);
@@ -312,12 +325,14 @@ class Theme implements
 
     /**
      * renderJavascripts method
+     *
      * @return string
      */
     public function renderScripts()
     {
         $scripts = [ ];
-        foreach ( $this->scripts() as $js ) {
+        foreach ( $this->scripts() as $js )
+        {
             $scripts[] = "<script>{$js['value']}</script>";
         }
         return implode("\n", $scripts);
@@ -332,15 +347,16 @@ class Theme implements
 
     /**
      * Empties the assets. Removes all javascripts and stylesheets.
+     *
      * @return Theme
      */
     public function reset()
     {
         $this->javascripts = new Collection;
         $this->stylesheets = new Collection;
-        $this->scripts     = new Collection;
-        $this->styles      = new Collection;
-        $this->body        = new Collection;
+        $this->scripts = new Collection;
+        $this->styles = new Collection;
+        $this->body = new Collection;
         return $this;
     }
 
@@ -353,17 +369,35 @@ class Theme implements
      */
     protected function sorter($all = [ ])
     {
-        $all    = $all instanceof Collection ? $all : new Collection($all);
+        $all = $all instanceof Collection ? $all : new Collection($all);
         $sorter = new Sorter;
         $sorted = new Collection;
-        foreach ( $all as $name => $asset ) {
+        foreach ( $all as $name => $asset )
+        {
             $sorter->addItem($asset[ 'name' ], $asset[ 'depends' ]);
         }
 
-        foreach ( $sorter->sort() as $name ) {
+        foreach ( $sorter->sort() as $name )
+        {
             $sorted->add($all->where('name', $name)->first());
         }
 
         return $sorted;
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $data = [ 'bodyClass' => $this->bodyClass ];
+        $arrayables = [ 'javascripts', 'stylesheets', 'scripts', 'styles', 'data' ];
+        foreach ( $arrayables as $arrayable )
+        {
+            $data[ $arrayable ] = call_user_func([ $this, $arrayable ])->toArray();
+        }
+        return $data;
     }
 }

@@ -9,7 +9,9 @@
 namespace Codex\Menus;
 
 
-class Node extends \Tree\Node\Node
+use Illuminate\Contracts\Support\Arrayable;
+
+class Node extends \Tree\Node\Node implements Arrayable
 {
     /**
      * @var mixed|null
@@ -41,9 +43,9 @@ class Node extends \Tree\Node\Node
     {
         parent::__construct($value, $children);
 
-        $this->id         = $id;
-        $this->menu       = $menu;
-        $this->meta       = [ ];
+        $this->id = $id;
+        $this->menu = $menu;
+        $this->meta = [ ];
         $this->attributes = [ 'href' => '#' ];
     }
 
@@ -62,6 +64,7 @@ class Node extends \Tree\Node\Node
      *
      * @param      $key
      * @param null $default
+     *
      * @return mixed
      */
     public function attribute($key, $default = null)
@@ -74,6 +77,7 @@ class Node extends \Tree\Node\Node
      *
      * @param      $key
      * @param null $default
+     *
      * @return mixed
      */
     public function meta($key, $default = null)
@@ -86,13 +90,17 @@ class Node extends \Tree\Node\Node
      *
      * @param      $key
      * @param null $value
+     *
      * @return $this
      */
     public function setAttribute($key, $value = null)
     {
-        if (is_array($key) && is_null($value)) {
+        if ( is_array($key) && is_null($value) )
+        {
             $this->attributes = $key;
-        } else {
+        }
+        else
+        {
             array_set($this->attributes, $key, $value);
         }
 
@@ -104,13 +112,17 @@ class Node extends \Tree\Node\Node
      *
      * @param      $key
      * @param null $value
+     *
      * @return $this
      */
     public function setMeta($key, $value = null)
     {
-        if (is_array($key) && is_null($value)) {
+        if ( is_array($key) && is_null($value) )
+        {
             $this->meta = $key;
-        } else {
+        }
+        else
+        {
             array_set($this->meta, $key, $value);
         }
 
@@ -121,6 +133,7 @@ class Node extends \Tree\Node\Node
      * hasMeta
      *
      * @param $key
+     *
      * @return bool
      */
     public function hasMeta($key)
@@ -156,7 +169,8 @@ class Node extends \Tree\Node\Node
     public function parseAttributes()
     {
         $parsed = '';
-        foreach ($this->attributes as $key => $val) {
+        foreach ( $this->attributes as $key => $val )
+        {
             $parsed .= " {$key}=\"{$val}\"";
         }
 
@@ -167,6 +181,7 @@ class Node extends \Tree\Node\Node
      * hasAttribute
      *
      * @param $key
+     *
      * @return bool
      */
     public function hasAttribute($key)
@@ -188,6 +203,7 @@ class Node extends \Tree\Node\Node
      * Sets the value of id
      *
      * @param mixed|null $id
+     *
      * @return $this
      */
     public function setId($id)
@@ -195,5 +211,33 @@ class Node extends \Tree\Node\Node
         $this->id = $id;
 
         return $this;
+    }
+
+    /**
+     * getParent method
+     *
+     * @return Node
+     */
+    public function getParent()
+    {
+        return parent::getParent();
+    }
+
+    public function hasParent()
+    {
+        return $this->getParent() !== null;
+    }
+
+
+    public function toArray()
+    {
+        return [
+            'id'         => $this->id,
+            'value'      => $this->getValue(),
+            'meta'       => $this->meta,
+            'attributes' => $this->attributes,
+            'menu'       => $this->menu->getId(),
+            'parent'     => $this->hasParent() ? $this->getParent()->getId() : null,
+        ];
     }
 }

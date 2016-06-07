@@ -13,6 +13,7 @@ use Codex\Support\Collection;
 use Codex\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Routing\Router;
 use Sebwite\Filesystem\Filesystem;
@@ -20,9 +21,10 @@ use Tree\Visitor\PostOrderVisitor;
 use Tree\Visitor\PreOrderVisitor;
 
 class Menu implements
-    Contracts\Extendable,
-    Contracts\Hookable,
-    Contracts\Bootable
+    Contracts\Traits\Extendable,
+    Contracts\Traits\Hookable,
+    Contracts\Traits\Bootable,
+    Arrayable
 {
     use Traits\ExtendableTrait,
         Traits\HookableTrait,
@@ -92,17 +94,17 @@ class Menu implements
      */
     public function __construct(Menus $menus, Filesystem $files, Cache $cache, Router $router, UrlGenerator $url, ViewFactory $viewFactory, $id)
     {
-        $this->menus       = $menus;
-        $this->cache       = $cache;
-        $this->router      = $router;
-        $this->url         = $url;
-        $this->files       = $files;
+        $this->menus = $menus;
+        $this->cache = $cache;
+        $this->router = $router;
+        $this->url = $url;
+        $this->files = $files;
         $this->viewFactory = $viewFactory;
-        $this->id          = $id;
-        $this->view        = $menus->getCodex()->view("menus.{$id}");
-        $this->items       = new Collection();
-        $this->attributes  = [
-            'title'    => ''
+        $this->id = $id;
+        $this->view = $menus->getCodex()->view("menus.{$id}");
+        $this->items = new Collection();
+        $this->attributes = [
+            'title' => '',
         ];
 
         $this->hookPoint('menu:construct', [ $id ]);
@@ -138,7 +140,7 @@ class Menu implements
     public function render($sorter = null)
     {
         /** @var Node $root */
-        $root   = $this->get('root');
+        $root = $this->get('root');
         $sorter = $sorter ?: $this->sorter;
 
         $this->hookPoint('menu:render', [ $root, $sorter ]);
@@ -299,8 +301,6 @@ class Menu implements
 
         $found = $this->items->filter(function (Node $item) use ($href)
         {
-
-
             if ( $item->hasAttribute('href') && $item->attribute('href') === $href )
             {
                 return true;
@@ -335,4 +335,18 @@ class Menu implements
     }
 
 
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'attributes' => $this->attributes,
+            'items'      => $this->items->toArray(),
+            'id'         => $this->id,
+            'view'       => $this->view,
+        ];
+    }
 }

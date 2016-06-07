@@ -6,6 +6,9 @@
  */
 namespace Codex\Traits;
 
+use Codex\Support\Collection;
+use Illuminate\Contracts\Support\Arrayable;
+
 /**
  * The ConfigTrait provides a class with a config method to request the set config. Also provides getter/setter for that.
  *
@@ -15,6 +18,11 @@ namespace Codex\Traits;
  */
 trait ConfigTrait
 {
+    /**
+     * The config array
+     *
+     * @var array
+     */
     protected $config;
 
     /**
@@ -23,25 +31,38 @@ trait ConfigTrait
      * @param null|string $key
      * @param null|mixed  $default
      *
-     * @return array|mixed
+     * @return array|mixed|Collection
      */
     public function config($key = null, $default = null)
     {
-        return $key === null ? $this->config : data_get($this->config, $key, $default);
+        return $key === null ? new Collection($this->config) : data_get($this->config, $key, $default);
     }
 
     /**
      * Set the config.
      *
-     * @param  array $config
+     * @param array|Arrayable|string $key The string key to set the value to. Or to set the whole config, you can pass a array or Arrayable without value
+     * @param null|mixed             $value
      *
-     * @return void
+     * @return $this
+     * @internal param array $config
+     *
      */
     public function setConfig($key, $value = null)
     {
-        if ($value === null && is_array($key)) {
-            $this->config = $key;
-        } else {
+        if ( $value === null )
+        {
+            if ( $key instanceof Arrayable )
+            {
+                $key = $key->toArray();
+            }
+            if ( is_array($key) )
+            {
+                $this->config = $key;
+            }
+        }
+        else
+        {
             array_set($this->config, $key, $value);
         }
 

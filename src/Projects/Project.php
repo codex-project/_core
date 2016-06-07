@@ -30,9 +30,9 @@ use vierbergenlars\SemVer\version;
  *
  */
 class Project implements
-    Contracts\Extendable,
-    Contracts\Hookable,
-    Contracts\Bootable,
+    Contracts\Traits\Extendable,
+    Contracts\Traits\Hookable,
+    Contracts\Traits\Bootable,
     Arrayable
 {
     use Traits\ExtendableTrait,

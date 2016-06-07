@@ -6,10 +6,10 @@
  */
 
 
-namespace Codex\Contracts;
+namespace Codex\Contracts\Traits;
 
 
-interface Hookable
+interface Bootable
 {
 
 }

@@ -15,6 +15,7 @@ use Codex\Projects\Project;
 use Codex\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Filesystem\Filesystem;
 
 
@@ -38,9 +39,11 @@ use Illuminate\Filesystem\Filesystem;
  */
 class Codex implements
     Contracts\Codex,
-    Contracts\Extendable,
-    Contracts\Hookable,
-    Contracts\Bootable
+    Contracts\Traits\Extendable,
+    Contracts\Traits\Hookable,
+    Contracts\Traits\Bootable,
+    Contracts\Traits\Observable,
+    Arrayable
 {
     use Traits\ExtendableTrait,
         Traits\HookableTrait,
@@ -57,7 +60,7 @@ class Codex implements
     /**
      * The codex log writer instance
      *
-     * @var \Codex\Contracts\Log
+     * @var \Codex\Contracts\Log\Log
      */
     protected $log;
 
@@ -82,10 +85,10 @@ class Codex implements
      * @param \Illuminate\Contracts\Container\Container $container The container instance
      * @param \Illuminate\Filesystem\Filesystem         $files     The filesystem instance
      * @param \Illuminate\Contracts\Cache\Repository    $cache     The cache instance
-     * @param \Codex\Contracts\Log                      $log       The log instance
+     * @param \Codex\Contracts\Log\Log                  $log       The log instance
      *
      */
-    public function __construct(Container $container, Filesystem $files, Cache $cache, Contracts\Log $log)
+    public function __construct(Container $container, Filesystem $files, Cache $cache, Contracts\Log\Log $log)
     {
         $this->setContainer($container);
         $this->setConfig(config('codex'));
@@ -268,6 +271,15 @@ class Codex implements
         return $this;
     }
 
+    public function toArray()
+    {
+        return [
+            'config' => $this->config,
+            'projects' => $this->projects->toArray(),
+            'addons' => $this->addons->toArray(),
+            'menus' => $this->menus->toArray()
+        ];
+    }
 
     public function __get($name)
     {

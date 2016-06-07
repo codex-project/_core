@@ -6,8 +6,8 @@
  */
 namespace Codex\Support;
 
-use Codex\Contracts\Dependable;
-use Codex\Contracts\Sortable;
+use Codex\Contracts\Support\Dependable;
+use Codex\Contracts\Support\Sortable;
 
 /**
  * This is the Sorter.

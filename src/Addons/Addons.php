@@ -5,6 +5,7 @@ use BadMethodCallException;
 use Codex\Addons\Annotations;
 use Codex\Addons\Scanner\ClassFileInfo;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Traits\Macroable;
 use Sebwite\Filesystem\Filesystem;
 
@@ -22,7 +23,7 @@ use Sebwite\Filesystem\Filesystem;
  * @property HookAddons   $hooks
  *
  */
-class Addons
+class Addons implements Arrayable
 {
     use Macroable;
 
@@ -38,8 +39,6 @@ class Addons
     /** @var \Codex\Support\Collection */
     protected $filters;
 
-    /** @var \Codex\Support\Collection */
-    protected $themes;
 
     /** @var \Codex\Support\Collection */
     protected $hooks;
@@ -210,6 +209,15 @@ class Addons
     public function getFs()
     {
         return $this->fs;
+    }
+
+    public function toArray()
+    {
+        return [
+            'filters' => $this->filters->toArray(),
+            'hooks' => $this->hooks->toArray(),
+            'views' => $this->views
+        ];
     }
 
     public function __call($method, array $parameters = [ ])

@@ -14,12 +14,14 @@ use Codex\Support\Collection;
 use Codex\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory as View;
 use Illuminate\Routing\Router;
 
 class Menus implements
-    Contracts\Menus,
-    Contracts\Hookable
+    Contracts\Menus\Menus,
+    Contracts\Traits\Hookable,
+    Arrayable
 {
     use
         Traits\HookableTrait,
@@ -160,5 +162,10 @@ class Menus implements
         $this->cache = $cache;
 
         return $this;
+    }
+
+    public function toArray()
+    {
+        return $this->items->toArray();
     }
 }

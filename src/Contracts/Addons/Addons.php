@@ -6,7 +6,7 @@
  */
 
 
-namespace Codex\Contracts;
+namespace Codex\Contracts\Addons;
 
 
 interface Addons
