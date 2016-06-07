@@ -55,6 +55,13 @@ class Projects implements
         $this->hookPoint('projects:done', [$this]);
     }
 
+    /**
+     * Mark a project as active
+     *
+     * @param $project
+     *
+     * @throws \Codex\Exception\ProjectNotFoundException
+     */
     public function setActive($project)
     {
         if(!$project instanceof Project){
@@ -66,13 +73,17 @@ class Projects implements
         $this->hookPoint('projects:active', [ $project ]);
     }
 
+    /**
+     * Check if a active project has been set
+     * @return bool
+     */
     public function hasActive()
     {
         return $this->activeProject !== null;
     }
 
     /**
-     * getActive method
+     * Gets the active project. Returns null if not set
      * @return \Codex\Projects\Project|null
      */
     public function getActive()
@@ -81,11 +92,77 @@ class Projects implements
     }
 
     /**
+     * Renders the project picker menu
+     * @return string
+     */
+    public function renderMenu()
+    {
+        return $this->codex->menus->get('projects')->render();
+    }
+
+    /**
+     * Gets a project by name
+     *
+     * @param string $name The project name
+     *
+     * @return \Codex\Projects\Project
+     * @throws \Codex\Exception\ProjectNotFoundException
+     */
+    public function get($name)
+    {
+        if (!$this->has($name)) {
+            throw ProjectNotFoundException::project($name);
+        }
+
+        return $this->items->get($name);
+    }
+
+    /**
+     * Renders the sidebar menu
+     * @return string
+     */
+    public function renderSidebar()
+    {
+        return $this->codex->menus->get('sidebar')->render();
+    }
+
+    /**
+     * Check if the given project exists.
+     *
+     * @param  string $name
+     *
+     * @return bool
+     */
+    public function has($name)
+    {
+        return $this->items->has($name);
+    }
+
+    /**
+     * Return all found projects.
+     *
+     * @return \Codex\Projects\Project[]
+     */
+    public function all()
+    {
+        return $this->items->all();
+    }
+
+    /**
+     * Returns all found projects as array
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->items->toArray();
+    }
+
+    /**
      * Scans the configured documentation root directory for projects and resolves them and puts them into the projects collection
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function resolve()
+    protected function resolve()
     {
         if (!$this->items->isEmpty()) {
             return;
@@ -146,55 +223,6 @@ class Projects implements
             }
         }
         $this->hookPoint('projects:resolved', [$this]);
-    }
-
-    public function menu()
-    {
-        return $this->codex->menus->get('projects');
-    }
-
-    /**
-     * get method
-     *
-     * @param $name
-     *
-     * @return Project
-     * @ throws \Codex\Core\Exception\ProjectNotFoundException
-     */
-    public function get($name)
-    {
-        if (!$this->has($name)) {
-            throw ProjectNotFoundException::project($name);
-        }
-
-        return $this->items->get($name);
-    }
-
-    /**
-     * Check if the given project exists.
-     *
-     * @param  string $name
-     *
-     * @return bool
-     */
-    public function has($name)
-    {
-        return $this->items->has($name);
-    }
-
-    /**
-     * Return all found projects.
-     *
-     * @return \Codex\Projects\Project[]
-     */
-    public function all()
-    {
-        return $this->items->all();
-    }
-
-    public function toArray()
-    {
-        return $this->items->toArray();
     }
 
     protected function resolveProjectSidebarMenu(Project $project, $items = null, $parentId = 'root')

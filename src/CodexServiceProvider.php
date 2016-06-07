@@ -78,7 +78,6 @@ class CodexServiceProvider extends ServiceProvider
         $this->bootBladeDirectives();
         $this->addons->registerInPath(__DIR__ . '/Addons/Filters');
         $this->addons->findAndRegisterAll();
-        $this->codex()->projects->resolve();
         return $app;
     }
 

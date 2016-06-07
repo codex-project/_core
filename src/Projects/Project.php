@@ -490,7 +490,7 @@ class Project implements
     {
         return [
             'name'     => $this->getName(),
-            'config'   => $this->getConfig(),
+            'config'   => $this->getConfig()->toArray(),
             'versions' => $this->refs,
         ];
     }

@@ -882,6 +882,16 @@ var codex;
                 }
                 this.out.apply(this, ['[style=orange,fs10]DEBUG[style]([style=green,fs8]' + elapsedTime + '[style]): '].concat(args));
             };
+            Debug.prototype.profile = function (msg) {
+                if (this.enabled !== true) {
+                    return;
+                }
+                this.log(msg);
+                console.profile(msg);
+            };
+            Debug.prototype.profileEnd = function () {
+                console.profileEnd();
+            };
             Debug.prototype.logEvent = function (eventName) {
                 var args = [];
                 for (var _i = 1; _i < arguments.length; _i++) {

@@ -9,7 +9,7 @@
     @show
 
     @section('menu-projects')
-        {!! $codex->menus->get('projects')->render() !!}
+        {!! $codex->projects->renderMenu() !!}
     @show
 @endpush
 
@@ -18,7 +18,7 @@
 
     <a class="sidebar-toggle" data-action='sidebar-toggle' title='Toggle sidebar'><i class="fa fa-list"></i></a>
     @section('menu-sidebar')
-        {!! $codex->menus->get('sidebar')->render() !!}
+        {!! $codex->projects->renderSidebar() !!}
     @show
 
     @section('breadcrumb')
