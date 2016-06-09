@@ -23,7 +23,7 @@ trait ConfigTrait
      *
      * @var array
      */
-    protected $config;
+    protected $config = [];
 
     /**
      * Get a configuration item of the project using dot notation
@@ -45,7 +45,6 @@ trait ConfigTrait
      * @param null|mixed             $value
      *
      * @return $this
-     * @internal param array $config
      *
      */
     public function setConfig($key, $value = null)
@@ -72,7 +71,7 @@ trait ConfigTrait
     /**
      * get config value
      *
-     * @return mixed
+     * @return array
      */
     public function getConfig()
     {

@@ -25,12 +25,12 @@ use Illuminate\Filesystem\Filesystem;
  * @package        Codex\Core
  * @author         Sebwite
  *
- * @property-read \Codex\Addons\Addons     $addons    The addons instance
- * @property-read \Codex\Projects\Projects $projects  The projects instance
- * @property-read \Codex\Menus\Menus       $menus     The menus instance
- * @property-read \Codex\Addon\Auth\Auth   $auth      The auth addon instance
- * @property-read \Codex\Theme             $theme2    The theme instance
- * @property-read \Codex\Theme             $theme     The theme instance
+ * @property-read \Codex\Addons\Addons      $addons    The addons instance
+ * @property-read \Codex\Projects\Projects  $projects  The projects instance
+ * @property-read \Codex\Menus\Menus        $menus     The menus instance
+ * @property-read \Codex\Addon\Auth\Auth    $auth      The auth addon instance
+ * @property-read \Codex\Addon\Git\CodexGit $git       The theme instance
+ * @property-read \Codex\Theme              $theme     The theme instance
  *
  *
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
@@ -94,9 +94,9 @@ class Codex implements
         $this->setConfig(config('codex'));
         $this->setFiles($files);
 
-        $this->cache   = $cache;
+        $this->cache = $cache;
         $this->docsDir = config('codex.docs_dir');
-        $this->log     = $log;
+        $this->log = $log;
 
 
         // 'factory:done' called after all factory operations have completed.
@@ -135,7 +135,6 @@ class Codex implements
         $this->container->make('events')->listen('composing: ' . $appendTo, function ($view) use ($stackName, $viewName, $data)
         {
             /** @var \Illuminate\View\View $view */
-
             if ( $data instanceof \Closure )
             {
                 $data = $this->container->call($data, [ $this ]);
@@ -274,10 +273,10 @@ class Codex implements
     public function toArray()
     {
         return [
-            'config' => $this->config,
+            'config'   => $this->config,
             'projects' => $this->projects->toArray(),
-            'addons' => $this->addons->toArray(),
-            'menus' => $this->menus->toArray()
+            'addons'   => $this->addons->toArray(),
+            'menus'    => $this->menus->toArray(),
         ];
     }
 
