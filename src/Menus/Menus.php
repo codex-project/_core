@@ -11,6 +11,7 @@ namespace Codex\Menus;
 
 use Codex\Contracts;
 use Codex\Support\Collection;
+use Codex\Support\Extendable;
 use Codex\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Routing\UrlGenerator;
@@ -18,16 +19,9 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory as View;
 use Illuminate\Routing\Router;
 
-class Menus implements
-    Contracts\Menus\Menus,
-    Contracts\Traits\Hookable,
-    Arrayable
+class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
 {
-    use
-        Traits\HookableTrait,
-
-        Traits\CodexTrait,
-        Traits\FilesTrait,
+    use Traits\FilesTrait,
         Traits\ConfigTrait;
 
     /**

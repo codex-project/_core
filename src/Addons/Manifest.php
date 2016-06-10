@@ -39,7 +39,13 @@ class Manifest extends Collection
         return $this;
     }
 
-    public static function make($manifestPath)
+
+    /**
+     * @param array|string $manifestPath
+     *
+     * @return \Codex\Addons\Manifest
+     */
+    public static function make($manifestPath = [])
     {
         return app(static::class, compact('manifestPath'));
     }

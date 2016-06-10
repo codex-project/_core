@@ -90,20 +90,18 @@ class CodexServiceProvider extends ServiceProvider
     {
         $app = parent::register();
 
-
         $this->registerDefaultFilesystem();
 
         $this->registerCodex();
 
         $this->app->instance('codex.addons', $this->addons = Addons\Addons::getInstance());
+        $this->addons->setManifestPath($this->app['config']['codex.manifest_path']);
 
         $this->registerTheme();
 
         $this->registerJavascriptData();
 
-        $log = $this->registerLogger();
-
-        $log->info('init');
+        $this->registerLogger();
 
         if ( $this->app[ 'config' ][ 'codex.routing.enabled' ] === true )
         {
@@ -188,15 +186,25 @@ class CodexServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * Returns the blade compiler
+     *
+     * @return \Illuminate\View\Compilers\BladeCompiler
+     */
+    protected function blade()
+    {
+        return $this->app['view']->getEngineResolver()->resolve('blade')->getCompiler();
+    }
+
     protected function bootBladeDirectives()
     {
         //Register the Starting Tag
-        \Blade::directive('spaceless', function ()
+        $this->blade()->directive('spaceless', function ()
         {
             return '<?php ob_start() ?>';
         });
         //Register the Ending Tag
-        \Blade::directive('endspaceless', function ()
+        $this->blade()->directive('endspaceless', function ()
         {
             return "<?php echo preg_replace('/>\\s+</', '><', ob_get_clean()); ?>";
         });

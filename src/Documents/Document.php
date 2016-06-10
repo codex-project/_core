@@ -14,20 +14,12 @@ use Codex\Contracts\Codex;
 use Codex\Exception\DocumentNotFoundException;
 use Codex\Projects\Project;
 use Codex\Support\Collection;
+use Codex\Support\Extendable;
 use Codex\Traits;
 
-class Document implements
-    Contracts\Traits\Extendable,
-    Contracts\Traits\Hookable,
-    Contracts\Traits\Bootable
+class Document extends Extendable
 {
-    use Traits\ExtendableTrait,
-        Traits\HookableTrait,
-        Traits\ObservableTrait,
-        Traits\BootableTrait,
-
-        Traits\CodexTrait,
-        Traits\FilesTrait,
+    use Traits\FilesTrait,
         Traits\AttributesTrait;
 
 
@@ -79,25 +71,23 @@ class Document implements
     public function __construct(Codex $codex, Project $project, $path, $pathName)
     {
         $this->setCodex($codex);
-        $this->project = $project;
-        $this->path = $path;
-        $this->pathName = $pathName;
-        $this->extension = path_get_extension($path);
+        $this->project        = $project;
+        $this->path           = $path;
+        $this->pathName       = $pathName;
+        $this->extension      = path_get_extension($path);
         $this->appliedFilters = new Collection();
 
         $this->setFiles($project->getFiles());
 
         $this->hookPoint('document:ready', [ $this ]);
 
-        if ( $this->codex->projects->hasActive() === false )
-        {
+        if ( $this->codex->projects->hasActive() === false ) {
             $project->setActive();
         }
 
         $this->attributes = $codex->config('default_document_attributes');
 
-        if ( !$this->getFiles()->exists($this->getPath()) )
-        {
+        if ( !$this->getFiles()->exists($this->getPath()) ) {
             throw DocumentNotFoundException::document($this)->inProject($project);
         }
 
@@ -120,8 +110,7 @@ class Document implements
      */
     public function render()
     {
-        if ( $this->rendered )
-        {
+        if ( $this->rendered ) {
             return $this->content;
         }
         $this->hookPoint('document:render');
@@ -135,8 +124,7 @@ class Document implements
     {
         $enabledFilters = $this->project->config('filters.enabled', [ ]);
 
-        foreach ( $this->codex->addons->filters->getSorted($enabledFilters) as $filter )
-        {
+        foreach ( $this->codex->addons->filters->getSorted($enabledFilters) as $filter ) {
             $this->hookPoint('document:filter:before:' . $filter[ 'name' ], [ $filter[ 'instance' ], $filter ]);
             $this->codex->addons->filters->runFilter($filter[ 'name' ], $this);
             //app()->call([ $filter['instance'], 'handle' ], ['document' => $this]);

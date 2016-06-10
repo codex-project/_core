@@ -17,9 +17,6 @@ class AddonScanner
     /** @var \Codex\Support\Collection */
     protected $manifest;
 
-    /** @var string */
-    protected $manifestPath;
-
     /** @var \Sebwite\Filesystem\Filesystem */
     protected $fs;
 
@@ -31,41 +28,37 @@ class AddonScanner
         Annotations\Hook::class,
         Annotations\Filter::class
     ];
-
-
-    public function __construct()
+    
+    protected $addons;
+    
+    public function __construct(Addons $addons)
     {
+        $this->addons = $addons;
         $this->manifest     = new Collection();
-        $this->manifestPath = config('codex.manifest_path');
         $this->fs           = new Filesystem();
         $this->reader       = new AnnotationReader();
 
         foreach ( $this->fs->globule(__DIR__ . '/Annotations/*.php') as $filePath ) {
             AnnotationRegistry::registerFile($filePath);
         }
-
-        $this->reloadManifest();
     }
-
+    
     public function getAddonPaths()
     {
-        if ( $this->manifest->isEmpty() ) {
-            $this->reloadManifest();
+        if ( $this->getManifest()->isEmpty() ) {
+            $this->getManifest()->load();
         }
-        return $this->manifest->get('paths', [ ]);
+        return $this->getManifest()->get('paths', [ ]);
+    }
+    
+    public function getManifestPath()
+    {
+        return $this->addons->getManifestPath();
     }
 
-    protected function reloadManifest()
+    public function getManifest()
     {
-        if ( !$this->fs->exists($this->manifestPath) ) {
-            throw CodexException::manifestNotFound($this->manifestPath);
-        }
-        $raw            = $this->fs->get($this->manifestPath);
-        $data           = json_decode($raw, true);
-        $this->manifest = new Collection($data);
-        if ( $this->manifest->isEmpty() ) {
-            throw CodexException::manifestParse('empty manifest file');
-        }
+        return $this->addons->getManifest();
     }
 
     public function findAll()
@@ -76,7 +69,6 @@ class AddonScanner
         }
         return $files;
     }
-
 
     public function scanDirectory($path)
     {

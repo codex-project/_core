@@ -15,9 +15,9 @@ var codex;
                 this.$document = $(document);
                 this.$body = $('body');
                 this.$head = $('head');
-                console.log('asdf', this);
                 this.setElements('nav', 'sidebar', 'wrapper', 'article', 'footer', 'breadcrumbs');
-                this.bindEvents();
+                this.init().then(function () {
+                });
             }
             Layout.prototype.setElements = function () {
                 var _this = this;
@@ -44,17 +44,15 @@ var codex;
             Layout.prototype.showSidebar = function () {
                 this.$body.removeClass('sidebar-closed');
             };
-            Layout.prototype.bindEvents = function () {
+            Layout.prototype.init = function () {
                 var _this = this;
-                console.log('bindEvents');
+                var defer = codex.util.create();
                 this.$body.on('click', 'a[data-action="sidebar-toggle"]', function (event) {
                     _this.toggleSidebar();
                 });
                 $(function () {
-                    console.log('bindEvents2');
                     _this.$article.hasClass('loaded') === false && _this.$article.addClass('loaded');
                     $(window).scroll(function () {
-                        console.log('scor');
                         if ($(this).scrollTop() > 100) {
                             $('.scrollToTop').fadeIn();
                         }
@@ -66,7 +64,9 @@ var codex;
                         $('html, body').animate({ scrollTop: 0 }, 800);
                         return false;
                     });
+                    defer.resolve();
                 });
+                return defer.promise;
             };
             Layout.prototype.toggleSidebar = function () {
                 if (this.$body.hasClass('sidebar-closed')) {

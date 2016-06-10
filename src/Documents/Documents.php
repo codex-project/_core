@@ -15,15 +15,11 @@ use Codex\Contracts\Codex;
 use Codex\Exception\CodexException;
 use Codex\Exception\DocumentNotFoundException;
 use Codex\Projects\Project;
+use Codex\Support\Extendable;
 use Codex\Traits;
 
-class Documents implements
-    Contracts\Documents\Documents,
-    Contracts\Traits\Hookable
+class Documents extends Extendable implements Contracts\Documents\Documents
 {
-    use Traits\HookableTrait,
-        Traits\CodexTrait;
-
     /**
      * @var \Illuminate\Support\Collection
      */
@@ -71,12 +67,12 @@ class Documents implements
     protected function resolvePathName($pathName = null)
     {
         $pathName = $pathName ?: 'index';
-        $this->hookPoint('documents:resolve:path', [$pathName]);
+        $this->hookPoint('documents:resolve:path', [ $pathName ]);
 
-        if(array_key_exists($pathName, $this->customDocuments)){
-            return $this->getCodex()->getContainer()->call($this->customDocuments[$pathName], [ 'documents' => $this]);
+        if ( array_key_exists($pathName, $this->customDocuments) ) {
+            return $this->getCodex()->getContainer()->call($this->customDocuments[ $pathName ], [ 'documents' => $this ]);
         }
-        foreach ( $this->getCodex()->config('extensions', []) as $extension => $binding ) {
+        foreach ( $this->getCodex()->config('extensions', [ ]) as $extension => $binding ) {
             $path = $this->project->refPath("{$pathName}.{$extension}");
             if ( $this->project->getFiles()->exists($path) ) {
                 return compact('path', 'extension', 'binding');
@@ -88,36 +84,36 @@ class Documents implements
 
     public function resolve($pathName = null)
     {
-        $this->hookPoint('documents:resolve', [$pathName]);
+        $this->hookPoint('documents:resolve', [ $pathName ]);
         $resolved = $this->resolvePathName($pathName);
 
-        if ( $resolved['path'] === false ) {
+        if ( $resolved[ 'path' ] === false ) {
             throw CodexException::documentNotFound($pathName);
         }
 
-        if ( ! $this->items->has($pathName) ) {
-            $document = $this->getCodex()->getContainer()->make($resolved['binding'], [
-                'codex'     => $this->getCodex(),
-                'project'   => $this->getProject(),
-                'path'      => $resolved['path'],
-                'pathName'  => $pathName
+        if ( !$this->items->has($pathName) ) {
+            $document = $this->getCodex()->getContainer()->make($resolved[ 'binding' ], [
+                'codex'    => $this->getCodex(),
+                'project'  => $this->getProject(),
+                'path'     => $resolved[ 'path' ],
+                'pathName' => $pathName,
             ]);
             $this->items->put($pathName, $document);
             $this->hookPoint('project:document', [ $this->items->get($pathName) ]);
         }
 
-        if ( ! $this->items->has($pathName) ) {
+        if ( !$this->items->has($pathName) ) {
             throw DocumentNotFoundException::document($pathName);
         }
 
         return $this->items->get($pathName);
     }
 
-    protected $customDocuments = [];
+    protected $customDocuments = [ ];
 
     public function addCustomDocument($pathName, Closure $resolver)
     {
-        $this->customDocuments[$pathName] = $resolver;
+        $this->customDocuments[ $pathName ] = $resolver;
     }
 
     /**

@@ -10,6 +10,7 @@ namespace Codex\Menus;
 
 use Codex\Contracts;
 use Codex\Support\Collection;
+use Codex\Support\Extendable;
 use Codex\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Routing\UrlGenerator;
@@ -20,18 +21,9 @@ use Sebwite\Filesystem\Filesystem;
 use Tree\Visitor\PostOrderVisitor;
 use Tree\Visitor\PreOrderVisitor;
 
-class Menu implements
-    Contracts\Traits\Extendable,
-    Contracts\Traits\Hookable,
-    Contracts\Traits\Bootable,
-    Arrayable
+class Menu extends Extendable implements Arrayable
 {
-    use Traits\ExtendableTrait,
-        Traits\HookableTrait,
-        Traits\ObservableTrait,
-        Traits\BootableTrait,
-
-        Traits\FilesTrait,
+    use Traits\FilesTrait,
         Traits\ConfigTrait,
         Traits\AttributesTrait;
 

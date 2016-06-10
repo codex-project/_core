@@ -32,7 +32,6 @@ class Addons implements Arrayable
     const THEME = 'theme';
     const FILTER = 'filter';
 
-
     /** @var Addons */
     static protected $instance;
 
@@ -50,8 +49,6 @@ class Addons implements Arrayable
     protected $fs;
 
     protected $paths;
-
-    protected $manifestPath;
 
     protected $registered = [ ];
 
@@ -77,13 +74,18 @@ class Addons implements Arrayable
 
     protected $collections = [ 'filters', 'themes', 'hooks' ];
 
+    /** @var string */
+    protected $manifestPath;
+
+    /** @var Manifest */
+    protected $manifest;
+
     protected function __construct()
     {
         $this->filters = new FilterAddons([ ], $this);
         $this->hooks   = new HookAddons([ ], $this);
-        #  $this->themes   = new ThemeAddons([ ], $this);
 
-        $this->scanner = new AddonScanner();
+        $this->scanner = new AddonScanner($this);
         $this->fs      = new Filesystem();
         $this->app     = Container::getInstance();
     }
@@ -115,14 +117,6 @@ class Addons implements Arrayable
         }
         data_set($this->views, $name, $view);
         return $this;
-    }
-
-    public function findAndRegisterAll()
-    {
-        foreach ( $this->scanner->findAll() as $file )
-        {
-            $this->register($file);
-        }
     }
 
     public function register(ClassFileInfo $file)
@@ -184,6 +178,14 @@ class Addons implements Arrayable
         return $registered;
     }
 
+    public function findAndRegisterAll()
+    {
+        foreach ( $this->scanner->findAll() as $file )
+        {
+            $this->register($file);
+        }
+    }
+
     public function mergeDefaultProjectConfig($config, $method = 'array_replace_recursive')
     {
         $this->mergeDefaults('default_project_config', $config, $method);
@@ -203,6 +205,15 @@ class Addons implements Arrayable
         $this->mergeDefaults('default_document_attributes', $config, $method);
     }
 
+    public function toArray()
+    {
+        return [
+            'filters' => $this->filters->toArray(),
+            'hooks' => $this->hooks->toArray(),
+            'views' => $this->views
+        ];
+    }
+
     /**
      * @return Filesystem
      */
@@ -211,13 +222,61 @@ class Addons implements Arrayable
         return $this->fs;
     }
 
-    public function toArray()
+    /**
+     * @return \Codex\Addons\AddonScanner
+     */
+    public function getScanner()
     {
-        return [
-            'filters' => $this->filters->toArray(),
-            'hooks' => $this->hooks->toArray(),
-            'views' => $this->views
-        ];
+        return $this->scanner;
+    }
+
+    /**
+     * @return array
+     */
+    public function getViews()
+    {
+        return $this->views;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegistered()
+    {
+        return $this->registered;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getManifestPath()
+    {
+        return $this->manifestPath;
+    }
+
+    /**
+     * @param mixed $manifestPath
+     */
+    public function setManifestPath($manifestPath)
+    {
+        $this->manifestPath = $manifestPath;
+        $this->loadManifest();
+    }
+
+    protected function loadManifest()
+    {
+        return $this->manifest = Manifest::make($this->manifestPath);
+    }
+
+    /**
+     * @return Manifest
+     */
+    public function getManifest()
+    {
+        if(isset($this->manifest) === false){
+            $this->loadManifest();
+        }
+        return $this->manifest;
     }
 
     public function __call($method, array $parameters = [ ])

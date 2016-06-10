@@ -28,7 +28,7 @@ if (!function_exists('codex')) {
      *
      * @param null|string $ext
      *
-     * @return \Codex\Codex
+     * @return \Codex\Contracts\Codex|mixed
      */
     function codex($ext = null)
     {

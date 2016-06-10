@@ -9,8 +9,10 @@
 namespace Codex\Projects;
 
 use Codex\Contracts;
+use Codex\Exception\CodexException;
 use Codex\Exception\ProjectNotFoundException;
 use Codex\Support\Collection;
+use Codex\Support\Extendable;
 use Codex\Traits;
 use Sebwite\Filesystem\Filesystem;
 use Sebwite\Support\Path;
@@ -18,17 +20,11 @@ use Sebwite\Support\Str;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
-class Projects implements
-    Contracts\Projects\Projects,
-    Contracts\Traits\Hookable
+class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
 {
-    use Traits\HookableTrait,
+    use Traits\FilesTrait;
 
-        Traits\FilesTrait,
-        Traits\CodexTrait,
-        Traits\ContainerTrait;
-
-    /** @var \Codex\Support\Collection  */
+    /** @var \Codex\Support\Collection */
     protected $items;
 
     /** @var Project|null */
@@ -48,11 +44,11 @@ class Projects implements
 
         $this->items = new Collection;
 
-        $this->hookPoint('projects:ready', [$this]);
+        $this->hookPoint('projects:ready', [ $this ]);
 
         $this->resolve();
 
-        $this->hookPoint('projects:done', [$this]);
+        $this->hookPoint('projects:done', [ $this ]);
     }
 
     /**
@@ -64,7 +60,7 @@ class Projects implements
      */
     public function setActive($project)
     {
-        if(!$project instanceof Project){
+        if ( !$project instanceof Project ) {
             $project = $this->get($project);
         }
         $this->activeProject = $project;
@@ -101,29 +97,29 @@ class Projects implements
     }
 
     /**
-     * Gets a project by name
-     *
-     * @param string $name The project name
-     *
-     * @return \Codex\Projects\Project
-     * @throws \Codex\Exception\ProjectNotFoundException
-     */
-    public function get($name)
-    {
-        if (!$this->has($name)) {
-            throw ProjectNotFoundException::project($name);
-        }
-
-        return $this->items->get($name);
-    }
-
-    /**
      * Renders the sidebar menu
      * @return string
      */
     public function renderSidebar()
     {
         return $this->codex->menus->get('sidebar')->render();
+    }
+
+    /**
+     * Gets a project by name
+     *
+     * @param string $name The project name
+     *
+     * @return \Codex\Projects\Project
+     * @throws \Codex\Exception\CodexException
+     */
+    public function get($name)
+    {
+        if ( !$this->has($name) ) {
+            throw CodexException::projectNotFound((string)$name);
+        }
+
+        return $this->items->get($name);
     }
 
     /**
@@ -149,6 +145,16 @@ class Projects implements
     }
 
     /**
+     * Returns the items (projects) Collection instance to provide advanced sorting and filtering
+     *
+     * @return \Codex\Support\Collection|\Codex\Projects\Project[]
+     */
+    public function query()
+    {
+        return $this->items;
+    }
+
+    /**
      * Returns all found projects as array
      * @return array
      */
@@ -164,12 +170,12 @@ class Projects implements
      */
     protected function resolve()
     {
-        if (!$this->items->isEmpty()) {
+        if ( !$this->items->isEmpty() ) {
             return;
         }
-        $this->hookPoint('projects:resolve', [$this]);
+        $this->hookPoint('projects:resolve', [ $this ]);
         /** @var \Codex\Menus\Menu $menu */
-        $menu     = $this->codex->menus->add('projects');
+        $menu = $this->codex->menus->add('projects');
         $menu->setAttribute('title', 'Pick...');
         $menu->setAttribute('subtitle', 'project');
         $finder   = new Finder();
@@ -180,7 +186,7 @@ class Projects implements
             ->depth('<= 1')
             ->followLinks();
 
-        foreach ($projects as $projectDir) {
+        foreach ( $projects as $projectDir ) {
             /** @var \SplFileInfo $projectDir */
             $name   = Path::getDirectoryName($projectDir->getPath());
             $config = $this->getContainer()->make('fs')->getRequire($projectDir->getRealPath());
@@ -189,17 +195,23 @@ class Projects implements
             /** @var \Codex\Projects\Project $project */
             $project = $this->getContainer()->make('codex.project', [
                 'projects' => $this,
-                'name'   => $name,
-                'config' => $config
+                'name'     => $name,
+                'config'   => $config,
             ]);
 
-            $this->hookPoint('project:make', [ $this, $project ]);
+
+            // This hook allows us to exclude projects from resolving, or do some other stuff
+            $hook = $this->hookPoint('project:make', [ $project ]);
+            if ( $hook === false ) {
+                continue;
+            }
+
             $this->items->put($name, $project);
 
             # Add to menu
             $name  = (string)$project->config('display_name');
             $names = [ ];
-            if (strpos($name, ' :: ') !== false) {
+            if ( strpos($name, ' :: ') !== false ) {
                 $names = explode(' :: ', $name);
                 $name  = array_shift($names);
             }
@@ -207,30 +219,35 @@ class Projects implements
             $href  = $project->url();
             $metas = compact('project');
             $id    = Str::slugify($name, '_');
-            if (!$menu->has($id)) {
-                $menu->add($id, $name, 'root', count($names) === 0 ? $metas : [], count($names) === 0 ? compact('href') : [ ]);
+            if ( !$menu->has($id) ) {
+                $menu->add($id, $name, 'root', count($names) === 0 ? $metas : [ ], count($names) === 0 ? compact('href') : [ ]);
             }
 
             $parentId = $id;
-            while (count($names) > 0) {
+            while ( count($names) > 0 ) {
                 $name = array_shift($names);
                 $id .= '::' . $name;
                 $id = Str::slugify($id, '_');
-                if (!$menu->has($id)) {
+                if ( !$menu->has($id) ) {
                     $menu->add($id, $name, $parentId, $metas, count($names) === 0 ? compact('href') : [ ]);
                 }
                 $parentId = $id;
             }
         }
-        $this->hookPoint('projects:resolved', [$this]);
+        $this->hookPoint('projects:resolved', [ $this ]);
     }
 
+    /**
+     * @param \Codex\Projects\Project $project
+     * @param null                    $items
+     * @param string                  $parentId
+     */
     protected function resolveProjectSidebarMenu(Project $project, $items = null, $parentId = 'root')
     {
-        if($items === null ) {
+        if ( $items === null ) {
             $path  = $project->refPath('menu.yml');
             $yaml  = $project->getFiles()->get($path);
-            $items = Yaml::parse($yaml)['menu'];
+            $items = Yaml::parse($yaml)[ 'menu' ];
             $this->codex->menus->forget('sidebar');
         }
         $menu = $this->codex->menus->add('sidebar');
