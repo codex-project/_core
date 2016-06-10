@@ -2,9 +2,7 @@
 namespace Codex\Http\Controllers;
 
 use Codex\Contracts\Codex;
-use Codex\Exception\CodexHttpException;
-use Codex\Http\Controllers\Controller;
-use Codex\Http\Redirect;
+
 use Codex\Traits\HookableTrait;
 use Illuminate\Contracts\View\Factory as View;
 

@@ -34,7 +34,10 @@ class CodexServiceProvider extends ServiceProvider
 
     protected $configFiles = [ 'codex' ];
 
-    protected $viewDirs = [ 'views' => 'codex' ];
+    protected $viewDirs = [
+        'views' => 'codex',
+        'stubs' => 'codex-stubs',
+    ];
 
     protected $assetDirs = [
         'assets'     => 'codex',
@@ -57,8 +60,9 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $singletons = [
-        'codex.addons' => Addons\Addons::class,
         'codex'        => Codex::class,
+        'codex.addons' => Addons\Addons::class,
+
     ];
 
     protected $aliases = [
@@ -67,11 +71,12 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $weaklings = [
-        'fs' => \Sebwite\Filesystem\Filesystem::class,
+        'fs'              => \Sebwite\Filesystem\Filesystem::class,
+        'codex.generator' => Projects\Generator::class,
     ];
 
     protected $middleware = [
-        Http\CodexMiddleware::class,
+       # Http\CodexMiddleware::class,
     ];
 
     /** @var Addons\Addons */
@@ -81,8 +86,6 @@ class CodexServiceProvider extends ServiceProvider
     {
         $app = parent::boot();
         $this->bootBladeDirectives();
-        $this->addons->registerInPath(__DIR__ . '/Addons/Filters');
-        $this->addons->findAndRegisterAll();
         return $app;
     }
 
@@ -95,7 +98,9 @@ class CodexServiceProvider extends ServiceProvider
         $this->registerCodex();
 
         $this->app->instance('codex.addons', $this->addons = Addons\Addons::getInstance());
-        $this->addons->setManifestPath($this->app['config']['codex.paths.manifest']);
+        $this->addons->setManifestPath($this->app[ 'config' ][ 'codex.paths.manifest' ]);
+        $this->addons->registerInPath(__DIR__ . '/Addons/Filters');
+        $this->addons->findAndRegisterAll();
 
         $this->registerTheme();
 
@@ -103,13 +108,11 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerLogger();
 
-        if ( $this->app[ 'config' ][ 'codex.routing.enabled' ] === true )
-        {
+        if ( $this->app[ 'config' ][ 'codex.routing.enabled' ] === true ) {
             $this->registerRouting();
         }
 
-        if ( $this->app[ 'config' ][ 'codex.dev.enabled' ] === true )
-        {
+        if ( $this->app[ 'config' ][ 'codex.dev.enabled' ] === true ) {
             $this->app->register(Dev\DevServiceProvider::class);
         }
 
@@ -138,8 +141,7 @@ class CodexServiceProvider extends ServiceProvider
     protected function registerCodex()
     {
 
-        $this->codexHook('constructed', function (Contracts\Codex $codex)
-        {
+        $this->codexHook('constructed', function (Contracts\Codex $codex) {
             $codex->extend('projects', Projects\Projects::class);
             $codex->extend('menus', Menus\Menus::class);
             $codex->extend('theme', Theme::class);
@@ -148,17 +150,15 @@ class CodexServiceProvider extends ServiceProvider
         #$this->share('codex', Codex::class, [ ], true);
         #$this->app->alias('codex', Contracts\Codex::class);
 
-        $this->codexHook('project:construct', function (Project $project)
-        {
+        $this->codexHook('project:construct', function (Project $project) {
             $project->extend('documents', Documents\Documents::class);
         });
     }
 
     protected function registerDefaultFilesystem()
     {
-        $this->app->make('filesystem')->extend('codex-local', function (LaravelApplication $app, array $config = [ ])
-        {
-            $flysystemAdapter = new Filesystem\Local($config[ 'root' ]);
+        $this->app->make('filesystem')->extend('codex-local', function (LaravelApplication $app, array $config = [ ]) {
+            $flysystemAdapter    = new Filesystem\Local($config[ 'root' ]);
             $flysystemFilesystem = new Flysystem($flysystemAdapter);
             return new FilesystemAdapter($flysystemFilesystem);
         });
@@ -171,8 +171,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerTheme()
     {
-        $this->codexHook('constructed', function (Contracts\Codex $codex)
-        {
+        $this->codexHook('constructed', function (Contracts\Codex $codex) {
             /** @var \Codex\Codex|\Codex\Contracts\Codex $codex */
             $codex->theme->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [ ], true);
             $codex->theme->addStylesheet('theme', 'vendor/codex/styles/stylesheet', [ 'vendor' ]);
@@ -193,27 +192,24 @@ class CodexServiceProvider extends ServiceProvider
      */
     protected function blade()
     {
-        return $this->app['view']->getEngineResolver()->resolve('blade')->getCompiler();
+        return $this->app[ 'view' ]->getEngineResolver()->resolve('blade')->getCompiler();
     }
 
     protected function bootBladeDirectives()
     {
         //Register the Starting Tag
-        $this->blade()->directive('spaceless', function ()
-        {
+        $this->blade()->directive('spaceless', function () {
             return '<?php ob_start() ?>';
         });
         //Register the Ending Tag
-        $this->blade()->directive('endspaceless', function ()
-        {
+        $this->blade()->directive('endspaceless', function () {
             return "<?php echo preg_replace('/>\\s+</', '><', ob_get_clean()); ?>";
         });
     }
 
     protected function registerJavascriptData()
     {
-        $this->codexHook('controller:view', function (CodexController $controller, $view, Contracts\Codex $codex, Project $project, Documents\Document $document)
-        {
+        $this->codexHook('controller:view', function (CodexController $controller, $view, Contracts\Codex $codex, Project $project, Documents\Document $document) {
             /** @var Codex $codex */
             $theme = $codex->theme;
             $theme->set('codex', $c = $codex->config()->only('display_name', 'doctags', 'extensions', 'default_project')->toArray());

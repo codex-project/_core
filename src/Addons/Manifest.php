@@ -22,12 +22,12 @@ class Manifest extends Collection
     {
         parent::__construct();
         $this->manifestPath = $manifestPath;
-        $this->fs = $fs;
+        $this->fs           = $fs;
     }
 
     public function load()
     {
-        $manifest = $this->fs->get($this->manifestPath);
+        $manifest    = $this->fs->get($this->manifestPath);
         $this->items = json_decode($manifest, true);
         return $this;
     }
@@ -45,19 +45,19 @@ class Manifest extends Collection
      *
      * @return \Codex\Addons\Manifest
      */
-    public static function make($manifestPath = [])
+    public static function make($manifestPath = [ ])
     {
         return app(static::class, compact('manifestPath'));
     }
 
     public function getPaths()
     {
-        return $this->get('paths', []);
+        return $this->get('paths', [ ]);
     }
 
     public function addPath($path)
     {
-        $this->set('paths', array_merge((array) $path, $this->get('paths', [])));
+        $this->set('paths', array_merge((array)$path, $this->get('paths', [ ])));
         return $this;
     }
 
@@ -65,4 +65,10 @@ class Manifest extends Collection
     {
         $this->add($filePath);
     }
+
+    public function get($key, $default = null)
+    {
+        return data_get($this->items, $key, $default);
+    }
+
 }

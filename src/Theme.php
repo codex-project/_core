@@ -102,7 +102,7 @@ class Theme extends Extendable implements Arrayable
      * @param array $depends
      * @param bool  $external
      *
-     * @return \Codex\Theme
+     * @return $this
      */
     public function addJavascript($name, $src, array $depends = [ ], $external = false)
     {

@@ -11,7 +11,7 @@ class DevServiceProvider extends ServiceProvider
     ];
 
     protected $middleware = [
-        //Middleware\CodexDev::class,
+        Middleware\CodexDev::class,
     ];
 
     protected $shared = [
@@ -72,7 +72,7 @@ class DevServiceProvider extends ServiceProvider
             if ( $this->app->bound('debugbar') )
             {
                 $db = $this->app->make('debugbar');
-                $db->addCollector(new Debugbar\CodexCollector($controller, $view, $codex, $project, $document));
+              #  $db->addCollector(new Debugbar\CodexCollector($controller, $view, $codex, $project, $document));
             }
         });
     }

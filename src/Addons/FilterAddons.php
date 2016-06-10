@@ -20,7 +20,7 @@ class FilterAddons extends AbstractAddonCollection
     public function add(ClassFileInfo $file, Filter $annotation)
     {
         $class    = $file->getClassName();
-        $instance = $this->app->make($class);
+        $instance = null; //$this->app->make($class);
         $data     = array_merge(compact('file', 'annotation', 'class', 'instance'), (array) $annotation);
 
         $this->set($annotation->name, $data);
@@ -31,7 +31,7 @@ class FilterAddons extends AbstractAddonCollection
     {
         $project = $document->getProject();
         $filter = $this->get($name);
-        $instance = $filter['instance'];
+        $instance = $filter['instance'] === null ? $this->app->build($filter['class']) : $filter['instance'];
         /** @var Filter $annotation */
         $annotation = $filter['annotation'];
 

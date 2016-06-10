@@ -8,6 +8,7 @@ namespace Codex\Projects;
 
 
 use Codex\Contracts;
+use Codex\Support\Extendable;
 use Codex\Traits;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
@@ -27,21 +28,14 @@ use vierbergenlars\SemVer\version;
  * @property \Codex\Documents\Documents                  $documents
  * @property \Codex\Documents\Documents                  $documents2
  * @property \Codex\Addon\Defaults\Phpdoc\PhpdocDocument $getPhpdoc
+ * @method boolean hasEnabledAuth()
+ * @method boolean hasAccess()
+ * 
  *
  */
-class Project implements
-    Contracts\Traits\Extendable,
-    Contracts\Traits\Hookable,
-    Contracts\Traits\Bootable,
-    Arrayable
+class Project extends Extendable implements Arrayable
 {
-    use Traits\ExtendableTrait,
-        Traits\HookableTrait,
-        Traits\ObservableTrait,
-        Traits\BootableTrait,
-
-        Traits\CodexTrait,
-        Traits\FilesTrait,
+    use Traits\FilesTrait,
         Traits\ConfigTrait;
 
 

@@ -43,7 +43,7 @@ abstract class ApiController extends Controller
 
         if ( !$this->projects->has($projectSlug) )
         {
-            return response()->json('Project does not exist', 404);
+            return $this->error('Project does not exist', 404);
         }
         $project = $this->projects->get($projectSlug);
 
@@ -61,9 +61,9 @@ abstract class ApiController extends Controller
         return response()->json([ 'success' => true, 'message' => '', 'data' => $data ]);
     }
 
-    protected function error($message)
+    protected function error($message, $code = 500)
     {
-        return response()->json([ 'success' => false, 'message' => $message, 'data' => [ ] ]);
+        return response()->json([ 'success' => false, 'message' => $message, 'data' => [ ] ], $code);
     }
 
 }

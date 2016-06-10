@@ -220,7 +220,7 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
             $metas = compact('project');
             $id    = Str::slugify($name, '_');
             if ( !$menu->has($id) ) {
-                $menu->add($id, $name, 'root', count($names) === 0 ? $metas : [ ], count($names) === 0 ? compact('href') : [ ]);
+                $node = $menu->add($id, $name, 'root', count($names) === 0 ? $metas : [ ], count($names) === 0 ? compact('href') : [ ]);
             }
 
             $parentId = $id;
@@ -229,10 +229,12 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
                 $id .= '::' . $name;
                 $id = Str::slugify($id, '_');
                 if ( !$menu->has($id) ) {
-                    $menu->add($id, $name, $parentId, $metas, count($names) === 0 ? compact('href') : [ ]);
+                    $node = $menu->add($id, $name, $parentId, $metas, count($names) === 0 ? compact('href') : [ ]);
                 }
                 $parentId = $id;
             }
+
+            $this->hookPoint('projects:resolved:node', [$project, isset($node) ? $node : null ]);
         }
         $this->hookPoint('projects:resolved', [ $this ]);
     }

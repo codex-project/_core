@@ -45,7 +45,7 @@ class CodexDev
             $response = $this->handleException($request, $e);
         }
 
-        $content = $response->content();
+        $content = $response->getContent();
 
         $assets = [
             'debugbar.css',
