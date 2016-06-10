@@ -120,7 +120,7 @@ class Project implements
         $this->projects   = $projects;
         $this->name       = $name;
         $this->setConfig($config);
-        $this->path = $path = path_join($codex->getDocsDir(), $name);
+        $this->path = $path = path_join($codex->getDocsPath(), $name);
 
         $this->hookPoint('project:construct');
 
@@ -184,7 +184,7 @@ class Project implements
         if ( $this->getDiskName() === $this->getDefaultDiskName() ) {
             $default = [
                 'driver' => 'codex-local',
-                'root'   => $this->codex->getDocsDir() . DIRECTORY_SEPARATOR . $this->getName(),
+                'root'   => $this->codex->getDocsPath() . DIRECTORY_SEPARATOR . $this->getName(),
             ];
         }
 

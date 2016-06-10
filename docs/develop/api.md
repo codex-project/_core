@@ -18,12 +18,12 @@ public function __construct(Codex $codex){
 
 ###### Facade 
 ```php
-$dir = codex()->getDocsDir();
+$dir = codex()->getDocsPath();
 ```
 
 ###### Binding
 ```php
-$dir = app('codex')->getDocsDir();
+$dir = app('codex')->getDocsPath();
 ```
 
 ### Overview

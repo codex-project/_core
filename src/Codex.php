@@ -12,6 +12,7 @@ namespace Codex;
 use Codex\Contracts;
 use Codex\Log\Writer;
 use Codex\Projects\Project;
+use Codex\Support\Extendable;
 use Codex\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Container\Container;
@@ -37,24 +38,11 @@ use Illuminate\Filesystem\Filesystem;
  * @hookPoint      constructed
  *
  */
-class Codex implements
-    Contracts\Codex,
-    Contracts\Traits\Extendable,
-    Contracts\Traits\Hookable,
-    Contracts\Traits\Bootable,
-    Contracts\Traits\Observable,
-    Arrayable
+class Codex extends Extendable implements Contracts\Codex, Arrayable
 {
-    use Traits\ExtendableTrait,
-        Traits\HookableTrait,
-        Traits\ObservableTrait,
-        Traits\BootableTrait,
+    use Traits\FilesTrait,
+        Traits\ConfigTrait;
 
-        Traits\FilesTrait,
-        Traits\ConfigTrait
-    {
-        Traits\ExtendableTrait::__get as ___get;
-    }
 
 
     /**
@@ -95,9 +83,12 @@ class Codex implements
         $this->setFiles($files);
 
         $this->cache   = $cache;
-        $this->docsDir = config('codex.docs_dir');
         $this->log     = $log;
 
+        $this->docsDir = config('codex.paths.docs');
+        if(path_is_relative($this->docsDir)){
+            $this->docsDir = base_path($this->docsDir);
+        }
 
         // 'factory:done' called after all factory operations have completed.
         $this->hookPoint('constructed', [ $this ]);
@@ -217,7 +208,7 @@ class Codex implements
      *
      * @return string
      */
-    public function getDocsDir()
+    public function getDocsPath()
     {
         return $this->docsDir;
     }
@@ -286,7 +277,7 @@ class Codex implements
         {
             return $this->container->make('codex.addons');
         }
-        return $this->___get($name);
+        return parent::__get($name);
     }
 
 }

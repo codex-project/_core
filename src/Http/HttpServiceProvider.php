@@ -20,7 +20,7 @@ class HttpServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'Codex\Http';
+    protected $namespace = 'Codex\Http\Controllers';
 
     /**
      * Boot Codex's route service provider.
@@ -55,14 +55,25 @@ class HttpServiceProvider extends ServiceProvider
     public function map(Router $router)
     {
         $useMiddleware = version_compare($this->app->version(), '5.2.0', '>=') === true;
+
+        // web
         $router->group([
             'as'         => 'codex.',
             'prefix'     => config('codex.base_route'),
             'namespace'  => $this->namespace,
-            'middleware' => $useMiddleware ? [ 'web' ] : [ ]
-        ], function ($router) {
-        
-            require __DIR__ . '/../Http/routes.php';
+            'middleware' => $useMiddleware ? [ 'web' ] : [ ],
+        ], function () {
+            require __DIR__ . '/routes.php';
+        });
+
+        // api v1
+        $router->group([
+            'as'         => 'codex.api.v1.',
+            'prefix'     => 'api/v1',
+            'namespace'  => $this->namespace . '\Api\V1',
+            'middleware' => $useMiddleware ? [ 'api' ] : [ ],
+        ], function () {
+            require __DIR__ . '/routes.api.php';
         });
     }
 }

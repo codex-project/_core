@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Http;
+namespace Codex\Http\Controllers;
 
 use Codex\Contracts\Codex;
 use Illuminate\Contracts\View\Factory as ViewFactory;
@@ -13,7 +13,7 @@ use Illuminate\Routing\Controller as BaseController;
  * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
-class Controller extends BaseController
+abstract class Controller extends BaseController
 {
     /**
      * @var \Codex\Contracts\Codex|\Codex\Codex

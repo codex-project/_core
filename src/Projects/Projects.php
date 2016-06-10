@@ -180,7 +180,7 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
         $menu->setAttribute('subtitle', 'project');
         $finder   = new Finder();
         $projects = $finder
-            ->in($this->getCodex()->getDocsDir())
+            ->in($this->getCodex()->getDocsPath())
             ->files()
             ->name('config.php')
             ->depth('<= 1')

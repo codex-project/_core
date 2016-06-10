@@ -4,7 +4,7 @@ namespace Codex\Dev\Debugbar;
 
 use Codex\Codex;
 use Codex\Documents\Document;
-use Codex\Http\CodexController;
+use Codex\Http\Controllers\CodexController;
 use Codex\Projects\Project;
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
@@ -20,7 +20,7 @@ use Illuminate\View\View;
  */
 class CodexCollector extends DataCollector implements Renderable
 {
-    /** @var \Codex\Http\CodexController */
+    /** @var \Codex\Http\Controllers\CodexController */
     protected $controller;
 
     /** @var \Codex\Projects\Project */

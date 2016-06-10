@@ -1,11 +1,12 @@
 <?php
-namespace Codex\Http;
+namespace Codex\Http\Controllers\Api\V1;
 
 use Codex\Contracts\Codex;
+use Codex\Http\Controllers\Controller;
 use Codex\Projects\Project;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
-class ApiController extends Controller
+abstract class ApiController extends Controller
 {
     /** @var \Codex\Codex */
     protected $codex;

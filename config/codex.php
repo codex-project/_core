@@ -5,9 +5,15 @@ return [
 
     'display_name' => env('CODEX_DISPLAY_NAME', 'Codex'),
 
-    'docs_dir' => env('CODEX_ROOT_DIR', base_path('resources/docs')),
+//    'docs_dir' => env('CODEX_ROOT_DIR', base_path('resources/docs')),
 
     'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
+
+    'paths' => [
+        'docs'     => env('CODEX_ROOT_DIR', base_path('resources/docs')),
+        'stubs'    => __DIR__ . '/../resources/stubs',
+        'manifest' => storage_path('codex.json'),
+    ],
 
     'routing' => [
         'enabled'              => true,
@@ -17,6 +23,10 @@ return [
         ],
     ],
 
+    'api' => [
+        'enabled' => true,
+        'tokens'  => [ ],
+    ],
 
     'log' => [
         'enabled' => true,
@@ -30,11 +40,11 @@ return [
         'print_events' => true,
     ],
 
-    'stubs_path' => __DIR__ . '/../resources/stubs',
+//    'stubs_path' => __DIR__ . '/../resources/stubs',
 
-    'manifest_path' => storage_path('codex.json'),
+//    'manifest_path' => storage_path('codex.json'),
 
-    'extensions'                  => [
+    'extensions' => [
         'md'       => 'codex.document',
         'markdown' => 'codex.document',
         'html'     => 'codex.document',
@@ -49,7 +59,7 @@ return [
     | DocTags are comment strings that can be used to render additional
     |
     */
-    
+
     'doctags'                     => [
         'table:responsive' => 'Codex\Addons\Filters\DocTags\Table@responsive',
         'general:hide'     => 'Codex\Addons\Filters\DocTags\General@hide',

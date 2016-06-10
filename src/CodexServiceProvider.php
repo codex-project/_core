@@ -8,7 +8,7 @@
 
 namespace Codex;
 
-use Codex\Http\CodexController;
+use Codex\Http\Controllers\CodexController;
 use Codex\Log\Writer;
 use Codex\Projects\Project;
 use Codex\Traits\CodexProviderTrait;
@@ -95,7 +95,7 @@ class CodexServiceProvider extends ServiceProvider
         $this->registerCodex();
 
         $this->app->instance('codex.addons', $this->addons = Addons\Addons::getInstance());
-        $this->addons->setManifestPath($this->app['config']['codex.manifest_path']);
+        $this->addons->setManifestPath($this->app['config']['codex.paths.manifest']);
 
         $this->registerTheme();
 

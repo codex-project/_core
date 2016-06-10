@@ -119,7 +119,7 @@ interface Codex
      *
      * @return string
      */
-    public function getDocsDir();
+    public function getDocsPath();
 
     /**
      * Get cache.

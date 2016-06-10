@@ -2,23 +2,14 @@
 namespace Codex;
 
 use Codex\Contracts\Codex as CodexContract;
-use Codex\Contracts\Traits\Extendable;
-use Codex\Contracts\Traits\Hookable;
+use Codex\Support\Extendable;
 use Codex\Support\Collection;
 use Codex\Support\Sorter;
-use Codex\Traits\ExtendableTrait;
-use Codex\Traits\HookableTrait;
 use Illuminate\Contracts\Support\Arrayable;
 use Sebwite\Support\Str;
 
-class Theme implements
-    Extendable,
-    Hookable,
-    Arrayable
+class Theme extends Extendable implements Arrayable
 {
-    use ExtendableTrait,
-        HookableTrait;
-
     /** @var Collection */
     protected $data;
 
@@ -49,7 +40,7 @@ class Theme implements
     public function __construct(CodexContract $parent)
     {
         $this->codex = $parent;
-        $this->data = new Collection;
+        $this->data  = new Collection;
         $this->reset();
     }
 
@@ -67,6 +58,41 @@ class Theme implements
         return $this;
     }
 
+    /**
+     * Push a view to a stack
+     *
+     * @param string     $stackName The name of the stack
+     * @param string     $viewName  The namespaced name of the view
+     * @param array|null $data      (optional) The view data array
+     * @param string     $appendTo  (optional) The view to attach this to
+     *
+     * @return Codex
+     */
+    public function pushToStack($stackName, $viewName, $data = null, $appendTo = 'codex::layouts.default')
+    {
+        $this->codex->getContainer()->make('events')->listen('composing: ' . $appendTo, function ($view) use ($stackName, $viewName, $data)
+        {
+            /** @var \Illuminate\View\View $view */
+            if ( $data instanceof \Closure )
+            {
+                $data = $this->codex->getContainer()->call($data, [ $this ]);
+                $data = is_array($data) ? $data : [ ];
+            }
+            elseif ( $data === null )
+            {
+                $data = [ ];
+            }
+            if ( !is_array($data) )
+            {
+                throw new \InvalidArgumentException("appendSectionsView data is not a array");
+            }
+
+            $content = $view->getFactory()->make($viewName, $data)->render();
+            $view->getFactory()->startPush($stackName, $content);
+        });
+
+        return $this;
+    }
 
     /**
      * addJavascript method
@@ -198,10 +224,8 @@ class Theme implements
     public function addBodyClass($class)
     {
         $classes = is_array($class) ? $class : explode(' ', $class);
-        foreach ( $classes as $c )
-        {
-            if ( $this->hasBodyClass($c) === false )
-            {
+        foreach ( $classes as $c ) {
+            if ( $this->hasBodyClass($c) === false ) {
                 $this->bodyClass[] = $c;
             }
         }
@@ -262,7 +286,7 @@ class Theme implements
      */
     public function removeBodyClass($classes)
     {
-        $classes = is_array($classes) ? $classes : explode(' ', $classes);
+        $classes         = is_array($classes) ? $classes : explode(' ', $classes);
         $this->bodyClass = array_diff($this->bodyClass, $classes);
         return $this;
     }
@@ -286,8 +310,7 @@ class Theme implements
     public function renderJavascripts()
     {
         $scripts = [ ];
-        foreach ( $this->javascripts() as $js )
-        {
+        foreach ( $this->javascripts() as $js ) {
             $scripts[] = "<script src=\"{$js['src']}\"></script>";
         }
         return implode("\n", $scripts);
@@ -301,8 +324,7 @@ class Theme implements
     public function renderStylesheets()
     {
         $styles = [ ];
-        foreach ( $this->stylesheets() as $css )
-        {
+        foreach ( $this->stylesheets() as $css ) {
             $styles[] = "<link type='text/css' rel='stylesheet' href=\"{$css['src']}\"/>";
         }
         return implode("\n", $styles);
@@ -316,8 +338,7 @@ class Theme implements
     public function renderStyles()
     {
         $styles = [ ];
-        foreach ( $this->styles() as $style )
-        {
+        foreach ( $this->styles() as $style ) {
             $styles[] = "<style type='text/css'>{$style['value']}</style>";
         }
         return implode("\n", $styles);
@@ -331,8 +352,7 @@ class Theme implements
     public function renderScripts()
     {
         $scripts = [ ];
-        foreach ( $this->scripts() as $js )
-        {
+        foreach ( $this->scripts() as $js ) {
             $scripts[] = "<script>{$js['value']}</script>";
         }
         return implode("\n", $scripts);
@@ -354,9 +374,9 @@ class Theme implements
     {
         $this->javascripts = new Collection;
         $this->stylesheets = new Collection;
-        $this->scripts = new Collection;
-        $this->styles = new Collection;
-        $this->body = new Collection;
+        $this->scripts     = new Collection;
+        $this->styles      = new Collection;
+        $this->body        = new Collection;
         return $this;
     }
 
@@ -369,16 +389,14 @@ class Theme implements
      */
     protected function sorter($all = [ ])
     {
-        $all = $all instanceof Collection ? $all : new Collection($all);
+        $all    = $all instanceof Collection ? $all : new Collection($all);
         $sorter = new Sorter;
         $sorted = new Collection;
-        foreach ( $all as $name => $asset )
-        {
+        foreach ( $all as $name => $asset ) {
             $sorter->addItem($asset[ 'name' ], $asset[ 'depends' ]);
         }
 
-        foreach ( $sorter->sort() as $name )
-        {
+        foreach ( $sorter->sort() as $name ) {
             $sorted->add($all->where('name', $name)->first());
         }
 
@@ -392,10 +410,9 @@ class Theme implements
      */
     public function toArray()
     {
-        $data = [ 'bodyClass' => $this->bodyClass ];
+        $data       = [ 'bodyClass' => $this->bodyClass ];
         $arrayables = [ 'javascripts', 'stylesheets', 'scripts', 'styles', 'data' ];
-        foreach ( $arrayables as $arrayable )
-        {
+        foreach ( $arrayables as $arrayable ) {
             $data[ $arrayable ] = call_user_func([ $this, $arrayable ])->toArray();
         }
         return $data;
