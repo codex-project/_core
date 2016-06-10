@@ -25,10 +25,11 @@ class TocFilter
     public $config = [
         'disable'           => [ 1 ],
         'regex'             => '/<h(\d)>([\w\W]*?)<\/h\d>/',
-        'list_class' => 'toc',
+        'list_class'        => 'toc',
         'header_link_class' => 'toc-header-link',
         'header_link_show'  => false,
         'header_link_text'  => '#',
+        'minimum_nodes'     => 2,
         'view'              => 'codex::filters.toc',
     ];
 
@@ -36,6 +37,8 @@ class TocFilter
     protected $view;
 
     protected $slugs = [ ];
+
+    protected $nodes = [ ];
 
     /**
      * TocFilter constructor.
@@ -49,8 +52,8 @@ class TocFilter
 
     public function handle(Document $document)
     {
-        $content         = $document->getContent();
-        $total           = preg_match_all($this->config[ 'regex' ], $content, $matches);
+        $content = $document->getContent();
+        $total   = preg_match_all($this->config[ 'regex' ], $content, $matches);
 //         create root
 //         for each header
 //         create node
@@ -65,7 +68,7 @@ class TocFilter
             $original = $matches[ 0 ][ $h ];
             $size     = (int)$matches[ 1 ][ $h ];
             $text     = $matches[ 2 ][ $h ];
-            if(in_array($size, $this->config['disable'], true)){
+            if ( in_array($size, $this->config[ 'disable' ], true) ) {
                 continue;
             }
             $node = $this->createHeaderNode($size, $text);
@@ -111,12 +114,14 @@ class TocFilter
             ->render();
 
         $this->addScript();
-        $document->setContent("<ul class=\"{$this->config['list_class']}\">{$toc}</ul>".$content);
+        if ( count($this->nodes) >= (int)$this->config[ 'minimum_nodes' ] ) {
+            $document->setContent("<ul class=\"{$this->config['list_class']}\">{$toc}</ul>" . $content);
+        }
     }
 
     protected function createHeaderNode($size, $text)
     {
-        return Header::make($size, $text);
+        return $this->nodes [] = Header::make($size, $text);
     }
 
     protected function isAllowedHeader($header)
