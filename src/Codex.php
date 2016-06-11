@@ -188,6 +188,7 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
      */
     public function log($level, $message, $context = [ ])
     {
+
         $this->log->log($level, $message, $context);
     }
 
