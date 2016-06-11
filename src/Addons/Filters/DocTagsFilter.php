@@ -37,7 +37,7 @@ class DocTagsFilter
 
     public function handle(Document $document)
     {
-
+        // @formatter:off
         preg_match_all('/<!--\*codex:(.*?)\*-->/', $content = $document->getContent(), $matches);
         // foreach found doctag
         foreach ( $matches[ 0 ] as $i => $raw )
@@ -68,13 +68,14 @@ class DocTagsFilter
             }
             $dt->run();
         }
+        // @formatter:on
     }
 
     protected function createDocTag($raw, $cleaned)
     {
-        $docTag = new DocTag($raw, $cleaned);
-        $docTag->codex = $this->codex;
-        $docTag->project = $this->project;
+        $docTag           = new DocTag($raw, $cleaned);
+        $docTag->codex    = $this->codex;
+        $docTag->project  = $this->project;
         $docTag->document = $this->document;
         return $docTag;
     }

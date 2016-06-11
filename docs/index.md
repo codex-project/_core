@@ -1,6 +1,19 @@
 <!---
 title: Overview
-subtitle: Codex Documentation   
+subtitle: Codex Documentation
+buttons:
+  type: groups
+  groups:
+    code_links:
+      github: 
+        text: Github
+        href: https://github.com/codex-project/codex
+        target: _blank
+      packagist:
+        text: Packagist
+        href: https://github.com/codex-project/codex
+        target: _blank
+    
 -->
 
 # Codex Documentation
@@ -37,6 +50,8 @@ Filters can modify the content output of a document.
 ##### Example: phpdoc
 - Mouse hover on the examples.
 - When clicked, takes you to the given documentation
+
+subtitle: <!--*codex:attribute:print('subtitle')*-->
 
 <!--*codex:table:responsive(123, 'hello', true)*-->
 

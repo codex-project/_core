@@ -27,6 +27,10 @@
     @show
 
     <article class="content @yield('articleClass', '')" data-layout="article">
+        <div class="btn-group pull-right">
+            @section('buttons')
+            @show
+        </div>
         @yield('content')
     </article>
 @endpush

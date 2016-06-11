@@ -1,5 +1,5 @@
 <!---
-title: Installation
+title: Configuration
 subtitle: Getting started
 -->
 

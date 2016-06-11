@@ -9,15 +9,14 @@ menu:
       - name: Installation
         document: getting-started/installation
 
+      - name: Configuration
+        document: getting-started/configuration
+
       - name: Creating a project
         document: getting-started/creating-a-project
 
       - name: Using addons
         document: getting-started/using-addons
-
-      - name: API Documentation
-        document: phpdoc
-
 
   - name: Preview pages
     icon: fa fa-eye
@@ -81,6 +80,9 @@ menu:
 
       - name: Themes
         document: develop/themes
+
+      - name: API Documentation
+        document: phpdoc
 
   - name: Contributing
     icon: fa fa-eye

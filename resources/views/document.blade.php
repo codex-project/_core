@@ -11,11 +11,5 @@
 
 
 @section('content')
-
-    <header>
-        <small>{{ $document->attr('subtitle', '') }}</small>
-        <h1>{{ $document->attr('title') }}
-        </h1>
-    </header>
     {!! $content !!}
 @stop

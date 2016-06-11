@@ -54,8 +54,8 @@ class Document extends Extendable
     /** @var \Codex\Support\Collection */
     protected $appliedFilters;
 
-
     protected $rendered = false;
+
 
     /**
      * Document constructor.

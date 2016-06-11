@@ -109,6 +109,11 @@ class DocTag
             // assuming its a @ string
             list($class, $method) = explode('@', (string)$this->handler);
             $instance = app()->make($class);
+            foreach(['document', 'project', 'tag'] as $property){
+                if(property_exists($instance, $property)){
+                    $instance->{$property} = $this->{$property};
+                }
+            }
             return [ $instance, $method ];
         }
     }

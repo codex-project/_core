@@ -63,6 +63,7 @@ return [
     'doctags'                     => [
         'table:responsive' => 'Codex\Addons\Filters\DocTags\Table@responsive',
         'general:hide'     => 'Codex\Addons\Filters\DocTags\General@hide',
+        'attribute:print'    => 'Codex\Addons\Filters\DocTags\Attribute@printValue',
     ],
 
     /*
@@ -102,6 +103,8 @@ return [
         'subtitle'        => '',
         'view'            => null,
         'disable_filters' => [ ],
+        'buttons'         => [
+        ],
         'filters'         => [
         ],
     ],
