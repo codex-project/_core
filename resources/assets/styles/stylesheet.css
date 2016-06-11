@@ -3403,6 +3403,367 @@ pre.line-numbers > code {
   margin-top: 0;
 }
 
+.dropdown-menu {
+  padding: 0;
+}
+
+.dropdown-menu:before {
+  border-left: none;
+  border-right: none;
+}
+
+.dropdown-menu small {
+  font-size: 10px;
+  float: right;
+  line-height: 20px;
+  display: block;
+}
+
+.dropdown-menu li:not(.header) + li:not(.header) {
+  border-top: 1px solid transparent;
+}
+
+.dropdown-menu > li:not(.footer):last-child {
+  border-bottom: none;
+}
+
+.dropdown-menu > li:not(.footer) > a {
+  padding: 7px 20px;
+}
+
+.dropdown-menu > li:not(.footer) > a > i {
+  width: 20px;
+  text-align: center;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.dropdown-menu > li:not(.footer) > a > .badge,
+.dropdown-menu > li:not(.footer) > a > .label {
+  float: right;
+  font-size: 11px;
+  padding: 2px 7px;
+  margin-top: 2px;
+}
+
+.dropdown-menu > li.header {
+  display: block;
+  overflow: hidden;
+  padding: 7px;
+  letter-spacing: 0.5px;
+}
+
+.dropdown-menu > li.header h1, .dropdown-menu > li.header h2, .dropdown-menu > li.header h3, .dropdown-menu > li.header h4, .dropdown-menu > li.header h5, .dropdown-menu > li.header h6 {
+  margin: 0;
+  padding: 0;
+  float: left;
+  font-size: 13px;
+  font-weight: normal;
+  display: inline-block;
+  font-family: inherit;
+}
+
+.dropdown-menu > li.header a {
+  display: inline-block;
+  padding: 0;
+  background: none;
+  clear: inherit;
+  font-size: 11px;
+  font-weight: 300;
+  position: absolute;
+  right: 10px;
+  border: 0;
+  margin-top: -1px;
+}
+
+.dropdown-menu > li.submenu {
+  position: relative;
+}
+
+.dropdown-menu > li.submenu > a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+
+.dropdown-menu > li.submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: 0;
+  margin-left: 0;
+}
+
+.dropdown-menu > li.submenu:hover > .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu > li.submenu.pull-left {
+  float: none;
+}
+
+.dropdown-menu > li.submenu.pull-left > .dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+}
+
+.dropdown-menu > li.submenu.submenu-left > .dropdown-menu {
+  left: -100%;
+  right: 100%;
+}
+
+.dropdown-menu > li.footer {
+  border-top: 1px solid transparent;
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.dropdown-menu > li.footer a {
+  display: table-cell;
+  width: 2%;
+  text-align: center;
+  font-size: 12px;
+  padding: 3px;
+}
+
+.dropdown-menu > li.footer a + a {
+  border-left: 1px solid transparent;
+}
+
+.dropdown-menu {
+  background: #fff;
+  -webkit-box-shadow: 5px 5px rgba(34, 34, 34, 0.2);
+  box-shadow: 5px 5px rgba(34, 34, 34, 0.2);
+}
+
+.dropdown-menu li:not(.header) + li:not(.header) {
+  border-top-color: 1px solid transparent;
+}
+
+.dropdown-menu > li:not(.footer) > a {
+  font-weight: 300;
+}
+
+.dropdown-menu > li:not(.footer) > a > .badge,
+.dropdown-menu > li:not(.footer) > a > .label {
+  font-weight: 300;
+}
+
+.dropdown-menu > li:not(.header):not(.footer) > a {
+  color: #333;
+}
+
+.dropdown-menu > li:not(.header):not(.footer) > a:hover {
+  background: #f5f5f5;
+  color: #f4645f;
+}
+
+.dropdown-menu > li.header {
+  background: #e4e4e4;
+}
+
+.dropdown-menu > li.header h1, .dropdown-menu > li.header h2, .dropdown-menu > li.header h3, .dropdown-menu > li.header h4, .dropdown-menu > li.header h5, .dropdown-menu > li.header h6 {
+  color: #777777;
+}
+
+.dropdown-menu > li.header a {
+  color: #000000;
+}
+
+.dropdown-menu > li.header a:hover {
+  color: #333333;
+}
+
+.dropdown-menu > li.submenu > a:after {
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+
+.dropdown-menu > li.footer a {
+  border-top-color: #e6e2e2;
+  background: #f2f0f0;
+  color: #888888;
+}
+
+.dropdown-menu > li.footer a:hover {
+  background: #e6e2e2;
+  color: #888888;
+}
+
+.dropdown-menu > li.footer a + a {
+  border-left-color: #e6e2e2;
+}
+
+.dropdown-menu-inverse, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu),
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu),
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu {
+  background: #333333;
+  -webkit-box-shadow: 5px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-menu-inverse li:not(.header) + li:not(.header), .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) li:not(.header) + li:not(.header),
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) li:not(.header) + li:not(.header),
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu li:not(.header) + li:not(.header), .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu li:not(.header) + li:not(.header),
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu li:not(.header) + li:not(.header) {
+  border-top-color: #484848 !important;
+}
+
+.dropdown-menu-inverse > li:not(.header):not(.footer) > a, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li:not(.header):not(.footer) > a,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li:not(.header):not(.footer) > a,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li:not(.header):not(.footer) > a, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li:not(.header):not(.footer) > a,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li:not(.header):not(.footer) > a {
+  color: #888888;
+}
+
+.dropdown-menu-inverse > li:not(.header):not(.footer) > a:hover, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li:not(.header):not(.footer) > a:hover,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li:not(.header):not(.footer) > a:hover,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li:not(.header):not(.footer) > a:hover, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li:not(.header):not(.footer) > a:hover,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li:not(.header):not(.footer) > a:hover {
+  background: #222222;
+  color: #888888;
+}
+
+.dropdown-menu-inverse > li.header, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li.header,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li.header,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li.header, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header {
+  background: #454545;
+}
+
+.dropdown-menu-inverse > li.header h1, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li.header h1,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li.header h1, .dropdown-menu-inverse > li.header h2, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li.header h2,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li.header h2, .dropdown-menu-inverse > li.header h3, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li.header h3,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li.header h3, .dropdown-menu-inverse > li.header h4, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li.header h4,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li.header h4, .dropdown-menu-inverse > li.header h5, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li.header h5,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li.header h5, .dropdown-menu-inverse > li.header h6, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li.header h6,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li.header h6,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li.header h1, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header h1,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header h1,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li.header h2, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header h2,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header h2,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li.header h3, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header h3,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header h3,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li.header h4, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header h4,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header h4,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li.header h5, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header h5,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header h5,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li.header h6, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header h6,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header h6 {
+  color: #b3b3b3;
+}
+
+.dropdown-menu-inverse > li.header a, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li.header a,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li.header a,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li.header a, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header a,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header a {
+  color: #000000;
+}
+
+.dropdown-menu-inverse > li.header a:hover, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li.header a:hover,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li.header a:hover,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li.header a:hover, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header a:hover,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.header a:hover {
+  color: #333333;
+}
+
+.dropdown-menu-inverse > li.submenu > a:after, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li.submenu > a:after,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li.submenu > a:after,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li.submenu > a:after, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.submenu > a:after,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.submenu > a:after {
+  border-left-color: #cccccc;
+}
+
+.dropdown-menu-inverse > li.footer a, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li.footer a,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li.footer a,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li.footer a, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.footer a,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.footer a {
+  border-top-color: #525252;
+  background: #454545;
+  color: #888888;
+}
+
+.dropdown-menu-inverse > li.footer a:hover, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li.footer a:hover,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li.footer a:hover,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li.footer a:hover, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.footer a:hover,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.footer a:hover {
+  background: #525252;
+  color: #888888;
+}
+
+.dropdown-menu-inverse > li.footer a + a, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) > li.footer a + a,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li.footer a + a,
+.dropdown-menu.dropdown-menu-inverse li.submenu > .dropdown-menu > li.footer a + a, .dropdown-menu-inverse ul.dropdown-menu[class^="dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.footer a + a,
+.dropdown-menu-inverse ul.dropdown-menu[class*=" dropdown-"].scrollable:not(.dropdown-menu) li.submenu > .dropdown-menu > li.footer a + a {
+  border-left-color: #525252;
+}
+
+.dropdown-task-list > li:not(.header) + li:not(.header) {
+  border-top-color: #e4e4e4 !important;
+}
+
+.dropdown-task-list > li:not(.header) .task {
+  color: #888888;
+}
+
+.dropdown-task-list > li:not(.header) .progress {
+  background: #dfdfdf;
+}
+
+.dropdown-task-list.dropdown-menu-inverse > li:not(.header) + li:not(.header), .dropdown-menu-inverse ul.dropdown-task-list[class^="dropdown-"].scrollable:not(.dropdown-menu) > li:not(.header) + li:not(.header),
+.dropdown-menu-inverse ul.dropdown-task-list[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li:not(.header) + li:not(.header),
+.dropdown-menu-inverse .dropdown-task-list > li:not(.header) + li:not(.header), .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) .dropdown-task-list > li:not(.header) + li:not(.header),
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) .dropdown-task-list > li:not(.header) + li:not(.header) {
+  border-top-color: #484848 !important;
+}
+
+.dropdown-task-list.dropdown-menu-inverse > li:not(.header) .task, .dropdown-menu-inverse ul.dropdown-task-list[class^="dropdown-"].scrollable:not(.dropdown-menu) > li:not(.header) .task,
+.dropdown-menu-inverse ul.dropdown-task-list[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li:not(.header) .task,
+.dropdown-menu-inverse .dropdown-task-list > li:not(.header) .task, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) .dropdown-task-list > li:not(.header) .task,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) .dropdown-task-list > li:not(.header) .task {
+  color: #b3b3b3;
+}
+
+.dropdown-task-list.dropdown-menu-inverse > li:not(.header) .progress, .dropdown-menu-inverse ul.dropdown-task-list[class^="dropdown-"].scrollable:not(.dropdown-menu) > li:not(.header) .progress,
+.dropdown-menu-inverse ul.dropdown-task-list[class*=" dropdown-"].scrollable:not(.dropdown-menu) > li:not(.header) .progress,
+.dropdown-menu-inverse .dropdown-task-list > li:not(.header) .progress, .dropdown-menu-inverse ul[class^="dropdown-"].scrollable:not(.dropdown-menu) .dropdown-task-list > li:not(.header) .progress,
+.dropdown-menu-inverse ul[class*=" dropdown-"].scrollable:not(.dropdown-menu) .dropdown-task-list > li:not(.header) .progress {
+  background: #c8c8c8;
+}
+
+.dropdown-notifications > li:not(.header) + li:not(.header) {
+  border-top-color: #e4e4e4 !important;
+}
+
+.dropdown-notifications > li:not(.header) + li:not(.header) > a > .ico > i.fa {
+  color: #ffffff;
+}
+
+.dropdown-notifications.dropdown-menu-inverse li:not(.header) + li:not(.header), .dropdown-menu-inverse ul.dropdown-notifications[class^="dropdown-"].scrollable:not(.dropdown-menu) li:not(.header) + li:not(.header),
+.dropdown-menu-inverse ul.dropdown-notifications[class*=" dropdown-"].scrollable:not(.dropdown-menu) li:not(.header) + li:not(.header),
+.dropdown-menu-inverse .dropdown-notifications li:not(.header) + li:not(.header) {
+  border-top-color: #484848 !important;
+}
+
+.dropdown-notifications.dropdown-menu-inverse li:not(.header) + li:not(.header) > a > .ico > i.fa, .dropdown-menu-inverse ul.dropdown-notifications[class^="dropdown-"].scrollable:not(.dropdown-menu) li:not(.header) + li:not(.header) > a > .ico > i.fa,
+.dropdown-menu-inverse ul.dropdown-notifications[class*=" dropdown-"].scrollable:not(.dropdown-menu) li:not(.header) + li:not(.header) > a > .ico > i.fa,
+.dropdown-menu-inverse .dropdown-notifications li:not(.header) + li:not(.header) > a > .ico > i.fa {
+  color: #d8d1d1;
+}
+
+code {
+  text-align: left;
+}
+
 img.thumb128 {
   height: 128px;
   width: 128px;
@@ -4743,24 +5104,6 @@ img.thumb96 {
   background: none !important;
 }
 
-.btn {
-  border: none;
-  border-radius: 3px;
-  background: #f4645f;
-  color: #fff;
-  padding: 10px 15px;
-  font-size: 16px;
-}
-
-.btn .faint {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.btn:hover, .btn:active {
-  background: #ef1f17;
-  color: #fff;
-}
-
 .tabbable.tabs-left:before, .tabbable.tabs-left:after {
   content: " ";
   display: table;
@@ -5139,7 +5482,7 @@ nav.main ul.dropdown-nav > li.dropdown.active > a.dropdown-toggle {
   color: #f4645f;
 }
 
-nav.main ul.dropdown-nav a.dropdown-toggle {
+nav.main ul.dropdown-nav > li > a.dropdown-toggle {
   line-height: 90px;
   font-size: 16px;
   color: #525252;
@@ -5147,28 +5490,26 @@ nav.main ul.dropdown-nav a.dropdown-toggle {
   cursor: pointer;
 }
 
-nav.main ul.dropdown-nav a.dropdown-toggle:hover {
+nav.main ul.dropdown-nav > li > a.dropdown-toggle:hover {
   color: #f4645f;
 }
 
-nav.main ul.dropdown-nav a.dropdown-toggle:hover > .subtitle {
+nav.main ul.dropdown-nav > li > a.dropdown-toggle:hover > .subtitle {
   color: #525252;
 }
 
-nav.main ul.dropdown-nav a.dropdown-toggle > .subtitle {
+nav.main ul.dropdown-nav > li > a.dropdown-toggle > .subtitle {
   position: absolute;
   top: -20px;
   font-size: 11px;
 }
 
-nav.main ul.dropdown-nav a.dropdown-toggle > .caret {
+nav.main ul.dropdown-nav > li > a.dropdown-toggle > .caret {
   margin-left: 10px;
 }
 
-nav.main ul.dropdown-nav ul.dropdown-menu {
+nav.main ul.dropdown-nav > li > ul.dropdown-menu {
   top: 75%;
-  right: -15px;
-  left: auto;
 }
 
 nav.main .switcher {

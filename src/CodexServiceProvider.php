@@ -72,7 +72,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected $weaklings = [
         'fs'              => \Sebwite\Filesystem\Filesystem::class,
-        'codex.generator' => Projects\Generator::class,
+        'codex.generator' => Projects\ProjectGenerator::class,
     ];
 
     protected $middleware = [

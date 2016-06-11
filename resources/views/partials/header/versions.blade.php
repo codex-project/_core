@@ -6,10 +6,10 @@
             @yield('projectRef', $project->getRef())
             <span class="caret"></span>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-menu-versions">
+        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdown-menu-versions">
             @foreach($project->getSortedRefs() as $ref)
                 <li role="presentation">
-                    <a role="menuitem" class="dropdown-item" tabindex="-1" href="{{ $project->url(null, $ref) }}">{{ $ref }}</a>
+                    <a role="menuitem" tabindex="-1" href="{{ $project->url(null, $ref) }}">{{ $ref }}</a>
                 </li>
             @endforeach
         </ul>

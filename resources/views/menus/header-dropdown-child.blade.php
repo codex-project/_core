@@ -4,20 +4,20 @@
         @continue
     @endif
     @if($item->hasChildren())
-        <div class="dropdown-submenu">
-            <a href="#" class="dropdown-item">
+        <li class="submenu">
+            <a href="#">
                 {{ $item->getValue() }}
             </a>
-            <div class="dropdown-menu">
+            <ul class="dropdown-menu">
                 @include('codex::menus.header-dropdown-child', [
                     'items' => $item->getChildren(),
                     'menu' => $menu
                 ])
-            </div>
-        </div>
+            </ul>
+        </li>
     @else
         <li>
-        <a href="{{ $item->attribute('href', '#') }}" class="dropdown-item">
+        <a href="{{ $item->attribute('href', '#') }}">
             @if($item->meta('icon', false) !== false)
                 <i class="{{ $item->meta('icon') }}"></i>
             @endif

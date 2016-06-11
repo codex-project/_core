@@ -1,10 +1,13 @@
 <?php
 namespace Codex\Dev;
 
+use Codex\Traits\CodexProviderTrait;
 use Sebwite\Support\ServiceProvider;
 
 class DevServiceProvider extends ServiceProvider
 {
+    use CodexProviderTrait;
+    
     protected $providers = [
         \Sebwite\IdeaMeta\IdeaMetaServiceProvider::class,
         \Barryvdh\Debugbar\ServiceProvider::class,
@@ -75,5 +78,12 @@ class DevServiceProvider extends ServiceProvider
               #  $db->addCollector(new Debugbar\CodexCollector($controller, $view, $codex, $project, $document));
             }
         });
+    }
+
+    public function bootMenus()
+    {
+        $menus = $this->codex()->menus;
+        $menu = $menus->add('dev');
+        $menu->add('dev-log', 'Log')->setAttribute('href', route('codex.dev.log'));
     }
 }
