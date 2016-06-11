@@ -10,7 +10,6 @@ namespace Codex\Projects;
 
 use Codex\Contracts;
 use Codex\Exception\CodexException;
-use Codex\Exception\ProjectNotFoundException;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
 use Codex\Traits;
@@ -20,6 +19,11 @@ use Sebwite\Support\Str;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class Projects
+ * @package Codex\Projects
+ * @method Project[]|Collection getPhpdocProjects()
+ */
 class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
 {
     use Traits\FilesTrait;
@@ -44,11 +48,11 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
 
         $this->items = new Collection;
 
-        $this->hookPoint('projects:ready', [ $this ]);
+        $this->hookPoint('projects:construct', [ $this ]);
 
         $this->resolve();
 
-        $this->hookPoint('projects:done', [ $this ]);
+        $this->hookPoint('projects:constructed', [ $this ]);
     }
 
     /**
@@ -60,7 +64,7 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
      */
     public function setActive($project)
     {
-        if ( !$project instanceof Project ) {
+        if ( ! $project instanceof Project ) {
             $project = $this->get($project);
         }
         $this->activeProject = $project;
@@ -115,7 +119,7 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
      */
     public function get($name)
     {
-        if ( !$this->has($name) ) {
+        if ( ! $this->has($name) ) {
             throw CodexException::projectNotFound((string)$name);
         }
 
@@ -170,7 +174,7 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
      */
     protected function resolve()
     {
-        if ( !$this->items->isEmpty() ) {
+        if ( ! $this->items->isEmpty() ) {
             return;
         }
         $this->hookPoint('projects:resolve', [ $this ]);
@@ -219,7 +223,7 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
             $href  = $project->url();
             $metas = compact('project');
             $id    = Str::slugify($name, '_');
-            if ( !$menu->has($id) ) {
+            if ( ! $menu->has($id) ) {
                 $node = $menu->add($id, $name, 'root', count($names) === 0 ? $metas : [ ], count($names) === 0 ? compact('href') : [ ]);
             }
 
@@ -228,13 +232,14 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
                 $name = array_shift($names);
                 $id .= '::' . $name;
                 $id = Str::slugify($id, '_');
-                if ( !$menu->has($id) ) {
+                if ( ! $menu->has($id) ) {
                     $node = $menu->add($id, $name, $parentId, $metas, count($names) === 0 ? compact('href') : [ ]);
                 }
                 $parentId = $id;
             }
-
-            $this->hookPoint('projects:resolved:node', [$project, isset($node) ? $node : null ]);
+            if ( isset($node) ) {
+                $this->hookPoint('projects:resolved:node', [ $project, $node ]);
+            }
         }
         $this->hookPoint('projects:resolved', [ $this ]);
     }

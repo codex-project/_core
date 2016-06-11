@@ -25,12 +25,13 @@ use vierbergenlars\SemVer\version;
  * @author         Robin Radic
  * @copyright      Copyright (c) 2015, Robin Radic. All rights reserved
  *
- * @property \Codex\Documents\Documents                  $documents
+ * @property \Codex\Documents\Documents                  $documents Get documents
+ * @property \Codex\Addon\Phpdoc\ProjectPhpdoc           $phpdoc
  * @property \Codex\Documents\Documents                  $documents2
- * @property \Codex\Addon\Defaults\Phpdoc\PhpdocDocument $getPhpdoc
+ *
  * @method boolean hasEnabledAuth()
  * @method boolean hasAccess()
- * 
+ *
  *
  */
 class Project extends Extendable implements Arrayable
@@ -140,6 +141,11 @@ class Project extends Extendable implements Arrayable
     public function getDefaultDiskName()
     {
         return 'codex-local-' . $this->getName();
+    }
+
+    public function hasEnabledAddon($name)
+    {
+        return $this->config("{$name}.enabled", false) === true;
     }
 
     /**
