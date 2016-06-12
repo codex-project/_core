@@ -1,6 +1,8 @@
 <?php
 
-
+/*
+ * Documentation: http://codex-project.dev/codex/master/getting-started/configuration
+ */
 return [
 
     'display_name' => env('CODEX_DISPLAY_NAME', 'Codex'),
@@ -42,31 +44,12 @@ return [
         'html'     => 'codex.document',
     ],
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | DocTags filter : Global DocTags
-    |--------------------------------------------------------------------------
-    |
-    | DocTags are comment strings that can be used to render additional
-    |
-    */
-
     'doctags'                     => [
         'table:responsive' => 'Codex\Addons\Filters\DocTags\Table@responsive',
         'general:hide'     => 'Codex\Addons\Filters\DocTags\General@hide',
         'attribute:print'  => 'Codex\Addons\Filters\DocTags\Attribute@printValue',
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Project Configuration
-    |--------------------------------------------------------------------------
-    |
-    | These are the default settings used to pre-populate all project
-    | configuration files.
-    |
-    */
     'default_project_config'      => [
         'description' => '',
         'default'     => \Codex\Projects\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
@@ -79,16 +62,6 @@ return [
         ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Document Attributes
-    |--------------------------------------------------------------------------
-    |
-    | These values will be merged with any frontmatter attributes your
-    | documentation pages may have. Feel free to add or remove any
-    | attributes as you see fit for your documentation needs.
-    |
-    */
     'default_document_attributes' => [
         'author'          => 'John Doe',
         'title'           => '',

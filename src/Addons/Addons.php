@@ -59,7 +59,7 @@ class Addons implements Arrayable
 
     protected $views = [
         'layouts'  => [
-            'base'    => 'codex::layouts.codex-base',
+            'base'    => 'codex::layouts.base',
             'default' => 'codex::layouts.default',
         ],
         'layout'   => 'codex::layouts.default',
@@ -69,6 +69,10 @@ class Addons implements Arrayable
             'sidebar'  => 'codex::menus.sidebar',
             'projects' => 'codex::menus.header-dropdown',
             'versions' => 'codex::menus.header-dropdown',
+        ],
+        'filters'  => [
+            'header' => 'codex::filters.header',
+            'toc'    => 'codex::filters.toc',
         ],
     ];
 
@@ -209,8 +213,8 @@ class Addons implements Arrayable
     {
         return [
             'filters' => $this->filters->toArray(),
-            'hooks' => $this->hooks->toArray(),
-            'views' => $this->views
+            'hooks'   => $this->hooks->toArray(),
+            'views'   => $this->views,
         ];
     }
 
@@ -273,7 +277,8 @@ class Addons implements Arrayable
      */
     public function getManifest()
     {
-        if(isset($this->manifest) === false){
+        if ( isset($this->manifest) === false )
+        {
             $this->loadManifest();
         }
         return $this->manifest;

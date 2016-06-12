@@ -17,7 +17,7 @@ use Sebwite\Support\Arr;
 /**
  * Class ButtonsFilter
  *
- * @Filter("buttons", priority=100, config="config")
+ * @Filter("buttons", priority=0, config="config", after={"markdown", "toc", "header"})
  * @package Codex\Addons\Filters
  */
 class ButtonsFilter
@@ -59,10 +59,9 @@ class ButtonsFilter
     {
         $this->buttons = new Collection;
 
-        switch($document->attr('buttons.type', $this->config['type'])){
-            case 'groups': $this->handleGroupsType(); break;
-            case 'group': $this->handleGroupType(); break;
-        }
+        $type = $document->attr('buttons.type', $this->config['type']);
+        $html = call_user_func([$this, 'handle' . ucfirst($type) . 'Type']);
+        $document->setContent($html . $document->getContent());
 
         // buttons defined on project level
 //        foreach ( $this->config as $id => $button ) {
@@ -107,21 +106,9 @@ class ButtonsFilter
             }
             $html .= '</div>';
         }
-
-        // buttons defined on document level
-//        foreach ( $document->attr('buttons', [ ]) as $id => $button ) {
-//            $this->button($id, $button[ 'text' ], $button[ 'attributes' ]);
-//        }
+        $html .= '</div>';
 
         return $html;
-        if ( count($this->buttons) > 0 ) {
-            $buttons = collect($this->buttons)->transform(function (Button $btn) {
-                return $btn->render();
-            })->implode("\n");
-            $buttons = "<div class='top-buttons'>{$buttons}</div>";
-            $this->document->setContent($buttons . "\n" . $this->document->getContent());
-        }
-
     }
 
     protected function handleGroupType()

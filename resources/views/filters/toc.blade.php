@@ -6,7 +6,7 @@
         </a>
         @if($item->hasChildren())
             <ul class="sub-menu">
-                @include($view, [ 'items' => $item->getChildren(), 'view' => $view ])
+                @include(codex()->view($view), [ 'items' => $item->getChildren(), 'view' => $view ])
             </ul>
         @endif
     </li>

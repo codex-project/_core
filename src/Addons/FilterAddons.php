@@ -88,9 +88,7 @@ class FilterAddons extends AbstractAddonCollection
         });
         $sorter = new Sorter();
         foreach($all as $filter){
-            /** @var Filter $annotation */
-            $annotation = $filter['annotation'];
-            $sorter->addItem($annotation->name, $filter['after']);
+            $sorter->addItem($filter['name'], $filter['after']);
         }
         $sorted = $sorter->sort();
         if(count($sorter->getMissing()) > 0){

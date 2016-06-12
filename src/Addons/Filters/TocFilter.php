@@ -30,7 +30,7 @@ class TocFilter
         'header_link_show'  => false,
         'header_link_text'  => '#',
         'minimum_nodes'     => 2,
-        'view'              => 'codex::filters.toc',
+        'view'              => 'filters.toc',
     ];
 
     /** @var \Illuminate\Contracts\View\Factory */
@@ -108,8 +108,9 @@ class TocFilter
             $prevNode = $node;
         }
 
+        $view = $this->codex->view($this->config[ 'view' ]);
         $toc = $this->view
-            ->make($this->config[ 'view' ], $this->config)
+            ->make($view, $this->config)
             ->with('items', $rootNode->getChildren())
             ->render();
 
@@ -142,7 +143,6 @@ class TocFilter
     {
         $this->codex->theme->addScript('toc', <<<JS
     $(function(){
-
       $('.docs-wrapper').find('a[name]').each(function () {
         var self = $(this);
         var anchor = $('<a href="#' + this.name + '"/>').addClass(self.attr('class'));

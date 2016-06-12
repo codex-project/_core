@@ -1,9 +1,11 @@
+@section('opener')
 <!DOCTYPE html><!--[if IE 8]>
 <html class="ie8" lang="en"><![endif]-->
 <!--[if IE 9]>
 <html lang="en" class="ie9"><![endif]-->
 <!--[if !IE]><!-->
 <html lang="en"><!--<![endif]-->
+@show
 <head>
     <title>
         @section('title')
@@ -24,6 +26,8 @@
     @section('styles')
         {!! codex()->theme->renderStyles(); !!}
     @show
+
+    @stack('head')
 
 </head>
 

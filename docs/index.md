@@ -50,15 +50,15 @@ Filters can modify the content output of a document.
 - Mouse hover on the examples.
 - When clicked, takes you to the given documentation
 
-subtitle: <!--*codex:attribute:print('subtitle')*-->
+
 
 <!--*codex:table:responsive(123, 'hello', true)*-->
 
 | Example                                                                             | Code                                                                                |
 |:------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------|
-| [`CodexController`](#phpdoc:Codex\Http\CodexController)                             | `[CodexController](#phpdoc:Codex\Http\CodexController)`                             |
-| [`CodexController`](#phpdoc:popover:Codex\Http\CodexController)                     | `[CodexController](#phpdoc:popover:Codex\Http\CodexController)`                     |
-| [`CodexController::document`](#phpdoc:popover:Codex\Http\CodexController::document) | `[CodexController::document](#phpdoc:popover:Codex\Http\CodexController::document)` |
+| [`Codex`](#phpdoc:Codex\Codex)                             | `[Codex](#phpdoc:Codex\Codex)`                             |
+| [`Codex`](#phpdoc:popover:Codex\Codex)                     | `[Codex](#phpdoc:popover:Codex\Codex)`                     |
+| [`Codex::url`](#phpdoc:popover:Codex\Codex::url) | `[Codex::url](#phpdoc:popover:Codex\Codex::url)` |
 
 <!--*codex:/table:responsive*-->
 

@@ -18,37 +18,19 @@ menu:
       - name: Creating a project
         document: getting-started/creating-a-project
 
-      - name: Filters
-        document: getting-started/filters
-
-      - name: Addons
-        document: getting-started/addons
 
   - name: Preview pages
     icon: fa fa-eye
     children:
-      - name: Typography
-        document: preview-pages/typography
 
       - name: ToC Tree
         document: preview-pages/toc-tree
 
       - name: Syntax highlighting
         document: preview-pages/syntax-highlight
-#
-#
-#  - name: Addons
-#    icon: fa fa-puzzle-piece
-#    children:
-#      - name: Markdown
-#        document: addons/markdown
-#
-#      - name: Git
-#        document: addons/git
-#
-#      - name: PHPDoc
-#        document: addons/phpdoc
-#
+
+      - name: PHPDoc
+        document: preview-pages/phpdoc
 
   - name: Filters
     icon: fa fa-puzzle-piece
@@ -68,8 +50,11 @@ menu:
       - name: ToC
         document: filters/toc
 
-      - name: Replace header
-        document: filters/replace-header
+      - name: Header
+        document: filters/header
+
+      - name: Buttons
+        document: filters/buttons
 
 
   - name: Develop
@@ -92,6 +77,9 @@ menu:
 
       - name: Themes
         document: develop/themes
+
+      - name: DocTags
+        document: develop/doctags
 
 
 
