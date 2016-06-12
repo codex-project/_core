@@ -72,14 +72,17 @@ class FilterAddons extends AbstractAddonCollection
 
     public function getSorted($names)
     {
-        $all = $this->whereIn('name', $names)->sortBy('priority')->replaceFilters();
+        $all = $this->whereIn('name', $names)->sortBy('priority');
         $all->each(function($filter) use ($all) {
             /** @var Filter $annotation */
             $annotation = $filter['annotation'];
             foreach($annotation->before as $before){
                 $otherFilter = $all->where('name', $before)->first();
-                $otherFilter['after'][] = $annotation->name;
-                $all->set($before, $otherFilter);
+                if($otherFilter !== null)
+                {
+                    $otherFilter[ 'after' ][] = $annotation->name;
+                    $all->set($before, $otherFilter);
+                }
             }
         });
         $sorter = new Sorter();
@@ -89,6 +92,12 @@ class FilterAddons extends AbstractAddonCollection
             $sorter->addItem($annotation->name, $filter['after']);
         }
         $sorted = $sorter->sort();
+        if(count($sorter->getMissing()) > 0){
+            $dep = array_keys($sorter->getMissing());
+            $dep = implode(', ', $dep);
+            throw CodexException::because("Sorter encountered a missing dependency for {$dep}");
+        }
+        $sorted = array_merge($sorted, array_diff($names, $sorted));
         return (new static($sorted))->transform(function($filterName){
             return $this->getFilter($filterName);
         })->replaceFilters();

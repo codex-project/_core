@@ -13,7 +13,6 @@ buttons:
         text: Packagist
         href: https://github.com/codex-project/codex
         target: _blank
-    
 -->
 
 # Codex Documentation

@@ -14,7 +14,7 @@ use Illuminate\Contracts\View\Factory;
  * @author         CLI
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  *
- * @Filter("toc", priority=50, config="config", after={"header", "markdown"})
+ * @Filter("toc", priority=50, config="config", after={"markdown"})
  */
 class TocFilter
 {

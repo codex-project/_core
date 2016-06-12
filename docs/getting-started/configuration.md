@@ -99,12 +99,85 @@ By default: `http://localhost/codex`
 Leaving it empty: `http://localhost`
 
 #### api
+```php
+[
+    'enabled' => true,
+    'tokens'  => [ ],
+]
+```
+
 ##### api.enabled
 ##### api.tokens
 
+
 #### log
+```php
+[
+    'enabled' => true,
+    'path'    => storage_path('logs/codex.log'),
+]
+```
+
+##### log.enabled
+##### log.path
+
 #### dev
+```php
+[
+    'enabled'      => env('CODEX_DEV_ENABLED', false),
+    'debugbar'     => true,
+    'log_handlers' => true,
+    'print_events' => true,
+]
+```
+
+##### dev.enabled
+
 #### extensions
+```php
+[
+    'md'       => 'codex.document',
+    'markdown' => 'codex.document',
+    'html'     => 'codex.document',
+]
+```
+
 #### doctags
+```php
+[
+    'table:responsive' => 'Codex\Addons\Filters\DocTags\Table@responsive',
+    'general:hide'     => 'Codex\Addons\Filters\DocTags\General@hide',
+    'attribute:print'  => 'Codex\Addons\Filters\DocTags\Attribute@printValue',
+]
+```
+
 #### default_project_config
+```php
+[
+    'description' => '',
+    'default'     => \Codex\Projects\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
+    'custom'      => null,
+    'first'       => '',
+    'index'       => 'index',
+    'extensions'  => [ 'md', 'markdown', 'html' ],
+    'filters'     => [
+        'enabled' => [ ],
+    ],
+]
+```
+
+
 #### default_document_attributes
+```php
+[
+    'author'          => 'John Doe',
+    'title'           => '',
+    'subtitle'        => '',
+    'view'            => null,
+    'disable_filters' => [ ],
+    'buttons'         => [
+    ],
+    'filters'         => [
+    ],
+]
+```

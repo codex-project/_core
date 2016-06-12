@@ -13,7 +13,7 @@ use Codex\Documents\Document;
 
 /**
  * Class HeaderFilter
- * @Filter("header", priority=0, config="config", after={"markdown"})
+ * @Filter("header", priority=0, config="config", after={"markdown", "toc"})
  * @package Codex\Addons\Filters
  */
 class HeaderFilter

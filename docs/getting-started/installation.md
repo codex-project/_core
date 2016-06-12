@@ -13,10 +13,14 @@ subtitle: Getting started
 composer create-project codex/codex
 ```
 
+2. Configure
+You should now configure Codex to suit your needs. Head over to the [configuration](configuration.md) page.
+
 3. Serve
 ```bash
 php artisan serve
 ```
+
 
 
 ## Existing project
@@ -70,4 +74,5 @@ php artisan vendor:publish --provider=Codex\Core\CodexServiceProvider --tag=view
 }
 ```
 
-
+7. Configure Codex
+You should now configure Codex to suit your needs. Head over to the [configuration](configuration.md) page.
