@@ -5,8 +5,6 @@ return [
 
     'display_name' => env('CODEX_DISPLAY_NAME', 'Codex'),
 
-//    'docs_dir' => env('CODEX_ROOT_DIR', base_path('resources/docs')),
-
     'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
 
     'paths' => [
@@ -18,9 +16,7 @@ return [
     'routing' => [
         'enabled'              => true,
         'base_route'           => env('CODEX_BASE_ROUTE', 'codex'),
-        'ignore_project_names' => [
-            '_debugbar',
-        ],
+        'ignore_project_names' => [ '_debugbar', ],
     ],
 
     'api' => [
@@ -39,10 +35,6 @@ return [
         'log_handlers' => true,
         'print_events' => true,
     ],
-
-//    'stubs_path' => __DIR__ . '/../resources/stubs',
-
-//    'manifest_path' => storage_path('codex.json'),
 
     'extensions' => [
         'md'       => 'codex.document',
@@ -63,7 +55,7 @@ return [
     'doctags'                     => [
         'table:responsive' => 'Codex\Addons\Filters\DocTags\Table@responsive',
         'general:hide'     => 'Codex\Addons\Filters\DocTags\General@hide',
-        'attribute:print'    => 'Codex\Addons\Filters\DocTags\Attribute@printValue',
+        'attribute:print'  => 'Codex\Addons\Filters\DocTags\Attribute@printValue',
     ],
 
     /*

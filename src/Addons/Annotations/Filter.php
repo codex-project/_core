@@ -46,4 +46,16 @@ final class Filter
      */
     public $method = 'handle';
 
+    /**
+     * The filters that should be called before this filter. Enables dependency sorting.
+     * @var array
+     */
+    public $after = [];
+
+    /**
+     * The filters that should be called after this filter.  Enables dependency sorting.
+     * @var array
+     */
+    public $before = [];
+
 }

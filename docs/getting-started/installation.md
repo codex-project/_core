@@ -4,23 +4,22 @@ subtitle: Getting started
 -->
 
 
-# Installation and configuration
+# Installation
 
-## Installation
-
-### Stand-alone application
+## New project
 
 1. Create project
 ```bash
 composer create-project codex/codex
 ```
 
-2. Serve
+3. Serve
 ```bash
 php artisan serve
 ```
 
-### Sub-component
+
+## Existing project
 
 1. Add to composer
 ```bash
@@ -54,5 +53,21 @@ php artisan vendor:publish --provider=Codex\Core\CodexServiceProvider --tag=publ
 php artisan vendor:publish --provider=Codex\Core\CodexServiceProvider --tag=views
 ```
 
+6. Add composer `post-install-cmd` to auto hook to re-publish 
+```json
+{ 
+    "scripts": {
+        "post-install-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postInstall",
+            "php artisan optimize",
+            "php artisan vendor:publish --tag=public --force"
+        ],
+        "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "php artisan vendor:publish --tag=public --force"
+        ]
+    }
+}
+```
 
-## Configuration
+

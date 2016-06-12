@@ -13,7 +13,7 @@ use Codex\Support\Collection;
  * @author         CLI
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  *
- * @Filter("markdown", config="config")
+ * @Filter("markdown", config="config", after={"attributes"})
  */
 class MarkdownFilter
 {

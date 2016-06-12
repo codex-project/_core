@@ -26,7 +26,7 @@ use vierbergenlars\SemVer\version;
  * @copyright      Copyright (c) 2015, Robin Radic. All rights reserved
  *
  * @property \Codex\Documents\Documents                  $documents Get documents
- * @property \Codex\Addon\Phpdoc\ProjectPhpdoc           $phpdoc
+ * @property \Codex\Addon\Phpdoc\PhpdocProject           $phpdoc
  * @property \Codex\Documents\Documents                  $documents2
  *
  * @method boolean hasEnabledAuth()

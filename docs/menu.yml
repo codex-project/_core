@@ -6,6 +6,9 @@ menu:
       - name: Overview
         document: index
 
+      - name: Todo
+        document: getting-started/todo
+
       - name: Installation
         document: getting-started/installation
 

@@ -81,13 +81,15 @@ class Document extends Extendable
 
         $this->hookPoint('document:ready', [ $this ]);
 
-        if ( $this->codex->projects->hasActive() === false ) {
+        if ( $this->codex->projects->hasActive() === false )
+        {
             $project->setActive();
         }
 
         $this->attributes = $codex->config('default_document_attributes');
 
-        if ( !$this->getFiles()->exists($this->getPath()) ) {
+        if ( !$this->getFiles()->exists($this->getPath()) )
+        {
             throw DocumentNotFoundException::document($this)->inProject($project);
         }
 
@@ -110,7 +112,8 @@ class Document extends Extendable
      */
     public function render()
     {
-        if ( $this->rendered ) {
+        if ( $this->rendered )
+        {
             return $this->content;
         }
         $this->hookPoint('document:render');
@@ -123,8 +126,9 @@ class Document extends Extendable
     protected function runFilters()
     {
         $enabledFilters = $this->project->config('filters.enabled', [ ]);
-
-        foreach ( $this->codex->addons->filters->getSorted($enabledFilters) as $filter ) {
+        $filters        = $this->codex->addons->filters->getSorted($enabledFilters);
+        foreach ( $filters as $filter )
+        {
             $this->hookPoint('document:filter:before:' . $filter[ 'name' ], [ $filter[ 'instance' ], $filter ]);
             $this->codex->addons->filters->runFilter($filter[ 'name' ], $this);
             //app()->call([ $filter['instance'], 'handle' ], ['document' => $this]);

@@ -6,6 +6,7 @@ use Codex\Addons\Scanner\ClassFileInfo;
 use Codex\Documents\Document;
 use Codex\Exception\CodexException;
 use Codex\Support\Collection;
+use Codex\Support\Sorter;
 
 /**
  * This is the class FilterAddons.
@@ -34,6 +35,9 @@ class FilterAddons extends AbstractAddonCollection
         $instance = $filter['instance'] === null ? $this->app->build($filter['class']) : $filter['instance'];
         /** @var Filter $annotation */
         $annotation = $filter['annotation'];
+        $annotation->after;
+
+
 
         if($annotation->config !== false){
             // get default config
@@ -60,42 +64,6 @@ class FilterAddons extends AbstractAddonCollection
         $this->app->call([$instance, $annotation->method], compact('document'));
     }
 
-    public function old()
-    {
-
-
-        $this->app->booted(function ($app) use ($file, $annotation, $class, $instance) {
-            $defaults = false;
-
-            $childAnnotations = [
-                'method'   => $file->getMethodAnnotations(true, Defaults::class),
-                'property' => $file->getPropertyAnnotations(true, Defaults::class),
-            ];
-            foreach ( $childAnnotations as $type => $annotations ) {
-                foreach ( $annotations as $name => $an ) {
-                    /** @var Defaults $an */
-                    if ( $type === 'method' ) {
-                        $defaults = $this->app->call([ $instance, $name ]);
-                    } elseif ( $type === 'property' && property_exists($instance, $name) ) {
-                        $value = $instance->{$name};
-                        if ( is_string($value) ) {
-                            $defaults = config($value);
-                        } else {
-                            $defaults = $value;
-                        }
-                    }
-                }
-            }
-
-            if ( $defaults !== false && $defaults !== null ) {
-                $config = [ ];
-                array_set($config, "filters.{$annotation->name}", $defaults);
-                $this->addons->mergeDefaultProjectConfig($config);
-                $this->set("{$class}.has_config", true);
-            }
-        });
-    }
-
     public function getFilter($name)
     {
         $filter = $this->where('name', $name)->first();
@@ -104,7 +72,26 @@ class FilterAddons extends AbstractAddonCollection
 
     public function getSorted($names)
     {
-        return $this->whereIn('name', $names)->sortBy('priority')->replaceFilters();
+        $all = $this->whereIn('name', $names)->sortBy('priority')->replaceFilters();
+        $all->each(function($filter) use ($all) {
+            /** @var Filter $annotation */
+            $annotation = $filter['annotation'];
+            foreach($annotation->before as $before){
+                $otherFilter = $all->where('name', $before)->first();
+                $otherFilter['after'][] = $annotation->name;
+                $all->set($before, $otherFilter);
+            }
+        });
+        $sorter = new Sorter();
+        foreach($all as $filter){
+            /** @var Filter $annotation */
+            $annotation = $filter['annotation'];
+            $sorter->addItem($annotation->name, $filter['after']);
+        }
+        $sorted = $sorter->sort();
+        return (new static($sorted))->transform(function($filterName){
+            return $this->getFilter($filterName);
+        })->replaceFilters();
     }
 
     public function replaceFilters()
