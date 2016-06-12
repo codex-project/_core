@@ -1,5 +1,0 @@
-#!/bin/sh
-
-echo "running post-commit hook"
-
-phing -f build.xml bower-link

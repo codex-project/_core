@@ -78,8 +78,9 @@ class FilterAddons extends AbstractAddonCollection
             $annotation = $filter['annotation'];
             foreach($annotation->before as $before){
                 $otherFilter = $all->where('name', $before)->first();
-                if($otherFilter !== null)
+                if($otherFilter !== null && false === in_array($annotation->name, $otherFilter['after'], true))
                 {
+
                     $otherFilter[ 'after' ][] = $annotation->name;
                     $all->set($before, $otherFilter);
                 }
