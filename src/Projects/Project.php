@@ -346,6 +346,11 @@ class Project extends Extendable implements Arrayable
         return $this;
     }
 
+    public function hasRef($name)
+    {
+        return $this->getFiles()->exists($name);
+    }
+
     /**
      * Resolves and creates the documents menu from the parsed menu.yml
      *

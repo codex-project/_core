@@ -1,4 +1,4 @@
-@extends('codex::layouts.base')
+@extends(codex()->view('layouts.base'))
 
 {{-- Meta --}}
 @push('meta')

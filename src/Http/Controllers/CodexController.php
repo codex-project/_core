@@ -2,7 +2,6 @@
 namespace Codex\Http\Controllers;
 
 use Codex\Contracts\Codex;
-
 use Codex\Traits\HookableTrait;
 use Illuminate\Contracts\View\Factory as View;
 
@@ -59,7 +58,7 @@ class CodexController extends Controller
     public function document($projectSlug, $ref = null, $path = '')
     {
         // get project
-        if ( !$this->codex->projects->has($projectSlug) )
+        if ( false === $this->codex->projects->has($projectSlug) )
         {
             return $this->codex->error('Not found', 'The project could not be found', 404);
         }
@@ -71,22 +70,26 @@ class CodexController extends Controller
 
 
         // get ref (version)
-        if ( is_null($ref) )
+        if ( null === $ref )
         {
             $ref = $project->getDefaultRef();
+        }
+        if ( false === $project->hasRef($ref) )
+        {
+            return $this->codex->error('Not found', 'The version could not be found', 404);
         }
         $project->setRef($ref);
         $path = $path === '' ? $project->config('index') : $path;
 
 
         // get document
-        if ( !$project->documents->has($path) )
+        if ( false === $project->documents->has($path) )
         {
             return $this->codex->error('Not found', 'The document could not be found', 404);
         }
         $document = $project->documents->get($path);
 
-        $res      = $this->hookPoint('controller:document', [ $document, $this->codex, $project ]);
+        $res = $this->hookPoint('controller:document', [ $document, $this->codex, $project ]);
         if ( $res )
         {
             return $res;
@@ -96,9 +99,9 @@ class CodexController extends Controller
         // prepare view
         $content    = $document->render();
         $breadcrumb = $document->getBreadcrumb();
-        $view = $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
+        $view       = $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
 
-        $res  = $this->hookPoint('controller:view', [ $view, $this->codex, $project, $document ]);
+        $res = $this->hookPoint('controller:view', [ $view, $this->codex, $project, $document ]);
         if ( $res )
         {
             return $res;
@@ -120,7 +123,7 @@ class CodexController extends Controller
 
     public function markdown()
     {
-        if ( !request()->has('code') )
+        if ( ! request()->has('code') )
         {
             return abort(500, 'You did not provide the [code]');
         }
