@@ -515,6 +515,7 @@ class Project extends Extendable implements Arrayable
      */
     public function getDisplayName()
     {
-        return $this->config('display_name', $this->getName());
+        $displayName = $this->config('display_name', $this->getName());
+        return last(explode(' :: ', $displayName));
     }
 }
