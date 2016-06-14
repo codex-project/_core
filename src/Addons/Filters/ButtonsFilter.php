@@ -17,7 +17,7 @@ use Sebwite\Support\Arr;
 /**
  * Class ButtonsFilter
  *
- * @Filter("buttons", priority=0, config="config", after={"markdown", "toc", "header"})
+ * @Filter("buttons", config="config", after={"parser", "toc", "header"})
  * @package Codex\Addons\Filters
  */
 class ButtonsFilter

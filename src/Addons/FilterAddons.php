@@ -18,50 +18,58 @@ use Codex\Support\Sorter;
  */
 class FilterAddons extends AbstractAddonCollection
 {
+    const MISSING_THROWS_EXECEPTION = 1;
+    const MISSING_IGNORED = 2;
+
+    public static $handleMissing = self::MISSING_IGNORED;
+
     public function add(ClassFileInfo $file, Filter $annotation)
     {
         $class    = $file->getClassName();
         $instance = null; //$this->app->make($class);
-        $data     = array_merge(compact('file', 'annotation', 'class', 'instance'), (array) $annotation);
+        $data     = array_merge(compact('file', 'annotation', 'class', 'instance'), (array)$annotation);
 
         $this->set($annotation->name, $data);
-
     }
 
     public function runFilter($name, Document $document)
     {
-        $project = $document->getProject();
-        $filter = $this->get($name);
-        $instance = $filter['instance'] === null ? $this->app->build($filter['class']) : $filter['instance'];
+        $project  = $document->getProject();
+        $filter   = $this->get($name);
+        $instance = $filter[ 'instance' ] === null ? $this->app->build($filter[ 'class' ]) : $filter[ 'instance' ];
         /** @var Filter $annotation */
-        $annotation = $filter['annotation'];
+        $annotation = $filter[ 'annotation' ];
         $annotation->after;
 
 
-
-        if($annotation->config !== false){
+        if ( $annotation->config !== false )
+        {
             // get default config
-            if(!property_exists($instance, $annotation->config)){
-                throw CodexException::because('Config not found for ' . $filter['class']);
+            if ( ! property_exists($instance, $annotation->config) )
+            {
+                throw CodexException::because('Config not found for ' . $filter[ 'class' ]);
             }
-            $config = $instance->{$annotation->config};
-            $config = array_replace_recursive(
+            $config                          = $instance->{$annotation->config};
+            $config                          = array_replace_recursive(
                 $config,
-                $project->config('filters.' . $name, []),
-                $document->attr('filters.' . $name, [])
+                $project->config('filters.' . $name, [ ]),
+                $document->attr('filters.' . $name, [ ])
             );
             $instance->{$annotation->config} = new Collection($config);
         }
-        if(property_exists($instance, 'codex')){
+        if ( property_exists($instance, 'codex') )
+        {
             $instance->codex = $document->getCodex();
         }
-        if(property_exists($instance, 'project')){
+        if ( property_exists($instance, 'project') )
+        {
             $instance->project = $document->getProject();
         }
-        if(property_exists($instance, 'document')){
+        if ( property_exists($instance, 'document') )
+        {
             $instance->document = $document;
         }
-        $this->app->call([$instance, $annotation->method], compact('document'));
+        $this->app->call([ $instance, $annotation->method ], compact('document'));
     }
 
     public function getFilter($name)
@@ -72,13 +80,15 @@ class FilterAddons extends AbstractAddonCollection
 
     public function getSorted($names)
     {
-        $all = $this->whereIn('name', $names)->sortBy('priority');
-        $all->each(function($filter) use ($all) {
+        $all = $this->whereIn('name', $names)->sortBy('priority')->replaceFilters();
+        $all->each(function ($filter) use ($all)
+        {
             /** @var Filter $annotation */
-            $annotation = $filter['annotation'];
-            foreach($annotation->before as $before){
+            $annotation = $filter[ 'annotation' ];
+            foreach ( $annotation->before as $before )
+            {
                 $otherFilter = $all->where('name', $before)->first();
-                if($otherFilter !== null && false === in_array($annotation->name, $otherFilter['after'], true))
+                if ( $otherFilter !== null && false === in_array($annotation->name, $otherFilter[ 'after' ], true) )
                 {
 
                     $otherFilter[ 'after' ][] = $annotation->name;
@@ -87,39 +97,50 @@ class FilterAddons extends AbstractAddonCollection
             }
         });
         $sorter = new Sorter();
-        foreach($all as $filter){
-            $sorter->addItem($filter['name'], $filter['after']);
+        foreach ( $all as $filter )
+        {
+            $sorter->addItem($filter[ 'name' ], $filter[ 'after' ]);
         }
         $sorted = $sorter->sort();
-        if(count($sorter->getMissing()) > 0){
-            $dep = array_keys($sorter->getMissing());
-            $dep = implode(', ', $dep);
-            throw CodexException::because("Sorter encountered a missing dependency for {$dep}");
+        if ( count($sorter->getMissing()) > 0 )
+        {
+            if(static::$handleMissing === self::MISSING_IGNORED){
+
+            } elseif(static::$handleMissing === self::MISSING_THROWS_EXECEPTION)
+            {
+                $dep = array_keys($sorter->getMissing());
+                $dep = implode(', ', $dep);
+                throw CodexException::because("Sorter encountered a missing dependency for {$dep}");
+            }
         }
         $sorted = array_merge($sorted, array_diff($names, $sorted));
-        return (new static($sorted))->transform(function($filterName){
+        return (new static($sorted))->transform(function ($filterName)
+        {
             return $this->getFilter($filterName);
-        })->replaceFilters();
+        });
     }
 
     public function replaceFilters()
     {
         $items = $this->items;
-        foreach ( $items as $class => $item ) {
-            if ( isset($item[ 'replaced' ]) ) {
-                $items[ $class ] = $this->replaceClass($items, $class);
+        foreach ( $items as $name => $item )
+        {
+            if ( isset($item[ 'replaces' ]) )
+            {
+                $items[ $name ] = $this->replaceFilter($items, $name);
             }
         }
         return new static($items);
     }
 
-    protected function replaceClass($items = [ ], $class)
+    protected function replaceFilter($items = [ ], $name)
     {
-        if ( isset($items[ $class ][ 'replaced' ]) ) {
-            $replacement     = $items[ $class ][ 'replaced' ];
-            $items[ $class ] = $items[ $replacement ];
-            return $this->replaceClass($items, $replacement);
+        if ( isset($items[ $name ][ 'replaces' ]) )
+        {
+            $replacement    = $items[ $name ][ 'replaces' ];
+            $items[ $name ] = $items[ $replacement ];
+            return $this->replaceFilter($items, $replacement);
         }
-        return $items[ $class ];
+        return $items[ $name ];
     }
 }

@@ -35,8 +35,8 @@ menu:
   - name: Filters
     icon: fa fa-puzzle-piece
     children:
-      - name: Markdown
-        document: filters/markdown
+      - name: Parser
+        document: filters/parser
 
       - name: PHPDoc
         document: filters/phpdoc
@@ -80,6 +80,9 @@ menu:
 
       - name: DocTags
         document: develop/doctags
+
+      - name: Parser
+        document: develop/parser
 
 
 

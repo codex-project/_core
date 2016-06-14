@@ -42,15 +42,16 @@ return [
         'md'       => 'codex.document',
         'markdown' => 'codex.document',
         'html'     => 'codex.document',
+        'rst'      => 'codex.document',
     ],
 
-    'doctags'                     => [
+    'doctags' => [
         'table:responsive' => 'Codex\Addons\Filters\DocTags\Table@responsive',
         'general:hide'     => 'Codex\Addons\Filters\DocTags\General@hide',
         'attribute:print'  => 'Codex\Addons\Filters\DocTags\Attribute@printValue',
     ],
 
-    'default_project_config'      => [
+    'default_project_config' => [
         'description' => '',
         'default'     => \Codex\Projects\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
         'custom'      => null,

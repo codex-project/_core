@@ -17,7 +17,7 @@ use Codex\Documents\Document;
  * @author         CLI
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  *
- * @Filter("doctags", config="config", priority=140)
+ * @Filter("doctags", config="config", priority=140, after={"parser"})
  */
 class DocTagsFilter
 {

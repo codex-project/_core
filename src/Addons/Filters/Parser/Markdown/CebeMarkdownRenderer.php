@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Addons\Filters\Markdown;
+namespace Codex\Addons\Filters\Parser\Markdown;
 
 use cebe\markdown\GithubMarkdown;
 use Codex\Documents\Document;
@@ -47,7 +47,10 @@ class CebeMarkdownRenderer implements RendererInterface
     public function setConfig($config = [ ])
     {
         foreach($config as $key => $value) {
-            $this->markdown->{$key} = $value;
+            if(property_exists($this->markdown, $key))
+            {
+                $this->markdown->{$key} = $value;
+            }
         }
     }
 

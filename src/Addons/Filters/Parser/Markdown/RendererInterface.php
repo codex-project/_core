@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Addons\Filters\Markdown;
+namespace Codex\Addons\Filters\Parser\Markdown;
 
 use Codex\Support\Collection;
 

@@ -54,11 +54,12 @@ Filters can modify the content output of a document.
 
 <!--*codex:table:responsive(123, 'hello', true)*-->
 
-| Example                                                                             | Code                                                                                |
-|:------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------|
-| [`Codex`](#phpdoc:Codex\Codex)                             | `[Codex](#phpdoc:Codex\Codex)`                             |
-| [`Codex`](#phpdoc:popover:Codex\Codex)                     | `[Codex](#phpdoc:popover:Codex\Codex)`                     |
+| Example                                          | Code                                             |
+|:-------------------------------------------------|:-------------------------------------------------|
+| [`Codex`](#phpdoc:Codex\Codex)                   | `[Codex](#phpdoc:Codex\Codex)`                   |
+| [`Codex`](#phpdoc:popover:Codex\Codex)           | `[Codex](#phpdoc:popover:Codex\Codex)`           |
 | [`Codex::url`](#phpdoc:popover:Codex\Codex::url) | `[Codex::url](#phpdoc:popover:Codex\Codex::url)` |
+
 
 <!--*codex:/table:responsive*-->
 
