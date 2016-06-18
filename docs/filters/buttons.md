@@ -1,6 +1,6 @@
 <!--
 title: Buttons
-subtitle: Filters
+subtitle: Processors
 buttons:
   type: groups
   groups:
@@ -15,7 +15,7 @@ buttons:
 
 ### Overview
 
-**API Documentation:** [ButtonsFilter](#phpdoc:popover:Codex\Addons\Filters\ButtonsFilter)
+**API Documentation:** [ButtonsProcessor](#phpdoc:popover:Codex\Addons\Processors\ButtonsProcessor)
 
 The Buttons filter allows you to place custom buttons at the top of your document. These buttons can be defined on project level or document level.
 

@@ -47,7 +47,7 @@ $projects   = $codex->projects->toArray();
 foreach($projects as $project){
     $url = $project->url($doc = 'index', $ref = null);
     $project->path($path = null);           # string
-    $project->hasEnabledFilter($filter);    # bool
+    $project->hasEnabledProcessor($filter);    # bool
     $project->hasEnabledHook($hook);        # bool    
     $project->getRef();                     # string
     $project->getDefaultRef();              # string

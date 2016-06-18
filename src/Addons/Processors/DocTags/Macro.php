@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Addons\Filters\DocTags;
+namespace Codex\Addons\Processors\DocTags;
 
 use Closure;
 use Codex\Exception\CodexException;
@@ -11,7 +11,7 @@ use Codex\Exception\CodexException;
  * @author         CLI
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  */
-class DocTag
+class Macro
 {
     /** @var \Codex\Documents\Document */
     public $document;

@@ -6,21 +6,21 @@
  * Time: 6:20 AM
  */
 
-namespace Codex\Addons\Filters;
+namespace Codex\Addons\Processors;
 
-use Codex\Addons\Annotations\Filter;
+use Codex\Addons\Annotations\Processor;
 use Codex\Documents\Document;
 
 /**
  * Class HeaderFilter
- * @Filter("header", config="config", after={"parser", "toc"})
+ * @Processor("header", config="config", after={"parser", "toc"})
  * @package Codex\Addons\Filters
  */
-class HeaderFilter
+class HeaderProcessor
 {
     /** @var \Codex\Support\Collection */
     public $config = [
-        'view'                 => 'filters.header',
+        'view'                 => 'processors.header',
         'remove_from_document' => true,
         'remove_regex'         => '/<h1>(.*?)<\/h1>/',
     ];

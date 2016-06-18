@@ -35,19 +35,19 @@ class ProjectConfig implements ArrayAccess, Arrayable, JsonSerializable, Jsonabl
     }
 
 
-    public function getEnabledFilters()
+    public function getEnabledProcessors()
     {
-        return $this->config->get('filters.enabled', [ ])->toArray();
+        return $this->config->get('processors.enabled', [ ])->toArray();
     }
 
-    public function getEnabledFilterNames()
+    public function getEnabledProcessorNames()
     {
-        return $this->config->get('filters.enabled', [ ])->toArray();
+        return $this->config->get('processors.enabled', [ ])->toArray();
     }
 
-    public function getFilterConfig($name)
+    public function getProcessorConfig($name)
     {
-        $config = $this->config->get("filters.{$name}", []);
+        $config = $this->config->get("processors.{$name}", []);
         if(!$config instanceof Collection){
             $config = new Collection((array) $config);
         }

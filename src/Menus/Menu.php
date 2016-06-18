@@ -20,12 +20,17 @@ use Illuminate\Routing\Router;
 use Sebwite\Filesystem\Filesystem;
 use Tree\Visitor\PostOrderVisitor;
 use Tree\Visitor\PreOrderVisitor;
+use Tree\Visitor\Visitor;
 
 class Menu extends Extendable implements Arrayable
 {
     use Traits\FilesTrait,
         Traits\ConfigTrait,
         Traits\AttributesTrait;
+
+    const SORTER_PREORDER = PreOrderVisitor::class;
+
+    const SORTER_POSTORDER = PostOrderVisitor::class;
 
     /**
      * @var \Illuminate\Contracts\Cache\Repository
@@ -63,15 +68,14 @@ class Menu extends Extendable implements Arrayable
     protected $viewFactory;
 
     /**
-     * @var \Codex\Contracts\Menus\MenuFactory
+     * @var \Codex\Menus\Menu
      */
     protected $menus;
 
+    /** @var string */
     protected $id;
 
-    const SORTER_PREORDER = PreOrderVisitor::class;
-    const SORTER_POSTORDER = PostOrderVisitor::class;
-
+    /** @var null|Visitor */
     protected $sorter;
 
 
@@ -86,16 +90,16 @@ class Menu extends Extendable implements Arrayable
      */
     public function __construct(Menus $menus, Filesystem $files, Cache $cache, Router $router, UrlGenerator $url, ViewFactory $viewFactory, $id)
     {
-        $this->menus = $menus;
-        $this->cache = $cache;
-        $this->router = $router;
-        $this->url = $url;
-        $this->files = $files;
+        $this->menus       = $menus;
+        $this->cache       = $cache;
+        $this->router      = $router;
+        $this->url         = $url;
+        $this->files       = $files;
         $this->viewFactory = $viewFactory;
-        $this->id = $id;
-        $this->view = $menus->getCodex()->view("menus.{$id}");
-        $this->items = new Collection();
-        $this->attributes = [
+        $this->id          = $id;
+        $this->view        = $menus->getCodex()->view("menus.{$id}");
+        $this->items       = new Collection();
+        $this->attributes  = [
             'title' => '',
         ];
 
@@ -132,7 +136,7 @@ class Menu extends Extendable implements Arrayable
     public function render($sorter = null)
     {
         /** @var Node $root */
-        $root = $this->get('root');
+        $root   = $this->get('root');
         $sorter = $sorter ?: $this->sorter;
 
         $this->hookPoint('menu:render', [ $root, $sorter ]);
@@ -176,7 +180,7 @@ class Menu extends Extendable implements Arrayable
         $node->setMeta($meta);
         $node->setAttribute($attributes);
 
-        if ( !is_null($parent) and $this->items->has($parent) )
+        if ( ! is_null($parent) and $this->items->has($parent) )
         {
             $parentNode = $this->items->get($parent);
             $parentNode->addChild($node);

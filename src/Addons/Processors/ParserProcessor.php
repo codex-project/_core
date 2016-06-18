@@ -1,8 +1,8 @@
 <?php
-namespace Codex\Addons\Filters;
+namespace Codex\Addons\Processors;
 
-use Codex\Addons\Annotations\Filter;
-use Codex\Addons\Filters\Parser\ParserInterface;
+use Codex\Addons\Annotations\Processor;
+use Codex\Addons\Processors\Parser\ParserInterface;
 use Codex\Codex;
 use Codex\Documents\Document;
 use Codex\Projects\Project;
@@ -11,12 +11,12 @@ use Codex\Support\Collection;
 /**
  * This is the class ParserFilter.
  *
- * @Filter("parser", priority=0, config="config", after={"attributes"})
+ * @Processor("parser", priority=0, config="config", after={"attributes"})
  * @package        Codex\Addons
  * @author         CLI
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  */
-class ParserFilter
+class ParserProcessor
 {
     /** @var Collection */
     public $config = [

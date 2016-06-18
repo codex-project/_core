@@ -75,6 +75,7 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
      * @param \Illuminate\Contracts\Cache\Repository    $cache     The cache instance
      * @param \Codex\Contracts\Log\Log                  $log       The log instance
      *
+     * @hook constructed After Codex has been constructed
      */
     public function __construct(Container $container, Filesystem $files, Cache $cache, Contracts\Log\Log $log)
     {

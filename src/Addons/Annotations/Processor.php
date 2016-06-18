@@ -15,7 +15,7 @@ use Doctrine\Common\Annotations\Annotation\Target;
  * @Annotation
  * @Target("CLASS")
  */
-final class Filter
+final class Processor
 {
     /**
      * @Required
@@ -47,13 +47,13 @@ final class Filter
     public $method = 'handle';
 
     /**
-     * The filters that should be called before this filter. Enables dependency sorting.
+     * The processors that should be called before this filter. Enables dependency sorting.
      * @var array
      */
     public $after = [];
 
     /**
-     * The filters that should be called after this filter.  Enables dependency sorting.
+     * The processors that should be called after this filter.  Enables dependency sorting.
      * @var array
      */
     public $before = [];

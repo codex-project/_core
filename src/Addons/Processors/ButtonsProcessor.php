@@ -6,21 +6,21 @@
  * Time: 6:21 AM
  */
 
-namespace Codex\Addons\Filters;
+namespace Codex\Addons\Processors;
 
-use Codex\Addons\Annotations\Filter;
+use Codex\Addons\Annotations\Processor;
+use Codex\Addons\Processors\Buttons\Button;
 use Codex\Documents\Document;
-use Codex\Addons\Filters\Buttons\Button;
 use Codex\Support\Collection;
 use Sebwite\Support\Arr;
 
 /**
  * Class ButtonsFilter
  *
- * @Filter("buttons", config="config", after={"parser", "toc", "header"})
+ * @Processor("buttons", config="config", after={"parser", "toc", "header"})
  * @package Codex\Addons\Filters
  */
-class ButtonsFilter
+class ButtonsProcessor
 {
     /** @var \Codex\Support\Collection */
     public $config = [

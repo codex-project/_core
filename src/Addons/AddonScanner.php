@@ -4,7 +4,6 @@ namespace Codex\Addons;
 use Codex\Addons\Scanner\ClassFileInfo;
 use Codex\Addons\Scanner\ClassInspector;
 use Codex\Addons\Scanner\Scanner;
-use Codex\Exception\CodexException;
 use Codex\Support\Collection;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
@@ -26,31 +25,33 @@ class AddonScanner
     /** @var array */
     protected $annotations = [
         Annotations\Hook::class,
-        Annotations\Filter::class
+        Annotations\Processor::class,
     ];
-    
+
     protected $addons;
-    
+
     public function __construct(Addons $addons)
     {
-        $this->addons = $addons;
-        $this->manifest     = new Collection();
-        $this->fs           = new Filesystem();
-        $this->reader       = new AnnotationReader();
+        $this->addons   = $addons;
+        $this->manifest = new Collection();
+        $this->fs       = new Filesystem();
+        $this->reader   = new AnnotationReader();
 
-        foreach ( $this->fs->globule(__DIR__ . '/Annotations/*.php') as $filePath ) {
+        foreach ( $this->fs->globule(__DIR__ . '/Annotations/*.php') as $filePath )
+        {
             AnnotationRegistry::registerFile($filePath);
         }
     }
-    
+
     public function getAddonPaths()
     {
-        if ( $this->getManifest()->isEmpty() ) {
+        if ( $this->getManifest()->isEmpty() )
+        {
             $this->getManifest()->load();
         }
         return $this->getManifest()->get('paths', [ ]);
     }
-    
+
     public function getManifestPath()
     {
         return $this->addons->getManifestPath();
@@ -64,7 +65,8 @@ class AddonScanner
     public function findAll()
     {
         $files = [ ];
-        foreach ( $this->getAddonPaths() as $path ) {
+        foreach ( $this->getAddonPaths() as $path )
+        {
             $files = array_merge($files, $this->scanDirectory($path));
         }
         return $files;
@@ -73,7 +75,8 @@ class AddonScanner
     public function scanDirectory($path)
     {
         $files = [ ];
-        foreach ( $this->createAnnotationScanner($this->annotations)->in($path) as $file ) {
+        foreach ( $this->createAnnotationScanner($this->annotations)->in($path) as $file )
+        {
             $files[] = $file;
         }
         return $files;
@@ -89,7 +92,8 @@ class AddonScanner
 
     protected function createAnnotationScanner($annotationClass)
     {
-        if ( !is_array($annotationClass) ) {
+        if ( ! is_array($annotationClass) )
+        {
             $annotationClass = [ $annotationClass ];
         }
         $scanner = new Scanner($this->reader);

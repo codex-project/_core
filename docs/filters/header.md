@@ -1,10 +1,10 @@
 <!--
 title: Header
-subtitle: Filters
+subtitle: Processors
 -->
 
 # Header
 
 ### Overview
 
-**API Documentation:** [HeaderFilter](#phpdoc:popover:Codex\Addons\Filters\HeaderFilter)
+**API Documentation:** [HeaderProcessor](#phpdoc:popover:Codex\Addons\Processors\HeaderProcessor)

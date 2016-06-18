@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Addons\Filters\DocTags;
+namespace Codex\Addons\Processors\DocTags;
 
 class Table
 {

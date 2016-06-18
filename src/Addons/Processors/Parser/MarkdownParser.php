@@ -1,7 +1,7 @@
 <?php
-namespace Codex\Addons\Filters\Parser;
+namespace Codex\Addons\Processors\Parser;
 
-use Codex\Addons\Filters\Markdown\RendererInterface;
+use Codex\Addons\Processors\Parser\Markdown\RendererInterface;
 
 class MarkdownParser implements ParserInterface
 {

@@ -32,7 +32,7 @@ menu:
       - name: PHPDoc
         document: preview-pages/phpdoc
 
-  - name: Filters
+  - name: Processors
     icon: fa fa-puzzle-piece
     children:
       - name: Parser
@@ -69,7 +69,7 @@ menu:
       - name: IntelliJ IDEA &amp; PHPStorm
         document: develop/intellij-idea-phpstorm
 
-      - name: Filters
+      - name: Processors
         document: develop/filters
 
       - name: Hooks

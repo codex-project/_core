@@ -1,13 +1,13 @@
 <!--
 title: Attributes
-subtitle: Filters
+subtitle: Processors
 -->
 
 # Attributes
 
 ### Overview
 
-**API Documentation:** [MarkdownFilter](#phpdoc:popover:Codex\Addons\Filters\AttributesFilter)
+**API Documentation:** [MarkdownProcessor](#phpdoc:popover:Codex\Addons\Processors\AttributesProcessor)
 
 The attributes filter will parse and remove the attributes that can be defined each document. You can define 
 attributes in any kind of document by specifying it on top. By default it accepts FrontMatter and HTMLDocBlock style definitions.
@@ -17,7 +17,7 @@ attributes in any kind of document by specifying it on top. By default it accept
 ```markdown
 <!--
 title: Attributes
-subtitle: Filters
+subtitle: Processors
 author: Robin Radic
 -->
 The attributes filter will parse and remove the attributes that can be defined each document. You can define 
@@ -30,7 +30,7 @@ Or if you'd rather use FrontMatter:
 ```markdown
 ---
 title: Attributes
-subtitle: Filters
+subtitle: Processors
 author: Robin Radic
 ---
 The attributes filter will parse and remove the attributes that can be defined each document. You can define 

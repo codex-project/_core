@@ -3,7 +3,7 @@
 return [
     'display_name' => '{{$displayName}}',
 
-    'filters' => [
+    'processors' => [
         'enabled' => ['attributes', 'markdown', 'replace_header', 'toc']
     ]
 ];

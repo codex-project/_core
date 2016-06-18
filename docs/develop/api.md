@@ -5,7 +5,7 @@ subtitle: Develop
 
 You can access the API by either using the binding, contract or facade.
 
-Check out the [Filters & Hooks](filters-hooks) documentaiton.
+Check out the [Processors & Hooks](filters-hooks) documentaiton.
 
 ### Api access
 ###### Contract
@@ -53,7 +53,7 @@ $projects   = $codex->projects->toArray();
 foreach($projects as $project){
     $url = $project->url($doc = 'index', $ref = null);
     $project->path($path = null);           # string
-    $project->hasEnabledFilter($filter);    # bool
+    $project->hasEnabledProcessor($filter);    # bool
     $project->hasEnabledHook($hook);        # bool    
     $project->getRef();                     # string
     $project->getDefaultRef();              # string

@@ -1,6 +1,6 @@
 <!---
 title: Doctags
-subtitle: Filters
+subtitle: Processors
 -->
 
 
@@ -8,7 +8,7 @@ subtitle: Filters
 
 ### Overview
 
-**API Documentation:** [DocTagsFilter](#phpdoc:popover:Codex\Addons\Filters\DocTagsFilter)
+**API Documentation:** [DocTagsProcessor](#phpdoc:popover:Codex\Addons\Processors\DocTagsProcessor)
 
 DocTags allows you to inject content based on HTMLDocBlocks. This way it will not be displayed on for example Github,
 but when opening the document in Codex, it will replace the DocTags into its defined replacements.

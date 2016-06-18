@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Addons\Filters\Parser;
+namespace Codex\Addons\Processors\Parser;
 
 class RstParser implements ParserInterface
 {

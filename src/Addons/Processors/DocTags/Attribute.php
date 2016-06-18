@@ -6,7 +6,7 @@
  * Time: 9:20 AM
  */
 
-namespace Codex\Addons\Filters\DocTags;
+namespace Codex\Addons\Processors\DocTags;
 
 
 

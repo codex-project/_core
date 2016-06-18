@@ -1,6 +1,6 @@
 <!--
 title: ToC
-subtitle: Filters
+subtitle: Processors
 -->
 
 
@@ -8,7 +8,7 @@ subtitle: Filters
 
 ### Overview
 
-**API Documentation:** [TocFilter](#phpdoc:popover:Codex\Addons\Filters\TocFilter)
+**API Documentation:** [TocProcessor](#phpdoc:popover:Codex\Addons\Processors\TocProcessor)
 
 The ToC filter creates a Table of Contents navigation like you see on this page below the title.
 

@@ -17,10 +17,10 @@ use Sebwite\Filesystem\Filesystem;
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  *
  * @method HookAddons hooks(...$params)
- * @method FilterAddons filters(...$params)
+ * @method ProcessorAddons processors(...$params)
  *
- * @property FilterAddons $filters
- * @property HookAddons   $hooks
+ * @property ProcessorAddons $processors
+ * @property HookAddons      $hooks
  *
  */
 class Addons implements Arrayable
@@ -30,13 +30,13 @@ class Addons implements Arrayable
 
     const HOOK = 'hook';
     const THEME = 'theme';
-    const FILTER = 'filter';
+    const PROCESSOR = 'processor';
 
     /** @var Addons */
     static protected $instance;
 
     /** @var \Codex\Support\Collection */
-    protected $filters;
+    protected $processors;
 
 
     /** @var \Codex\Support\Collection */
@@ -70,13 +70,13 @@ class Addons implements Arrayable
             'projects' => 'codex::menus.header-dropdown',
             'versions' => 'codex::menus.header-dropdown',
         ],
-        'filters'  => [
-            'header' => 'codex::filters.header',
-            'toc'    => 'codex::filters.toc',
+        'processors'  => [
+            'header' => 'codex::processors.header',
+            'toc'    => 'codex::processors.toc',
         ],
     ];
 
-    protected $collections = [ 'filters', 'themes', 'hooks' ];
+    protected $collections = [ 'processors', 'themes', 'hooks' ];
 
     /** @var string */
     protected $manifestPath;
@@ -86,8 +86,8 @@ class Addons implements Arrayable
 
     protected function __construct()
     {
-        $this->filters = new FilterAddons([ ], $this);
-        $this->hooks   = new HookAddons([ ], $this);
+        $this->processors = new ProcessorAddons([ ], $this);
+        $this->hooks      = new HookAddons([ ], $this);
 
         $this->scanner = new AddonScanner($this);
         $this->fs      = new Filesystem();
@@ -133,9 +133,9 @@ class Addons implements Arrayable
         $this->registered[ $class ] = $file;
         foreach ( $file->getClassAnnotations() as $annotation )
         {
-            if ( $annotation instanceof Annotations\Filter )
+            if ( $annotation instanceof Annotations\Processor )
             {
-                $this->filters->add($file, $annotation);
+                $this->processors->add($file, $annotation);
             }
             elseif ( $annotation instanceof Annotations\Hook )
             {
@@ -212,7 +212,7 @@ class Addons implements Arrayable
     public function toArray()
     {
         return [
-            'filters' => $this->filters->toArray(),
+            'processors' => $this->processors->toArray(),
             'hooks'   => $this->hooks->toArray(),
             'views'   => $this->views,
         ];

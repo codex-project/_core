@@ -288,9 +288,9 @@ class Project extends Extendable implements Arrayable
         return $this->codex->url($this, $ref, $doc);
     }
 
-    public function hasEnabledFilter($filter)
+    public function hasEnabledProcessor($filter)
     {
-        return in_array($filter, $this->config('filters.enabled', [ ]), true);
+        return in_array($filter, $this->config('processors.enabled', [ ]), true);
     }
 
     public function hasEnabledHook($hook)

@@ -34,7 +34,7 @@ Head over to [codex-project.ninja](http://codex-project.ninja) for the full docu
 
 ## How it works
 
-**Codex** > **Projects** > **Versions** > **Documents** > **Filters**
+**Codex** > **Projects** > **Versions** > **Documents** > **Processors**
 
 - Codex can provide documentation for multiple projects. 
 - Each project has one or more versions containing your documents. 
@@ -43,8 +43,8 @@ Head over to [codex-project.ninja](http://codex-project.ninja) for the full docu
 To give you an understanding of filters, lets take the ToC filter as example. It takes all headings in a document and generates a table of content at the start ([example](#)).
 
 ### Customs / extendables
-#### Filters
-Filters can modify the content output of a document. 
+#### Processors
+Processors can modify the content output of a document. 
 
 ##### Example: phpdoc
 - Mouse hover on the examples.

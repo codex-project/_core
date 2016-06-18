@@ -1,8 +1,8 @@
 <?php
-namespace Codex\Addons\Filters;
+namespace Codex\Addons\Processors;
 
-use Codex\Addons\Annotations\Filter;
-use Codex\Addons\Filters\Toc\Header;
+use Codex\Addons\Annotations\Processor;
+use Codex\Addons\Processors\Toc\Header;
 use Codex\Documents\Document;
 use Codex\Support\Collection;
 use Illuminate\Contracts\View\Factory;
@@ -14,9 +14,9 @@ use Illuminate\Contracts\View\Factory;
  * @author         CLI
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  *
- * @Filter("toc", priority=50, config="config", after={"parser"})
+ * @Processor("toc", priority=50, config="config", after={"parser"})
  */
-class TocFilter
+class TocProcessor
 {
     /** @var \Codex\Codex */
     public $codex;
@@ -30,7 +30,7 @@ class TocFilter
         'header_link_show'  => false,
         'header_link_text'  => '#',
         'minimum_nodes'     => 2,
-        'view'              => 'filters.toc',
+        'view'              => 'processors.toc',
     ];
 
     /** @var \Illuminate\Contracts\View\Factory */

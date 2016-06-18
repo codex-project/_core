@@ -1,13 +1,13 @@
 <!--
 title: PHPDoc
-subtitle: Filters
+subtitle: Processors
 -->
 
 # PHPDoc
 
 ### Overview 
 
-**API Documentation:** [PhpdocFilter](#phpdoc:popover:Codex\Addon\Phpdoc\PhpdocFilter)
+**API Documentation:** [PhpdocProcessor](#phpdoc:popover:Codex\Addon\Phpdoc\PhpdocProcessor)
 
 By using the `codex/addon-phpdoc` addon, it is possible to use the `phpdoc` filter to transform links by adding
 tooltips or popovers that link directly to it's PHPDoc page.

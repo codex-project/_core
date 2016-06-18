@@ -6,7 +6,7 @@
  * Time: 5:52 AM
  */
 
-namespace Codex\Addons\Filters\Buttons;
+namespace Codex\Addons\Processors\Buttons;
 
 
 use ArrayAccess;

@@ -145,9 +145,9 @@ Leaving it empty: `http://localhost`
 #### doctags
 ```php
 [
-    'table:responsive' => 'Codex\Addons\Filters\DocTags\Table@responsive',
-    'general:hide'     => 'Codex\Addons\Filters\DocTags\General@hide',
-    'attribute:print'  => 'Codex\Addons\Filters\DocTags\Attribute@printValue',
+    'table:responsive' => 'Codex\Addons\Processors\DocTags\Table@responsive',
+    'general:hide'     => 'Codex\Addons\Processors\DocTags\General@hide',
+    'attribute:print'  => 'Codex\Addons\Processors\DocTags\Attribute@printValue',
 ]
 ```
 

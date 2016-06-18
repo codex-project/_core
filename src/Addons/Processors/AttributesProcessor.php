@@ -1,7 +1,7 @@
 <?php
-namespace Codex\Addons\Filters;
+namespace Codex\Addons\Processors;
 
-use Codex\Addons\Annotations\Filter;
+use Codex\Addons\Annotations\Processor;
 use Codex\Documents\Document;
 use Codex\Support\Collection;
 use Symfony\Component\Yaml\Yaml;
@@ -14,10 +14,10 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright Copyright (c) 2015, Codex Project
  * @license   https://tldrlegal.com/license/mit-license MIT License
  *
- * @Filter("attributes", priority=0, config="config")
+ * @Processor("attributes", priority=0, config="config")
  *
  */
-class AttributesFilter
+class AttributesProcessor
 {
     /** @var Collection */
     public $config = [

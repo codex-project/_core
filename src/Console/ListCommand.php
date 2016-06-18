@@ -7,11 +7,13 @@ use Illuminate\Support\Traits\Macroable;
 
 class ListCommand extends Command
 {
+    use CodexConsoleTrait;
+
     use Macroable;
 
     protected $signature = 'codex:list {what=projects} {--more}';
 
-    protected $description = 'List all projects, filters and whatnot';
+    protected $description = 'List all projects, processors and whatnot';
 
     protected $more = false;
 
@@ -33,7 +35,7 @@ class ListCommand extends Command
 
     protected function listFilters()
     {
-        foreach ( codex('addons')->filters->all() as $filter ) {
+        foreach ( codex('addons')->processors->all() as $filter ) {
             if($this->more) {
                 $replace = $filter[ 'replace' ] ? "\nReplaces: {$filter['replace']}\n" : '';
 

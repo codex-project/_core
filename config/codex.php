@@ -46,9 +46,9 @@ return [
     ],
 
     'doctags' => [
-        'table:responsive' => 'Codex\Addons\Filters\DocTags\Table@responsive',
-        'general:hide'     => 'Codex\Addons\Filters\DocTags\General@hide',
-        'attribute:print'  => 'Codex\Addons\Filters\DocTags\Attribute@printValue',
+        'table:responsive' => 'Codex\Addons\Processors\DocTags\Table@responsive',
+        'general:hide'     => 'Codex\Addons\Processors\DocTags\General@hide',
+        'attribute:print'  => 'Codex\Addons\Processors\DocTags\Attribute@printValue',
     ],
 
     'default_project_config' => [
@@ -58,7 +58,7 @@ return [
         'first'       => '',
         'index'       => 'index',
         'extensions'  => [ 'md', 'markdown', 'html' ],
-        'filters'     => [
+        'processors'     => [
             'enabled' => [ ],
         ],
     ],
@@ -68,10 +68,10 @@ return [
         'title'           => '',
         'subtitle'        => '',
         'view'            => null,
-        'disable_filters' => [ ],
+        'disable_processors' => [ ],
         'buttons'         => [
         ],
-        'filters'         => [
+        'processors'         => [
         ],
     ],
 

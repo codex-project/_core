@@ -230,7 +230,7 @@ class CodexServiceProvider extends ServiceProvider
     {
         $this->app->instance('codex.addons', $this->addons = Addons\Addons::getInstance());
         $this->addons->setManifestPath($this->app[ 'config' ][ 'codex.paths.manifest' ]);
-        $this->addons->registerInPath(__DIR__ . '/Addons/Filters');
+        $this->addons->registerInPath(__DIR__ . '/Addons/Processors');
         $this->addons->findAndRegisterAll();
     }
 

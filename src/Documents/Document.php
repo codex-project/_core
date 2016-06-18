@@ -125,15 +125,15 @@ class Document extends Extendable
 
     protected function runFilters()
     {
-        $enabledFilters = $this->project->config('filters.enabled', [ ]);
-        $filters        = $this->codex->addons->filters->getSorted($enabledFilters);
-        foreach ( $filters as $filter )
+        $enabledFilters = $this->project->config('processors.enabled', [ ]);
+        $processors        = $this->codex->addons->processors->getSorted($enabledFilters);
+        foreach ( $processors as $processor )
         {
-            $this->hookPoint('document:filter:before:' . $filter[ 'name' ], [ $filter[ 'instance' ], $filter ]);
-            $this->codex->addons->filters->runFilter($filter[ 'name' ], $this);
-            //app()->call([ $filter['instance'], 'handle' ], ['document' => $this]);
-            $this->appliedFilters->add($filter);
-            $this->hookPoint('document:filter:after:' . $filter[ 'name' ], [ $filter[ 'instance' ], $filter ]);
+            $this->hookPoint('document:processor:before:' . $processor[ 'name' ], [ $processor[ 'instance' ], $processor ]);
+            $this->codex->addons->processors->runProcessor($processor[ 'name' ], $this);
+            //app()->call([ $processor['instance'], 'handle' ], ['document' => $this]);
+            $this->appliedFilters->add($processor);
+            $this->hookPoint('document:processor:after:' . $processor[ 'name' ], [ $processor[ 'instance' ], $processor ]);
         }
     }
 

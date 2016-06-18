@@ -1,14 +1,14 @@
 <!--
-title: Filters
+title: Processors
 subtitle: Develop
 -->
 
-# Filters
+# Processors
 
-Filters are..
+Processors are..
 
 ```php
-class MyFilter {
+class MyProcessor {
     public function handle(\Codex\Documents\Document $document){
         
     }
