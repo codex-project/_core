@@ -1,11 +1,13 @@
 <?php
 /**
- * Part of the Codex Project PHP packages.
+ * Part of the Codex Project packages.
  *
- * License and copyright information bundled with this package in the LICENSE file
+ * License and copyright information bundled with this package in the LICENSE file.
+ *
+ * @author    Robin Radic
+ * @copyright Copyright $today.year (c) Codex Project
+ * @license   http://codex-project.ninja/license The MIT License
  */
-
-
 namespace Codex\Documents;
 
 
@@ -17,6 +19,12 @@ use Codex\Support\Collection;
 use Codex\Support\Extendable;
 use Codex\Traits;
 
+/**
+ * This is the class Document.
+ *
+ * @package        Codex\Documents
+ * @author         Robin Radic
+ */
 class Document extends Extendable
 {
     use Traits\FilesTrait,
@@ -52,7 +60,7 @@ class Document extends Extendable
     protected $extension;
 
     /** @var \Codex\Support\Collection */
-    protected $appliedProcessors;
+    protected $processed;
 
     protected $rendered = false;
 
@@ -74,11 +82,11 @@ class Document extends Extendable
     public function __construct(Codex $codex, Project $project, $path, $pathName)
     {
         $this->setCodex($codex);
-        $this->project           = $project;
-        $this->path              = $path;
-        $this->pathName          = $pathName;
-        $this->extension         = path_get_extension($path);
-        $this->appliedProcessors = new Collection();
+        $this->project   = $project;
+        $this->path      = $path;
+        $this->pathName  = $pathName;
+        $this->extension = path_get_extension($path);
+        $this->processed = new Collection();
 
         $this->setFiles($project->getFiles());
 
@@ -128,14 +136,31 @@ class Document extends Extendable
 
     protected function runProcessors()
     {
-        $processors        = $this->getProcessors();
-        $enabledProcessors = $processors->getSorted($this->project->config('processors.enabled', [ ]));
-
-        foreach ( $enabledProcessors as $processor )
+        // Individually run the attributes processor first.
+        // This way we get the document attributes filled and disable, enable or configure other processors.
+        $this->runProcessor('attributes');
+        $processors = $this->getEnabledProcessors();
+        foreach ( $this->getProcessors()->getSorted($processors) as $processor )
         {
-            $this->getProcessors()->run($processor[ 'name' ], $this);
-            $this->appliedProcessors->add($processor);
+            $this->runProcessor($processor);
         }
+    }
+
+    protected function runProcessor($name)
+    {
+        if ( $this->processed->has($name) )
+        {
+            return;
+        }
+        $this->processed->set($name, $this->getProcessors()->run($name, $this));
+    }
+
+    protected function getEnabledProcessors()
+    {
+        $enabled  = $this->project->config('processors.enabled', [ ]);
+        $enabled2 = $this->attr('processors.enabled', [ ]);
+        $disabled = $this->attr('processors.disabled', [ ]);
+        return array_diff(array_unique(array_merge($enabled, $enabled2)), $disabled);
     }
 
     /**
@@ -262,9 +287,9 @@ class Document extends Extendable
      *
      * @return \Codex\Support\Collection
      */
-    public function getAppliedProcessors()
+    public function getProcessed()
     {
-        return $this->appliedProcessors;
+        return $this->processed;
     }
 
     public function toArray()
@@ -273,7 +298,7 @@ class Document extends Extendable
             'path'           => $this->path,
             'pathName'       => $this->pathName,
             'extension'      => $this->extension,
-            'appliedFilters' => $this->appliedProcessors->pluck('name')->toArray(),
+            'appliedFilters' => $this->processed->pluck('name')->toArray(),
         ];
     }
 

@@ -24,6 +24,7 @@ final class Processor
     public $name;
 
     /**
+     * @deprecated
      * @var int
      */
     public $priority = 10;
@@ -47,7 +48,7 @@ final class Processor
     public $method = 'handle';
 
     /**
-     * The processors that should be called before this filter. Enables dependency sorting.
+     * The processors that should be called before this filter.  Enables dependency sorting.
      * @var array
      */
     public $after = [];
@@ -57,5 +58,11 @@ final class Processor
      * @var array
      */
     public $before = [];
+
+    /**
+     * A list of processors that are required to run before this processor. If any of these is not enabled or installed, there will be an Exception saying so.
+     * @var array
+     */
+    public $depends = [];
 
 }

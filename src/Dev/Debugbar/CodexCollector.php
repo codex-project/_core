@@ -85,7 +85,7 @@ class CodexCollector extends DataCollector implements Renderable
      */
     public function getWidgets()
     {
-        $applied = $this->document->getAppliedProcessors();
+        $applied = $this->document->getProcessed();
         return [
             'codex'                 => [
                 'icon'    => 'lock',

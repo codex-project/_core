@@ -58,7 +58,7 @@ class ProcessorAddons extends AbstractAddonCollection
         // hook point before can prevent the processor from running
         if ( false === $this->hookPoint('addons:processor:before', [ $name ]) )
         {
-            return;
+            return $processor;
         }
 
         $instance   = $this->getInstance($name);
@@ -95,10 +95,12 @@ class ProcessorAddons extends AbstractAddonCollection
         // hook point after can prevent the processor from running
         if ( false === $this->hookPoint('addons:processor:after', [ $name, $annotation, $instance ]) )
         {
-            return;
+            return $processor;
         }
 
         $this->app->call([ $instance, $annotation->method ], compact('document'));
+
+        return $processor;
     }
 
 
@@ -165,13 +167,6 @@ class ProcessorAddons extends AbstractAddonCollection
             }
         }
         $sorted = array_merge($sorted, array_diff($names, $sorted));
-        $sorted = new static($sorted);
-
-        $sorted = $sorted->transform(function ($processorName)
-        {
-            return $this->get($processorName);
-        });
-
         return $sorted;
     }
 

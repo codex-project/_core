@@ -14,6 +14,15 @@ menu:
 
       - name: Configuration
         document: getting-started/configuration
+        children:
+          - name: Global
+            document: getting-started/configuration/global
+
+          - name: Project
+            document: getting-started/configuration/project
+
+          - name: Document
+            document: getting-started/configuration/document
 
       - name: Creating a project
         document: getting-started/creating-a-project
@@ -36,28 +45,28 @@ menu:
     icon: fa fa-puzzle-piece
     children:
       - name: Attributes
-        document: filters/attributes
+        document: processors/attributes
 
       - name: Parser
-        document: filters/parser
+        document: processors/parser
 
       - name: Macros
-        document: filters/macros
+        document: processors/macros
 
       - name: Header
-        document: filters/header
+        document: processors/header
 
       - name: ToC
-        document: filters/toc
+        document: processors/toc
 
       - name: Links
-        document: filters/links
+        document: processors/links
 
       - name: Buttons
-        document: filters/buttons
+        document: processors/buttons
 
       - name: PHPDoc
-        document: filters/phpdoc
+        document: processors/phpdoc
 
 
 
@@ -68,19 +77,16 @@ menu:
         document: phpdoc
 
       - name: Processors
-        document: develop/filters
+        document: develop/processors
         children:
-          - name: Overview
-            document: develop/filters
-            #
           - name: Macros
-            document: develop/macros
+            document: develop/processors/macros
             #
           - name: Links
-            document: develop/links
+            document: develop/processors/links
             #
           - name: Parsers
-            document: develop/parser
+            document: develop/processors/parser
 
       - name: Hooks
         document: develop/hooks
