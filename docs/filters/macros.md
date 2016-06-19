@@ -1,17 +1,17 @@
 <!---
-title: Doctags
+title: Macros
 subtitle: Processors
 -->
 
 
-# DocTags
+# Macros
 
 ### Overview
 
-**API Documentation:** [DocTagsProcessor](#phpdoc:popover:Codex\Addons\Processors\DocTagsProcessor)
+**API Documentation:** [MacrosProcessor](#phpdoc:popover:Codex\Addons\Processors\MacrosProcessor)
 
-DocTags allows you to inject content based on HTMLDocBlocks. This way it will not be displayed on for example Github,
-but when opening the document in Codex, it will replace the DocTags into its defined replacements.
+Macros allows you to inject content based on HTMLDocBlocks. This way it will not be displayed on for example Github,
+but when opening the document in Codex, it will replace the Macros into its defined replacements.
 
 ### Example
 ```markdown
@@ -38,14 +38,14 @@ Most of it's features are provided by addons. Codex is extenable, themeable, hac
 ```
 
 ### Configuration
-DocTags can be either be configured globally, per project or per document.
+Macros can be either be configured globally, per project or per document.
 
 #### Globally
 Inside the `config/codex.php` configuration file
 ```php
 [
-    'doctags' => [
-        'general:hide' => 'App\DocTags\General@hide'
+    'macros' => [
+        'general:hide' => 'App\Macros\General@hide'
     ]
 ]    
 ```
@@ -54,8 +54,8 @@ Inside the `config/codex.php` configuration file
 Inside the `docs/{project-name}/config.php` configuration file
 ```php
 [
-    'doctags' => [
-        'general:hide' => 'App\DocTags\General@hide'
+    'macros' => [
+        'general:hide' => 'App\Macros\General@hide'
     ]
 ]    
 ```
@@ -66,8 +66,8 @@ As document attributes:
 <!--
 title: Example document
 subtitle: Examples
-doctags:
-    'general:hide': App\DocTags\General@hide
+macros:
+    'general:hide': App\Macros\General@hide
 -->
 
 # Example document
@@ -75,4 +75,4 @@ foo bar do.
 ```
 
 ### More information
-How to create DocTags is explained in the [Develop/DocTags](../develop/doctags.md) section
+How to create Macros is explained in the [Develop/Macros](../develop/macros.md) section

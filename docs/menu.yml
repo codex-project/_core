@@ -35,26 +35,30 @@ menu:
   - name: Processors
     icon: fa fa-puzzle-piece
     children:
-      - name: Parser
-        document: filters/parser
-
-      - name: PHPDoc
-        document: filters/phpdoc
-
       - name: Attributes
         document: filters/attributes
 
-      - name: Doctags
-        document: filters/doctags
+      - name: Parser
+        document: filters/parser
 
-      - name: ToC
-        document: filters/toc
+      - name: Macros
+        document: filters/macros
 
       - name: Header
         document: filters/header
 
+      - name: ToC
+        document: filters/toc
+
+      - name: Links
+        document: filters/links
+
       - name: Buttons
         document: filters/buttons
+
+      - name: PHPDoc
+        document: filters/phpdoc
+
 
 
   - name: Develop
@@ -66,23 +70,29 @@ menu:
       - name: API Examples
         document: develop/api
 
-      - name: IntelliJ IDEA &amp; PHPStorm
-        document: develop/intellij-idea-phpstorm
-
       - name: Processors
         document: develop/filters
+        children:
+          - name: Overview
+            document: develop/filters
 
       - name: Hooks
         document: develop/hooks
 
-      - name: Themes
+      - name: Theming
         document: develop/themes
 
-      - name: DocTags
-        document: develop/doctags
+      - name: Add Macros
+        document: develop/macros
 
-      - name: Parser
+      - name: Custom Links
+        document: develop/links
+
+      - name: Custom Parser
         document: develop/parser
+
+      - name: IntelliJ IDEA &amp; PHPStorm
+        document: develop/intellij-idea-phpstorm
 
 
 

@@ -71,7 +71,7 @@ This requires you to create your own Renderer. Which is easy to create:
 ```php
 namespace App\Markdown;
 
-use Codex\Addons\Processors\Parser\Markdown\RendererInterface;
+use Codex\Processors\Parser\Markdown\RendererInterface;
 
 class ParsedownRenderer implements RendererInterface {
 
