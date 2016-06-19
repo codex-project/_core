@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Addons\Processors\Parser;
+namespace Codex\Processors\Parser;
 
 interface ParserInterface
 {

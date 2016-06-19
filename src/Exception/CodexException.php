@@ -9,6 +9,7 @@
 namespace Codex\Exception;
 
 
+use Codex\Documents\Document;
 use Exception;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -71,6 +72,15 @@ class CodexException extends Exception
     public static function manifestParse($msg = '')
     {
         return new static('[Manifest Parse] ' . $msg);
+    }
+
+    public static function processorNotFound($msg = '', Document $document = null)
+    {
+        $msg = '[Processor Not Found] ' . $msg;
+        if($document){
+            $msg .= " for project: [{$document->getProject()->getName()}]";
+        }
+        return new static($msg);
     }
 
     public function toHttpException()

@@ -1,9 +1,9 @@
 <?php
-namespace Codex\Addons\Processors;
+namespace Codex\Processors;
 
 use Codex\Addons\Annotations\Processor;
-use Codex\Addons\Processors\Toc\Header;
 use Codex\Documents\Document;
+use Codex\Processors\Toc\Header;
 use Codex\Support\Collection;
 use Illuminate\Contracts\View\Factory;
 

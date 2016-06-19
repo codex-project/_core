@@ -7,6 +7,7 @@ use Codex\Documents\Document;
 use Codex\Exception\CodexException;
 use Codex\Support\Collection;
 use Codex\Support\Sorter;
+use Codex\Traits\HookableTrait;
 
 /**
  * This is the class FilterAddons.
@@ -18,10 +19,14 @@ use Codex\Support\Sorter;
  */
 class ProcessorAddons extends AbstractAddonCollection
 {
+    use HookableTrait;
+
     const MISSING_THROWS_EXECEPTION = 1;
     const MISSING_IGNORED = 2;
 
     public static $handleMissing = self::MISSING_IGNORED;
+
+    protected $currentDocument;
 
     public function add(ClassFileInfo $file, Processor $annotation)
     {
@@ -32,15 +37,32 @@ class ProcessorAddons extends AbstractAddonCollection
         $this->set($annotation->name, $data);
     }
 
-    public function runProcessor($name, Document $document)
+    protected function getInstance($name)
     {
-        $project  = $document->getProject();
-        $processor   = $this->get($name);
-        $instance = $processor[ 'instance' ] === null ? $this->app->build($processor[ 'class' ]) : $processor[ 'instance' ];
-        /** @var Processor $annotation */
-        $annotation = $processor[ 'annotation' ];
-        $annotation->after;
+        $processor = $this->get($name);
+        if ( $processor[ 'instance' ] === null )
+        {
+            $processor[ 'instance' ] = $this->app->build($processor[ 'class' ]);
+            $this->set($name, $processor);
+        }
+        return $processor[ 'instance' ];
+    }
 
+    public function run($name, Document $document)
+    {
+        /** @var Processor $annotation */
+        $this->currentDocument = $document;
+        $project               = $document->getProject();
+        $processor             = $this->get($name);
+
+        // hook point before can prevent the processor from running
+        if ( false === $this->hookPoint('addons:processor:before', [ $name ]) )
+        {
+            return;
+        }
+
+        $instance   = $this->getInstance($name);
+        $annotation = $processor[ 'annotation' ];
 
         if ( $annotation->config !== false )
         {
@@ -69,12 +91,41 @@ class ProcessorAddons extends AbstractAddonCollection
         {
             $instance->document = $document;
         }
+
+        // hook point after can prevent the processor from running
+        if ( false === $this->hookPoint('addons:processor:after', [ $name, $annotation, $instance ]) )
+        {
+            return;
+        }
+
         $this->app->call([ $instance, $annotation->method ], compact('document'));
     }
 
-    public function getProcessor($name)
+
+    public function get($key, $default = null)
     {
-        return $this->where('name', $name)->first();
+        if ( false === $this->has($key) )
+        {
+            throw CodexException::processorNotFound(': ' . (string)$key, $this->currentDocument);
+        }
+        return parent::get($key, $default);
+    }
+
+
+    public function hasAll($names, $returnHasNot = false)
+    {
+        if ( is_string($names) )
+        {
+            $names = func_get_args();
+        }
+        foreach ( $names as $name )
+        {
+            if ( false === $this->has($name) )
+            {
+                return $returnHasNot ? $name : false;
+            }
+        }
+        return true;
     }
 
     public function getSorted($names)
@@ -103,9 +154,10 @@ class ProcessorAddons extends AbstractAddonCollection
         $sorted = $sorter->sort();
         if ( count($sorter->getMissing()) > 0 )
         {
-            if(static::$handleMissing === self::MISSING_IGNORED){
-
-            } elseif(static::$handleMissing === self::MISSING_THROWS_EXECEPTION)
+            if ( static::$handleMissing === self::MISSING_IGNORED )
+            {
+            }
+            elseif ( static::$handleMissing === self::MISSING_THROWS_EXECEPTION )
             {
                 $dep = array_keys($sorter->getMissing());
                 $dep = implode(', ', $dep);
@@ -113,10 +165,14 @@ class ProcessorAddons extends AbstractAddonCollection
             }
         }
         $sorted = array_merge($sorted, array_diff($names, $sorted));
-        return (new static($sorted))->transform(function ($processorName)
+        $sorted = new static($sorted);
+
+        $sorted = $sorted->transform(function ($processorName)
         {
-            return $this->getProcessor($processorName);
+            return $this->get($processorName);
         });
+
+        return $sorted;
     }
 
     public function replaceProcessors()

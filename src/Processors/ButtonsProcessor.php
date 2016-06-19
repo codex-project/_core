@@ -6,11 +6,11 @@
  * Time: 6:21 AM
  */
 
-namespace Codex\Addons\Processors;
+namespace Codex\Processors;
 
 use Codex\Addons\Annotations\Processor;
-use Codex\Addons\Processors\Buttons\Button;
 use Codex\Documents\Document;
+use Codex\Processors\Buttons\Button;
 use Codex\Support\Collection;
 use Sebwite\Support\Arr;
 

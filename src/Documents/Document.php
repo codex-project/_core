@@ -52,9 +52,12 @@ class Document extends Extendable
     protected $extension;
 
     /** @var \Codex\Support\Collection */
-    protected $appliedFilters;
+    protected $appliedProcessors;
 
     protected $rendered = false;
+
+    /** @var ContentDom */
+    protected $contentDom;
 
 
     /**
@@ -71,11 +74,11 @@ class Document extends Extendable
     public function __construct(Codex $codex, Project $project, $path, $pathName)
     {
         $this->setCodex($codex);
-        $this->project        = $project;
-        $this->path           = $path;
-        $this->pathName       = $pathName;
-        $this->extension      = path_get_extension($path);
-        $this->appliedFilters = new Collection();
+        $this->project           = $project;
+        $this->path              = $path;
+        $this->pathName          = $pathName;
+        $this->extension         = path_get_extension($path);
+        $this->appliedProcessors = new Collection();
 
         $this->setFiles($project->getFiles());
 
@@ -88,7 +91,7 @@ class Document extends Extendable
 
         $this->attributes = $codex->config('default_document_attributes');
 
-        if ( !$this->getFiles()->exists($this->getPath()) )
+        if ( ! $this->getFiles()->exists($this->getPath()) )
         {
             throw DocumentNotFoundException::document($this)->inProject($project);
         }
@@ -117,23 +120,21 @@ class Document extends Extendable
             return $this->content;
         }
         $this->hookPoint('document:render');
-        $this->runFilters();
+        $this->runProcessors();
         $this->rendered = true;
         $this->hookPoint('document:rendered');
         return $this->content;
     }
 
-    protected function runFilters()
+    protected function runProcessors()
     {
-        $enabledFilters = $this->project->config('processors.enabled', [ ]);
-        $processors        = $this->codex->addons->processors->getSorted($enabledFilters);
-        foreach ( $processors as $processor )
+        $processors        = $this->getProcessors();
+        $enabledProcessors = $processors->getSorted($this->project->config('processors.enabled', [ ]));
+
+        foreach ( $enabledProcessors as $processor )
         {
-            $this->hookPoint('document:processor:before:' . $processor[ 'name' ], [ $processor[ 'instance' ], $processor ]);
-            $this->codex->addons->processors->runProcessor($processor[ 'name' ], $this);
-            //app()->call([ $processor['instance'], 'handle' ], ['document' => $this]);
-            $this->appliedFilters->add($processor);
-            $this->hookPoint('document:processor:after:' . $processor[ 'name' ], [ $processor[ 'instance' ], $processor ]);
+            $this->getProcessors()->run($processor[ 'name' ], $this);
+            $this->appliedProcessors->add($processor);
         }
     }
 
@@ -205,15 +206,32 @@ class Document extends Extendable
     /**
      * Set the content value of the document.
      *
-     * @param  string $content
+     * @param  ContentDom|string $content
      *
      * @return Document
      */
     public function setContent($content)
     {
+        if ( $content instanceof ContentDom )
+        {
+            $content = (string)$content->root->outerhtml();
+        }
         $this->content = $content;
 
         return $this;
+    }
+
+    /**
+     * getContentDom method
+     * @return \Codex\Documents\ContentDom
+     */
+    public function getContentDom()
+    {
+        if ( null === $this->contentDom )
+        {
+            $this->contentDom = new ContentDom($this);
+        }
+        return $this->contentDom->set($this->content);
     }
 
     /**
@@ -244,9 +262,9 @@ class Document extends Extendable
      *
      * @return \Codex\Support\Collection
      */
-    public function getAppliedFilters()
+    public function getAppliedProcessors()
     {
-        return $this->appliedFilters;
+        return $this->appliedProcessors;
     }
 
     public function toArray()
@@ -255,7 +273,16 @@ class Document extends Extendable
             'path'           => $this->path,
             'pathName'       => $this->pathName,
             'extension'      => $this->extension,
-            'appliedFilters' => $this->appliedFilters->pluck('name')->toArray(),
+            'appliedFilters' => $this->appliedProcessors->pluck('name')->toArray(),
         ];
+    }
+
+    /**
+     * getProcessors method
+     * @return \Codex\Addons\ProcessorAddons
+     */
+    protected function getProcessors()
+    {
+        return $this->codex->addons->processors;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Addons\Processors\Toc;
+namespace Codex\Processors\Toc;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Tree\Node\Node;

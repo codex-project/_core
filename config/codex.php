@@ -15,15 +15,22 @@ return [
         'manifest' => storage_path('codex.json'),
     ],
 
+    // @deprecated
     'routing' => [
         'enabled'              => true,
         'base_route'           => env('CODEX_BASE_ROUTE', 'codex'),
         'ignore_project_names' => [ '_debugbar', ],
     ],
 
-    'api' => [
-        'enabled' => true,
-        'tokens'  => [ ],
+    'http' => [
+        'enabled'              => true,
+        'base_route'           => env('CODEX_BASE_ROUTE', 'codex'),
+        'ignore_project_names' => [ '_debugbar', ],
+        'api'                  => [
+            'enabled'    => true,
+            'middleware' => [ ],
+            'tokens'     => [ ],
+        ],
     ],
 
     'log' => [
@@ -45,31 +52,31 @@ return [
         'rst'      => 'codex.document',
     ],
 
-    'doctags' => [
-        'table:responsive' => 'Codex\Addons\Processors\DocTags\Table@responsive',
-        'general:hide'     => 'Codex\Addons\Processors\DocTags\General@hide',
-        'attribute:print'  => 'Codex\Addons\Processors\DocTags\Attribute@printValue',
+    'macros' => [
+        'table:responsive' => 'Codex\Processors\Macros\Table@responsive',
+        'general:hide'     => 'Codex\Processors\Macros\General@hide',
+        'attribute:print'  => 'Codex\Processors\Macros\Attribute@printValue',
     ],
 
     'default_project_config' => [
         'description' => '',
-        'default'     => \Codex\Projects\Project::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH,
+        'default'     => \Codex\Projects\Project::SHOW_MASTER_BRANCH,
         'custom'      => null,
         'first'       => '',
         'index'       => 'index',
         'extensions'  => [ 'md', 'markdown', 'html' ],
-        'processors'     => [
+        'processors'  => [
             'enabled' => [ ],
         ],
     ],
 
     'default_document_attributes' => [
-        'author'          => 'John Doe',
-        'title'           => '',
-        'subtitle'        => '',
-        'view'            => null,
+        'author'             => 'John Doe',
+        'title'              => '',
+        'subtitle'           => '',
+        'view'               => null,
         'disable_processors' => [ ],
-        'buttons'         => [
+        'buttons'            => [
         ],
         'processors'         => [
         ],

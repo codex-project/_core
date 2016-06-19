@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Addons\Processors\DocTags;
+namespace Codex\Processors\Macros;
 
 use Closure;
 use Codex\Exception\CodexException;

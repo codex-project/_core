@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Addons\Processors\Parser\Markdown;
+namespace Codex\Processors\Parser\Markdown;
 
 
 class CodexMarkdownRenderer extends CebeMarkdownRenderer

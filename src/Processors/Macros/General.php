@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Addons\Processors\DocTags;
+namespace Codex\Processors\Macros;
 
 class General
 {

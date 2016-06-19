@@ -5,7 +5,14 @@
             @if($item->hasMeta('icon'))
                 <i class="{{ $item->meta('icon') }}"></i>
             @endif
-            <span class="sub-menu-title">{{ $item->getValue() }}</span>
+
+            @if($item->attribute('href', '#') === '#')
+                <span class="sub-menu-title">{{ $item->getValue() }}</span>
+            @else
+                <a {!!  $item->parseAttributes()  !!}>
+                    {{ $item->getValue() }}
+                </a>
+            @endif
 
             <ul class="sub-menu">
                 @include('codex::menus.sidebar-child', [

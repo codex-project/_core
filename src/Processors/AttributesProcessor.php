@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Addons\Processors;
+namespace Codex\Processors;
 
 use Codex\Addons\Annotations\Processor;
 use Codex\Documents\Document;

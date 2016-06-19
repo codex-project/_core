@@ -1,10 +1,10 @@
 <?php
-namespace Codex\Addons\Processors;
+namespace Codex\Processors;
 
 use Codex\Addons\Annotations\Processor;
-use Codex\Addons\Processors\Parser\ParserInterface;
 use Codex\Codex;
 use Codex\Documents\Document;
+use Codex\Processors\Parser\ParserInterface;
 use Codex\Projects\Project;
 use Codex\Support\Collection;
 

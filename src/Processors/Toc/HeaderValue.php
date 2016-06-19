@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Addons\Processors\Toc;
+namespace Codex\Processors\Toc;
 
 class HeaderValue
 {
@@ -84,7 +84,7 @@ class HeaderValue
 
     /**
      * getHeader method
-     * @return \Codex\Addons\Processors\Toc\Header|null
+     * @return \Codex\Processors\Toc\Header|null
      */
     public function getHeader()
     {

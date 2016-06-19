@@ -1,5 +1,5 @@
 <?php
-namespace Codex\Addons\Processors\Parser\Markdown;
+namespace Codex\Processors\Parser\Markdown;
 
 use cebe\markdown\GithubMarkdown;
 use Codex\Documents\Document;

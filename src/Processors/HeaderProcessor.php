@@ -6,7 +6,7 @@
  * Time: 6:20 AM
  */
 
-namespace Codex\Addons\Processors;
+namespace Codex\Processors;
 
 use Codex\Addons\Annotations\Processor;
 use Codex\Documents\Document;
@@ -34,6 +34,7 @@ class HeaderProcessor
         {
             $this->remove($document);
         }
+
         $html = view($this->codex->view($this->config['view']), $document->getAttributes())->render();
         $document->setContent($html . $document->getContent());
     }
