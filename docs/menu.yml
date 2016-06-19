@@ -67,14 +67,20 @@ menu:
       - name: API Documentation
         document: phpdoc
 
-      - name: API Examples
-        document: develop/api
-
       - name: Processors
         document: develop/filters
         children:
           - name: Overview
             document: develop/filters
+            #
+          - name: Macros
+            document: develop/macros
+            #
+          - name: Links
+            document: develop/links
+            #
+          - name: Parsers
+            document: develop/parser
 
       - name: Hooks
         document: develop/hooks
@@ -82,14 +88,8 @@ menu:
       - name: Theming
         document: develop/themes
 
-      - name: Add Macros
-        document: develop/macros
-
-      - name: Custom Links
-        document: develop/links
-
-      - name: Custom Parser
-        document: develop/parser
+      - name: Examples
+        document: develop/api
 
       - name: IntelliJ IDEA &amp; PHPStorm
         document: develop/intellij-idea-phpstorm

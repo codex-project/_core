@@ -5923,6 +5923,11 @@ nav.breadcrumbs > ul > li > i.fa {
   font-size: 14px;
 }
 
+.sidebar .sub-menu .sub-menu {
+  padding-left: 25px;
+  padding-top: 3px;
+}
+
 .sidebar a {
   line-height: 1.5;
 }
