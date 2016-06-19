@@ -134,11 +134,13 @@ class Document extends Extendable
         return $this->content;
     }
 
-    protected function runProcessors()
+    /**
+     * Run all the content processors that haven't run.
+     *
+     * @throws \Codex\Exception\CodexException
+     */
+    public function runProcessors()
     {
-        // Individually run the attributes processor first.
-        // This way we get the document attributes filled and disable, enable or configure other processors.
-        $this->runProcessor('attributes');
         $processors = $this->getEnabledProcessors();
         foreach ( $this->getProcessors()->getSorted($processors) as $processor )
         {
@@ -146,7 +148,14 @@ class Document extends Extendable
         }
     }
 
-    protected function runProcessor($name)
+    /**
+     * Run a content processor
+     *
+     * @param $name
+     *
+     * @throws \Codex\Exception\CodexException
+     */
+    public function runProcessor($name)
     {
         if ( $this->processed->has($name) )
         {
@@ -155,7 +164,12 @@ class Document extends Extendable
         $this->processed->set($name, $this->getProcessors()->run($name, $this));
     }
 
-    protected function getEnabledProcessors()
+    /**
+     * Get the names of all enabled processors for this document
+     *
+     * @return array
+     */
+    public function getEnabledProcessors()
     {
         $enabled  = $this->project->config('processors.enabled', [ ]);
         $enabled2 = $this->attr('processors.enabled', [ ]);

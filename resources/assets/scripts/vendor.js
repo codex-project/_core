@@ -35594,15 +35594,7 @@ if (typeof jQuery === 'undefined') {
 
 	return $.fn.jstree;
 }));
-/*
- * Copyright (c) 2016. Robin Radic.
- *
- * The license can be found in the package and online at https://radic.mit-license.org.
- *
- * @copyright Copyright 2016 (c) Robin Radic
- * @license https://radic.mit-license.org The MIT License
- */
-
+/// Fixes script error when used in combination with Laravel Debugbar. line 34
 (function () {
 
     if ( typeof self === 'undefined' || ! self.Prism || ! self.document ) {
@@ -35634,6 +35626,7 @@ if (typeof jQuery === 'undefined') {
             div.className = 'prism-show-language';
             div.appendChild(div2);
 
+            /// Fixes script error when used in combination with Laravel Debugbar.
             if ( pre.parentNode !== null ) pre.parentNode.insertBefore(div, pre);
         }
 
@@ -37708,6 +37701,11 @@ Prism.languages.yaml = {
     });
 
 })();
+
+
+
+
+
 
 
 (function(){

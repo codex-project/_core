@@ -1,11 +1,13 @@
 <?php
 /**
- * Part of the Codex Project PHP packages.
+ * Part of the Codex Project packages.
  *
- * License and copyright information bundled with this package in the LICENSE file
+ * License and copyright information bundled with this package in the LICENSE file.
+ *
+ * @author    Robin Radic
+ * @copyright Copyright $today.year (c) Codex Project
+ * @license   http://codex-project.ninja/license The MIT License
  */
-
-
 namespace Codex;
 
 
@@ -43,6 +45,10 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
     use Traits\FilesTrait,
         Traits\ConfigTrait;
 
+    const SHOW_MASTER_BRANCH = 0;
+    const SHOW_LAST_VERSION = 1;
+    const SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH = 2;
+    const SHOW_CUSTOM = 3;
 
 
     /**
@@ -83,11 +89,12 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
         $this->setConfig(config('codex'));
         $this->setFiles($files);
 
-        $this->cache   = $cache;
-        $this->log     = $log;
+        $this->cache = $cache;
+        $this->log   = $log;
 
         $this->docsDir = config('codex.paths.docs');
-        if(path_is_relative($this->docsDir)){
+        if ( path_is_relative($this->docsDir) )
+        {
             $this->docsDir = base_path($this->docsDir);
         }
 
@@ -136,7 +143,7 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
             {
                 $data = [ ];
             }
-            if ( !is_array($data) )
+            if ( ! is_array($data) )
             {
                 throw new \InvalidArgumentException("appendSectionsView data is not a array");
             }
@@ -161,10 +168,10 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
     {
         $uri = $this->config('base_route');
 
-        if ( !is_null($project) )
+        if ( ! is_null($project) )
         {
 
-            if ( !$project instanceof Project )
+            if ( ! $project instanceof Project )
             {
                 $project = $this->projects->get($project);
             }

@@ -8,6 +8,7 @@
 
 namespace Codex;
 
+use Codex\Documents\Document;
 use Codex\Http\Controllers\CodexController;
 use Codex\Log\Writer;
 use Codex\Projects\Project;
@@ -85,6 +86,8 @@ class CodexServiceProvider extends ServiceProvider
     public function boot()
     {
         $app = parent::boot();
+
+        $this->bootAttributesFilter();
 
         $this->bootBladeDirectives();
 
@@ -184,6 +187,7 @@ class CodexServiceProvider extends ServiceProvider
             /** @var \Codex\Codex|\Codex\Contracts\Codex $codex */
             $codex->theme->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [ ], true);
             $codex->theme->addStylesheet('theme', 'vendor/codex/styles/stylesheet', [ 'vendor' ]);
+            $codex->theme->addStylesheet('prism', 'vendor/codex/styles/prism', [ 'theme' ]);
             $codex->theme
                 ->addJavascript('vendor', 'vendor/codex/scripts/vendor')
                 ->addJavascript('codex', 'vendor/codex/scripts/codex', [ 'vendor' ])
@@ -191,6 +195,7 @@ class CodexServiceProvider extends ServiceProvider
             $codex->theme->addBodyClass('docs language-php');
             $codex->theme->addScript('codex', 'codex.init();');
             $codex->theme->addScript('theme', 'codex.theme.init();', [ 'codex' ]);
+
         });
     }
 
@@ -232,6 +237,16 @@ class CodexServiceProvider extends ServiceProvider
         $this->addons->setManifestPath($this->app[ 'config' ][ 'codex.paths.manifest' ]);
         $this->addons->registerInPath(__DIR__ . '/Processors');
         $this->addons->findAndRegisterAll();
+    }
+
+    protected function bootAttributesFilter()
+    {
+        // Individually run the attributes processor first.
+        // This way we get the document attributes filled and disable, enable or configure other processors.
+        $this->codexHook('document:done', function (Document $document)
+        {
+            $document->runProcessor('attributes');
+        });
     }
 
 }
