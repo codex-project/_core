@@ -67,6 +67,8 @@ class Document extends Extendable
     /** @var ContentDom */
     protected $contentDom;
 
+    protected $cache;
+
 
     /**
      * Document constructor.
@@ -109,6 +111,7 @@ class Document extends Extendable
         $this->attr('view', null) === null && $this->setAttribute('view', $codex->view('document'));
 
         # $this->bootIfNotBooted();
+        $this->cache = $this->codex->getContainer()->make('cache.store');
 
         $this->hookPoint('document:done', [ $this ]);
     }

@@ -3,7 +3,8 @@ title: Project
 subtitle: Configuration
 -->
 
-# Project 
+# Project
+This is the default config for 
 ```php
 [
     'display_name' => 'Codex',
