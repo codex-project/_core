@@ -163,14 +163,14 @@ class Document extends Extendable
             $minutes = $this->getCodex()->config('document.cache.minutes', null);
             if ( $minutes === null )
             {
-                $lastModified = (int)$this->cache->rememberForever($this->getCacheKey('last_modified'), function ()
+                $lastModified = (int)$this->cache->rememberForever($this->getCacheKey(':last_modified'), function ()
                 {
                     return 0;
                 });
             }
             else
             {
-                $lastModified = (int)$this->cache->remember($this->getCacheKey('last_modified'), $minutes, function ()
+                $lastModified = (int)$this->cache->remember($this->getCacheKey(':last_modified'), $minutes, function ()
                 {
                     return 0;
                 });
@@ -178,12 +178,12 @@ class Document extends Extendable
             if ( $this->lastModified !== $lastModified || $this->cache->has($this->getCacheKey()) === false )
             {
                 $this->runProcessors();
-                $this->cache->put($this->getCacheKey('last_modified'), $this->lastModified, $minutes);
-                $this->cache->put($this->getCacheKey(), $this->content, $minutes);
+                $this->cache->put($this->getCacheKey(':last_modified'), $this->lastModified, $minutes);
+                $this->cache->put($this->getCacheKey(':content'), $this->content, $minutes);
             }
             else
             {
-                $this->content = $this->cache->get($this->getCacheKey());
+                $this->content = $this->cache->get($this->getCacheKey(':content'));
             }
         }
         else
@@ -198,7 +198,7 @@ class Document extends Extendable
 
     public function getCacheKey($suffix = '')
     {
-        return md5('codex.document.' . $this->project->getName() . '.' . $this->pathName) . $suffix;
+        return 'codex.document.' . $this->project->getName() . '.' . str_slug($this->pathName) . $suffix;
     }
 
     /**
