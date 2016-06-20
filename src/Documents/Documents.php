@@ -72,7 +72,7 @@ class Documents extends Extendable implements Contracts\Documents\Documents
         if ( array_key_exists($pathName, $this->customDocuments) ) {
             return $this->getCodex()->getContainer()->call($this->customDocuments[ $pathName ], [ 'documents' => $this ]);
         }
-        foreach ( $this->getCodex()->config('extensions', [ ]) as $extension => $binding ) {
+        foreach ( $this->getCodex()->config('document.extensions', [ ]) as $extension => $binding ) {
             $path = $this->project->refPath("{$pathName}.{$extension}");
             if ( $this->project->getFiles()->exists($path) ) {
                 return compact('path', 'extension', 'binding');

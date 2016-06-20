@@ -1,8 +1,6 @@
 <?php
 
-/*
- * Documentation: http://codex-project.dev/codex/master/getting-started/configuration
- */
+// Documentation: http://codex-project.dev/codex/master/getting-started/configuration/global
 return [
 
     'display_name' => env('CODEX_DISPLAY_NAME', 'Codex'),
@@ -13,13 +11,7 @@ return [
         'docs'     => env('CODEX_ROOT_DIR', base_path('resources/docs')),
         'stubs'    => __DIR__ . '/../resources/stubs',
         'manifest' => storage_path('codex.json'),
-    ],
-
-    // @deprecated
-    'routing' => [
-        'enabled'              => true,
-        'base_route'           => env('CODEX_BASE_ROUTE', 'codex'),
-        'ignore_project_names' => [ '_debugbar', ],
+        'log'      => storage_path('logs/codex.log'),
     ],
 
     'http' => [
@@ -33,10 +25,7 @@ return [
         ],
     ],
 
-    'log' => [
-        'enabled' => true,
-        'path'    => storage_path('logs/codex.log'),
-    ],
+    'log' => true,
 
     'dev' => [
         'enabled'      => env('CODEX_DEV_ENABLED', false),
@@ -45,11 +34,17 @@ return [
         'print_events' => true,
     ],
 
-    'extensions' => [
-        'md'       => 'codex.document',
-        'markdown' => 'codex.document',
-        'html'     => 'codex.document',
-        'rst'      => 'codex.document',
+    'document' => [
+        'cache'      => [
+            'mode'    => null,
+            'minutes' => 7,
+        ],
+        'extensions' => [
+            'md'       => 'codex.document',
+            'markdown' => 'codex.document',
+            'html'     => 'codex.document',
+            'rst'      => 'codex.document',
+        ],
     ],
 
     'macros' => [
@@ -75,6 +70,7 @@ return [
         'title'              => '',
         'subtitle'           => '',
         'view'               => null,
+        'disable_cache'      => false,
         'disable_processors' => [ ],
         'buttons'            => [
         ],

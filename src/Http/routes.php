@@ -8,7 +8,7 @@ $document->where('document', '(.*)');
 //if ( count(Extender::getExcludedProjectNames()) > 0 ) {
 //    $document->where('projectSlug', '^((?!' . Extender::getExcludedProjectNames(true) . ').*?)$');
 //}
-$ignored = config('codex.routing.ignore_project_names', [ ]);
+$ignored = config('codex.http.ignore_project_names', [ ]);
 if ( is_array($ignored) && count($ignored) > 0 ) {
     $document->where('projectSlug', '^((?!' . implode('|', $ignored) . '|api).*?)$');
 } elseif ( is_string($ignored) ) {

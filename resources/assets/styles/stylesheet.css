@@ -5795,8 +5795,19 @@ article.content h5 .toc-header-link:before {
   top: -3px;
 }
 
+article.content h6 {
+  margin: 5px 0 5px 0;
+  font-weight: 200;
+  font-size: 14px;
+}
+
 article.content a:hover {
   color: #f1362f;
+}
+
+article.content blockquote {
+  border-left: none;
+  font-size: 14px;
 }
 
 article.content blockquote a:hover {

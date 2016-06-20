@@ -40,11 +40,14 @@ attributes in any kind of document by specifying it on top. By default it accept
 ```
 
 ### Configuration
+
+> This processor does not have to be enabled. It is **always** enabled and the **first** to run.
+
 Below is the default project configuration.
 ```php
 [
     'filters' => [
-        'enabled' => ['attributes'],
+        'enabled' => ['attributes'], // can omit or keep for clarification
         'attributes' => [            
             'tags'    => [
                 [ 'open' => '<!--*', 'close' => '--*>' ],   // HTMLDocBlock

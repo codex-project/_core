@@ -51,4 +51,12 @@ class Writer extends BaseWriter implements Log
     {
         $this->monolog->pushHandler($handler = new FirePHPHandler($this->parseLevel($level)));
     }
+
+    protected function writeLog($level, $message, $context)
+    {
+        if(config('codex.log'))
+        {
+            parent::writeLog($level, $message, $context);
+        }
+    }
 }

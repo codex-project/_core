@@ -7,8 +7,6 @@ use Illuminate\Support\Traits\Macroable;
 
 class ListCommand extends Command
 {
-    use CodexConsoleTrait;
-
     use Macroable;
 
     protected $signature = 'codex:list {what=projects} {--more}';

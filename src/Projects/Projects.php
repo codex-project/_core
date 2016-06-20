@@ -287,4 +287,13 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
         $this->hookPoint('projects:sidebar:resolve', [ $menu ]);
     }
 
+    /**
+     * createGenerator method
+     * @return \Codex\Projects\ProjectGenerator
+     */
+    public function createGenerator()
+    {
+        return $this->container->make('codex.generator');
+    }
+
 }

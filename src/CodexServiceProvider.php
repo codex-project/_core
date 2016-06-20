@@ -33,7 +33,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected $dir = __DIR__;
 
-    protected $configFiles = [ 'codex', 'codex-jira' ];
+    protected $configFiles = [ 'codex' ];
 
     protected $viewDirs = [
         'views' => 'codex',
@@ -55,29 +55,21 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $bindings = [
-        'codex.document' => Documents\Document::class,
-        'codex.project'  => Projects\Project::class,
-        'codex.menu'     => Menus\Menu::class,
+        'fs'                      => \Sebwite\Filesystem\Filesystem::class,
+        'codex.document'          => Documents\Document::class,
+        'codex.menu'              => Menus\Menu::class,
+        'codex.project'           => Projects\Project::class,
+        'codex.project.generator' => Projects\ProjectGenerator::class,
     ];
 
     protected $singletons = [
         'codex'        => Codex::class,
         'codex.addons' => Addons\Addons::class,
-
     ];
 
     protected $aliases = [
         'codex.log' => Contracts\Log\Log::class,
         'codex'     => Contracts\Codex::class,
-    ];
-
-    protected $weaklings = [
-        'fs'              => \Sebwite\Filesystem\Filesystem::class,
-        'codex.generator' => Projects\ProjectGenerator::class,
-    ];
-
-    protected $middleware = [
-        # Http\CodexMiddleware::class,
     ];
 
     /** @var Addons\Addons */
@@ -110,7 +102,7 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerJavascriptData();
 
-        if ( $this->app[ 'config' ][ 'codex.routing.enabled' ] === true )
+        if ( $this->app[ 'config' ][ 'codex.http.enabled' ] === true )
         {
             $this->registerRouting();
         }
@@ -136,7 +128,7 @@ class CodexServiceProvider extends ServiceProvider
             new Monolog($this->app->environment()),
             $this->app[ 'events' ]
         ));
-        $log->useFiles($this->app[ 'config' ][ 'codex.log.path' ]);
+        $log->useFiles($this->app[ 'config' ][ 'codex.paths.log' ]);
 
         return $log;
     }
@@ -195,7 +187,6 @@ class CodexServiceProvider extends ServiceProvider
             $codex->theme->addBodyClass('docs language-php');
             $codex->theme->addScript('codex', 'codex.init();');
             $codex->theme->addScript('theme', 'codex.theme.init();', [ 'codex' ]);
-
         });
     }
 
@@ -221,7 +212,7 @@ class CodexServiceProvider extends ServiceProvider
         {
             /** @var Codex $codex */
             $theme = $codex->theme;
-            $theme->set('codex', $c = $codex->config()->only('display_name', 'doctags', 'extensions', 'default_project')->toArray());
+            $theme->set('codex', $c = $codex->config()->only('display_name', 'doctags', 'document', 'default_project')->toArray());
             $theme->set('project', $project->getName());
             $theme->set('display_name', $project->getDisplayName());
             $theme->set('document', $document->getName());

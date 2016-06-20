@@ -13,11 +13,13 @@ namespace Codex\Documents;
 
 use Codex\Contracts;
 use Codex\Contracts\Codex;
+use Codex\Exception\CodexException;
 use Codex\Exception\DocumentNotFoundException;
 use Codex\Projects\Project;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
 use Codex\Traits;
+use Illuminate\Contracts\Cache\Repository;
 
 /**
  * This is the class Document.
@@ -30,6 +32,9 @@ class Document extends Extendable
     use Traits\FilesTrait,
         Traits\AttributesTrait;
 
+    const CACHE_AUTO = 'auto';
+    const CACHE_ENABLED = 'enabled';
+    const CACHE_DISABLED = 'disabled';
 
     /**
      * @var string
@@ -57,6 +62,7 @@ class Document extends Extendable
      */
     protected $pathName;
 
+    /** @var string */
     protected $extension;
 
     /** @var \Codex\Support\Collection */
@@ -67,53 +73,73 @@ class Document extends Extendable
     /** @var ContentDom */
     protected $contentDom;
 
+    /** @var \Illuminate\Contracts\Cache\Repository */
     protected $cache;
+
+    /** @var int */
+    protected $lastModified;
+
+    /**
+     * Caching mode.
+     *
+     * Document::CACHE_AUTO         depends on APP_DEBUG.
+     * Document::CACHE_ENABLED      enables the cache
+     * Document::CACHE_DISABLED     disables the cache
+     *
+     * @var string
+     */
+    protected $mode = self::CACHE_AUTO;
 
 
     /**
      * Document constructor.
      *
-     * @param \Codex\Contracts\Codex|\Codex\Codex           $codex
-     * @param \Codex\Projects\Project                       $project
-     * @param                                               $type
-     * @param                                               $path
-     * @param                                               $pathName
+     * @param \Codex\Contracts\Codex|\Codex\Codex    $codex
+     * @param \Codex\Projects\Project                $project
+     * @param \Illuminate\Contracts\Cache\Repository $cache
+     * @param                                        $path
+     * @param                                        $pathName
      *
      * @throws \Codex\Exception\DocumentNotFoundException
      */
-    public function __construct(Codex $codex, Project $project, $path, $pathName)
+    public function __construct(Codex $codex, Project $project, Repository $cache, $path, $pathName)
     {
         $this->setCodex($codex);
+        $this->setFiles($project->getFiles());
         $this->project   = $project;
         $this->path      = $path;
         $this->pathName  = $pathName;
+        $this->cache     = $cache;
         $this->extension = path_get_extension($path);
         $this->processed = new Collection();
 
-        $this->setFiles($project->getFiles());
+        $this->hookPoint('document:construct', [ $this ]);
 
-        $this->hookPoint('document:ready', [ $this ]);
-
-        if ( $this->codex->projects->hasActive() === false )
-        {
-            $project->setActive();
-        }
-
-        $this->attributes = $codex->config('default_document_attributes');
+        $this->codex->projects->hasActive() === false && $project->setActive();
 
         if ( ! $this->getFiles()->exists($this->getPath()) )
         {
             throw DocumentNotFoundException::document($this)->inProject($project);
         }
 
-        $this->content = $this->getFiles()->get($this->getPath());
-
+        $this->attributes   = $codex->config('default_document_attributes');
+        $this->lastModified = $this->getFiles()->lastModified($this->getPath());
+        $this->content      = $this->getFiles()->get($this->getPath());
+        $this->setCacheMode($this->getCodex()->config('document.cache.mode', self::CACHE_DISABLED));
         $this->attr('view', null) === null && $this->setAttribute('view', $codex->view('document'));
 
-        # $this->bootIfNotBooted();
-        $this->cache = $this->codex->getContainer()->make('cache.store');
 
-        $this->hookPoint('document:done', [ $this ]);
+        $this->hookPoint('document:constructed', [ $this ]);
+    }
+
+    /**
+     * Get the url to this document
+     *
+     * @return string
+     */
+    public function url()
+    {
+        return $this->codex->url($this->project, $this->project->getRef(), $this->pathName);
     }
 
     /**
@@ -130,11 +156,49 @@ class Document extends Extendable
         {
             return $this->content;
         }
+
         $this->hookPoint('document:render');
-        $this->runProcessors();
+        if ( $this->shouldCache() )
+        {
+            $minutes = $this->getCodex()->config('document.cache.minutes', null);
+            if ( $minutes === null )
+            {
+                $lastModified = (int)$this->cache->rememberForever($this->getCacheKey('last_modified'), function ()
+                {
+                    return 0;
+                });
+            }
+            else
+            {
+                $lastModified = (int)$this->cache->remember($this->getCacheKey('last_modified'), $minutes, function ()
+                {
+                    return 0;
+                });
+            }
+            if ( $this->lastModified !== $lastModified || $this->cache->has($this->getCacheKey()) === false )
+            {
+                $this->runProcessors();
+                $this->cache->put($this->getCacheKey('last_modified'), $this->lastModified, $minutes);
+                $this->cache->put($this->getCacheKey(), $this->content, $minutes);
+            }
+            else
+            {
+                $this->content = $this->cache->get($this->getCacheKey());
+            }
+        }
+        else
+        {
+            $this->runProcessors();
+        }
         $this->rendered = true;
         $this->hookPoint('document:rendered');
         return $this->content;
+    }
+
+
+    public function getCacheKey($suffix = '')
+    {
+        return md5('codex.document.' . $this->project->getName() . '.' . $this->pathName) . $suffix;
     }
 
     /**
@@ -167,6 +231,24 @@ class Document extends Extendable
         $this->processed->set($name, $this->getProcessors()->run($name, $this));
     }
 
+    #
+    # COMPUTATED GETTERS & SETTERS
+    #
+
+    /**
+     * toArray method
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'path'           => $this->path,
+            'pathName'       => $this->pathName,
+            'extension'      => $this->extension,
+            'appliedFilters' => $this->processed->pluck('name')->toArray(),
+        ];
+    }
+
     /**
      * Get the names of all enabled processors for this document
      *
@@ -191,15 +273,64 @@ class Document extends Extendable
     }
 
     /**
-     * Get the url to this document
+     * Set the content value of the document.
      *
-     * @return string
+     * @param  ContentDom|string $content
+     *
+     * @return Document
      */
-    public function url()
+    public function setContent($content)
     {
-        return $this->codex->url($this->project, $this->project->getRef(), $this->pathName);
+        if ( $content instanceof ContentDom )
+        {
+            $content = (string)$content->root->outerhtml();
+        }
+        $this->content = $content;
+
+        return $this;
     }
 
+    /**
+     * getContentDom method
+     * @return \Codex\Documents\ContentDom
+     */
+    public function getContentDom()
+    {
+        if ( null === $this->contentDom )
+        {
+            $this->contentDom = new ContentDom($this);
+        }
+        return $this->contentDom->set($this->content);
+    }
+
+    public function shouldCache()
+    {
+        return $this->mode === self::CACHE_ENABLED || ($this->mode === self::CACHE_AUTO && config('app.debug', false) === true);
+    }
+
+    public function setCacheMode($mode)
+    {
+        if ( $mode === true )
+        {
+            $mode = self::CACHE_ENABLED;
+        }
+        elseif ( $mode === false )
+        {
+            $mode = self::CACHE_DISABLED;
+        }
+        elseif ( $mode === null )
+        {
+            $mode = self::CACHE_AUTO;
+        }
+        if ( ! in_array($mode, [ self::CACHE_ENABLED, self::CACHE_DISABLED, self::CACHE_AUTO ], true) )
+        {
+            throw CodexException::because('Cache mode not supported: ' . (string)$mode);
+        }
+        $this->mode = $mode;
+    }
+    #
+    # GETTERS & SETTERS
+    #
 
     /**
      * get the path value.
@@ -246,37 +377,6 @@ class Document extends Extendable
     }
 
     /**
-     * Set the content value of the document.
-     *
-     * @param  ContentDom|string $content
-     *
-     * @return Document
-     */
-    public function setContent($content)
-    {
-        if ( $content instanceof ContentDom )
-        {
-            $content = (string)$content->root->outerhtml();
-        }
-        $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * getContentDom method
-     * @return \Codex\Documents\ContentDom
-     */
-    public function getContentDom()
-    {
-        if ( null === $this->contentDom )
-        {
-            $this->contentDom = new ContentDom($this);
-        }
-        return $this->contentDom->set($this->content);
-    }
-
-    /**
      * Get the document's project.
      *
      * @return \Codex\Projects\Project
@@ -309,16 +409,6 @@ class Document extends Extendable
         return $this->processed;
     }
 
-    public function toArray()
-    {
-        return [
-            'path'           => $this->path,
-            'pathName'       => $this->pathName,
-            'extension'      => $this->extension,
-            'appliedFilters' => $this->processed->pluck('name')->toArray(),
-        ];
-    }
-
     /**
      * getProcessors method
      * @return \Codex\Addons\ProcessorAddons
@@ -327,4 +417,40 @@ class Document extends Extendable
     {
         return $this->codex->addons->processors;
     }
+
+    /**
+     * @return Repository
+     */
+    public function getCache()
+    {
+        return $this->cache;
+    }
+
+    /**
+     * Set the cache value
+     *
+     * @param Repository $cache
+     */
+    public function setCache($cache)
+    {
+        $this->cache = $cache;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPathName()
+    {
+        return $this->pathName;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLastModified()
+    {
+        return $this->lastModified;
+    }
+
+
 }

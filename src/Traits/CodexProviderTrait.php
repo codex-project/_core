@@ -34,7 +34,7 @@ trait CodexProviderTrait
 
     protected function codexIgnoreRoute($route)
     {
-        $this->app->make('config')->push('codex.routing.ignore_project_names', $route);
+        $this->app->make('config')->push('codex.http.ignore_project_names', $route);
     }
 
     protected function codexHook($point, $listener)

@@ -2,7 +2,6 @@
 namespace Codex\Console;
 
 
-use Codex\Projects\ProjectGenerator;
 use Illuminate\Console\Command;
 
 class CreateCommand extends Command
@@ -13,7 +12,7 @@ class CreateCommand extends Command
 
     public function handle()
     {
-        $gen = app()->make(ProjectGenerator::class);
+        $gen = codex('projects')->createGenerator();
         $gen->setName($this->ask('Enter name'));
         $gen->set('displayName', $this->ask('Enter display name'));
         $gen->generate();

@@ -67,7 +67,7 @@ class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
         $this->view   = $view;
         $this->items  = new Collection();
 
-        $this->hookPoint('menus:ready', [ $this ]);
+        $this->hookPoint('menus:constructed', [ $this ]);
     }
 
 
@@ -129,7 +129,7 @@ class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
      */
     public function forget($id)
     {
-        $this->hookPoint('menu-factory:forget', [ $this, $id ]);
+        $this->hookPoint('menus:forget', [ $this, $id ]);
         unset($this->items[$id]);
         return $this;
     }
