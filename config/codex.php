@@ -47,10 +47,20 @@ return [
         ],
     ],
 
-    'macros' => [
-        'table:responsive' => 'Codex\Processors\Macros\Table@responsive',
-        'general:hide'     => 'Codex\Processors\Macros\General@hide',
-        'attribute:print'  => 'Codex\Processors\Macros\Attribute@printValue',
+    'processors' => [
+        'macros' => [
+            'table:responsive' => 'Codex\Processors\Macros\Table@responsive',
+            'general:hide'     => 'Codex\Processors\Macros\General@hide',
+            'attribute:print'  => 'Codex\Processors\Macros\Attribute@printValue',
+        ],
+
+        'links' => [
+            // #codex:project:blade-extensions
+            // #codex:project:blade-extensions:master
+            // #codex:project:blade-extensions:master:configuration
+            'project' => 'Codex\Processors\Links\Codex@project',
+            'phpdoc'  => 'Codex\Addon\Phpdoc\PhpdocLink@handle',
+        ],
     ],
 
     'default_project_config' => [

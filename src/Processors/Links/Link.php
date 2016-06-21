@@ -1,38 +1,87 @@
 <?php
 namespace Codex\Processors\Links;
 
-use Illuminate\Support\Fluent;
+use Codex\Processors\LinksProcessor;
+use PHPHtmlParser\Dom\HtmlNode;
 
-class Link extends Fluent
+class Link
 {
-    public function add($key, $val, $delimiter = ' ')
-    {
-        $delimiter = $delimiter === false ? '' : $delimiter;
-        $delimiter = $delimiter === true ? ' ' : $delimiter;
+    /** @var \PHPHtmlParser\Dom\HtmlNode */
+    protected $node;
 
-        if ( false === array_key_exists($key, $this->attributes) )
+    /** @var \Codex\Processors\LinksProcessor */
+    private $processor;
+
+    public function __construct(LinksProcessor $processor, HtmlNode $node)
+    {
+        $this->processor = $processor;
+        $this->node      = $node;
+    }
+
+    /**
+     * make method
+     *
+     * @param \Codex\Processors\LinksProcessor $processor
+     * @param \PHPHtmlParser\Dom\HtmlNode      $node
+     *
+     * @return Link
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public static function make(LinksProcessor $processor, HtmlNode $node)
+    {
+        return app()->build(static::class, compact('processor', 'node'));
+    }
+
+    public function value()
+    {
+        return (string)$this->href();
+    }
+
+    public function __toString()
+    {
+        return $this->value();
+    }
+
+    public function getSchema()
+    {
+        $schema = 'http';
+
+        if ( preg_match_all('/(\w*?):\/\//', $this->href(), $matches) > 0 )
         {
-            $this->attributes[ $key ] = '';
+            $schema = (string)$matches[ 1 ][ 0 ];
         }
-
-        $this->attributes[ $key ] .= $delimiter . $val;
-
-        return $this;
+        return $schema;
     }
 
-    public function remove($key, $value, $delimiter = ' ')
+    public function href($href = null)
     {
-        $this->attributes[$key] = preg_replace('/\s' . $value . '\s/', '', $this->attributes[$key]);
-        return $this;
-    }
-
-    public function __call($method, $parameters)
-    {
-        if ( $method === 'class' && count($parameters) === 0 )
+        if ( $href !== null )
         {
-            $parameters = [ '' ];
+            $this->node->setAttribute('href', $href);
         }
-
-        return parent::__call($method, $parameters);
+        return $this->node->getAttribute('href');
     }
+
+    public function isExternal()
+    {
+        return preg_match_all('/^(\w*?):\/\/', $this->href()) > 0;
+    }
+
+    public function isDocument()
+    {
+        $extensions = config('codex.document.extensions', [ ]);
+        return array_key_exists($this->getExtension(), $extensions);
+    }
+
+    public function getExtension()
+    {
+        return last(explode('.', $this->href()));
+    }
+
+    public function isAction()
+    {
+        $needle = $this->processor->config[ 'needle' ];
+        return str_contains($this->href(), "#{$needle}:");
+    }
+
 }

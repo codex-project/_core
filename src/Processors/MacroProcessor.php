@@ -91,8 +91,8 @@ class MacroProcessor
      */
     protected function getAllMacroDefinitions()
     {
-        $tags = $this->codex->config('macros', [ ]);
-        $tags = array_merge($tags, $this->project->config('macros', [ ]));
-        return array_merge($tags, $this->document->attr('macros', [ ]));
+        $tags = $this->codex->config('processors.macros', [ ]);
+        $tags = array_merge($tags, $this->project->config('processors.macros', [ ]));
+        return array_merge($tags, $this->document->attr('processors.macros', [ ]));
     }
 }

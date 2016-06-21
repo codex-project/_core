@@ -28,12 +28,13 @@ use Illuminate\Filesystem\Filesystem;
  * @package        Codex\Core
  * @author         Sebwite
  *
- * @property-read \Codex\Addons\Addons        $addons    The addons instance
- * @property-read \Codex\Projects\Projects    $projects  The projects instance
- * @property-read \Codex\Menus\Menus          $menus     The menus instance
- * @property-read \Codex\Addon\Auth\CodexAuth $auth      The auth addon instance
- * @property-read \Codex\Addon\Git\CodexGit   $git       The theme instance
- * @property-read \Codex\Theme                $theme     The theme instance
+ * @property-read \Codex\Addons\Addons        $addons       The addons instance
+ * @property-read \Codex\Projects\Projects    $projects     The projects instance
+ * @property-read \Codex\Menus\Menus          $menus        The menus instance
+ * @property-read \Codex\Addon\Auth\CodexAuth $auth         The auth addon instance
+ * @property-read \Codex\Addon\Git\CodexGit   $git          The theme instance
+ * @property-read \Codex\Addon\Phpdoc\Phpdoc  $phpdoc       The phpdoc instance
+ * @property-read \Codex\Theme                $theme        The theme instance
  *
  *
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved

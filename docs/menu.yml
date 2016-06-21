@@ -41,6 +41,13 @@ menu:
       - name: PHPDoc
         document: preview-pages/phpdoc
 
+  - name: Test/Debug tmp
+    icon: fa fa-code
+    children:
+      - name: Links
+        document: debug/links
+
+
   - name: Processors
     icon: fa fa-puzzle-piece
     children:
