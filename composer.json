@@ -24,7 +24,10 @@
     },
     "suggest": {
         "erusev/parsedown-extra": "Enables the parsedown renderer for the markdown filter (~0.7)",
-        "michelf/php-markdown": "Enables the michelf renderer for the markdown filter (~1.6)"
+        "michelf/php-markdown": "Enables the michelf renderer for the markdown filter (~1.6)",
+        "codex/addon-git": "Enables Github/Bitbucket integration and automatisation (~2.0)",
+        "codex/addon-auth": "Enables authorisation for projects",
+        "codex/addon-phpdoc": "Integrates PHPDoc into Codex"
     },
     "require-dev": {
         "sebwite/testing": "1.0.*",
@@ -47,7 +50,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
+            "dev-master": "2.0.x-dev"
         }
     }
 }
