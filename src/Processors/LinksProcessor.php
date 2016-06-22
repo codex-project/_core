@@ -7,9 +7,9 @@ use Codex\Documents\Document;
 use Codex\Processors\Links\Action;
 use Codex\Projects\Project;
 use Codex\Support\Collection;
+use FluentDOM\Element;
 use League\Uri\Modifiers\Normalize;
 use League\Uri\Schemes\Http as Uri;
-use PHPHtmlParser\Dom\HtmlNode;
 use Sebwite\Support\Str;
 
 /**
@@ -39,24 +39,24 @@ class LinksProcessor
     /** @var Document */
     public $document;
 
-
     public function handle(Document $document)
     {
-        $content = $document->getContentDom();
-        foreach ( $content->find('a') as $node )
+        $d = $document->getDom();
+        $d->find('//a')->each(function (Element $element)
         {
-            $href = $node->getAttribute('href');
-            if ( $this->isAction($href) )
+
+            $url = $element->getAttribute('href');
+            if ( $this->isAction($url) )
             {
-                $this->callAction($node);
+                $this->callAction($element);
             }
-            elseif ( $this->isDocument($href) && $this->isRelative($href) )
+            elseif ( $this->isDocument($url) && $this->isRelative($url) )
             {
                 // replaces links that reference other documents to the right url
-                $node->setAttribute('href', $this->getDocumentUrl($href));
+                $element->setAttribute('href', $this->getDocumentUrl($url));
             }
-        }
-        $document->setContent($content);
+        });
+        $document->setDom($d);
     }
 
     public function normalizeUrl($url)
@@ -65,39 +65,46 @@ class LinksProcessor
         return (string)$normalizer(Uri::createFromString($url));
     }
 
-    public function getDocumentUrl($href)
+    public function getDocumentUrl($url)
     {
-        $href = str_replace_last('.' . $this->getExtension($href), '', $href);
-        $href = url()->current() . Str::ensureLeft($href, '/');
-        return $this->normalizeUrl($href);
+        // because the URL also includes the current page as segment, it means we have to go 1 higher. Example:
+        // document: "codex/master/getting-started/configure"
+        // has link: "../index"
+        // normalizes to: "codex/master/getting-started/index"
+        // this will fix that
+        $url = "../{$url}";
+        // endfix
+
+        $url = str_replace_last('.' . $this->getExtension($url), '', $url);
+        $url = url()->current() . Str::ensureLeft($url, '/');
+        return $this->normalizeUrl($url);
     }
 
-    public function isRelative($href)
+    public function isRelative($url)
     {
-        return Uri::createFromString($href)->path->isAbsolute() === false;
+        return Uri::createFromString($url)->path->isAbsolute() === false;
     }
 
-    public function isDocument($href)
+    public function isDocument($url)
     {
         $extensions = config('codex.document.extensions', [ ]);
-        return array_key_exists($this->getExtension($href), $extensions);
+        return array_key_exists($this->getExtension($url), $extensions);
     }
 
-    public function getExtension($href)
+    public function getExtension($url)
     {
-        return last(explode('.', $href));
+        return last(explode('.', $url));
     }
 
-    public function isAction($href)
+    public function isAction($url)
     {
-        $url = Uri::createFromString($href);
-        return Str::startsWith($url->getFragment(), $this->config[ 'needle' ] . ':', true);
+        return Str::startsWith(Uri::createFromString($url)->getFragment(), $this->config[ 'needle' ] . ':', true);
     }
 
-    public function callAction(HtmlNode $node)
+    public function callAction(Element $element)
     {
-        $url    = Uri::createFromString($node->getAttribute('href'));
-        $action = new Action($this, $url, $node);
+        $url    = Uri::createFromString($element->getAttribute('href'));
+        $action = new Action($this, $url, $element);
         $params = explode(':', $url->getFragment());
 
 

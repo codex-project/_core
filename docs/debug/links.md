@@ -4,21 +4,24 @@ subtitle: Dev debug page
 -->
 
 
-# Todo
+# Links
 
-## Core
-- Most of the documentation
+### Core
+
+| Example                                                                 | Code                                                                      |
+|:------------------------------------------------------------------------|:--------------------------------------------------------------------------|
+| [Links 2](links2.md)                                                    | `[Links 2](links2.md)`                                                    |
+| [Relative document](../index.md)                                        | `[Relative document](../index.md)`                                        |
+| [Relative document 2](../getting-started/configuration.md)              | `[Relative document 2](../getting-started/configuration.md)`              |
+| [Project](#codex:project:blade-extensions)                              | `[Project](#codex:project:blade-extensions)`                              |
+| [Project document](#codex:project:blade-extensions:6.1.0:configuration) | `[Project document](#codex:project:blade-extensions:6.1.0:configuration)` |
+ 
 
 
+### PHPDoc Addon
 
-- Internal link: [index](../index.md)
-- Internal link 2: [configuration](../getting-started/configuration.md)
-- Project link: [blade-extensions](#codex:project:blade-extensions)
-- Project link with version: [blade-extensions](#codex:project:[blade-extensions,master,])
-
-
-| Example                                          | Code                                             |
-|:-------------------------------------------------|:-------------------------------------------------|
-| [`Codex`](#codex:phpdoc:Codex\Codex)             | `[Codex](#codex:phpdoc:Codex\Codex)`                   |
+| Example                                                | Code                                                   |
+|:-------------------------------------------------------|:-------------------------------------------------------|
+| [`Codex`](#codex:phpdoc:Codex\Codex)                   | `[Codex](#codex:phpdoc:Codex\Codex)`                   |
 | [`Codex`](#codex:phpdoc:popover:Codex\Codex)           | `[Codex](#codex:phpdoc:popover:Codex\Codex)`           |
 | [`Codex::url`](#codex:phpdoc:popover:Codex\Codex::url) | `[Codex::url](#codex:phpdoc:popover:Codex\Codex::url)` |

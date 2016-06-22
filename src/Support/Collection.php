@@ -52,4 +52,16 @@ class Collection extends \Illuminate\Support\Collection
             }
         }
     }
+
+
+    /**
+     * Get an item at a given offset.
+     *
+     * @param  mixed  $key
+     * @return mixed
+     */
+    public function offsetGet($key)
+    {
+        return data_get($this->items, $key);
+    }
 }

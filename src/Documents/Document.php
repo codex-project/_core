@@ -303,6 +303,17 @@ class Document extends Extendable
         return $this->contentDom->set($this->content);
     }
 
+    public function getDom()
+    {
+        return \FluentDOM::Query($this->content, 'text/html');
+    }
+
+    /** @param \FluentDOM\Query $dom */
+    public function setDom($dom)
+    {
+        $this->content = $dom->find('//body')->first()->html();
+    }
+
     public function shouldCache()
     {
         return $this->mode === self::CACHE_ENABLED || ($this->mode === self::CACHE_AUTO && config('app.debug', false) === true);

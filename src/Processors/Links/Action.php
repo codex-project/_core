@@ -13,6 +13,7 @@ namespace Codex\Processors\Links;
 
 use Codex\Processors\LinksProcessor;
 use Codex\Traits\ConfigTrait;
+use FluentDOM\Element;
 use League\Uri\Schemes\Http;
 use PHPHtmlParser\Dom\HtmlNode;
 
@@ -33,7 +34,7 @@ class Action
     /** @var Http */
     protected $url;
 
-    /** @var HtmlNode */
+    /** @var Element */
     protected $element;
 
     /** @var array */
@@ -53,7 +54,7 @@ class Action
      * @param \League\Uri\Schemes\Http         $url
      * @param \PHPHtmlParser\Dom\HtmlNode      $element
      */
-    public function __construct(LinksProcessor $processor, Http $url, HtmlNode $element)
+    public function __construct(LinksProcessor $processor, Http $url, Element $element)
     {
         $this->processor = $processor;
         $this->document  = $processor->document;
@@ -117,6 +118,7 @@ class Action
     {
         return app()->call($this->config('call'), [ 'action' => $this ]);
     }
+
     /**
      * @return LinksProcessor
      */
