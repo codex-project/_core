@@ -20,14 +20,14 @@
         "illuminate/view": "~5.0",
         "illuminate/log": "~5.0",
         "illuminate/cache": "~5.0",
-        "cebe/markdown": "~1.1"
+        "cebe/markdown": "~1.1",
+        "league/uri": "~4.1",
+        "fluentdom/fluentdom": "~5.3"
     },
     "suggest": {
-        "erusev/parsedown-extra": "Enables the parsedown renderer for the markdown filter (~0.7)",
-        "michelf/php-markdown": "Enables the michelf renderer for the markdown filter (~1.6)",
         "codex/addon-git": "Enables Github/Bitbucket integration and automatisation (~2.0)",
-        "codex/addon-auth": "Enables authorisation for projects",
-        "codex/addon-phpdoc": "Integrates PHPDoc into Codex"
+        "codex/addon-auth": "Enables authorisation for projects (~2.0)",
+        "codex/addon-phpdoc": "Integrates PHPDoc into Codex (~2.0)"
     },
     "require-dev": {
         "sebwite/testing": "1.0.*",
