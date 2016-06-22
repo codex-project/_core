@@ -105,7 +105,7 @@ class LinksProcessor
     {
         $url    = Uri::createFromString($element->getAttribute('href'));
         $action = new Action($this, $url, $element);
-        $params = explode(':', $url->getFragment());
+        $params = explode(':', urldecode($url->getFragment()));
 
 
         array_shift($params); // slice away the needle
