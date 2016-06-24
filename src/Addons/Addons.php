@@ -58,21 +58,22 @@ class Addons implements Arrayable
     protected $app;
 
     protected $views = [
-        'layouts'  => [
+        'layouts'    => [
             'base'    => 'codex::layouts.base',
             'default' => 'codex::layouts.default',
         ],
-        'layout'   => 'codex::layouts.default',
-        'document' => 'codex::document',
-        'error'    => 'codex::error',
-        'menus'    => [
+        'layout'     => 'codex::layouts.default',
+        'document'   => 'codex::document',
+        'error'      => 'codex::error',
+        'menus'      => [
             'sidebar'  => 'codex::menus.sidebar',
             'projects' => 'codex::menus.header-dropdown',
             'versions' => 'codex::menus.header-dropdown',
         ],
-        'processors'  => [
-            'header' => 'codex::processors.header',
-            'toc'    => 'codex::processors.toc',
+        'processors' => [
+            'header'  => 'codex::processors.header',
+            'toc'     => 'codex::processors.toc',
+            'buttons' => 'codex::processors.buttons',
         ],
     ];
 
@@ -213,8 +214,8 @@ class Addons implements Arrayable
     {
         return [
             'processors' => $this->processors->toArray(),
-            'hooks'   => $this->hooks->toArray(),
-            'views'   => $this->views,
+            'hooks'      => $this->hooks->toArray(),
+            'views'      => $this->views,
         ];
     }
 

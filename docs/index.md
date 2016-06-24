@@ -40,7 +40,7 @@ Head over to [codex-project.ninja](http://codex-project.ninja) for the full docu
 - Each project has one or more versions containing your documents. 
 - Documents are passed trough filters, modifying it's content before displaying.
 
-To give you an understanding of filters, lets take the ToC filter as example. It takes all headings in a document and generates a table of content at the start ([example](#)).
+To give you an understanding of filters, lets take the ToC filter as example. It takes all headings in a document and generates a table of content at the start ([example](../index.md#)).
 
 ### Customs / extendables
 #### Processors
@@ -56,9 +56,9 @@ Processors can modify the content output of a document.
 
 | Example                                               | Code                                                  |
 |:------------------------------------------------------|:------------------------------------------------------|
-| [`Codex`](#codex:phpdoc:Codex\Codex)                  | `[Codex](#codex:phpdoc:Codex\Codex)`                  |
-| [`Codex`](#codex:phpdoc:popover:Codex\Codex)          | `[Codex](#codex:phpdoc:popover:Codex\Codex)`          |
-| [`Codex::url`](#codex:phpdoc:popover:Codex\Codex:url) | `[Codex::url](#codex:phpdoc:popover:Codex\Codex:url)` |
+| [`Codex`](../index.md#codex:phpdoc:Codex\Codex)                  | `[Codex](#codex:phpdoc:Codex\Codex)`                  |
+| [`Codex`](../index.md#codex:phpdoc:popover:Codex\Codex)          | `[Codex](#codex:phpdoc:popover:Codex\Codex)`          |
+| [`Codex::url`](../index.md#codex:phpdoc:popover:Codex\Codex:url) | `[Codex::url](#codex:phpdoc:popover:Codex\Codex:url)` |
 
 
 <!--*codex:/table:responsive*-->

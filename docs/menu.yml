@@ -6,107 +6,79 @@ menu:
       - name: Overview
         document: index
 
-      - name: Todo
+      - name: Preview pages
+        document: preview-pages/toc-tree
+        children:
+          - name: ToC Tree
+            document: preview-pages/toc-tree
+          - name: Syntax highlighting
+            document: preview-pages/syntax-highlight
+          - name: PHPDoc
+            document: preview-pages/phpdoc
+
+      - name: Roadmap
         document: getting-started/todo
 
       - name: Installation
         document: getting-started/installation
 
-      - name: Configuration
-        document: getting-started/configuration
-        children:
-          - name: Global
-            document: getting-started/configuration/global
-
-          - name: Project
-            document: getting-started/configuration/project
-
-          - name: Document
-            document: getting-started/configuration/document
-
       - name: Creating a project
         document: getting-started/creating-a-project
 
 
-  - name: Preview pages
-    icon: fa fa-eye
+  - name: Configuration
+    icon: fa fa-cog
     children:
+      - name: Global
+        document: configuration/global
 
-      - name: ToC Tree
-        document: preview-pages/toc-tree
+      - name: Project
+        document: configuration/project
 
-      - name: Syntax highlighting
-        document: preview-pages/syntax-highlight
+      - name: Document
+        document: configuration/document
 
-      - name: PHPDoc
-        document: preview-pages/phpdoc
-
-  - name: Test/Debug tmp
-    icon: fa fa-code
-    children:
-      - name: Links
-        document: debug/links
-
-
-  - name: Processors
-    icon: fa fa-puzzle-piece
-    children:
-      - name: Attributes
-        document: processors/attributes
-
-      - name: Parser
-        document: processors/parser
-
-      - name: Macros
-        document: processors/macros
-
-      - name: Header
-        document: processors/header
-
-      - name: ToC
-        document: processors/toc
-
-      - name: Links
-        document: processors/links
-
-      - name: Buttons
-        document: processors/buttons
-
-      - name: PHPDoc
-        document: processors/phpdoc
-
+      - name: Processors
+        document: configuration/processors/attributes
+        children:
+          - name: Attributes
+            document: configuration/processors/attributes
+          - name: Parser
+            document: configuration/processors/parser
+          - name: Macros
+            document: configuration/processors/macros
+          - name: Header
+            document: configuration/processors/header
+          - name: ToC
+            document: configuration/processors/toc
+          - name: Links
+            document: configuration/processors/links
+          - name: Buttons
+            document: configuration/processors/buttons
 
 
   - name: Develop
     icon: fa fa-code
     children:
-      - name: API Documentation
-        document: phpdoc
+      - name: Getting Started
+        document: develop/getting-started
+        children:
+          - name: Examples
+            document: develop/api
+          - name: API Documentation
+            document: phpdoc
+          - name: IntelliJ IDEA &amp; PHPStorm
+            document: develop/intellij-idea-phpstorm
+
 
       - name: Processors
         document: develop/processors
-        children:
-          - name: Macros
-            document: develop/processors/macros
-            #
-          - name: Links
-            document: develop/processors/links
-            #
-          - name: Parsers
-            document: develop/processors/parser
 
       - name: Hooks
         document: develop/hooks
 
-      - name: Theming
-        document: develop/themes
-
-      - name: Examples
-        document: develop/api
-
-      - name: IntelliJ IDEA &amp; PHPStorm
-        document: develop/intellij-idea-phpstorm
-
+      - name: Addons
+        document: develop/addons
 
 
   - name: Contributing

@@ -26,9 +26,10 @@
  */
 .docs article code[class*="language-"],
 .docs article pre[class*="language-"] {
-  font-size: 11px;
+  font-size: 12px;
   line-height: 2.0;
   vertical-align: middle;
+  font-family: "Source Code Pro", Monaco, Consolas, "Courier New", monospace;
 }
 
 code[class*="language-"],

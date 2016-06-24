@@ -135,7 +135,6 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerCodex()
     {
-
         $this->codexHook('constructed', function (Contracts\Codex $codex)
         {
             $codex->extend('projects', Projects\Projects::class);

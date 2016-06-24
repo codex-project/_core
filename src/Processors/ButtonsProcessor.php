@@ -9,6 +9,7 @@
 namespace Codex\Processors;
 
 use Codex\Addons\Annotations\Processor;
+use Codex\Codex;
 use Codex\Documents\Document;
 use Codex\Processors\Buttons\Button;
 use Codex\Support\Collection;
@@ -42,6 +43,7 @@ class ButtonsProcessor
 //            ],
         ],
         'wrapper_class' => 'top-buttons',
+        'group_wrapper_class' => 'top-button-group'
     ];
 
     /** @var Document */
@@ -49,6 +51,9 @@ class ButtonsProcessor
 
     /** @var Collection */
     protected $buttons;
+
+    /** @var Codex */
+    public $codex;
 
     protected function button($id, $text, $attr = [ ], $gid = null)
     {
@@ -62,7 +67,9 @@ class ButtonsProcessor
         $type = $document->attr('buttons.type', $this->config['type']);
         $html = call_user_func([$this, 'handle' . ucfirst($type) . 'Type']);
         $document->setContent($html . $document->getContent());
-
+//        \FluentDOM::create()->element('a')->attributes = [];
+//        $this->create('a', [])->
+//        $create('ul');
         // buttons defined on project level
 //        foreach ( $this->config as $id => $button ) {
 //            $this->button($id, $button[ 'text' ], $button[ 'attributes' ]);
@@ -97,18 +104,12 @@ class ButtonsProcessor
             }
         }
 
-        $html = "<div class='top-buttons top-buttons-groups'>";
-        $groups = $this->buttons->pluck('groupId')->unique();
-        foreach($groups as $group){
-            $html .= "<div class='top-button-group'>";
-            foreach($this->buttons->where('groupId', $group) as $button){
-                $html .= $button->render();
-            }
-            $html .= '</div>';
+        $groupIds = $this->buttons->pluck('groupId')->unique();
+        $groups = [];
+        foreach($groupIds as $gid){
+            $groups[$gid] = $this->buttons->where('groupId', $gid)->all();
         }
-        $html .= '</div>';
-
-        return $html;
+        return view($this->codex->view('processors.buttons'), $this->config->all())->with('groups', $groups)->render();
     }
 
     protected function handleGroupType()

@@ -10,6 +10,12 @@ use Sebwite\Support\Str;
 
 class Theme extends Extendable implements Arrayable
 {
+    const JAVASCRIPT = 'js';
+    const STYLESHEET = 'css';
+    const SCRIPT = 'script';
+    const STYLE = 'style';
+
+
     /** @var Collection */
     protected $data;
 
@@ -357,6 +363,7 @@ class Theme extends Extendable implements Arrayable
         }
         return implode("\n", $scripts);
     }
+
 
 
     public function view($name, $view = null)

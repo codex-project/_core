@@ -13,54 +13,48 @@ use ArrayAccess;
 use Codex\Support\Extendable;
 use Codex\Traits\ArrayableAccess;
 use Codex\Traits\AttributesTrait;
+use Codex\Traits\CreateDomElementTrait;
 use Illuminate\Contracts\Support\Arrayable;
+use Sebwite\Support\Arr;
 
 class Button extends Extendable implements Arrayable, ArrayAccess
 {
     use AttributesTrait,
-        ArrayableAccess;
+        ArrayableAccess,
+        CreateDomElementTrait;
 
+    /** @var string  */
     protected $text;
 
+    /** @var string  */
     protected $id;
 
-    /**
-     * @var null
-     */
+    /** @var null|string  */
     protected $groupId;
 
     /**
      * DocumentButton constructor.
      *
-     * @param string $id
-     * @param string $text
-     * @param array  $attr
+     * @param string      $id
+     * @param string      $text
+     * @param array       $attrs
+     * @param null|string $groupId
      */
-    public function __construct($id, $text, array $attr = [ ], $groupId = null)
+    public function __construct($id, $text, array $attrs = [ ], $groupId = null)
     {
         $this->id      = $id;
         $this->text    = $text;
         $this->groupId = $groupId;
-
-        $this->setAttributes($attr);
+        unset($attrs['text']);
+        $this->setAttributes($attrs);
     }
 
     public function render()
     {
-        $html = '<a';
-
-        if ( ! isset($this->attributes[ 'class' ]) ) {
-            $this->attributes[ 'class' ] = '';
-        }
-        $this->attributes[ 'class' ] .= ' btn btn-primary';
-
-        foreach ( $this->attributes as $key => $val ) {
-            $html .= " {$key}=\"{$val}\"";
-        }
-
-        $html .= '>' . $this->text . '</a>';
-
-        return $html;
+        $el = $this->createElement('a', $this->attributes);
+        $el->setAttribute('class', $el->getAttribute('class') . ' btn btn-primary');
+        $el->textContent = $this->text;
+        return $el->saveHtml();
     }
 
     /**

@@ -9,6 +9,7 @@
 namespace Codex\Menus;
 
 
+use Codex\Support\Collection;
 use Illuminate\Contracts\Support\Arrayable;
 
 class Node extends \Tree\Node\Node implements Arrayable
@@ -226,6 +227,27 @@ class Node extends \Tree\Node\Node implements Arrayable
     public function hasParent()
     {
         return $this->getParent() !== null;
+    }
+
+    /**
+     * neighbors method
+     *
+     * @param bool $self
+     *
+     * @return \Codex\Support\Collection|Node[]
+     */
+    public function neighbors($self = false)
+    {
+        return new Collection($self ? $this->getNeighborsAndSelf() : $this->getNeighbors());
+    }
+
+    /**
+     * children method
+     * @return \Codex\Support\Collection|Node[]
+     */
+    public function children()
+    {
+        return new Collection($this->getChildren());
     }
 
 

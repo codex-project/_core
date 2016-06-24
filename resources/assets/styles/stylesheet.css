@@ -1409,7 +1409,7 @@ address {
 }
 
 .btn:hover, .btn:focus, .btn.focus {
-  color: #333;
+  color: #fff;
   text-decoration: none;
 }
 
@@ -1435,37 +1435,37 @@ fieldset[disabled] a.btn {
 }
 
 .btn-default {
-  color: #333;
-  background-color: #fff;
-  border-color: #ccc;
+  color: #fff;
+  background-color: #f4645f;
+  border-color: #f4645f;
 }
 
 .btn-default:focus, .btn-default.focus {
-  color: #333;
-  background-color: #e6e6e6;
-  border-color: #8c8c8c;
+  color: #fff;
+  background-color: #f1362f;
+  border-color: #c6140e;
 }
 
 .btn-default:hover {
-  color: #333;
-  background-color: #e6e6e6;
-  border-color: #adadad;
+  color: #fff;
+  background-color: #f1362f;
+  border-color: #f02d26;
 }
 
 .btn-default:active, .btn-default.active,
 .open > .btn-default.dropdown-toggle {
-  color: #333;
-  background-color: #e6e6e6;
-  border-color: #adadad;
+  color: #fff;
+  background-color: #f1362f;
+  border-color: #f02d26;
 }
 
 .btn-default:active:hover, .btn-default:active:focus, .btn-default:active.focus, .btn-default.active:hover, .btn-default.active:focus, .btn-default.active.focus,
 .open > .btn-default.dropdown-toggle:hover,
 .open > .btn-default.dropdown-toggle:focus,
 .open > .btn-default.dropdown-toggle.focus {
-  color: #333;
-  background-color: #d4d4d4;
-  border-color: #8c8c8c;
+  color: #fff;
+  background-color: #ec1810;
+  border-color: #c6140e;
 }
 
 .btn-default:active, .btn-default.active,
@@ -1477,64 +1477,72 @@ fieldset[disabled] a.btn {
 fieldset[disabled] .btn-default:hover,
 fieldset[disabled] .btn-default:focus,
 fieldset[disabled] .btn-default.focus {
-  background-color: #fff;
-  border-color: #ccc;
+  background-color: #f4645f;
+  border-color: #f4645f;
 }
 
 .btn-default .badge {
-  color: #fff;
-  background-color: #333;
+  color: #f4645f;
+  background-color: #fff;
 }
 
-.btn-primary {
+.btn-primary, .btn {
   color: #fff;
-  background-color: #337ab7;
-  border-color: #2e6da4;
+  background-color: #f4645f;
+  border-color: #f4645f;
 }
 
-.btn-primary:focus, .btn-primary.focus {
+.btn-primary:focus, .btn:focus, .btn-primary.focus, .focus.btn {
   color: #fff;
-  background-color: #286090;
-  border-color: #122b40;
+  background-color: #f1362f;
+  border-color: #c6140e;
 }
 
-.btn-primary:hover {
+.btn-primary:hover, .btn:hover {
   color: #fff;
-  background-color: #286090;
-  border-color: #204d74;
+  background-color: #f1362f;
+  border-color: #f02d26;
 }
 
-.btn-primary:active, .btn-primary.active,
-.open > .btn-primary.dropdown-toggle {
+.btn-primary:active, .btn:active, .btn-primary.active, .active.btn,
+.open > .btn-primary.dropdown-toggle,
+.open > .dropdown-toggle.btn {
   color: #fff;
-  background-color: #286090;
-  border-color: #204d74;
+  background-color: #f1362f;
+  border-color: #f02d26;
 }
 
-.btn-primary:active:hover, .btn-primary:active:focus, .btn-primary:active.focus, .btn-primary.active:hover, .btn-primary.active:focus, .btn-primary.active.focus,
+.btn-primary:active:hover, .btn:active:hover, .btn-primary:active:focus, .btn:active:focus, .btn-primary:active.focus, .btn:active.focus, .btn-primary.active:hover, .active.btn:hover, .btn-primary.active:focus, .active.btn:focus, .btn-primary.active.focus, .active.focus.btn,
 .open > .btn-primary.dropdown-toggle:hover,
+.open > .dropdown-toggle.btn:hover,
 .open > .btn-primary.dropdown-toggle:focus,
-.open > .btn-primary.dropdown-toggle.focus {
+.open > .dropdown-toggle.btn:focus,
+.open > .btn-primary.dropdown-toggle.focus,
+.open > .dropdown-toggle.focus.btn {
   color: #fff;
-  background-color: #204d74;
-  border-color: #122b40;
+  background-color: #ec1810;
+  border-color: #c6140e;
 }
 
-.btn-primary:active, .btn-primary.active,
-.open > .btn-primary.dropdown-toggle {
+.btn-primary:active, .btn:active, .btn-primary.active, .active.btn,
+.open > .btn-primary.dropdown-toggle,
+.open > .dropdown-toggle.btn {
   background-image: none;
 }
 
-.btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled.focus, .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled].focus,
+.btn-primary.disabled:hover, .disabled.btn:hover, .btn-primary.disabled:focus, .disabled.btn:focus, .btn-primary.disabled.focus, .disabled.focus.btn, .btn-primary[disabled]:hover, [disabled].btn:hover, .btn-primary[disabled]:focus, [disabled].btn:focus, .btn-primary[disabled].focus, [disabled].focus.btn,
 fieldset[disabled] .btn-primary:hover,
+fieldset[disabled] .btn:hover,
 fieldset[disabled] .btn-primary:focus,
-fieldset[disabled] .btn-primary.focus {
-  background-color: #337ab7;
-  border-color: #2e6da4;
+fieldset[disabled] .btn:focus,
+fieldset[disabled] .btn-primary.focus,
+fieldset[disabled] .focus.btn {
+  background-color: #f4645f;
+  border-color: #f4645f;
 }
 
-.btn-primary .badge {
-  color: #337ab7;
+.btn-primary .badge, .btn .badge {
+  color: #f4645f;
   background-color: #fff;
 }
 
@@ -1812,20 +1820,20 @@ input[type="button"].btn-block {
   width: 100%;
 }
 
-.btn-group, article.content > .top-buttons:not(.top-buttons-groups),
+.btn-group, article.content > .top-buttons.top-buttons-groups .top-button-group,
 .btn-group-vertical {
   position: relative;
   display: inline-block;
   vertical-align: middle;
 }
 
-.btn-group > .btn, article.content > .top-buttons:not(.top-buttons-groups) > .btn,
+.btn-group > .btn, article.content > .top-buttons.top-buttons-groups .top-button-group > .btn,
 .btn-group-vertical > .btn {
   position: relative;
   float: left;
 }
 
-.btn-group > .btn:hover, article.content > .top-buttons:not(.top-buttons-groups) > .btn:hover, .btn-group > .btn:focus, article.content > .top-buttons:not(.top-buttons-groups) > .btn:focus, .btn-group > .btn:active, article.content > .top-buttons:not(.top-buttons-groups) > .btn:active, .btn-group > .btn.active, article.content > .top-buttons:not(.top-buttons-groups) > .btn.active,
+.btn-group > .btn:hover, article.content > .top-buttons.top-buttons-groups .top-button-group > .btn:hover, .btn-group > .btn:focus, article.content > .top-buttons.top-buttons-groups .top-button-group > .btn:focus, .btn-group > .btn:active, article.content > .top-buttons.top-buttons-groups .top-button-group > .btn:active, .btn-group > .btn.active, article.content > .top-buttons.top-buttons-groups .top-button-group > .btn.active,
 .btn-group-vertical > .btn:hover,
 .btn-group-vertical > .btn:focus,
 .btn-group-vertical > .btn:active,
@@ -1833,15 +1841,20 @@ input[type="button"].btn-block {
   z-index: 2;
 }
 
-.btn-group .btn + .btn, article.content > .top-buttons:not(.top-buttons-groups) .btn + .btn,
-.btn-group .btn + .btn-group, article.content > .top-buttons:not(.top-buttons-groups) .btn + .btn-group,
-.btn-group article.content > .btn + .top-buttons:not(.top-buttons-groups), article.content > .top-buttons:not(.top-buttons-groups) article.content > .btn + .top-buttons:not(.top-buttons-groups),
-.btn-group .btn-group + .btn, article.content > .top-buttons:not(.top-buttons-groups) .btn-group + .btn,
-.btn-group article.content > .top-buttons:not(.top-buttons-groups) + .btn, article.content > .top-buttons:not(.top-buttons-groups) article.content > .top-buttons:not(.top-buttons-groups) + .btn,
-.btn-group .btn-group + .btn-group, article.content > .top-buttons:not(.top-buttons-groups) .btn-group + .btn-group,
-.btn-group article.content > .top-buttons:not(.top-buttons-groups) + .btn-group, article.content > .top-buttons:not(.top-buttons-groups) article.content > .top-buttons:not(.top-buttons-groups) + .btn-group,
-.btn-group article.content > .btn-group + .top-buttons:not(.top-buttons-groups), article.content > .top-buttons:not(.top-buttons-groups) article.content > .btn-group + .top-buttons:not(.top-buttons-groups),
-.btn-group article.content > .top-buttons:not(.top-buttons-groups) + .top-buttons:not(.top-buttons-groups), article.content > .top-buttons:not(.top-buttons-groups) article.content > .top-buttons:not(.top-buttons-groups) + .top-buttons:not(.top-buttons-groups) {
+.btn-group .btn + .btn, article.content > .top-buttons.top-buttons-groups .top-button-group .btn + .btn,
+.btn-group .btn + .btn-group, article.content > .top-buttons.top-buttons-groups .top-button-group .btn + .btn-group,
+.btn-group article.content > .top-buttons.top-buttons-groups .btn + .top-button-group, article.content > .top-buttons.top-buttons-groups
+.btn-group .btn + .top-button-group, article.content > .top-buttons.top-buttons-groups .top-button-group .btn + .top-button-group,
+.btn-group .btn-group + .btn, article.content > .top-buttons.top-buttons-groups .top-button-group .btn-group + .btn,
+.btn-group article.content > .top-buttons.top-buttons-groups .top-button-group + .btn, article.content > .top-buttons.top-buttons-groups
+.btn-group .top-button-group + .btn, article.content > .top-buttons.top-buttons-groups .top-button-group .top-button-group + .btn,
+.btn-group .btn-group + .btn-group, article.content > .top-buttons.top-buttons-groups .top-button-group .btn-group + .btn-group,
+.btn-group article.content > .top-buttons.top-buttons-groups .top-button-group + .btn-group, article.content > .top-buttons.top-buttons-groups
+.btn-group .top-button-group + .btn-group, article.content > .top-buttons.top-buttons-groups .top-button-group .top-button-group + .btn-group,
+.btn-group article.content > .top-buttons.top-buttons-groups .btn-group + .top-button-group, article.content > .top-buttons.top-buttons-groups
+.btn-group .btn-group + .top-button-group, article.content > .top-buttons.top-buttons-groups .top-button-group .btn-group + .top-button-group,
+.btn-group article.content > .top-buttons.top-buttons-groups .top-button-group + .top-button-group, article.content > .top-buttons.top-buttons-groups
+.btn-group .top-button-group + .top-button-group, article.content > .top-buttons.top-buttons-groups .top-button-group .top-button-group + .top-button-group {
   margin-left: -1px;
 }
 
@@ -1860,78 +1873,78 @@ input[type="button"].btn-block {
 
 .btn-toolbar .btn, article.content > .top-buttons.top-buttons-groups .btn,
 .btn-toolbar .btn-group, article.content > .top-buttons.top-buttons-groups .btn-group,
-.btn-toolbar article.content > .top-buttons:not(.top-buttons-groups), article.content > .top-buttons.top-buttons-groups article.content > .top-buttons:not(.top-buttons-groups),
+.btn-toolbar article.content > .top-buttons.top-buttons-groups .top-button-group, article.content > .top-buttons.top-buttons-groups .top-button-group,
 .btn-toolbar .input-group, article.content > .top-buttons.top-buttons-groups .input-group {
   float: left;
 }
 
 .btn-toolbar > .btn, article.content > .top-buttons.top-buttons-groups > .btn,
-.btn-toolbar > .btn-group, article.content > .top-buttons.top-buttons-groups > .btn-group,
-article.content.btn-toolbar > .top-buttons:not(.top-buttons-groups), article.content > article.content.top-buttons.top-buttons-groups > .top-buttons:not(.top-buttons-groups),
+.btn-toolbar > .btn-group, article.content > .top-buttons.top-buttons-groups > .btn-group, article.content > .top-buttons.top-buttons-groups
+.btn-toolbar > .top-button-group, article.content > .top-buttons.top-buttons-groups > .top-button-group,
 .btn-toolbar > .input-group, article.content > .top-buttons.top-buttons-groups > .input-group {
   margin-left: 5px;
 }
 
-.btn-group > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle), article.content > .top-buttons:not(.top-buttons-groups) > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+.btn-group > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle), article.content > .top-buttons.top-buttons-groups .top-button-group > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle) {
   border-radius: 0;
 }
 
-.btn-group > .btn:first-child, article.content > .top-buttons:not(.top-buttons-groups) > .btn:first-child {
+.btn-group > .btn:first-child, article.content > .top-buttons.top-buttons-groups .top-button-group > .btn:first-child {
   margin-left: 0;
 }
 
-.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle), article.content > .top-buttons:not(.top-buttons-groups) > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
+.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle), article.content > .top-buttons.top-buttons-groups .top-button-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
 
-.btn-group > .btn:last-child:not(:first-child), article.content > .top-buttons:not(.top-buttons-groups) > .btn:last-child:not(:first-child),
-.btn-group > .dropdown-toggle:not(:first-child), article.content > .top-buttons:not(.top-buttons-groups) > .dropdown-toggle:not(:first-child) {
+.btn-group > .btn:last-child:not(:first-child), article.content > .top-buttons.top-buttons-groups .top-button-group > .btn:last-child:not(:first-child),
+.btn-group > .dropdown-toggle:not(:first-child), article.content > .top-buttons.top-buttons-groups .top-button-group > .dropdown-toggle:not(:first-child) {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
 }
 
-.btn-group > .btn-group, article.content > .top-buttons:not(.top-buttons-groups) > .btn-group, article.content.btn-group > .top-buttons:not(.top-buttons-groups), article.content > article.content.top-buttons:not(.top-buttons-groups) > .top-buttons:not(.top-buttons-groups) {
+.btn-group > .btn-group, article.content > .top-buttons.top-buttons-groups .top-button-group > .btn-group, article.content > .top-buttons.top-buttons-groups .btn-group > .top-button-group, article.content > .top-buttons.top-buttons-groups .top-button-group > .top-button-group {
   float: left;
 }
 
-.btn-group > .btn-group:not(:first-child):not(:last-child) > .btn, article.content > .top-buttons:not(.top-buttons-groups) > .btn-group:not(:first-child):not(:last-child) > .btn, article.content.btn-group > .top-buttons:not(:first-child):not(:last-child):not(.top-buttons-groups) > .btn, article.content > article.content.top-buttons:not(.top-buttons-groups) > .top-buttons:not(:first-child):not(:last-child):not(.top-buttons-groups) > .btn {
+.btn-group > .btn-group:not(:first-child):not(:last-child) > .btn, article.content > .top-buttons.top-buttons-groups .top-button-group > .btn-group:not(:first-child):not(:last-child) > .btn, article.content > .top-buttons.top-buttons-groups .btn-group > .top-button-group:not(:first-child):not(:last-child) > .btn, article.content > .top-buttons.top-buttons-groups .top-button-group > .top-button-group:not(:first-child):not(:last-child) > .btn {
   border-radius: 0;
 }
 
-.btn-group > .btn-group:first-child:not(:last-child) > .btn:last-child, article.content > .top-buttons:not(.top-buttons-groups) > .btn-group:first-child:not(:last-child) > .btn:last-child, article.content.btn-group > .top-buttons:first-child:not(:last-child):not(.top-buttons-groups) > .btn:last-child, article.content > article.content.top-buttons:not(.top-buttons-groups) > .top-buttons:first-child:not(:last-child):not(.top-buttons-groups) > .btn:last-child,
-.btn-group > .btn-group:first-child:not(:last-child) > .dropdown-toggle, article.content > .top-buttons:not(.top-buttons-groups) > .btn-group:first-child:not(:last-child) > .dropdown-toggle,
-article.content.btn-group > .top-buttons:first-child:not(:last-child):not(.top-buttons-groups) > .dropdown-toggle, article.content > article.content.top-buttons:not(.top-buttons-groups) > .top-buttons:first-child:not(:last-child):not(.top-buttons-groups) > .dropdown-toggle {
+.btn-group > .btn-group:first-child:not(:last-child) > .btn:last-child, article.content > .top-buttons.top-buttons-groups .top-button-group > .btn-group:first-child:not(:last-child) > .btn:last-child, article.content > .top-buttons.top-buttons-groups .btn-group > .top-button-group:first-child:not(:last-child) > .btn:last-child, article.content > .top-buttons.top-buttons-groups .top-button-group > .top-button-group:first-child:not(:last-child) > .btn:last-child,
+.btn-group > .btn-group:first-child:not(:last-child) > .dropdown-toggle, article.content > .top-buttons.top-buttons-groups .top-button-group > .btn-group:first-child:not(:last-child) > .dropdown-toggle, article.content > .top-buttons.top-buttons-groups
+.btn-group > .top-button-group:first-child:not(:last-child) > .dropdown-toggle, article.content > .top-buttons.top-buttons-groups .top-button-group > .top-button-group:first-child:not(:last-child) > .dropdown-toggle {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
 
-.btn-group > .btn-group:last-child:not(:first-child) > .btn:first-child, article.content > .top-buttons:not(.top-buttons-groups) > .btn-group:last-child:not(:first-child) > .btn:first-child, article.content.btn-group > .top-buttons:last-child:not(:first-child):not(.top-buttons-groups) > .btn:first-child, article.content > article.content.top-buttons:not(.top-buttons-groups) > .top-buttons:last-child:not(:first-child):not(.top-buttons-groups) > .btn:first-child {
+.btn-group > .btn-group:last-child:not(:first-child) > .btn:first-child, article.content > .top-buttons.top-buttons-groups .top-button-group > .btn-group:last-child:not(:first-child) > .btn:first-child, article.content > .top-buttons.top-buttons-groups .btn-group > .top-button-group:last-child:not(:first-child) > .btn:first-child, article.content > .top-buttons.top-buttons-groups .top-button-group > .top-button-group:last-child:not(:first-child) > .btn:first-child {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
 }
 
-.btn-group .dropdown-toggle:active, article.content > .top-buttons:not(.top-buttons-groups) .dropdown-toggle:active,
-.btn-group.open .dropdown-toggle, article.content > .open.top-buttons:not(.top-buttons-groups) .dropdown-toggle {
+.btn-group .dropdown-toggle:active, article.content > .top-buttons.top-buttons-groups .top-button-group .dropdown-toggle:active,
+.btn-group.open .dropdown-toggle, article.content > .top-buttons.top-buttons-groups .open.top-button-group .dropdown-toggle {
   outline: 0;
 }
 
-.btn-group > .btn + .dropdown-toggle, article.content > .top-buttons:not(.top-buttons-groups) > .btn + .dropdown-toggle {
+.btn-group > .btn + .dropdown-toggle, article.content > .top-buttons.top-buttons-groups .top-button-group > .btn + .dropdown-toggle {
   padding-left: 8px;
   padding-right: 8px;
 }
 
-.btn-group > .btn-lg + .dropdown-toggle, article.content > .top-buttons:not(.top-buttons-groups) > .btn-lg + .dropdown-toggle, .btn-group-lg.btn-group > .btn + .dropdown-toggle, article.content > .btn-group-lg.top-buttons:not(.top-buttons-groups) > .btn + .dropdown-toggle {
+.btn-group > .btn-lg + .dropdown-toggle, article.content > .top-buttons.top-buttons-groups .top-button-group > .btn-lg + .dropdown-toggle, .btn-group-lg.btn-group > .btn + .dropdown-toggle, article.content > .top-buttons.top-buttons-groups .btn-group-lg.top-button-group > .btn + .dropdown-toggle {
   padding-left: 12px;
   padding-right: 12px;
 }
 
-.btn-group.open .dropdown-toggle, article.content > .open.top-buttons:not(.top-buttons-groups) .dropdown-toggle {
+.btn-group.open .dropdown-toggle, article.content > .top-buttons.top-buttons-groups .open.top-button-group .dropdown-toggle {
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 
-.btn-group.open .dropdown-toggle.btn-link, article.content > .open.top-buttons:not(.top-buttons-groups) .dropdown-toggle.btn-link {
+.btn-group.open .dropdown-toggle.btn-link, article.content > .top-buttons.top-buttons-groups .open.top-button-group .dropdown-toggle.btn-link {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
@@ -1950,38 +1963,38 @@ article.content.btn-group > .top-buttons:first-child:not(:last-child):not(.top-b
 }
 
 .btn-group-vertical > .btn,
-.btn-group-vertical > .btn-group,
-article.content.btn-group-vertical > .top-buttons:not(.top-buttons-groups),
-.btn-group-vertical > .btn-group > .btn,
-article.content.btn-group-vertical > .top-buttons:not(.top-buttons-groups) > .btn {
+.btn-group-vertical > .btn-group, article.content > .top-buttons.top-buttons-groups
+.btn-group-vertical > .top-button-group,
+.btn-group-vertical > .btn-group > .btn, article.content > .top-buttons.top-buttons-groups
+.btn-group-vertical > .top-button-group > .btn {
   display: block;
   float: none;
   width: 100%;
   max-width: 100%;
 }
 
-.btn-group-vertical > .btn-group:before, article.content.btn-group-vertical > .top-buttons:not(.top-buttons-groups):before, .btn-group-vertical > .btn-group:after, article.content.btn-group-vertical > .top-buttons:not(.top-buttons-groups):after {
+.btn-group-vertical > .btn-group:before, article.content > .top-buttons.top-buttons-groups .btn-group-vertical > .top-button-group:before, .btn-group-vertical > .btn-group:after, article.content > .top-buttons.top-buttons-groups .btn-group-vertical > .top-button-group:after {
   content: " ";
   display: table;
 }
 
-.btn-group-vertical > .btn-group:after, article.content.btn-group-vertical > .top-buttons:not(.top-buttons-groups):after {
+.btn-group-vertical > .btn-group:after, article.content > .top-buttons.top-buttons-groups .btn-group-vertical > .top-button-group:after {
   clear: both;
 }
 
-.btn-group-vertical > .btn-group > .btn, article.content.btn-group-vertical > .top-buttons:not(.top-buttons-groups) > .btn {
+.btn-group-vertical > .btn-group > .btn, article.content > .top-buttons.top-buttons-groups .btn-group-vertical > .top-button-group > .btn {
   float: none;
 }
 
 .btn-group-vertical > .btn + .btn,
-.btn-group-vertical > .btn + .btn-group,
-article.content.btn-group-vertical > .btn + .top-buttons:not(.top-buttons-groups),
-.btn-group-vertical > .btn-group + .btn,
-article.content.btn-group-vertical > .top-buttons:not(.top-buttons-groups) + .btn,
-.btn-group-vertical > .btn-group + .btn-group,
-article.content.btn-group-vertical > .top-buttons:not(.top-buttons-groups) + .btn-group,
-article.content.btn-group-vertical > .btn-group + .top-buttons:not(.top-buttons-groups),
-article.content.btn-group-vertical > .top-buttons:not(.top-buttons-groups) + .top-buttons:not(.top-buttons-groups) {
+.btn-group-vertical > .btn + .btn-group, article.content > .top-buttons.top-buttons-groups
+.btn-group-vertical > .btn + .top-button-group,
+.btn-group-vertical > .btn-group + .btn, article.content > .top-buttons.top-buttons-groups
+.btn-group-vertical > .top-button-group + .btn,
+.btn-group-vertical > .btn-group + .btn-group, article.content > .top-buttons.top-buttons-groups
+.btn-group-vertical > .top-button-group + .btn-group, article.content > .top-buttons.top-buttons-groups
+.btn-group-vertical > .btn-group + .top-button-group, article.content > .top-buttons.top-buttons-groups
+.btn-group-vertical > .top-button-group + .top-button-group {
   margin-top: -1px;
   margin-left: 0;
 }
@@ -2004,18 +2017,18 @@ article.content.btn-group-vertical > .top-buttons:not(.top-buttons-groups) + .to
   border-bottom-left-radius: 4px;
 }
 
-.btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .btn, article.content.btn-group-vertical > .top-buttons:not(:first-child):not(:last-child):not(.top-buttons-groups) > .btn {
+.btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .btn, article.content > .top-buttons.top-buttons-groups .btn-group-vertical > .top-button-group:not(:first-child):not(:last-child) > .btn {
   border-radius: 0;
 }
 
-.btn-group-vertical > .btn-group:first-child:not(:last-child) > .btn:last-child, article.content.btn-group-vertical > .top-buttons:first-child:not(:last-child):not(.top-buttons-groups) > .btn:last-child,
-.btn-group-vertical > .btn-group:first-child:not(:last-child) > .dropdown-toggle,
-article.content.btn-group-vertical > .top-buttons:first-child:not(:last-child):not(.top-buttons-groups) > .dropdown-toggle {
+.btn-group-vertical > .btn-group:first-child:not(:last-child) > .btn:last-child, article.content > .top-buttons.top-buttons-groups .btn-group-vertical > .top-button-group:first-child:not(:last-child) > .btn:last-child,
+.btn-group-vertical > .btn-group:first-child:not(:last-child) > .dropdown-toggle, article.content > .top-buttons.top-buttons-groups
+.btn-group-vertical > .top-button-group:first-child:not(:last-child) > .dropdown-toggle {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-.btn-group-vertical > .btn-group:last-child:not(:first-child) > .btn:first-child, article.content.btn-group-vertical > .top-buttons:last-child:not(:first-child):not(.top-buttons-groups) > .btn:first-child {
+.btn-group-vertical > .btn-group:last-child:not(:first-child) > .btn:first-child, article.content > .top-buttons.top-buttons-groups .btn-group-vertical > .top-button-group:last-child:not(:first-child) > .btn:first-child {
   border-top-right-radius: 0;
   border-top-left-radius: 0;
 }
@@ -2028,27 +2041,27 @@ article.content.btn-group-vertical > .top-buttons:first-child:not(:last-child):n
 }
 
 .btn-group-justified > .btn,
-.btn-group-justified > .btn-group,
-article.content.btn-group-justified > .top-buttons:not(.top-buttons-groups) {
+.btn-group-justified > .btn-group, article.content > .top-buttons.top-buttons-groups
+.btn-group-justified > .top-button-group {
   float: none;
   display: table-cell;
   width: 1%;
 }
 
-.btn-group-justified > .btn-group .btn, article.content.btn-group-justified > .top-buttons:not(.top-buttons-groups) .btn {
+.btn-group-justified > .btn-group .btn, article.content > .top-buttons.top-buttons-groups .btn-group-justified > .top-button-group .btn {
   width: 100%;
 }
 
-.btn-group-justified > .btn-group .dropdown-menu, article.content.btn-group-justified > .top-buttons:not(.top-buttons-groups) .dropdown-menu {
+.btn-group-justified > .btn-group .dropdown-menu, article.content > .top-buttons.top-buttons-groups .btn-group-justified > .top-button-group .dropdown-menu {
   left: auto;
 }
 
 [data-toggle="buttons"] > .btn input[type="radio"],
 [data-toggle="buttons"] > .btn input[type="checkbox"],
-[data-toggle="buttons"] > .btn-group > .btn input[type="radio"],
-article.content[data-toggle="buttons"] > .top-buttons:not(.top-buttons-groups) > .btn input[type="radio"],
-[data-toggle="buttons"] > .btn-group > .btn input[type="checkbox"],
-article.content[data-toggle="buttons"] > .top-buttons:not(.top-buttons-groups) > .btn input[type="checkbox"] {
+[data-toggle="buttons"] > .btn-group > .btn input[type="radio"], article.content > .top-buttons.top-buttons-groups
+[data-toggle="buttons"] > .top-button-group > .btn input[type="radio"],
+[data-toggle="buttons"] > .btn-group > .btn input[type="checkbox"], article.content > .top-buttons.top-buttons-groups
+[data-toggle="buttons"] > .top-button-group > .btn input[type="checkbox"] {
   position: absolute;
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
@@ -3676,24 +3689,6 @@ table th[class*="col-"] {
 
 code {
   text-align: left;
-}
-
-.btn {
-  border: none;
-  border-radius: 3px;
-  background: #f4645f;
-  color: #fff;
-  padding: 10px 15px;
-  font-size: 16px;
-}
-
-.btn .faint {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.btn:hover, .btn:active {
-  background: #ef1f17;
-  color: #fff;
 }
 
 img.thumb128 {
@@ -5657,10 +5652,6 @@ article.content.loaded {
   opacity: 1;
 }
 
-article.content > .top-buttons:not(.top-buttons-groups) .btn:not(:last-child) {
-  border-right: 1px solid #000000;
-}
-
 article.content > .top-buttons .btn {
   padding: 3px 10px;
   font-size: 12px;
@@ -5801,7 +5792,7 @@ article.content h6 {
   font-size: 14px;
 }
 
-article.content a:hover {
+article.content a:hover:not(.btn) {
   color: #f1362f;
 }
 
