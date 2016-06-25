@@ -15,7 +15,6 @@ use Codex\Traits\ArrayableAccess;
 use Codex\Traits\AttributesTrait;
 use Codex\Traits\CreateDomElementTrait;
 use Illuminate\Contracts\Support\Arrayable;
-use Sebwite\Support\Arr;
 
 class Button extends Extendable implements Arrayable, ArrayAccess
 {
@@ -23,38 +22,58 @@ class Button extends Extendable implements Arrayable, ArrayAccess
         ArrayableAccess,
         CreateDomElementTrait;
 
-    /** @var string  */
-    protected $text;
+    protected $data;
 
-    /** @var string  */
+    /** @var string */
     protected $id;
 
-    /** @var null|string  */
+    /** @var null|string */
     protected $groupId;
 
     /**
-     * DocumentButton constructor.
+     * Button constructor.
      *
-     * @param string      $id
-     * @param string      $text
-     * @param array       $attrs
-     * @param null|string $groupId
+     * @param       $id
+     * @param array $data
+     * @param null  $groupId
      */
-    public function __construct($id, $text, array $attrs = [ ], $groupId = null)
+    public function __construct($id, array $data, $groupId = null)
     {
-        $this->id      = $id;
-        $this->text    = $text;
-        $this->groupId = $groupId;
-        unset($attrs['text']);
-        $this->setAttributes($attrs);
+        $this->id = $id;
+
+        $this->setAttributes([ ]);
+
+        if ( isset($data[ 'attr' ]) )
+        {
+            $this->setAttributes($data[ 'attr' ]);
+            unset($data[ 'attr' ]);
+        }
+
+        $data[ 'id' ]      = $id;
+        $data[ 'groupId' ] = $groupId;
+        $this->data        = $data;
     }
 
     public function render()
     {
-        $el = $this->createElement('a', $this->attributes);
+        $el = $this->createElement('a', $this->getAttributes());
         $el->setAttribute('class', $el->getAttribute('class') . ' btn btn-primary');
-        $el->textContent = $this->text;
+        $el->textContent = $this[ 'text' ];
+
+        $this->has('icon') && $this->createElement('i', [ 'class' => $this[ 'icon' ] ])->appendToParentNode($el);
+
+
         return $el->saveHtml();
+    }
+
+    public function has($k)
+    {
+        return isset($this[ $k ]);
+    }
+
+    public function get($k, $d = null)
+    {
+        return data_get($this->data, $k, $d);
     }
 
     /**
@@ -62,7 +81,7 @@ class Button extends Extendable implements Arrayable, ArrayAccess
      */
     public function getText()
     {
-        return $this->text;
+        return $this[ 'text' ];
     }
 
     /**
@@ -72,7 +91,7 @@ class Button extends Extendable implements Arrayable, ArrayAccess
      */
     public function setText($text)
     {
-        $this->text = $text;
+        $this[ 'text' ] = $text;
         return $this;
     }
 
@@ -108,11 +127,6 @@ class Button extends Extendable implements Arrayable, ArrayAccess
 
     public function toArray()
     {
-        return [
-            'id'         => $this->id,
-            'groupId'    => $this->groupId,
-            'text'       => $this->text,
-            'attributes' => $this->attributes,
-        ];
+        return array_merge($this->data, [ 'attr' => $this->getAttributes() ]);
     }
 }

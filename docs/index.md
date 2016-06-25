@@ -2,17 +2,19 @@
 title: Overview
 subtitle: Codex Documentation
 buttons:
-  type: groups
-  groups:
-    code_links:
-      github: 
-        text: Github
-        href: https://github.com/codex-project/codex
-        target: _blank
-      packagist:
-        text: Packagist
-        href: https://github.com/codex-project/codex
-        target: _blank
+  type: buttons
+  buttons:    
+    github: 
+      text: Github
+      icon: fa fa-github    
+      attr:
+          href: https://github.com/codex-project/codex
+          target: _blank
+    packagist:
+      text: Packagist
+      attr:    
+          href: https://packagist.org/packages/codex
+          target: _blank
 -->
 
 # Codex Documentation

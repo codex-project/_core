@@ -3,6 +3,7 @@
 // Documentation: http://codex-project.dev/codex/master/getting-started/configuration/global
 return [
 
+
     'display_name' => env('CODEX_DISPLAY_NAME', 'Codex'),
 
     'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
@@ -26,17 +27,20 @@ return [
     ],
 
     'log' => true,
-
-    'dev' => [
-        'enabled'      => env('CODEX_DEV_ENABLED', false),
-        'debugbar'     => true,
-        'log_handlers' => true,
-        'print_events' => true,
-    ],
+    'dev' => env('CODEX_DEV_ENABLED', false),
 
     'document' => [
         'cache'      => [
+            // true     = enabled
+            // false    = disabled
+            // null     = disabled when app.debug is true
             'mode'    => null,
+
+
+            // Whenever a document's last modified time changes, the document's cache is refreshed.
+            // It is possible to set this to null making it refresh by checking last modified.
+            // Alternatively, you can also set a max duration in minutes.
+            // Recommended is to put it on null
             'minutes' => 7,
         ],
         'extensions' => [
@@ -80,11 +84,10 @@ return [
         'title'              => '',
         'subtitle'           => '',
         'view'               => null,
-        'disable_cache'      => false,
+        'cache'              => true,
         'disable_processors' => [ ],
-        'buttons'            => [
-        ],
         'processors'         => [
+            'enabled' => [ ],
         ],
     ],
 

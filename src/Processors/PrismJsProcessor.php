@@ -62,7 +62,7 @@ class PrismJsProcessor
 
     /** @var Collection */
     public $config = [
-        'js_path'                  => 'vendor/codex/vendor/prism/prism.js',
+        'js_path'                  => 'vendor/codex/scripts/prism.js',
         'css_path'                 => 'vendor/codex/styles/prism.css',
         'plugin_path'              => 'vendor/codex/vendor/prism/plugins',
         'plugins'                  => [

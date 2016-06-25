@@ -7,11 +7,6 @@ use Sebwite\Support\ServiceProvider;
 class DevServiceProvider extends ServiceProvider
 {
     use CodexProviderTrait;
-    
-    protected $providers = [
-        \Sebwite\IdeaMeta\IdeaMetaServiceProvider::class,
-        \Barryvdh\Debugbar\ServiceProvider::class,
-    ];
 
     protected $middleware = [
         Middleware\CodexDev::class,
@@ -26,8 +21,26 @@ class DevServiceProvider extends ServiceProvider
     {
         $app = parent::boot();
         $this->bootMetas();
-      #  $this->bootDebugbar();
+        #  $this->bootDebugbar();
         return $app;
+    }
+
+    public function register()
+    {
+        $app = parent::register();
+        $this->hasIdeaMeta() && $this->app->register('Sebwite\IdeaMeta\IdeaMetaServiceProvider');
+        $this->hasDebugbar() && $this->app->register('Barryvdh\Debugbar\ServiceProvider');
+        return $app;
+    }
+
+    protected function hasIdeaMeta()
+    {
+        return class_exists('Sebwite\IdeaMeta\IdeaMetaServiceProvider') || $this->app->bound('idea-meta');
+    }
+
+    public function hasDebugbar()
+    {
+        return class_exists('Barryvdh\Debugbar\ServiceProvider') || $this->app->bound('debugbar');
     }
 
     protected function bootMetas()
@@ -75,7 +88,7 @@ class DevServiceProvider extends ServiceProvider
             if ( $this->app->bound('debugbar') )
             {
                 $db = $this->app->make('debugbar');
-              #  $db->addCollector(new Debugbar\CodexCollector($controller, $view, $codex, $project, $document));
+                #  $db->addCollector(new Debugbar\CodexCollector($controller, $view, $codex, $project, $document));
             }
         });
     }
@@ -83,7 +96,7 @@ class DevServiceProvider extends ServiceProvider
     public function bootMenus()
     {
         $menus = $this->codex()->menus;
-        $menu = $menus->add('dev');
+        $menu  = $menus->add('dev');
         $menu->add('dev-log', 'Log')->setAttribute('href', route('codex.dev.log'));
     }
 }

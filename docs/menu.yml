@@ -1,10 +1,14 @@
 menu:
-  - name: Getting started
+  - name: About
     icon: fa fa-eye
     children:
-
       - name: Overview
         document: index
+
+      - name: Roadmap
+        document: getting-started/todo
+
+
 
       - name: Preview pages
         document: preview-pages/toc-tree
@@ -16,8 +20,13 @@ menu:
           - name: PHPDoc
             document: preview-pages/phpdoc
 
-      - name: Roadmap
-        document: getting-started/todo
+
+  - name: Getting started
+    icon: fa fa-eye
+    children:
+
+      - name: Overview
+        document: index
 
       - name: Installation
         document: getting-started/installation

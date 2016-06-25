@@ -107,7 +107,7 @@ class CodexServiceProvider extends ServiceProvider
             $this->registerRouting();
         }
 
-        if ( $this->app[ 'config' ][ 'codex.dev.enabled' ] === true )
+        if ( $this->app[ 'config' ][ 'codex.dev' ] === true )
         {
             $this->registerDev();
         }
