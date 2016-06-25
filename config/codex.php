@@ -80,14 +80,14 @@ return [
     ],
 
     'default_document_attributes' => [
-        'author'             => 'John Doe',
-        'title'              => '',
-        'subtitle'           => '',
-        'view'               => null,
-        'cache'              => true,
-        'disable_processors' => [ ],
-        'processors'         => [
-            'enabled' => [ ],
+        'author'     => 'John Doe',
+        'title'      => '',
+        'subtitle'   => '',
+        'view'       => null,
+        'cache'      => true,
+        'processors' => [
+            'enabled'  => [ ],
+            'disabled' => [ ],
         ],
     ],
 

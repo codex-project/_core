@@ -3,7 +3,7 @@ namespace Codex\Addons;
 
 use Codex\Addons\Scanner\ClassFileInfo;
 use Codex\Addons\Scanner\ClassInspector;
-use Codex\Addons\Scanner\Scanner;
+use Codex\Addons\Scanner\AnnotationScanner as AnnotationScanner;
 use Codex\Support\Collection;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
@@ -11,7 +11,7 @@ use Sebwite\Filesystem\Filesystem;
 use Sebwite\Support\Util;
 use Symfony\Component\Finder\SplFileInfo;
 
-class AddonScanner
+class Scanner
 {
     /** @var \Codex\Support\Collection */
     protected $manifest;
@@ -30,7 +30,7 @@ class AddonScanner
 
     protected $addons;
 
-    public function __construct(Addons $addons)
+    public function __construct(Factory $addons)
     {
         $this->addons   = $addons;
         $this->manifest = new Collection();
@@ -96,7 +96,7 @@ class AddonScanner
         {
             $annotationClass = [ $annotationClass ];
         }
-        $scanner = new Scanner($this->reader);
+        $scanner = new AnnotationScanner($this->reader);
         return $scanner->scan($annotationClass);
     }
 

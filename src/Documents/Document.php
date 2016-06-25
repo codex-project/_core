@@ -422,7 +422,7 @@ class Document extends Extendable
 
     /**
      * getProcessors method
-     * @return \Codex\Addons\ProcessorAddons
+     * @return \Codex\Addons\Repositories\Processors
      */
     protected function getProcessors()
     {

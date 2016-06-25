@@ -5,7 +5,7 @@ use Closure;
 use Codex\Exception\CodexException;
 
 /**
- * This is the class DocTag.
+ * The Macro class represents
  *
  * @package        Codex\Addons
  * @author         CLI
@@ -22,20 +22,34 @@ class Macro
     /** @var \Codex\Codex */
     public $codex;
 
-    /** @var string */
-    public $tag;
-
-    /** @var string */
+    /**
+     * The Class[at]method call signature for the class method that should be called. As configured.
+     * @var
+     */
     public $handler;
 
     /** @var array */
     public $arguments = [ ];
 
-    /** @var string */
+    /**
+     * The cleaned macro string (eg: jira:issues:search('project="CODEX"', 54) )
+     * @var string
+     */
     public $cleaned;
 
-    /** @var string */
+    /**
+     * The raw macro string (eg: <!--*codex:jira:issues:search('project="CODEX"', 54)*--> or <!--*codex:general:hide*--> or <!--*codex:/general:hide*-->
+     *
+     * @var string
+     */
     public $raw;
+
+    /**
+     * The definition is how the macro key. Similair to how it is registered in the config (eg: 'jira:issues:search' or 'general:hide' or 'table:responsive')
+     * @var string
+     */
+    public $definition;
+
 
     /**
      * DocTag constructor.
@@ -47,6 +61,11 @@ class Macro
     {
         $this->raw     = $raw;
         $this->cleaned = $cleaned;
+        if ( preg_match_all('/(?:\/|^)(.*?)(?:\(|$)/', $cleaned, $definition) === 0 )
+        {
+            throw CodexException::because('Macro definition could not be extracted');
+        }
+        $this->definition = $definition[ 1 ][ 0 ];
     }
 
 
@@ -60,13 +79,13 @@ class Macro
         return str_contains($this->cleaned, [ '(', ')' ]);
     }
 
-    public function setTag($tag, $handler)
+    public function setHandler($handler)
     {
-        $this->tag     = $tag;
         $this->handler = $handler;
     }
 
-    public function addArgument($arg)
+
+    protected function addArgument($arg)
     {
         $this->arguments[] = $this->transformArg($arg);
     }
@@ -76,9 +95,9 @@ class Macro
         $arg = trim($arg);
         //https://regex101.com/r/gB9bP9/1
 
-        if ( preg_match_all('/^(\'|\")(.*?)(\'|\")$/', $arg, $matches) > 0 )
+        if ( preg_match_all('/^(\')(.*?)(\')$/', $arg, $matches) > 0 )
         {
-            return $matches[ 2 ][ 0 ];
+            return str_replace('COMMA', ',', $matches[ 2 ][ 0 ]);
         }
         elseif ( $arg === 'true' || $arg === 'false' )
         {
@@ -98,6 +117,36 @@ class Macro
         }
     }
 
+    protected function parseArguments()
+    {
+        // parsing argument houtje touwtje style
+        // we explode the arguments string with , ex: "234, true, false, 'mydaady is gone'" = array("234", "true", "false", "'mydaady is gone'")
+        // problem is when doing so with ex: "234, true, false, 'mydaady, is gone'" = array("234", "true", "false", "'mydaady", "is gone'")
+        // which is unwanted, the explode does not work
+        // ninja solution: replace , in strings with CCOMMAA, then revert back after
+
+        $this->arguments = [ ];
+
+        //https://regex101.com/r/gB9bP9/2
+        if ( preg_match('/\((.*?)\)(?!.*\))/', $this->cleaned, $argumentString) < 1 )
+        {
+            return;
+        }
+        $argumentString = last($argumentString);
+
+        preg_match_all('/\'(.*?)\'/', $argumentString, $stringArguments);
+        foreach ( $stringArguments[ 0 ] as $sai => $stringArgument )
+        {
+            $new            = str_replace(',', 'COMMA', $stringArgument);
+            $argumentString = str_replace($stringArgument, $new, $argumentString);
+        }
+
+        foreach ( explode(',', $argumentString) as $arg )
+        {
+            $this->arguments[] = $this->transformArg($arg);
+        }
+    }
+
     protected function getCallable()
     {
         if ( $this->handler instanceof Closure )
@@ -109,8 +158,10 @@ class Macro
             // assuming its a @ string
             list($class, $method) = explode('@', (string)$this->handler);
             $instance = app()->make($class);
-            foreach(['document', 'project', 'tag'] as $property){
-                if(property_exists($instance, $property)){
+            foreach ( [ 'document', 'project', 'tag' ] as $property )
+            {
+                if ( property_exists($instance, $property) )
+                {
                     $instance->{$property} = $this->{$property};
                 }
             }
@@ -120,14 +171,15 @@ class Macro
 
     public function canRun()
     {
-        return $this->raw && $this->cleaned && $this->handler && $this->tag;
+        return $this->raw && $this->cleaned && $this->handler;
     }
 
     public function run()
     {
         if ( $this->canRun() )
         {
-            $content   = $this->document->getContent();
+            $content = $this->document->getContent();
+            $this->parseArguments();
             $arguments = array_merge([ $this->isClosing() ], $this->arguments);
             $result    = call_user_func_array($this->getCallable(), $arguments);
             $content   = preg_replace('/' . preg_quote($this->raw, '/') . '/', $result, $content, 1);
@@ -135,7 +187,7 @@ class Macro
         }
         else
         {
-            throw CodexException::because('DocTag cannot call because some properties havent been set. Prevent the DocTag from running by using the canRun() method.');
+            throw CodexException::because("Macro [{$this->cleaned}] cannot call because some properties havent been set. Prevent the Macro from running by using the canRun() method.");
         }
     }
 }

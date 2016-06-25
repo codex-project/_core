@@ -64,7 +64,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected $singletons = [
         'codex'        => Codex::class,
-        'codex.addons' => Addons\Addons::class,
+        'codex.addons' => Addons\Factory::class,
     ];
 
     protected $aliases = [
@@ -72,7 +72,7 @@ class CodexServiceProvider extends ServiceProvider
         'codex'     => Contracts\Codex::class,
     ];
 
-    /** @var Addons\Addons */
+    /** @var Addons\Factory */
     protected $addons;
 
     public function boot()
@@ -223,7 +223,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerAddons()
     {
-        $this->app->instance('codex.addons', $this->addons = Addons\Addons::getInstance());
+        $this->app->instance('codex.addons', $this->addons = Addons\Factory::getInstance());
         $this->addons->setManifestPath($this->app[ 'config' ][ 'codex.paths.manifest' ]);
         $this->addons->registerInPath(__DIR__ . '/Processors');
         $this->addons->findAndRegisterAll();
@@ -233,7 +233,7 @@ class CodexServiceProvider extends ServiceProvider
     {
         // Individually run the attributes processor first.
         // This way we get the document attributes filled and disable, enable or configure other processors.
-        $this->codexHook('document:done', function (Document $document)
+        $this->codexHook('document:constructed', function (Document $document)
         {
             $document->runProcessor('attributes');
         });

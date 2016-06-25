@@ -1,17 +1,27 @@
 <?php
-namespace Codex\Addons;
+/**
+ * Part of the Codex Project packages.
+ *
+ * License and copyright information bundled with this package in the LICENSE file.
+ *
+ * @author Robin Radic
+ * @copyright Copyright 2016 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
+ */
+namespace Codex\Addons\Repositories;
 
+use Codex\Addons\Factory;
+use Codex\Addons\AddonServiceProvider;
 use Codex\Addons\Scanner\ClassFileInfo;
 use Codex\Contracts\Traits\Hookable;
 use Codex\Exception\CodexException;
-use Codex\Traits\HookableTrait;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
 
-abstract class AbstractAddonCollection extends \Illuminate\Support\Collection implements Hookable
+abstract class BaseCollection extends \Illuminate\Support\Collection implements Hookable
 {
 
-    /** @var Addons */
+    /** @var Factory */
     protected $addons;
 
     /** @var Application */

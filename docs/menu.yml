@@ -1,12 +1,15 @@
 menu:
-  - name: About
+  - name: Codex
     icon: fa fa-eye
     children:
       - name: Overview
         document: index
 
-      - name: Roadmap
-        document: getting-started/todo
+      - name: Todo
+        document: todo
+
+      - name: Issues
+        document: issues
 
 
 

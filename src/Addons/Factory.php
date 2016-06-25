@@ -3,6 +3,8 @@ namespace Codex\Addons;
 
 use BadMethodCallException;
 use Codex\Addons\Annotations;
+use Codex\Addons\Repositories\Hooks;
+use Codex\Addons\Repositories\Processors;
 use Codex\Addons\Scanner\ClassFileInfo;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
@@ -16,14 +18,14 @@ use Sebwite\Filesystem\Filesystem;
  * @author         CLI
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  *
- * @method HookAddons hooks(...$params)
- * @method ProcessorAddons processors(...$params)
+ * @method Hooks hooks(...$params)
+ * @method Processors processors(...$params)
  *
- * @property ProcessorAddons $processors
- * @property HookAddons      $hooks
+ * @property Processors $processors
+ * @property Hooks      $hooks
  *
  */
-class Addons implements Arrayable
+class Factory implements Arrayable
 {
     use Macroable;
 
@@ -32,7 +34,7 @@ class Addons implements Arrayable
     const THEME = 'theme';
     const PROCESSOR = 'processor';
 
-    /** @var Addons */
+    /** @var Factory */
     static protected $instance;
 
     /** @var \Codex\Support\Collection */
@@ -87,10 +89,10 @@ class Addons implements Arrayable
 
     protected function __construct()
     {
-        $this->processors = new ProcessorAddons([ ], $this);
-        $this->hooks      = new HookAddons([ ], $this);
+        $this->processors = new Processors([ ], $this);
+        $this->hooks      = new Hooks([ ], $this);
 
-        $this->scanner = new AddonScanner($this);
+        $this->scanner = new Scanner($this);
         $this->fs      = new Filesystem();
         $this->app     = Container::getInstance();
     }
@@ -228,7 +230,7 @@ class Addons implements Arrayable
     }
 
     /**
-     * @return \Codex\Addons\AddonScanner
+     * @return \Codex\Addons\Scanner
      */
     public function getScanner()
     {

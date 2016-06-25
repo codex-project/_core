@@ -11,7 +11,7 @@ abstract class ApiController extends Controller
     /** @var \Codex\Codex */
     protected $codex;
 
-    /** @var \Codex\Addons\Addons */
+    /** @var \Codex\Addons\Factory */
     protected $addons;
 
     /** @var \Codex\Projects\Projects */

@@ -31,7 +31,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * Class Scanner
  * @package Codex\Core\Addons\Scanner
  */
-class Scanner implements \IteratorAggregate
+class AnnotationScanner implements \IteratorAggregate
 {
     /**
      * @var Reader

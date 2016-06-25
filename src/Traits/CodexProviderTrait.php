@@ -20,11 +20,11 @@ trait CodexProviderTrait
 
     /**
      * addons method
-     * @return \Codex\Addons\Addons
+     * @return \Codex\Addons\Factory
      */
     protected function codexAddons()
     {
-        return \Codex\Addons\Addons::getInstance();
+        return \Codex\Addons\Factory::getInstance();
     }
 
     protected function codexDocumentAttributes($config, $method = 'array_replace_recursive')

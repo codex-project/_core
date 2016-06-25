@@ -57,17 +57,19 @@ class CodexController extends Controller
      */
     public function document($projectSlug, $ref = null, $path = '')
     {
+        /** @var Codex $codex */
+        $codex = $this->codex;
+
         // get project
-        if ( false === $this->codex->projects->has($projectSlug) )
+        if ( false === $codex->projects->has($projectSlug) )
         {
-            return $this->codex->error('Not found', 'The project could not be found', 404);
+            return $codex->error('Not found', 'The project could not be found', 404);
         }
-        $project = $this->codex->projects->get($projectSlug);
+        $project = $codex->projects->get($projectSlug);
 
 
         // share project in views
         $this->view->share('project', $project);
-
 
         // get ref (version)
         if ( null === $ref )
@@ -76,7 +78,7 @@ class CodexController extends Controller
         }
         if ( false === $project->hasRef($ref) )
         {
-            return $this->codex->error('Not found', 'The version could not be found', 404);
+            return $codex->error('Not found', 'The version could not be found', 404);
         }
         $project->setRef($ref);
         $path = $path === '' ? $project->config('index') : $path;
@@ -85,11 +87,11 @@ class CodexController extends Controller
         // get document
         if ( false === $project->documents->has($path) )
         {
-            return $this->codex->error('Not found', 'The document could not be found', 404);
+            return $codex->error('Not found', 'The document could not be found', 404);
         }
         $document = $project->documents->get($path);
 
-        $res = $this->hookPoint('controller:document', [ $document, $this->codex, $project ]);
+        $res = $this->hookPoint('controller:document', [ $document, $codex, $project ]);
         if ( $res )
         {
             return $res;
@@ -101,7 +103,7 @@ class CodexController extends Controller
         $breadcrumb = $document->getBreadcrumb();
         $view       = $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
 
-        $res = $this->hookPoint('controller:view', [ $view, $this->codex, $project, $document ]);
+        $res = $this->hookPoint('controller:view', [ $view, $codex, $project, $document ]);
         if ( $res )
         {
             return $res;
@@ -129,4 +131,5 @@ class CodexController extends Controller
         }
         $code = request()->get('code');
     }
+
 }

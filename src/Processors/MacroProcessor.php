@@ -35,37 +35,23 @@ class MacroProcessor
     /** @var \Codex\Documents\Document */
     public $document;
 
+    public static $macros = [];
+
     public function handle(Document $document)
     {
         // @formatter:off
         preg_match_all('/<!--\*codex:(.*?)\*-->/', $content = $document->getContent(), $matches);
+        $definitions = $this->getAllMacroDefinitions();
+
         // foreach found macro
         foreach ( $matches[ 0 ] as $i => $raw )
         {
             $macro          = $this->createMacro($raw, $matches[1][$i]);
-            // foreach configured macros
-            foreach ( $this->getAllMacroDefinitions() as $macroDefinition => $handler )
-            {
-                $exp          = preg_quote($macroDefinition, '/');
-                $exp          = $macro->isClosing() || $macro->hasArguments() === false ? "/{$exp}/" : "/{$exp}\((.*?)\)/";
-
-                // if found macro matched configured macro
-                if ( preg_match_all($exp, $macro->cleaned, $matched) > 0 )
-                {
-                    $macro->setTag($macroDefinition, $handler);
-
-                    if ( $macro->hasArguments() )
-                    {
-                        foreach ( $matched[ 1 ] as $args )
-                        {
-                            foreach ( array_map('trim', explode(',', $args)) as $arg )
-                            {
-                                $macro->addArgument($arg);
-                            }
-                        }
-                    }
-                }
+            if(false === array_key_exists($macro->definition, $definitions)){
+                continue;
             }
+            static::$macros[] = $macro;
+            $macro->setHandler($definitions[$macro->definition]);
             $macro->run();
         }
         // @formatter:on
