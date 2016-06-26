@@ -158,7 +158,7 @@ class Macro
             // assuming its a @ string
             list($class, $method) = explode('@', (string)$this->handler);
             $instance = app()->make($class);
-            foreach ( [ 'document', 'project', 'tag' ] as $property )
+            foreach ( [ 'codex', 'document', 'project', 'definition' ] as $property )
             {
                 if ( property_exists($instance, $property) )
                 {
