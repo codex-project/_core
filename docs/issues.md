@@ -23,7 +23,7 @@ buttons:
 
 <!--*codex:general:hide*-->
 > This page contains several macros unique to Codex. 
-  Viewing this document in another reader will result in missing out on important information.
+  Viewing this document in another reader will result in missing out on important information. [View this document on Codex](http://codex-project.ninja/codex/master/issues)
 <!--*codex:/general:hide*-->
 
 <br>
