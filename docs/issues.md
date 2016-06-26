@@ -12,7 +12,7 @@ buttons:
       text: Open issues
       icon: fa fa-github    
       attr:
-          href: https://projects.radic.nl
+          href: https://projects.radic.nl/projects/CODEX
           target: _blank
           
 

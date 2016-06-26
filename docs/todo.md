@@ -5,6 +5,18 @@ subtitle: Roadmap &amp; Whats next
 processors:
   disabled:
     - toc
+
+
+buttons:
+  type: buttons
+  buttons:    
+    github: 
+      text: Open issues
+      icon: fa fa-github    
+      attr:
+          href: https://projects.radic.nl/projects/CODEX
+          target: _blank
+              
 -->
 
 
