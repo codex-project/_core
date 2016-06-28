@@ -73,6 +73,8 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
      */
     protected $docsDir;
 
+    //protected $log;
+
 
     /**
      * Codex constructor.

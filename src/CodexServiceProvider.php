@@ -16,6 +16,7 @@ use Codex\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Filesystem\FilesystemAdapter;
 use League\Flysystem\Filesystem as Flysystem;
+use Monolog\Handler\ChromePHPHandler;
 use Monolog\Logger as Monolog;
 use Sebwite\Support\ServiceProvider;
 
@@ -112,6 +113,8 @@ class CodexServiceProvider extends ServiceProvider
             $this->registerDev();
         }
 
+        
+
         return $app;
     }
 
@@ -129,7 +132,8 @@ class CodexServiceProvider extends ServiceProvider
             $this->app[ 'events' ]
         ));
         $log->useFiles($this->app[ 'config' ][ 'codex.paths.log' ]);
-
+        $log->useChromePHP();
+        $log->useFirePHP();
         return $log;
     }
 
