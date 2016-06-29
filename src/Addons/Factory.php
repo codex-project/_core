@@ -6,6 +6,7 @@ use Codex\Addons\Annotations;
 use Codex\Addons\Collections\Hooks;
 use Codex\Addons\Collections\Processors;
 use Codex\Addons\Scanner\ClassFileInfo;
+use Codex\Dev\Dev;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Traits\Macroable;
@@ -186,10 +187,13 @@ class Factory implements Arrayable
 
     public function findAndRegisterAll()
     {
+        Dev::getInstance()->benchmark('a');
         foreach ( $this->scanner->findAll() as $file )
         {
             $this->register($file);
         }
+        Dev::getInstance()->benchmark('b');
+        #codex()->dev->stopMeasure('Codex\Addons\Factory::findAndRegisterAll');
     }
 
     public function mergeDefaultProjectConfig($config, $method = 'array_replace_recursive')

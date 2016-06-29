@@ -46,7 +46,7 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $providers = [
-        \Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
+        \Radic\BladeExtensions\BladeExtensionsServiceProvider::class
     ];
 
     protected $commands = [
@@ -79,7 +79,7 @@ class CodexServiceProvider extends ServiceProvider
     {
         $app = parent::boot();
 
-        $this->bootAttributesFilter();
+        #$this->bootAttributesProcessor();
 
         $this->bootBladeDirectives();
 
@@ -89,6 +89,8 @@ class CodexServiceProvider extends ServiceProvider
     public function register()
     {
         $app = parent::register();
+
+        $this->registerDev();
 
         $this->registerLogger();
 
@@ -107,12 +109,6 @@ class CodexServiceProvider extends ServiceProvider
             $this->registerRouting();
         }
 
-        if ( $this->app[ 'config' ][ 'codex.dev' ] === true )
-        {
-            $this->registerDev();
-        }
-
-        
 
         return $app;
     }
@@ -145,6 +141,7 @@ class CodexServiceProvider extends ServiceProvider
 
             $codex->extend('theme', Helpers\ThemeHelper::class);
             $codex->extend('cache', Helpers\CacheHelper::class);
+
         });
 
         #$this->share('codex', Codex::class, [ ], true);
@@ -234,7 +231,7 @@ class CodexServiceProvider extends ServiceProvider
         $this->addons->findAndRegisterAll();
     }
 
-    protected function bootAttributesFilter()
+    protected function bootAttributesProcessor()
     {
         // Individually run the attributes processor first.
         // This way we get the document attributes filled and disable, enable or configure other processors.

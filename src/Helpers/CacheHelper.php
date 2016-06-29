@@ -10,10 +10,20 @@
  */
 namespace Codex\Helpers;
 
-class CacheHelper extends Extendable implements Arrayable
-{
-    public function __construct(Codex $codex)
-    {
+use Codex\Contracts\Codex as CodexContract;
+use Codex\Support\Extendable;
 
+class CacheHelper extends Extendable
+{
+    /**
+     * Theme constructor.
+     *
+     * @param \Codex\Contracts\Codex|\Codex\Codex $parent
+     */
+    public function __construct(CodexContract $parent)
+    {
+        $this->setCodex($parent);
     }
+
+
 }

@@ -27,7 +27,11 @@ return [
     ],
 
     'log' => true,
-    'dev' => env('CODEX_DEV_ENABLED', false),
+    'dev' => [
+        'enabled'   => env('CODEX_DEV_ENABLED', false),
+        'debugbar'  => true,
+        'benchmark' => true,
+    ],
 
     'document' => [
         'cache'      => [
@@ -55,7 +59,7 @@ return [
         'macros' => [
             'table:responsive' => 'Codex\Processors\Macros\Table@responsive',
             'general:hide'     => 'Codex\Processors\Macros\General@hide',
-            'attribute:print'  => 'Codex\Processors\Macros\Attribute@printValue'
+            'attribute:print'  => 'Codex\Processors\Macros\Attribute@printValue',
         ],
 
         'links' => [

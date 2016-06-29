@@ -42,6 +42,11 @@ trait CodexTrait
     {
         $this->codex = $codex;
 
+        if ( method_exists($this, 'setContainer') )
+        {
+            $this->setContainer($codex->getContainer());
+        }
+
         return $this;
     }
 }

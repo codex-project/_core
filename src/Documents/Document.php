@@ -19,6 +19,7 @@ use Codex\Support\Collection;
 use Codex\Support\Extendable;
 use Codex\Traits;
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Contracts\Support\Arrayable;
 
 /**
  * This is the class Document.
@@ -26,7 +27,7 @@ use Illuminate\Contracts\Cache\Repository;
  * @package        Codex\Documents
  * @author         Robin Radic
  */
-class Document extends Extendable
+class Document extends Extendable implements Arrayable
 {
     use Traits\FilesTrait,
         Traits\AttributesTrait;
@@ -122,10 +123,12 @@ class Document extends Extendable
         }
 
         $this->attributes   = $codex->config('default_document_attributes');
+        $this->runProcessor('attributes');
         $this->lastModified = $this->getFiles()->lastModified($this->getPath());
         $this->content      = $this->getFiles()->get($this->getPath());
         $this->setCacheMode($this->getCodex()->config('document.cache.mode', self::CACHE_DISABLED));
         $this->attr('view', null) === null && $this->setAttribute('view', $codex->view('document'));
+
 
 
         $this->hookPoint('document:constructed', [ $this ]);
@@ -191,6 +194,7 @@ class Document extends Extendable
         }
         $this->rendered = true;
         $this->hookPoint('document:rendered');
+        $this->codex->dev->addMessage($this->toArray());
         return $this->content;
     }
 
@@ -241,10 +245,14 @@ class Document extends Extendable
     public function toArray()
     {
         return [
-            'path'           => $this->path,
-            'pathName'       => $this->pathName,
-            'extension'      => $this->extension,
-            'appliedFilters' => $this->processed->pluck('name')->toArray(),
+            'path'              => $this->path,
+            'pathName'          => $this->pathName,
+            'extension'         => $this->extension,
+            'cacheMode'         => $this->mode,
+            'lastModified'      => $this->lastModified,
+            'attributes'        => $this->attr(),
+            'enabledProcessors' => $this->getEnabledProcessors(),
+            'processed'         => $this->processed->pluck('name')->toArray(),
         ];
     }
 

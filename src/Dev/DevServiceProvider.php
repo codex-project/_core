@@ -13,8 +13,11 @@ class DevServiceProvider extends ServiceProvider
     ];
 
     protected $shared = [
-        Debugbar\Debugbar::class,
+        #Debugbar\Debugbar::class,
     ];
+
+    /** @var Dev */
+    protected $dev;
 
 
     public function boot()
@@ -27,10 +30,22 @@ class DevServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $app = parent::register();
-        $this->hasIdeaMeta() && $this->app->register('Sebwite\IdeaMeta\IdeaMetaServiceProvider');
-        $this->hasDebugbar() && $this->app->register('Barryvdh\Debugbar\ServiceProvider');
-        return $app;
+        $this->registerDev();
+        if($this->app['config']['codex.dev.enabled'] === true)
+        {
+            $app = parent::register();
+            $this->hasIdeaMeta() && $this->app->register('Sebwite\IdeaMeta\IdeaMetaServiceProvider');
+            $this->hasDebugbar() && $this->app->register('Barryvdh\Debugbar\ServiceProvider');
+        }
+        return $this->app;
+    }
+
+    protected function registerDev()
+    {
+        $this->app->instance('codex.dev', $this->dev = Dev::getInstance());
+        $this->codexHook('document:render', function(){
+            $this->dev->stopBenchmark(true);
+        });
     }
 
     protected function hasIdeaMeta()

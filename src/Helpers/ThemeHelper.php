@@ -29,9 +29,6 @@ class ThemeHelper extends Extendable implements Arrayable
     /** @var Collection */
     protected $data;
 
-    /** @var \Codex\Contracts\Codex|\Codex\Codex */
-    protected $codex;
-
     /** @var \Codex\Support\Collection */
     protected $javascripts;
 
@@ -55,7 +52,7 @@ class ThemeHelper extends Extendable implements Arrayable
      */
     public function __construct(CodexContract $parent)
     {
-        $this->codex = $parent;
+        $this->setCodex($parent);
         $this->data  = new Collection;
         $this->reset();
     }

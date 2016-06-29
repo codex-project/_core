@@ -32,6 +32,9 @@ if (!function_exists('codex')) {
      */
     function codex($ext = null)
     {
+        if(!app()->bound('codex') || !app()->hasBeenBootstrapped()){
+            throw \Codex\Exception\CodexException::because('Codex is not bound yet');
+        }
         /** @var \Codex\Codex $codex */
         $codex = app('codex');
 
