@@ -13,7 +13,6 @@ use Closure;
 use Codex\Contracts;
 use Codex\Contracts\Codex;
 use Codex\Exception\CodexException;
-use Codex\Exception\DocumentNotFoundException;
 use Codex\Projects\Project;
 use Codex\Support\Extendable;
 use Codex\Traits;
@@ -57,7 +56,6 @@ class Documents extends Extendable implements Contracts\Documents\Documents
      * @param string $pathName
      *
      * @return Document
-     * @throws \Codex\Exception\DocumentNotFoundException
      */
     public function get($pathName = '')
     {
@@ -103,7 +101,7 @@ class Documents extends Extendable implements Contracts\Documents\Documents
         }
 
         if ( !$this->items->has($pathName) ) {
-            throw DocumentNotFoundException::document($pathName);
+            throw CodexException::documentNotFound($pathName);
         }
 
         return $this->items->get($pathName);

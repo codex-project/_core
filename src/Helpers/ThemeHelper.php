@@ -1,14 +1,24 @@
 <?php
-namespace Codex;
+/**
+ * Part of the Codex Project packages.
+ *
+ * License and copyright information bundled with this package in the LICENSE file.
+ *
+ * @author Robin Radic
+ * @copyright Copyright 2016 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
+ */
+namespace Codex\Helpers;
 
+use Codex\Codex;
 use Codex\Contracts\Codex as CodexContract;
-use Codex\Support\Extendable;
 use Codex\Support\Collection;
+use Codex\Support\Extendable;
 use Codex\Support\Sorter;
 use Illuminate\Contracts\Support\Arrayable;
 use Sebwite\Support\Str;
 
-class Theme extends Extendable implements Arrayable
+class ThemeHelper extends Extendable implements Arrayable
 {
     const JAVASCRIPT = 'js';
     const STYLESHEET = 'css';
@@ -56,7 +66,7 @@ class Theme extends Extendable implements Arrayable
      * @param $key
      * @param $value
      *
-     * @return Theme
+     * @return ThemeHelper
      */
     public function set($key, $value)
     {
@@ -126,7 +136,7 @@ class Theme extends Extendable implements Arrayable
      * @param array $depends
      * @param bool  $external
      *
-     * @return \Codex\Theme
+     * @return \Codex\ThemeHelper
      */
     public function addStylesheet($name, $src, array $depends = [ ], $external = false)
     {
@@ -144,7 +154,7 @@ class Theme extends Extendable implements Arrayable
      * @param array $depends
      * @param array $attr
      *
-     * @return Theme
+     * @return ThemeHelper
      */
     public function addScript($name, $value, array $depends = [ ], array $attr = [ ])
     {
@@ -160,7 +170,7 @@ class Theme extends Extendable implements Arrayable
      * @param array $depends
      * @param array $attr
      *
-     * @return Theme
+     * @return ThemeHelper
      */
     public function addStyle($name, $value, array $depends = [ ], array $attr = [ ])
     {
@@ -225,7 +235,7 @@ class Theme extends Extendable implements Arrayable
      *
      * @param string|array $class
      *
-     * @return Theme
+     * @return ThemeHelper
      */
     public function addBodyClass($class)
     {
@@ -375,7 +385,7 @@ class Theme extends Extendable implements Arrayable
     /**
      * Empties the assets. Removes all javascripts and stylesheets.
      *
-     * @return Theme
+     * @return ThemeHelper
      */
     public function reset()
     {

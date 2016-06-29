@@ -20,12 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace Codex\Addons\Exception;
+namespace Codex\Exception;
 
 /**
- * Class ClassNotFoundException
+ * Class AnnotationScannerException
  * @package Codex\Core\Addons\Exception
  */
-class ClassNotFoundException extends AnnotationScannerException
+class AnnotationScannerException extends \RuntimeException
 {
 }

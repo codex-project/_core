@@ -21,14 +21,18 @@ class Collection extends \Illuminate\Support\Collection
         return $item;
     }
 
+    /** @return static */
     public function set($key, $value = null)
     {
         data_set($this->items, $key, $value);
+        return $this;
     }
 
+    /** @return static */
     public function add($value)
     {
         $this->items[] = $value;
+        return $this;
     }
 
     public function whereHas($key, $value)
@@ -39,6 +43,7 @@ class Collection extends \Illuminate\Support\Collection
         });
     }
 
+    /** @return static */
     public function forget($keys)
     {
         $keys = (array)$keys;
@@ -56,6 +61,7 @@ class Collection extends \Illuminate\Support\Collection
                 }
             }
         }
+        return $this;
     }
 
     /**

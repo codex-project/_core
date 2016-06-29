@@ -8,9 +8,9 @@
  * @copyright Copyright 2016 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
-namespace Codex\Addons\Presenters;
+namespace Codex\Addons\Types;
 
-class Processor extends AbstractPresenter
+class Processor extends BaseType
 {
 
 }

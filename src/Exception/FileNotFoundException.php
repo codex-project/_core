@@ -8,11 +8,12 @@
  * @copyright Copyright 2016 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
+namespace Codex\Exception;
 
-namespace Codex\Addons\Presenters;
-
-
-interface PresenterInterface
+/**
+ * Class FileNotFoundException
+ * @package Codex\Core\Addons\Exception
+ */
+class FileNotFoundException extends AnnotationScannerException
 {
-
 }

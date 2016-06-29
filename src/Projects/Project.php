@@ -97,7 +97,7 @@ class Project extends Extendable implements Arrayable
     protected $diskName;
 
     /**
-     * Project constructor.
+     * Project constructor. Should be slim, as it gets instanciated for each project.
      *
      * @param \Codex\Projects\Projects                      $projects
      * @param \Codex\Contracts\Codex|\Codex\Codex           $codex
@@ -517,5 +517,10 @@ class Project extends Extendable implements Arrayable
     {
         $displayName = $this->config('display_name', $this->getName());
         return last(explode(' :: ', $displayName));
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

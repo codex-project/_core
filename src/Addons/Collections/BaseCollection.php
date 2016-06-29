@@ -8,10 +8,9 @@
  * @copyright Copyright 2016 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
-namespace Codex\Addons\Repositories;
+namespace Codex\Addons\Collections;
 
 use Codex\Addons\Factory;
-use Codex\Addons\AddonServiceProvider;
 use Codex\Addons\Scanner\ClassFileInfo;
 use Codex\Contracts\Traits\Hookable;
 use Codex\Exception\CodexException;

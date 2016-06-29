@@ -22,7 +22,7 @@
  */
 namespace Codex\Addons\Scanner;
 
-use Codex\Addons\Exception\ClassNotFoundException;
+use Codex\Exception\ClassNotFoundException;
 use Doctrine\Common\Annotations\Reader;
 
 /**

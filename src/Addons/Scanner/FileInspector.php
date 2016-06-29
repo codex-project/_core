@@ -22,7 +22,7 @@
  */
 namespace Codex\Addons\Scanner;
 
-use Codex\Addons\Exception\FileNotFoundException;
+use Codex\Exception\FileNotFoundException;
 use Doctrine\Common\Annotations\Reader;
 
 /**

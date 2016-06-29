@@ -113,7 +113,6 @@ interface Projects
      *
      * @param $project
      *
-     * @throws \Codex\Exception\ProjectNotFoundException
      */
     public function setActive($project);
 
@@ -141,7 +140,6 @@ interface Projects
      * @param string $name The project name
      *
      * @return \Codex\Projects\Project
-     * @throws \Codex\Exception\ProjectNotFoundException
      */
     public function get($name);
 

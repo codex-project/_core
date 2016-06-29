@@ -13,9 +13,9 @@ namespace Codex\Processors;
 use Codex\Addons\Annotations\Processor;
 use Codex\Codex;
 use Codex\Documents\Document;
+use Codex\Helpers\ThemeHelper;
 use Codex\Projects\Project;
 use Codex\Support\Collection;
-use Codex\Theme;
 use FluentDOM\Element;
 use Illuminate\Support\Traits\Macroable;
 use Sebwite\Support\Str;
@@ -128,7 +128,7 @@ class PrismJsProcessor
     /** @var Document */
     public $document;
 
-    /** @var Theme */
+    /** @var ThemeHelper */
     protected $theme;
 
     public function handle(Document $document)

@@ -12,7 +12,6 @@ namespace Codex;
 
 
 use Codex\Contracts;
-use Codex\Log\Writer;
 use Codex\Projects\Project;
 use Codex\Support\Extendable;
 use Codex\Traits;
@@ -34,7 +33,7 @@ use Illuminate\Filesystem\Filesystem;
  * @property-read \Codex\Addon\Auth\CodexAuth $auth         The auth addon instance
  * @property-read \Codex\Addon\Git\CodexGit   $git          The theme instance
  * @property-read \Codex\Addon\Phpdoc\Phpdoc  $phpdoc       The phpdoc instance
- * @property-read \Codex\Theme                $theme        The theme instance
+ * @property-read \Codex\Helpers\ThemeHelper  $theme        The theme instance
  *
  *
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
@@ -105,6 +104,21 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
         $this->hookPoint('constructed', [ $this ]);
     }
 
+//# GETTERS & SETTERS
+    public function getCachedLastModified($key, $lastModified, \Closure $create)
+    {
+        /** @var \Illuminate\Contracts\Cache\Repository $cache */
+        $cache = app('cache')->driver('file');
+        $clm   = (int)$cache->get($key . '.lastModified', 0);
+        $plm   = (int)$lastModified;
+        if ( $clm !== $plm )
+        {
+            $cache->forever($key, $create());
+            $cache->forever($key . '.lastModified', $plm);
+        }
+        return $cache->get($key);
+    }
+
     /**
      * Creates a error response. To be used in controllers/middleware
      *
@@ -120,6 +134,18 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
     public function error($title, $text, $code = 500, $goBack = true)
     {
         return response(view($this->view('error'), compact('title', 'text', 'goBack'))->render(), $code);
+    }
+
+    /**
+     * Returns a Codex view name
+     *
+     * @param string $name The simple name
+     *
+     * @return string The namespaced view name
+     */
+    public function view($name)
+    {
+        return $this->addons->view($name);
     }
 
     /**
@@ -204,18 +230,6 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
     }
 
     /**
-     * Returns a Codex view name
-     *
-     * @param string $name The simple name
-     *
-     * @return string The namespaced view name
-     */
-    public function view($name)
-    {
-        return $this->addons->view($name);
-    }
-
-    /**
      * The path to the directory where all documentation projects reside
      *
      * @return string
@@ -249,23 +263,11 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
         return $this;
     }
 
-    /**
-     * Get the log instance
-     *
-     * @return Writer
-     */
     public function getLog()
     {
         return $this->log;
     }
 
-    /**
-     * Set the log value
-     *
-     * @param Writer|mixed $log The log instance to replace
-     *
-     * @return Codex
-     */
     public function setLog($log)
     {
         $this->log = $log;

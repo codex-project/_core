@@ -3,8 +3,8 @@ namespace Codex\Addons;
 
 use BadMethodCallException;
 use Codex\Addons\Annotations;
-use Codex\Addons\Repositories\Hooks;
-use Codex\Addons\Repositories\Processors;
+use Codex\Addons\Collections\Hooks;
+use Codex\Addons\Collections\Processors;
 use Codex\Addons\Scanner\ClassFileInfo;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
@@ -28,7 +28,6 @@ use Sebwite\Filesystem\Filesystem;
 class Factory implements Arrayable
 {
     use Macroable;
-
 
     const HOOK = 'hook';
     const THEME = 'theme';

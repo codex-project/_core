@@ -60,7 +60,6 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
      *
      * @param $project
      *
-     * @throws \Codex\Exception\ProjectNotFoundException
      */
     public function setActive($project)
     {
@@ -259,6 +258,9 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
         }
         $menu = $this->codex->menus->add('sidebar');
 
+        if(!is_array($items)){
+            throw CodexException::invalidMenuConfiguration(": menu.yml in [{$project}]");
+        }
 
         foreach ( $items as $item ) {
             $link = '#';

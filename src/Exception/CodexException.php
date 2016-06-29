@@ -22,9 +22,9 @@ class CodexException extends Exception
         parent::__construct($message, $code, $previous);
     }
 
-    public static function because($reason)
+    public function toHttpException()
     {
-        return new static($reason);
+        return new HttpException(404, $this->getMessage());
     }
 
     public function setMessage($message)
@@ -42,11 +42,23 @@ class CodexException extends Exception
         return $this;
     }
 
+
+    public static function because($reason)
+    {
+        return new static($reason);
+    }
+
     public static function in($class)
     {
         $exception = new static;
         $exception->setClass($class);
         return $exception;
+    }
+
+
+    public static function invalidMenuConfiguration($msg = '')
+    {
+        return new static('[Invalid Menu Configuration]' . $msg);
     }
 
     public static function configFileMissing($msg = '')
@@ -83,8 +95,14 @@ class CodexException extends Exception
         return new static($msg);
     }
 
-    public function toHttpException()
+    public static function unsuportedMethodCall($msg = '')
     {
-        return new HttpException(404, $this->getMessage());
+        return new static('[Unsuported Method Call] ' . $msg);
+    }
+
+    public static function implementationMismatch($if = '')
+    {
+        $if = strlen($if) > 0 ? "should implement {$if}" : '';
+        return new static('[Implementation Mismatch] ' . $if);
     }
 }

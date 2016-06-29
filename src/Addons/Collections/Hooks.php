@@ -8,7 +8,7 @@
  * @copyright Copyright 2016 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
-namespace Codex\Addons\Repositories;
+namespace Codex\Addons\Collections;
 
 use Codex\Addons\Annotations\Hook;
 use Codex\Addons\Scanner\ClassFileInfo;

@@ -11,7 +11,7 @@ namespace Codex\Traits;
 
 use Codex\Contracts\Traits\Bootable;
 use Codex\Contracts\Traits\Hookable;
-use Codex\Exception\ContractMissingException;
+use Codex\Exception\CodexException;
 
 /**
  * The BootableTrait works similar to Eloquent Models. The traits that are added can include a bootTraitName function which will be called on initialisation of the object. Requires the EventTrait to be present aswell.
@@ -36,10 +36,10 @@ trait BootableTrait
         $class = get_class($this);
 
         if ( !class_implements($class, Hookable::class) ) {
-            throw ContractMissingException::in($this)->missingContract(Hookable::class);
+            throw CodexException::implementationMismatch(Hookable::class);
         }
         if ( !class_implements($class, Bootable::class) ) {
-            throw ContractMissingException::in($this)->missingContract(Bootable::class);
+            throw CodexException::implementationMismatch(Bootable::class);
         }
 
         if ( !isset(static::$booted[ $class ]) ) {

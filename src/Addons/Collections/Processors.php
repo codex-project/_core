@@ -4,11 +4,11 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author Robin Radic
+ * @author    Robin Radic
  * @copyright Copyright 2016 (c) Codex Project
- * @license http://codex-project.ninja/license The MIT License
+ * @license   http://codex-project.ninja/license The MIT License
  */
-namespace Codex\Addons\Repositories;
+namespace Codex\Addons\Collections;
 
 use Codex\Addons\Annotations\Processor;
 use Codex\Addons\Scanner\ClassFileInfo;
@@ -44,17 +44,6 @@ class Processors extends BaseCollection
         $data     = array_merge(compact('file', 'annotation', 'class', 'instance'), (array)$annotation);
 
         $this->set($annotation->name, $data);
-    }
-
-    protected function getInstance($name)
-    {
-        $processor = $this->get($name);
-        if ( $processor[ 'instance' ] === null )
-        {
-            $processor[ 'instance' ] = $this->app->build($processor[ 'class' ]);
-            $this->set($name, $processor);
-        }
-        return $processor[ 'instance' ];
     }
 
     public function run($name, Document $document)
@@ -112,7 +101,6 @@ class Processors extends BaseCollection
         return $processor;
     }
 
-
     public function get($key, $default = null)
     {
         if ( false === $this->has($key) )
@@ -122,6 +110,16 @@ class Processors extends BaseCollection
         return parent::get($key, $default);
     }
 
+    protected function getInstance($name)
+    {
+        $processor = $this->get($name);
+        if ( $processor[ 'instance' ] === null )
+        {
+            $processor[ 'instance' ] = $this->app->build($processor[ 'class' ]);
+            $this->set($name, $processor);
+        }
+        return $processor[ 'instance' ];
+    }
 
     public function hasAll($names, $returnHasNot = false)
     {
@@ -139,6 +137,7 @@ class Processors extends BaseCollection
         return true;
     }
 
+//# GETTERS & SETTERS
     public function getSorted($names)
     {
         $all = $this->whereIn('name', $names)->sortBy('priority')->replaceProcessors();

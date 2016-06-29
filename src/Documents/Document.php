@@ -14,7 +14,6 @@ namespace Codex\Documents;
 use Codex\Contracts;
 use Codex\Contracts\Codex;
 use Codex\Exception\CodexException;
-use Codex\Exception\DocumentNotFoundException;
 use Codex\Projects\Project;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
@@ -51,7 +50,7 @@ class Document extends Extendable
     /**
      * The project instance
      *
-     * @var \Codex\Project
+     * @var \Codex\Projects\Project
      */
     protected $project;
 
@@ -94,13 +93,13 @@ class Document extends Extendable
     /**
      * Document constructor.
      *
-     * @param \Codex\Contracts\Codex|\Codex\Codex    $codex
+     * @param \Codex\Contracts\Codex                 $codex
      * @param \Codex\Projects\Project                $project
      * @param \Illuminate\Contracts\Cache\Repository $cache
      * @param                                        $path
      * @param                                        $pathName
      *
-     * @throws \Codex\Exception\DocumentNotFoundException
+     * @throws \Codex\Exception\CodexException
      */
     public function __construct(Codex $codex, Project $project, Repository $cache, $path, $pathName)
     {
@@ -119,7 +118,7 @@ class Document extends Extendable
 
         if ( ! $this->getFiles()->exists($this->getPath()) )
         {
-            throw DocumentNotFoundException::document($this)->inProject($project);
+            throw CodexException::documentNotFound("{$this} in [{$project}]");
         }
 
         $this->attributes   = $codex->config('default_document_attributes');
@@ -422,7 +421,7 @@ class Document extends Extendable
 
     /**
      * getProcessors method
-     * @return \Codex\Addons\Repositories\Processors
+     * @return \Codex\Addons\Collections\Processors
      */
     protected function getProcessors()
     {
@@ -463,5 +462,9 @@ class Document extends Extendable
         return $this->lastModified;
     }
 
+    public function __toString()
+    {
+        return $this->pathName;
+    }
 
 }

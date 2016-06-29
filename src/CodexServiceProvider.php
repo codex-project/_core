@@ -16,7 +16,6 @@ use Codex\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Filesystem\FilesystemAdapter;
 use League\Flysystem\Filesystem as Flysystem;
-use Monolog\Handler\ChromePHPHandler;
 use Monolog\Logger as Monolog;
 use Sebwite\Support\ServiceProvider;
 
@@ -143,7 +142,9 @@ class CodexServiceProvider extends ServiceProvider
         {
             $codex->extend('projects', Projects\Projects::class);
             $codex->extend('menus', Menus\Menus::class);
-            $codex->extend('theme', Theme::class);
+
+            $codex->extend('theme', Helpers\ThemeHelper::class);
+            $codex->extend('cache', Helpers\CacheHelper::class);
         });
 
         #$this->share('codex', Codex::class, [ ], true);
