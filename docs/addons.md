@@ -4,6 +4,13 @@ A addon is one or more
 - Hook
 - Processor
 
+You can access addons with
+```php
+/** @var \Codex\Addons\Factory */
+$addons = codex()->addons;
+$addons->getViews();
+```
+
 #### Plugin
 Plugins are used to alter Codex. They are capable of doing something very minor or completely alter the way Codex works. 
 

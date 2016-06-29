@@ -2,6 +2,7 @@
 namespace Codex\Addons;
 
 use Sebwite\Filesystem\Filesystem;
+use Sebwite\Support\Arr;
 
 class Manifest extends \Illuminate\Support\Collection
 {
@@ -24,13 +25,62 @@ class Manifest extends \Illuminate\Support\Collection
     }
 
     /**
-     * @param array|string $manifestPath
+     * @param array $items
      *
      * @return \Codex\Addons\Manifest
+     *
      */
-    public static function make()
+    public static function make($items = [ ])
     {
         return app(static::class);
+    }
+
+    public function value()
+    {
+        return $this->items[ 0 ];
+    }
+
+    /** @return static */
+    public function clear()
+    {
+        $this->items = [ ];
+        return $this;
+    }
+
+    /** @return static */
+    public function load()
+    {
+        $manifest    = $this->fs->get($this->getManifestPath());
+        $this->items = json_decode($manifest, true);
+        return $this;
+    }
+
+    /**
+     * @param int $options
+     *
+     * @return static
+     */
+    public function save($options = JSON_UNESCAPED_SLASHES)
+    {
+        $manifest = json_encode($this->items, $options);
+        $this->fs->put($this->getManifestPath(), $manifest);
+        return $this;
+    }
+
+    /**
+     * @param $value
+     *
+     * @return static
+     */
+    public function add($value)
+    {
+        $this->items[] = $value;
+        return $this;
+    }
+
+    public function has($key)
+    {
+        return Arr::has($this->items, $key);
     }
 
     public function get($key, $default = null)
@@ -38,10 +88,61 @@ class Manifest extends \Illuminate\Support\Collection
         return data_get($this->items, $key, $default);
     }
 
-    public function load()
+    /**
+     * @param      $key
+     * @param null $value
+     *
+     * @return static
+     */
+    public function set($key, $value = null)
     {
-        $manifest    = $this->fs->get($this->getManifestPath());
-        $this->items = json_decode($manifest, true);
+        if ( $value === null )
+        {
+            $this->customMerge($key);
+        }
+        else
+        {
+            data_set($this->items, $key, $value);
+        }
+        return $this;
+    }
+
+    /**
+     * @param array $keys
+     *
+     * @return static
+     */
+    public function forget($keys = [ ])
+    {
+        Arr::forget($this->items, $keys);
+        return $this;
+    }
+
+    public function whereHas($key, $value)
+    {
+        return $this->filter(function ($item) use ($key, $value)
+        {
+            return in_array($value, data_get($item, $key, [ ]), true);
+        });
+    }
+
+    /**
+     * @param array  $items
+     * @param array  $key
+     * @param string $method
+     *
+     * @return static
+     */
+    public function customMerge(array $items, array $key = null, $method = 'array_replace_recursive')
+    {
+        if ( $key )
+        {
+            $this->set($key, call_user_func($method, $this->get($key, [ ]), $items));
+        }
+        else
+        {
+            $this->items = call_user_func($method, $this->items, $items);
+        }
         return $this;
     }
 
@@ -63,38 +164,36 @@ class Manifest extends \Illuminate\Support\Collection
         return $this;
     }
 
-    /** @return static */
-    public function add($value)
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetExists($key)
     {
-        $this->items[] = $value;
-        return $this;
+        return $this->has($key);
     }
 
-    public function save()
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetGet($key)
     {
-        $manifest = json_encode($this->items);
-        $this->fs->put($this->getManifestPath(), $manifest);
-        return $this;
+        return $this->get($key);
     }
 
-    public function value()
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetSet($key, $value)
     {
-        return $this->items[ 0 ];
+        $this->set($key, $value);
     }
 
-    /** @return static */
-    public function set($key, $value = null)
+    /**
+     * {@inheritDoc}
+     */
+    public function offsetUnset($key)
     {
-        data_set($this->items, $key, $value);
-        return $this;
-    }
-
-    public function whereHas($key, $value)
-    {
-        return $this->filter(function ($item) use ($key, $value)
-        {
-            return in_array($value, data_get($item, $key, [ ]), true);
-        });
+        $this->forget($key);
     }
 
 

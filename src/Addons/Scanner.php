@@ -49,7 +49,7 @@ class Scanner
         {
             $this->getManifest()->load();
         }
-        return $this->getManifest()->get('paths', [ ]);
+        return $this->getManifest()->get('addons.*.path', [ ]);
     }
 
     public function getManifestPath()
@@ -65,7 +65,8 @@ class Scanner
     public function findAll()
     {
         $files = [ ];
-        foreach ( $this->getAddonPaths() as $path )
+        $paths = $this->getAddonPaths();
+        foreach ( $paths as $path )
         {
             $files = array_merge($files, $this->scanDirectory($path));
         }
