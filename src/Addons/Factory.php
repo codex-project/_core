@@ -3,8 +3,6 @@ namespace Codex\Addons;
 
 use BadMethodCallException;
 use Codex\Addons\Annotations;
-use Codex\Addons\Collections\Hooks;
-use Codex\Addons\Collections\Processors;
 use Codex\Addons\Scanner\ClassFileInfo;
 use Codex\Dev\Dev;
 use Illuminate\Container\Container;
@@ -19,11 +17,15 @@ use Sebwite\Filesystem\Filesystem;
  * @author         CLI
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  *
- * @method Hooks hooks(...$params)
- * @method Processors processors(...$params)
+ * @method Collections\Hooks hooks(...$params)
+ * @method Collections\Processors processors(...$params)
+ * @method Collections\Views views(...$params)
+ * @method Collections\Plugins plugins(...$params)
  *
- * @property Processors $processors
- * @property Hooks      $hooks
+ * @property Collections\Processors $processors
+ * @property Collections\Hooks      $hooks
+ * @property Collections\Views      $views
+ * @property Collections\Plugins    $plugins
  *
  */
 class Factory implements Arrayable
@@ -59,27 +61,7 @@ class Factory implements Arrayable
     /** @var \Illuminate\Foundation\Application */
     protected $app;
 
-    protected $views = [
-        'layouts'    => [
-            'base'    => 'codex::layouts.base',
-            'default' => 'codex::layouts.default',
-        ],
-        'layout'     => 'codex::layouts.default',
-        'document'   => 'codex::document',
-        'error'      => 'codex::error',
-        'menus'      => [
-            'sidebar'  => 'codex::menus.sidebar',
-            'projects' => 'codex::menus.header-dropdown',
-            'versions' => 'codex::menus.header-dropdown',
-        ],
-        'processors' => [
-            'header'  => 'codex::processors.header',
-            'toc'     => 'codex::processors.toc',
-            'buttons' => 'codex::processors.buttons',
-        ],
-    ];
-
-    protected $collections = [ 'processors', 'themes', 'hooks' ];
+    protected $collections = [ 'processors', 'plugins', 'hooks', 'views' ];
 
     /** @var string */
     protected $manifestPath;
@@ -89,8 +71,10 @@ class Factory implements Arrayable
 
     protected function __construct()
     {
-        $this->processors = new Processors([ ], $this);
-        $this->hooks      = new Hooks([ ], $this);
+        $this->processors = new Collections\Processors([ ], $this);
+        $this->hooks      = new Collections\Hooks([ ], $this);
+        $this->views      = new Collections\Views([ ], $this);
+        $this->plugins    = new Collections\Plugins([ ], $this);
 
         $this->scanner = new Scanner($this);
         $this->fs      = new Filesystem();
@@ -120,9 +104,9 @@ class Factory implements Arrayable
     {
         if ( $view === null )
         {
-            return data_get($this->views, $name);
+            return $this->views->get($name);
         }
-        data_set($this->views, $name, $view);
+        $this->views->set($name, $view);
         return $this;
     }
 
@@ -187,12 +171,15 @@ class Factory implements Arrayable
 
     public function findAndRegisterAll()
     {
-        Dev::getInstance()->benchmark('a');
-        foreach ( $this->scanner->findAll() as $file )
+        Dev::getInstance()->benchmark('Codex Addon Factory findAndRegisterAll');
+        $files = $this->scanner->findAll();
+        foreach ( $files as $file )
         {
             $this->register($file);
         }
-        Dev::getInstance()->benchmark('b');
+        Dev::getInstance()->addMessage(array_keys($this->registered));
+
+        Dev::getInstance()->benchmark('-');
         #codex()->dev->stopMeasure('Codex\Addons\Factory::findAndRegisterAll');
     }
 
@@ -220,7 +207,8 @@ class Factory implements Arrayable
         return [
             'processors' => $this->processors->toArray(),
             'hooks'      => $this->hooks->toArray(),
-            'views'      => $this->views,
+            'plugins'    => $this->plugins->toArray(),
+            'views'      => $this->views->toArray(),
         ];
     }
 
@@ -275,7 +263,7 @@ class Factory implements Arrayable
 
     protected function loadManifest()
     {
-        return $this->manifest = Manifest::make($this->manifestPath);
+        return $this->manifest = Manifest::make()->setManifestPath($this->manifestPath)->load();
     }
 
     /**

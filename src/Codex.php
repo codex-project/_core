@@ -13,6 +13,7 @@ namespace Codex;
 
 use Codex\Contracts;
 use Codex\Projects\Project;
+use Codex\Support\Collection;
 use Codex\Support\Extendable;
 use Codex\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
@@ -73,7 +74,7 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
      *
      * @var string
      */
-    protected $docsDir;
+    protected $docsPath;
 
     //protected $log;
 
@@ -91,23 +92,26 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
     public function __construct(Container $container, Filesystem $files, Cache $cache, Contracts\Log\Log $log)
     {
         $this->setContainer($container);
-        $this->setConfig(config('codex'));
         $this->setFiles($files);
 
         $this->cache = $cache;
         $this->log   = $log;
 
-        $this->docsDir = config('codex.paths.docs');
-        if ( path_is_relative($this->docsDir) )
+        $this->docsPath = config('codex.paths.docs');
+        if ( path_is_relative($this->docsPath) )
         {
-            $this->docsDir = base_path($this->docsDir);
+            $this->docsPath = base_path($this->docsPath);
         }
 
         // 'factory:done' called after all factory operations have completed.
         $this->hookPoint('constructed', [ $this ]);
     }
 
-//# GETTERS & SETTERS
+    public function getVersion()
+    {
+        return '2.0.0-beta';
+    }
+
     /**
      * Creates a error response. To be used in controllers/middleware
      *
@@ -149,6 +153,8 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
      */
     public function pushToStack($stackName, $viewName, $data = null, $appendTo = 'codex::layouts.default')
     {
+        $this->theme->pushToStack($stackName, $viewName, $data, $appendTo);
+        return $this;
         $this->container->make('events')->listen('composing: ' . $appendTo, function ($view) use ($stackName, $viewName, $data)
         {
             /** @var \Illuminate\View\View $view */
@@ -211,11 +217,13 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
      * @param string $level   The log level
      * @param string $message The message to log
      * @param array  $context (optional) The context to log
+     *
+     * @return static
      */
     public function log($level, $message, $context = [ ])
     {
-
         $this->log->log($level, $message, $context);
+        return $this;
     }
 
     /**
@@ -225,7 +233,7 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
      */
     public function getDocsPath()
     {
-        return $this->docsDir;
+        return $this->docsPath;
     }
 
     public function getCachedLastModified($key, $lastModified, \Closure $create)
@@ -301,5 +309,21 @@ class Codex extends Extendable implements Contracts\Codex, Arrayable
         }
         return parent::__get($name);
     }
+
+    public function setConfig($key, $value = null)
+    {
+        config()->set("codex.{$key}", $value);
+        return $this;
+    }
+
+    public function config($key = null, $default = null)
+    {
+        if ( $key === null )
+        {
+            return new Collection($this->app[ 'config' ][ 'codex' ]);
+        }
+        return $this->app[ 'config' ]->get("codex.{$key}", $default);
+    }
+
 
 }

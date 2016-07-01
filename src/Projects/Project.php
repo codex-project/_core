@@ -25,9 +25,9 @@ use vierbergenlars\SemVer\version;
  * @author         Robin Radic
  * @copyright      Copyright (c) 2015, Robin Radic. All rights reserved
  *
- * @property \Codex\Documents\Documents                  $documents Get documents
- * @property \Codex\Addon\Phpdoc\PhpdocProject           $phpdoc
- * @property \Codex\Documents\Documents                  $documents2
+ * @property \Codex\Documents\Documents        $documents Get documents
+ * @property \Codex\Addon\Phpdoc\PhpdocProject $phpdoc
+ * @property \Codex\Documents\Documents        $documents2
  *
  * @method boolean hasEnabledAuth()
  * @method boolean hasAccess()
@@ -143,27 +143,11 @@ class Project extends Extendable implements Arrayable
         return 'codex-local-' . $this->getName();
     }
 
-    public function hasEnabledAddon($name)
-    {
-        return $this->config("{$name}.enabled", false) === true;
-    }
-
-    /**
-     * Get name.
-     *
-     * @return string
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * setDisk method
-     *
-     * @param null|string $diskName
-     *
-     */
     public function setDisk()
     {
         $this->repository->set(
@@ -181,7 +165,8 @@ class Project extends Extendable implements Arrayable
     public function getDiskConfig()
     {
         $default = [ ];
-        if ( $this->getDiskName() === $this->getDefaultDiskName() ) {
+        if ( $this->getDiskName() === $this->getDefaultDiskName() )
+        {
             $default = [
                 'driver' => 'codex-local',
                 'root'   => $this->codex->getDocsPath() . DIRECTORY_SEPARATOR . $this->getName(),
@@ -198,15 +183,18 @@ class Project extends Extendable implements Arrayable
         $branches    = [ ];
         $this->refs  = [ ];
 
-        $this->versions = array_filter(array_map(function ($dirPath) use (&$branches) {
+        $this->versions = array_filter(array_map(function ($dirPath) use (&$branches)
+        {
             $version      = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft(DIRECTORY_SEPARATOR);
             $version      = (string)$version->removeLeft($this->name . '/');
             $this->refs[] = $version;
 
-            try {
+            try
+            {
                 return new version($version);
             }
-            catch (\RuntimeException $e) {
+            catch (\RuntimeException $e)
+            {
                 $branches[] = $version;
             }
         }, $directories), 'is_object');
@@ -216,9 +204,11 @@ class Project extends Extendable implements Arrayable
         // check which version/branch to show by default
         $defaultRef = count($this->versions) > 0 ? head($this->versions) : head($branches);
 
-        switch ( $this->config[ 'default' ] ) {
+        switch ( $this->config[ 'default' ] )
+        {
             case static::SHOW_LAST_VERSION:
-                usort($this->versions, function (version $v1, version $v2) {
+                usort($this->versions, function (version $v1, version $v2)
+                {
 
 
                     return version::gt($v1, $v2) ? -1 : 1;
@@ -227,8 +217,10 @@ class Project extends Extendable implements Arrayable
                 $defaultRef = head($this->versions);
                 break;
             case static::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH:
-                if ( count($this->versions) > 0 ) {
-                    usort($this->versions, function (version $v1, version $v2) {
+                if ( count($this->versions) > 0 )
+                {
+                    usort($this->versions, function (version $v1, version $v2)
+                    {
 
 
                         return version::gt($v1, $v2) ? -1 : 1;
@@ -293,9 +285,14 @@ class Project extends Extendable implements Arrayable
         return in_array($filter, $this->config('processors.enabled', [ ]), true);
     }
 
-    public function hasEnabledHook($hook)
+    public function hasEnabledAddon($name)
     {
-        return in_array($hook, $this->config('hooks.enabled', [ ]), true);
+        return $this->config("{$name}.enabled", false) === true;
+    }
+
+    public function hasEnabledExtension($extension)
+    {
+        return in_array($extension, $this->config('extensions', []), true);
     }
 
     /**
@@ -337,7 +334,7 @@ class Project extends Extendable implements Arrayable
      *
      * @param  string $name
      *
-     * @return \Codex\Project
+     * @return static
      */
     public function setRef($name)
     {
@@ -357,7 +354,7 @@ class Project extends Extendable implements Arrayable
      * @param array  $items The array converted from yaml
      * @param string $parentId
      *
-     * @return \Codex\Menu
+     * @return \Codex\Menus\Menu
      */
     protected function setupSidebarMenu($items, $parentId = 'root')
     {
@@ -366,13 +363,17 @@ class Project extends Extendable implements Arrayable
          */
         $menu = $this->codex->menus->add('sidebar');
 
-        foreach ( $items as $item ) {
+        foreach ( $items as $item )
+        {
             $link = '#';
-            if ( array_key_exists('document', $item) ) {
+            if ( array_key_exists('document', $item) )
+            {
                 // remove .md extension if present
                 $path = Str::endsWith($item[ 'document' ], '.md', false) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
                 $link = $this->codex->url($this, $this->getRef(), $path);
-            } elseif ( array_key_exists('href', $item) ) {
+            }
+            elseif ( array_key_exists('href', $item) )
+            {
                 $link = $item[ 'href' ];
             }
 
@@ -382,11 +383,13 @@ class Project extends Extendable implements Arrayable
             $node->setAttribute('href', $link);
             $node->setAttribute('id', $id);
 
-            if ( isset($item[ 'icon' ]) ) {
+            if ( isset($item[ 'icon' ]) )
+            {
                 $node->setMeta('icon', $item[ 'icon' ]);
             }
 
-            if ( isset($item[ 'children' ]) ) {
+            if ( isset($item[ 'children' ]) )
+            {
                 $this->setupSidebarMenu($item[ 'children' ], $id);
             }
         }
@@ -427,13 +430,15 @@ class Project extends Extendable implements Arrayable
         $versions = $this->versions;
 
 
-        usort($versions, function (version $v1, version $v2) {
+        usort($versions, function (version $v1, version $v2)
+        {
 
 
             return version::gt($v1, $v2) ? -1 : 1;
         });
 
-        $versions = array_map(function (version $v) {
+        $versions = array_map(function (version $v)
+        {
 
 
             return $v->getVersion();
@@ -457,7 +462,7 @@ class Project extends Extendable implements Arrayable
      *
      * @param  string $path
      *
-     * @return \Codex\Project
+     * @return static
      */
     public function setPath($path)
     {
@@ -469,6 +474,7 @@ class Project extends Extendable implements Arrayable
     /**
      * Get branches.
      *
+     * @deprecated
      * @return array
      */
     public function getBranches()
@@ -479,6 +485,7 @@ class Project extends Extendable implements Arrayable
     /**
      * Get versions.
      *
+     * @deprecated
      * @return array
      */
     public function getVersions()

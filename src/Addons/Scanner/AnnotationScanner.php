@@ -33,6 +33,10 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class AnnotationScanner implements \IteratorAggregate
 {
+    private $realpath = false;
+
+    private $depth = 5;
+
     /**
      * @var Reader
      */
@@ -50,6 +54,12 @@ class AnnotationScanner implements \IteratorAggregate
         $this->reader = $reader;
     }
 
+    public function realpath($enabled = true)
+    {
+        $this->realpath = $enabled;
+        return $this;
+    }
+
     public function in($path)
     {
         $this->path[] = $path;
@@ -64,10 +74,16 @@ class AnnotationScanner implements \IteratorAggregate
         return $this;
     }
 
-    public function scan(array $annotations)
+    public function annotations(array $annotations)
     {
         $this->annotations = $annotations;
 
+        return $this;
+    }
+
+    public function depth($depth)
+    {
+        $this->depth = $depth;
         return $this;
     }
 
@@ -77,8 +93,10 @@ class AnnotationScanner implements \IteratorAggregate
 
         $finder = new SymfonyFinder();
         $finder->files()
+            ->followLinks()
             ->name('*.php')
             ->in($this->path)
+            ->depth('<=' . $this->depth)
             ->exclude($this->exclude);
 
         /** @var SplFileInfo $file */

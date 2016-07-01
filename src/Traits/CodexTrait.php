@@ -28,6 +28,10 @@ trait CodexTrait
      */
     public function getCodex()
     {
+        if ( $this->codex === null && app()->bound('codex') )
+        {
+            $this->setCodex(app('codex'));
+        }
         return $this->codex;
     }
 

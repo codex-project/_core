@@ -25,5 +25,20 @@ class CacheHelper extends Extendable
         $this->setCodex($parent);
     }
 
+    public function getCachedLastModified($key, $lastModified, \Closure $create)
+    {
+        /** @var \Illuminate\Contracts\Cache\Repository $cache */
+        $cache = $this->getCodex()->getCache();
+        $clm   = (int)$cache->get($key . '.lastModified', 0);
+        $plm   = (int)$lastModified;
+        if ( $clm !== $plm )
+        {
+            $cache->forever($key, $create());
+            $cache->forever($key . '.lastModified', $plm);
+        }
+        return $cache->get($key);
+    }
+
+
 
 }

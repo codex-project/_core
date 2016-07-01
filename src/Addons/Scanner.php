@@ -49,7 +49,7 @@ class Scanner
         {
             $this->getManifest()->load();
         }
-        return $this->getManifest()->get('addons.*.path', [ ]);
+        return $this->getManifest()->get('addons.*.autoloads.*.path', [ ]);
     }
 
     public function getManifestPath()
@@ -68,7 +68,8 @@ class Scanner
         $paths = $this->getAddonPaths();
         foreach ( $paths as $path )
         {
-            $files = array_merge($files, $this->scanDirectory($path));
+            $found = $this->scanDirectory($path);
+            $files = array_merge($files, $found);
         }
         return $files;
     }
@@ -78,7 +79,8 @@ class Scanner
         $files = [ ];
         foreach ( $this->createAnnotationScanner($this->annotations)->in($path) as $file )
         {
-            $files[] = $file;
+            /** @var ClassFileInfo $file */
+            $files[$file->getClassName()] = $file;
         }
         return $files;
     }
@@ -98,7 +100,7 @@ class Scanner
             $annotationClass = [ $annotationClass ];
         }
         $scanner = new AnnotationScanner($this->reader);
-        return $scanner->scan($annotationClass);
+        return $scanner->annotations($annotationClass);
     }
 
 }

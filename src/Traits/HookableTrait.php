@@ -9,9 +9,16 @@
 namespace Codex\Traits;
 
 
+use Codex\Exception\CodexException;
+use Sebwite\Support\Arr;
+
 trait HookableTrait
 {
     use EventTrait;
+
+    public static $hookPoints = [ ];
+
+    public static $hooks = [ ];
 
     /**
      * Returns the transformed (namespaced) event name for a hook
@@ -30,9 +37,9 @@ trait HookableTrait
     /**
      * Create a Codex Hook
      *
-     * @param string $event The hook name
+     * @param string          $event    The hook name
      * @param string|\Closure $callback The callback to execute
-     * @param int $priority (optional) The priority
+     * @param int             $priority (optional) The priority
      */
     public static function hook($event, $callback, $priority = 1)
     {
@@ -43,22 +50,52 @@ trait HookableTrait
      * Defines a point where hooks can hook
      *
      * @param string $event The hook name
-     * @param array $args (optional) The arguments to pass along
-     * @param bool  $halt (optional) If this hook can halt
+     * @param array  $args  (optional) The arguments to pass along
+     * @param bool   $halt  (optional) If this hook can halt
      *
      * @return array|null
      */
     protected function hookPoint($event, array $args = [ ], $halt = true)
     {
+        if ( config('codex.dev.enabled', false) === true )
+        {
+            if ( array_key_exists($event, static::$hookPoints) )
+            {
+                throw CodexException::because('hook point already exists');
+            }
+            Arr::add(static::$hooks, $event, static::getDispatcher()->getListeners($event));
+            $caller = $this->hookPointGetCaller(debug_backtrace(), 1);
+            $caller = array_only($caller, [ 'function', 'class' ]);
+            Arr::set(static::$hookPoints, static::getEventName($event), $caller);
+        }
         return $this->fireEvent($event, $args, $halt);
+    }
+
+    protected function hookPointGetCaller(array $trace, $current, $max = 5)
+    {
+        if ( $current + 1 > $max )
+        {
+            return null;
+        }
+        if ( isset($trace[ $current ]) )
+        {
+            if ( $trace[ $current ][ 'function' ] === 'hookPoint' )
+            {
+                return $this->hookPointGetCaller($trace, $current + 1);
+            }
+            else
+            {
+                return $trace[ $current ];
+            }
+        }
     }
 
     /**
      * Fires an event for hooks
      *
      * @param string $event The hook name
-     * @param array $args (optional) The arguments to pass along
-     * @param bool  $halt (optional) If this hook can halt
+     * @param array  $args  (optional) The arguments to pass along
+     * @param bool   $halt  (optional) If this hook can halt
      *
      * @return array|null
      */

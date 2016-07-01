@@ -10,7 +10,7 @@
  */
 namespace Codex\Addons\Collections;
 
-class Plugins
+class Plugins extends BaseCollection
 {
 
 }

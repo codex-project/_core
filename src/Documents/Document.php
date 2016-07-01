@@ -123,7 +123,6 @@ class Document extends Extendable implements Arrayable
         }
 
         $this->attributes   = $codex->config('default_document_attributes');
-        $this->runProcessor('attributes');
         $this->lastModified = $this->getFiles()->lastModified($this->getPath());
         $this->content      = $this->getFiles()->get($this->getPath());
         $this->setCacheMode($this->getCodex()->config('document.cache.mode', self::CACHE_DISABLED));
@@ -211,6 +210,7 @@ class Document extends Extendable implements Arrayable
      */
     public function runProcessors()
     {
+        $this->runProcessor('attributes');
         $processors = $this->getEnabledProcessors();
         foreach ( $this->getProcessors()->getSorted($processors) as $processor )
         {
@@ -225,7 +225,7 @@ class Document extends Extendable implements Arrayable
      *
      * @throws \Codex\Exception\CodexException
      */
-    public function runProcessor($name)
+    protected function runProcessor($name)
     {
         if ( $this->processed->has($name) )
         {

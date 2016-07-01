@@ -89,7 +89,9 @@ class CodexController extends Controller
         {
             return $codex->error('Not found', 'The document could not be found', 404);
         }
-        $document = $project->documents->get($path);
+        $document   = $project->documents->get($path);
+        $content    = $document->render();
+        $breadcrumb = $document->getBreadcrumb();
 
         $res = $this->hookPoint('controller:document', [ $document, $codex, $project ]);
         if ( $res )
@@ -99,9 +101,7 @@ class CodexController extends Controller
 
 
         // prepare view
-        $content    = $document->render();
-        $breadcrumb = $document->getBreadcrumb();
-        $view       = $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
+        $view = $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
 
         $res = $this->hookPoint('controller:view', [ $view, $codex, $project, $document ]);
         if ( $res )

@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author Robin Radic
+ * @author    Robin Radic
  * @copyright Copyright 2016 (c) Codex Project
- * @license http://codex-project.ninja/license The MIT License
+ * @license   http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Addons\Collections;
 
@@ -16,6 +16,7 @@ use Codex\Contracts\Traits\Hookable;
 use Codex\Exception\CodexException;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
+use Sebwite\Support\Arr;
 
 abstract class BaseCollection extends \Illuminate\Support\Collection implements Hookable
 {
@@ -35,12 +36,24 @@ abstract class BaseCollection extends \Illuminate\Support\Collection implements 
 
     public function get($key, $default = null)
     {
-        return data_get($this->items, $key, $default);
+        return Arr::get($this->items, $key, $default);
     }
 
     public function set($key, $value = null)
     {
-        data_set($this->items, $key, $value);
+        Arr::set($this->items, $key, $value);
+        return $this;
+    }
+
+    public function has($key)
+    {
+        return Arr::has($this->items, $key);
+    }
+
+    public function forget($keys)
+    {
+        Arr::forget($this->items, $keys);
+        return $this;
     }
 
     public function whereHas($key, $value)
@@ -51,49 +64,25 @@ abstract class BaseCollection extends \Illuminate\Support\Collection implements 
         });
     }
 
-    /** @deprecated */
-    public function createProvider(ClassFileInfo $file, $instance = null)
+    public function offsetExists($key)
     {
-        $instance = $instance ?: app()->build($class = $file->getClassName());
-
-        /** @noinspection PhpParamsInspection */
-        $provider = new AddonServiceProvider($this->app);
-        $provider->setAddon($instance);
-        $path = $file->getPath();
-
-        for ( $current = 0; $current < 4; $current++ )
-        {
-            if ( $this->addons->getFs()->exists(path_join($path, 'composer.json')) )
-            {
-                break;
-            }
-            $path = path_get_directory($path);
-        }
-
-        if ( $path === $file->getPath() )
-        {
-            throw CodexException::because('Could not resolve root dir');
-        }
-
-        $provider->setRootDir($path);
-
-        if ( property_exists($instance, 'registerConfig') )
-        {
-            $provider->setConfigFiles((array)$instance->registerConfig);
-        }
-
-        if ( property_exists($instance, 'registerAssets') )
-        {
-            $provider->setAssetDirs((array)$instance->registerAssets);
-        }
-
-        if ( property_exists($instance, 'registerViews') )
-        {
-            $provider->setViewDirs((array)$instance->registerViews);
-        }
-
-
-        return $provider;
+        $this->has($key);
     }
+
+    public function offsetGet($key)
+    {
+        $this->get($key);
+    }
+
+    public function offsetSet($key, $value)
+    {
+        $this->set($key, $value);
+    }
+
+    public function offsetUnset($key)
+    {
+        $this->forget($key);
+    }
+
 
 }

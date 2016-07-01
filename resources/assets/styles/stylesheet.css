@@ -5652,16 +5652,6 @@ article.content.loaded {
   opacity: 1;
 }
 
-article.content > .top-buttons.top-buttons-groups .top-button-group .btn:not(:first-child) {
-  border-left: 1px solid #fbc0be;
-}
-
-article.content > .top-buttons .btn {
-  padding: 3px 10px;
-  font-size: 12px;
-  text-decoration: none;
-}
-
 article.content > header {
   padding-bottom: 20px;
   border-bottom: 1px solid #f0f2f1;
@@ -5686,52 +5676,11 @@ article.content p {
   line-height: 1.70;
 }
 
-article.content ul.toc {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 1.5;
-  padding-top: 25px;
-  padding-bottom: 25px;
-  border-bottom: 1px solid #f0f2f1;
-  -webkit-font-smoothing: antialiased;
-}
-
-article.content ul.toc li:before {
-  content: "# ";
-  margin-right: .25em;
-  color: #f4645f;
-  opacity: .3;
-}
-
-article.content ul.toc li a {
-  text-decoration: none;
-}
-
 article.content li > ul,
 article.content li > ul ul {
   font-size: 15px;
   padding-left: 20px;
   font-weight: 400;
-  list-style: none;
-}
-
-article.content .toc-header-link,
-article.content .toc-header-link:hover {
-  color: #525252;
-  text-decoration: none;
-}
-
-article.content .toc-header-link:before {
-  content: "#";
-  margin-left: -25px;
-  position: absolute;
-  font-size: 28px;
-  top: 3px;
-  color: #f4645f;
-  opacity: .4;
 }
 
 article.content > h2:first-of-type {
@@ -5752,11 +5701,6 @@ article.content > h3 {
   position: relative;
 }
 
-article.content > h3 .toc-header-link:before {
-  font-size: 26px;
-  top: 0;
-}
-
 article.content > h2 + h3 {
   margin-top: 20px;
 }
@@ -5766,11 +5710,6 @@ article.content > h4 {
   font-weight: 400;
   margin-top: 35px;
   position: relative;
-}
-
-article.content > h4 .toc-header-link:before {
-  font-size: 21px;
-  top: -1px;
 }
 
 article.content > h3 + h4 {
@@ -5783,11 +5722,6 @@ article.content h5 {
   font-size: 17px;
   color: black;
   position: relative;
-}
-
-article.content h5 .toc-header-link:before {
-  font-size: 20px;
-  top: -3px;
 }
 
 article.content h6 {
@@ -5846,6 +5780,75 @@ article.content table th {
 
 .content-compact.sidebar-closed article.content {
   margin-left: 0;
+}
+
+article.content > .top-buttons.top-buttons-groups .top-button-group .btn:not(:first-child) {
+  border-left: 1px solid #fbc0be;
+}
+
+article.content > .top-buttons .btn {
+  padding: 3px 10px;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+article.content ul.toc {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.5;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #f0f2f1;
+  -webkit-font-smoothing: antialiased;
+}
+
+article.content ul.toc ul {
+  list-style: none;
+}
+
+article.content ul.toc li:before {
+  content: "# ";
+  margin-right: .25em;
+  color: #f4645f;
+  opacity: .3;
+}
+
+article.content ul.toc li a {
+  text-decoration: none;
+}
+
+article.content .toc-header-link,
+article.content .toc-header-link:hover {
+  color: #525252;
+  text-decoration: none;
+}
+
+article.content .toc-header-link:before {
+  content: "#";
+  margin-left: -25px;
+  position: absolute;
+  font-size: 28px;
+  top: 3px;
+  color: #f4645f;
+  opacity: .4;
+}
+
+h3 article.content .toc-header-link:before {
+  font-size: 26px;
+  top: 0;
+}
+
+h4 article.content .toc-header-link:before {
+  font-size: 21px;
+  top: -1px;
+}
+
+h5 article.content .toc-header-link:before {
+  font-size: 20px;
+  top: -3px;
 }
 
 @media (max-width: 1080px) {

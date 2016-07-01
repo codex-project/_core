@@ -10,6 +10,8 @@
  */
 namespace Codex\Dev;
 
+use Closure;
+use Codex\Dev\Debugbar\CodexSimpleCollector;
 use Codex\Support\Bench;
 use Codex\Support\Extendable;
 
@@ -79,25 +81,48 @@ class Dev extends Extendable
      */
     public function canDebugbar()
     {
-        return $this->isEnabled() && config('codex.dev.debugbar', false) && $this->app->bound('debugbar') && $this->app->make('debugbar')->isEnabled();
+        return $this->isEnabled() && config('codex.dev.debugbar', false);
+    }
+
+    public function hasDebugbar()
+    {
+        return $this->app->bound('debugbar') && $this->app->make('debugbar')->isEnabled() === true && $this->app->isBooted();
     }
 
     /**
      * Returns the Debugbar instance
      *
-     * @return \Barryvdh\Debugbar\LaravelDebugbar
+     * @param \Closure $cb
+     *
+     * @return static
      */
-    protected function debugbar()
+    protected function debugbar(Closure $cb)
     {
-        return $this->app->make('debugbar');
+        if ( $this->canDebugbar() )
+        {
+            if ( $this->hasDebugbar() )
+            {
+                call_user_func($cb, $this->app->make('debugbar'));
+            }
+            else
+            {
+                $this->app->booted(function ($app) use ($cb)
+                {
+                    call_user_func($cb, $app->make('debugbar'));
+                });
+            }
+        }
+        return $this;
     }
 
     public function addMessage($message, $label = 'info')
     {
-        if ( $this->canDebugbar() )
+        $this->debugbar(function ($debugbar) use ($message, $label)
         {
-            $this->debugbar()->addMessage($message, $label);
-        }
+            /** @var \Barryvdh\Debugbar\LaravelDebugBar $debugbar */
+            $debugbar->addMessage($message, $label);
+        });
+
         return $this;
     }
 
@@ -111,10 +136,11 @@ class Dev extends Extendable
      */
     public function startMeasure($name, $label = null)
     {
-        if ( $this->canDebugbar() )
+        $this->debugbar(function ($debugbar) use ($name, $label)
         {
-            $this->debugbar()->startMeasure($name, $label);
-        }
+            /** @var \Barryvdh\Debugbar\LaravelDebugBar $debugbar */
+            $debugbar->startMeasure($name, $label);
+        });
 
         return $this;
     }
@@ -128,11 +154,45 @@ class Dev extends Extendable
      */
     public function stopMeasure($name)
     {
-        if ( $this->canDebugbar() )
+        $this->debugbar(function ($debugbar) use ($name)
         {
-            $this->debugbar()->stopMeasure($name);
-        }
+            /** @var \Barryvdh\Debugbar\LaravelDebugBar $debugbar */
+            $debugbar->stopMeasure($name);
+        });
         return $this;
+    }
+
+    public function data(Closure $cb)
+    {
+        $this->debugbar(function ($debugbar) use ($cb)
+        {
+            /** @var \Barryvdh\Debugbar\LaravelDebugBar $debugbar */
+            call_user_func($cb, $this->getCollector()->data());
+        });
+    }
+
+    /**
+     * setData method
+     *
+     * @param string|array $key
+     * @param mixed        $value
+     */
+    public function setData($key, $value = null)
+    {
+        $this->data(function ($data) use ($key, $value)
+        {
+            /** @var \Codex\Support\Collection $data */
+            $data->set($key, $value);
+        });
+    }
+
+    /**
+     * getCollector method
+     * @return CodexSimpleCollector
+     */
+    public function getCollector()
+    {
+        return $this->app->make('codex.dev.debugbar.collector');
     }
 
 
@@ -185,18 +245,25 @@ class Dev extends Extendable
         {
             $this->bench->stop();
             $this->startedBench = false;
-            if ( $addToDebugbar === true && $this->canDebugbar() )
+            if ( $addToDebugbar === true )
             {
-                $this->debugbar()->addMessage($stats = $this->bench->getStats(), 'debug');
-                $this->debugbar()->addMessage($marks = $this->bench->getMarks(), 'debug');
-                $this->debugbar()->addMeasure('benchmark overall', $stats['start'], $stats['stop']);
-
-                foreach ( $marks as $i => $mark )
+                $this->debugbar(function ($debugbar)
                 {
-                    $stop = isset($marks[ $i + 1 ]) ? $marks[ $i + 1 ][ 'microtime' ] : $stats[ 'stop' ];
+                    $debugbar->addMessage($stats = $this->bench->getStats(), 'debug');
+                    $debugbar->addMessage($marks = $this->bench->getMarks(), 'debug');
+                    $debugbar->addMeasure('benchmark overall', $stats[ 'start' ], $stats[ 'stop' ]);
 
-                    $this->debugbar()->addMeasure("benchmark({$i}): {$mark['id']}", $mark[ 'microtime' ], $stop);
-                }
+                    foreach ( $marks as $i => $mark )
+                    {
+                        if ( $mark[ 'id' ] === '-' )
+                        {
+                            continue;
+                        }
+                        $stop = isset($marks[ $i + 1 ]) ? $marks[ $i + 1 ][ 'microtime' ] : $stats[ 'stop' ];
+
+                        $debugbar->addMeasure("benchmark({$i}): {$mark['id']}", $mark[ 'microtime' ], $stop);
+                    }
+                });
             }
         }
     }

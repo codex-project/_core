@@ -1,6 +1,11 @@
 <?php
 namespace Codex\Dev;
 
+use Codex\Contracts\Codex;
+use Codex\Dev\Debugbar\CodexSimpleCollector;
+use Codex\Documents\Document;
+use Codex\Http\Controllers\CodexController;
+use Codex\Projects\Project;
 use Codex\Traits\CodexProviderTrait;
 use Sebwite\Support\ServiceProvider;
 
@@ -13,49 +18,63 @@ class DevServiceProvider extends ServiceProvider
     ];
 
     protected $shared = [
-        #Debugbar\Debugbar::class,
+        'codex.dev.debugbar.collector' => Debugbar\CodexSimpleCollector::class,
     ];
 
     /** @var Dev */
     protected $dev;
 
 
+    protected function isEnabled($devkey)
+    {
+
+        return
+            $this->app[ 'config' ]->get('codex.dev.enabled', false) === true &&
+            $this->app[ 'config' ]->get('codex.dev.' . $devkey, false) === true;
+    }
+
     public function boot()
     {
         $app = parent::boot();
-        $this->bootMetas();
-        #  $this->bootDebugbar();
+        $this->isEnabled('metas') && $this->bootMetas();
+        $this->isEnabled('debugbar') && $this->bootDebugbar();
+        $this->bootMenus();
         return $app;
     }
 
     public function register()
     {
+        $app = parent::register();
         $this->registerDev();
-        if($this->app['config']['codex.dev.enabled'] === true)
+        $this->isEnabled('metas') && $this->registerMetas();
+        $this->isEnabled('debugbar') && $this->registerDebugbar();
+        return $app;
+    }
+
+    protected function registerMetas()
+    {
+        if ( class_exists('Sebwite\IdeaMeta\IdeaMetaServiceProvider') && $this->app->bound('idea-meta') === false )
         {
-            $app = parent::register();
-            $this->hasIdeaMeta() && $this->app->register('Sebwite\IdeaMeta\IdeaMetaServiceProvider');
-            $this->hasDebugbar() && $this->app->register('Barryvdh\Debugbar\ServiceProvider');
+            $this->app->register('Sebwite\IdeaMeta\IdeaMetaServiceProvider');
         }
-        return $this->app;
+    }
+
+    protected function registerDebugbar()
+    {
+        if ( class_exists('Barryvdh\Debugbar\ServiceProvider') && $this->app->bound('idea-meta') === false )
+        {
+            $this->app->register('Barryvdh\Debugbar\ServiceProvider');
+        }
     }
 
     protected function registerDev()
     {
         $this->app->instance('codex.dev', $this->dev = Dev::getInstance());
-        $this->codexHook('document:render', function(){
+
+        $this->codexHook('document:render', function ()
+        {
             $this->dev->stopBenchmark(true);
         });
-    }
-
-    protected function hasIdeaMeta()
-    {
-        return class_exists('Sebwite\IdeaMeta\IdeaMetaServiceProvider') || $this->app->bound('idea-meta');
-    }
-
-    public function hasDebugbar()
-    {
-        return class_exists('Barryvdh\Debugbar\ServiceProvider') || $this->app->bound('debugbar');
     }
 
     protected function bootMetas()
@@ -70,6 +89,20 @@ class DevServiceProvider extends ServiceProvider
     protected function bootDebugbar()
     {
 
+        if ( $this->app->bound('debugbar') )
+        {
+            $this->app->make('debugbar')->addCollector($collector = $this->app->make('codex.dev.debugbar.collector'));
+            $this->codexHook('controller:document', function (CodexController $controller, Document $document, Codex $codex, Project $project)
+            {
+                /** @var CodexSimpleCollector $collector */
+                $collector = $this->app->make('debugbar')->getCollector('codex');
+                $collector->setDocument($document);
+                $collector->data()->set('document', $document->toArray());
+                $collector->data()->set('hookPoints', \Codex\Codex::$hookPoints);
+
+            });
+        }
+        return;
         if ( $this->app->bound('debugbar') )
         {
             $db = $this->app->make('debugbar');
@@ -97,21 +130,12 @@ class DevServiceProvider extends ServiceProvider
                     ], true)
                 );
         }
-
-        $this->app->make('codex.addons')->hooks->hook('controller:view', function ($controller, $view, $codex, $project, $document)
-        {
-            if ( $this->app->bound('debugbar') )
-            {
-                $db = $this->app->make('debugbar');
-                #  $db->addCollector(new Debugbar\CodexCollector($controller, $view, $codex, $project, $document));
-            }
-        });
     }
 
-    public function bootMenus()
+    protected function bootMenus()
     {
         $menus = $this->codex()->menus;
         $menu  = $menus->add('dev');
-        $menu->add('dev-log', 'Log')->setAttribute('href', route('codex.dev.log'));
+        $menu->add('dev-log', 'Log')->setAttribute('href', '#'); //route('codex.dev.log'));
     }
 }

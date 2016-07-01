@@ -20,7 +20,7 @@ trait ContainerTrait
     /**
      * The IoC container instance.
      *
-     * @var \Illuminate\Container\Container
+     * @var \Illuminate\Container\Container|\Illuminate\Foundation\Application
      */
     protected $app;
 
