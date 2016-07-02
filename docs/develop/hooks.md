@@ -6,10 +6,10 @@ subtitle: Develop
 
 ## Hook points
 
-| Hook point                       | Fired by                                                                                                                         |
-|:---------------------------------|:---------------------------------------------------------------------------------------------------------------------------------|
-| `constructed`              | [`Codex\Codex::__construct`](hooks.md#codex:phpdoc:popover:Codex\Codex:__construct)                                                     |
-| `menus:constructed`        | [`Codex\Menus\Menus::__construct`](#codex:phpdoc:popover:Codex\Menus\Menus:__construct)                                         |
+| Hook point                 | Fired by                                                                                                                         |
+|:---------------------------|:---------------------------------------------------------------------------------------------------------------------------------|
+| `constructed`              | [`Codex\Codex::__construct`](hooks.md#codex:phpdoc:popover:Codex\Codex:__construct)                                              |
+| `menus:constructed`        | [`Codex\Menus\Menus::__construct`](#codex:phpdoc:popover:Codex\Menus\Menus:__construct)                                          |
 | `menu:construct`           | [`Codex\Menus\Menu::__construct`](#codex:phpdoc:popover:Codex\Menus\Menu::__construct)                                           |
 | `menu:constructed`         | [`Codex\Menus\Menu::__construct`](#codex:phpdoc:popover:Codex\Menus\Menu::__construct)                                           |
 | `menus:add`                | [`Codex\Menus\Menus::add`](#codex:phpdoc:popover:Codex\Menus\Menus::add)                                                         |
@@ -34,3 +34,4 @@ subtitle: Develop
 | `document:rendered`        | [`Codex\Documents\Document::render`](#codex:phpdoc:popover:Codex\Documents\Document::render)                                     |
 | `menu:render`              | [`Codex\Menus\Menu::render`](#codex:phpdoc:popover:Codex\Menus\Menu::render)                                                     |
 | `menu:rendered`            | [`Codex\Menus\Menu::render`](#codex:phpdoc:popover:Codex\Menus\Menu::render)                                                     |
+

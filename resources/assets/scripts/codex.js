@@ -6,16 +6,9 @@ var __extends = (this && this.__extends) || function (d, b) {
 var codex;
 (function (codex) {
     codex.defaultConfig = {
-        apiUrl: 'http://codex-project.dev/api',
-        debug: true
+        apiUrl: '/api',
+        debug: false
     };
-    codex.pdata = {};
-    if (window['_CODEX_PHP_DATA']) {
-        codex.pdata = window['_CODEX_PHP_DATA'];
-    }
-    if (codex.pdata.defaultConfig) {
-        codex.defaultConfig = _.merge(codex.defaultConfig, codex.pdata.defaultConfig);
-    }
 })(codex || (codex = {}));
 var codex;
 (function (codex) {
@@ -2051,6 +2044,9 @@ var codex;
         codex.debug.setStartDate(new Date);
         _config = new codex.util.Config(codex.defaultConfig);
         codex.config = codex.util.Config.makeProperty(_config);
+        if (window['_CODEX_PHP_DATA']) {
+            codex.config.merge(window['_CODEX_PHP_DATA']);
+        }
         codex.config.merge(options);
         if (codex.config('debug')) {
             codex.debug.enable();

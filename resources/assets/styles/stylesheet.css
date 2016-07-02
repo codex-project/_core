@@ -5652,6 +5652,11 @@ article.content.loaded {
   opacity: 1;
 }
 
+article.content p {
+  line-height: 1.70;
+  margin: 10px 0 10px;
+}
+
 article.content > header {
   padding-bottom: 20px;
   border-bottom: 1px solid #f0f2f1;
@@ -5665,22 +5670,6 @@ article.content > header small {
   -webkit-font-smoothing: antialiased;
   font-weight: 200;
   font-size: 16px;
-}
-
-article.content .content-list ul li {
-  margin: 8px;
-  line-height: 1.65;
-}
-
-article.content p {
-  line-height: 1.70;
-}
-
-article.content li > ul,
-article.content li > ul ul {
-  font-size: 15px;
-  padding-left: 20px;
-  font-weight: 400;
 }
 
 article.content > h2:first-of-type {
@@ -5716,7 +5705,7 @@ article.content > h3 + h4 {
   margin-top: 15px;
 }
 
-article.content h5 {
+article.content > h5 {
   margin: 10px 0 5px 0;
   font-weight: 200;
   font-size: 17px;
@@ -5724,10 +5713,21 @@ article.content h5 {
   position: relative;
 }
 
-article.content h6 {
+article.content > h6 {
   margin: 5px 0 5px 0;
   font-weight: 200;
   font-size: 14px;
+}
+
+article.content li > ul,
+article.content li > ul ul {
+  font-size: 15px;
+  padding-left: 20px;
+  font-weight: 400;
+}
+
+article.content ul, article.content ol {
+  margin-top: 10px;
 }
 
 article.content a:hover:not(.btn) {
