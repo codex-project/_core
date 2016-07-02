@@ -10,7 +10,8 @@
 {{-- Stylesheets --}}
 @section('stylesheets')
     @parent
-    <link rel="apple-touch-icon" href="{{ asset('vendor/codex/favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('vendor/codex/images/apple-touch-icon.png') }}">
+    <link rel="icon" href="{{ asset('vendor/codex/images/favicon.png') }}">
 @show
 
 {{-- Body --}}
