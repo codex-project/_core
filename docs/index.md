@@ -19,48 +19,53 @@ buttons:
 
 # Codex Documentation
 
-## Introduction
+<!--*codex:general:hide*-->
 
-Codex can be considered as a documentation reading application. Though, you'll notice it does quite a few things more then simply showing it.
-It can do things like transforming markdown or fetching documentation from a Bitbucket/Github repository whenever you push and much more.
+> Head over to [codex-project.ninja](http://codex-project.ninja) for the full documentation (starting with this document) to get started.
+
+<!--*codex:/general:hide*-->
+
+## Introduction
+**Codex** is a file-based documentation platform built on top of Laravel. It's completely customizable and dead simple to use to create beautiful documentation.
+
+Codex is able to do things like transforming markdown or automaticaly fetching documentation from a Bitbucket/Github repositories.
 Most of it's features are provided by addons. Codex is extenable, themeable, hackable and simple to setup and use.
 
 
-## Laravel
-Codex is a PHP application based on Laravel 5 and can be installed as stand-alone or sub-component in your own (Laravel) project.
+### Features
+- Laravel 5
+- Markdown, Creole or custom document parsers
+- Host a unlimited number of _projects/manuals_ with accompanying _versions_
+- Extenable, themeable, hackable 
+- Simple to setup and use
+- Syntax Highlighting
+- Easy navigation defined in YAML
+- SEO Friendly URLs
+- Default theme build on Laravels theme
+- Multiple storage methods (local, dropbox, amazon, etc)
+- Can be installed as stand-alone or sub-component in your own (Laravel) project.
+- (Addon Feature) Github/Bitbucket (auto webhook) synchronisation based on tags/branches. 
+- (Addon Feature) Smooth working, custom PHPDoc integration
+- (Addon Feature) Access restriction on projects using Github/Bitbucket login
+- Much, much more!
 
-<!--*codex:general:hide*-->
-## Documentation
-Head over to [codex-project.ninja](http://codex-project.ninja) for the full documentation (starting with this document) to get started.
-<!--*codex:/general:hide*-->
+
+
 
 ## How it works
 
 **Codex** > **Projects** > **Versions** > **Documents** > **Processors**
 
-- Codex can provide documentation for multiple projects. 
-- Each project has one or more versions containing your documents. 
-- Documents are passed trough filters, modifying it's content before displaying.
+- _Codex_ can provide documentation for multiple _projects_. 
+- Each _project_ has one or more versions containing your _documents_. 
+- _Documents_ are passed trough _processors_, modifying it's content before displaying.
 
 To give you an understanding of filters, lets take the ToC filter as example. It takes all headings in a document and generates a table of content at the start ([example](../index.md#)).
 
 ### Addons
-A addon is one or more
-- Plugin
-- Hook
-- Processor
+The `addon-*` packages are a collection of _Plugins_, _Hooks_ and _Processors_.
 
-You can access the addon [`Factory`](#codex:phpdoc:popover:Codex\Addons\Factory) with
-```php
-/** @var \Codex\Addons\Factory $addons */
-$addons = codex()->addons;
-$addons->getViews();
-# or
-$addons = \Codex\Addons\Factory::getInstance();
-$addons->getViews();
-```
-
-#### Plugin
+#### Plugins
 Plugins are used to alter Codex. They are capable of doing something very minor or completely alter the way Codex works. 
 
 - Adding routes/controllers
@@ -71,7 +76,7 @@ Plugins are used to alter Codex. They are capable of doing something very minor 
 - Extend the Codex API and structure with new features and functionality
 
 
-#### Processor
+#### Processors
 Processors are used to alter the output of documents. 
  
 - Reading document attributes
@@ -91,54 +96,24 @@ Hooks are able to execute when Codex executes code which have hook-points define
 - Ensures code that doesn't have to be executed, won't be executed.
 
 
-### Customs / extendables
-#### Processors
-Processors can modify the content output of a document. 
+#### Example
+The data is provided by the **PHPDoc Addon**. It uses the [`LinksProcessor`](#codex:phpdoc:popover:Codex\Processors\LinksProcessor) 
+to alter the links based on the information provided by PHPDoc Addon. 
 
-##### Example: phpdoc
-- Mouse hover on the examples.
-- When clicked, takes you to the given documentation
-
-
-
-<!--*codex:table:responsive(123, 'hello', true)*-->
-
-| Example                                                          | Code                                                  |
-|:-----------------------------------------------------------------|:------------------------------------------------------|
-| [`Codex`](../index.md#codex:phpdoc:Codex\Codex)                  | `[Codex](#codex:phpdoc:Codex\Codex)`                  |
-| [`Codex`](#codex:phpdoc:popover:Codex\Codex)          | `[Codex](#codex:phpdoc:popover:Codex\Codex)`          |
-| [`Codex::url`](../index.md#codex:phpdoc:popover:Codex\Codex:url) | `[Codex::url](#codex:phpdoc:popover:Codex\Codex:url)` |
+| Example                                                          | Code                                                             |
+|:-----------------------------------------------------------------|:-----------------------------------------------------------------|
+| [`Codex`](../index.md#codex:phpdoc:Codex\Codex)                  | `[Codex](#codex:phpdoc:Codex\Codex)`                             |
+| [`Codex`](https://whatever.url#codex:phpdoc:popover:Codex\Codex) | `[Codex](https://whatever.url#codex:phpdoc:popover:Codex\Codex)` |
+| [`Codex::url`](../index.md#codex:phpdoc:popover:Codex\Codex:url) | `[Codex::url](#codex:phpdoc:popover:Codex\Codex:url)`            |
 
 
-<!--*codex:/table:responsive*-->
 
-Simply adding to the project's `config.php` file:
-```php
-return [
-    'filters' => ['phpdoc' ], # replaces links in documents, as the above example shows
-    'phpdoc' => [
-        # enables the addon
-        # transforms phpdoc's structure.xml
-        # adds a menu item to the project (configurable)
-        'enabled' => true 
-    ]
-]
-```
-
-#### Hooks
-
-#### Documents
-
-#### Projects
-
-### Configurable
-- Codex has many configurable settings to alter the overall working of the application.
-- Each project has individual configuration using the `config.php`
-- Documents can be configured using Frontmatter or similar attribute configuration methods.  
-- Each filter can be configured both in the project configuration or document attributes.
+- More information on how to use the [`LinksProcessor`](#codex:phpdoc:popover:Codex\Processors\LinksProcessor) [can be found here](develop/processors/links.md).
+- More information on the PHPDoc Addon [should be here](addons/phpdoc.md).
 
 
 ### File Structure
+A example file structure for Codex might look similar to: 
 ```
 - docs
     - my-awesome-project

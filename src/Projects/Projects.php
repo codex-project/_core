@@ -8,6 +8,7 @@
 
 namespace Codex\Projects;
 
+use Codex\Codex;
 use Codex\Contracts;
 use Codex\Exception\CodexException;
 use Codex\Support\Collection;
@@ -37,10 +38,10 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
     /**
      * Projects constructor.
      *
-     * @param \Codex\Contracts\Codex|\Codex\Codex $parent
+     * @param \Codex\Codex $parent
      * @param \Sebwite\Support\Filesystem         $files
      */
-    public function __construct(Contracts\Codex $parent, Filesystem $files)
+    public function __construct(Codex $parent, Filesystem $files)
     {
         $this->setCodex($parent);
         $this->setContainer($parent->getContainer());

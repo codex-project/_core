@@ -18,7 +18,7 @@ use Sebwite\Filesystem\Filesystem;
  */
 class ProjectGenerator extends Extendable
 {
-    /** @var \Codex\Contracts\Codex  */
+    /** @var \Codex\Codex  */
     protected $codex;
 
     /** @var \Illuminate\Contracts\View\Factory  */
@@ -42,7 +42,7 @@ class ProjectGenerator extends Extendable
     /**
      * ProjectGenerator constructor.
      *
-     * @param \Codex\Contracts\Codex|\Codex\Codex             $codex
+     * @param \Codex\Codex             $codex
      * @param \Illuminate\Contracts\View\Factory|\Illuminate\View\Factory $view
      * @param \Sebwite\Filesystem\Filesystem     $fs
      */

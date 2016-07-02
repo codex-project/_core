@@ -8,6 +8,7 @@ use Codex\Processors\Links\Action;
 use Codex\Projects\Project;
 use Codex\Support\Collection;
 use FluentDOM\Element;
+use InvalidArgumentException;
 use League\Uri\Modifiers\Normalize;
 use League\Uri\Schemes\Http as Uri;
 use Sebwite\Support\Str;
@@ -44,16 +45,27 @@ class LinksProcessor
         $d = $document->getDom();
         $d->find('//a')->each(function (Element $element)
         {
-
             $url = $element->getAttribute('href');
-            if ( $this->isAction($url) )
+
+            if ( $this->isInvalidUrl($url) )
             {
-                $this->callAction($element);
+                return;
             }
-            elseif ( $this->isDocument($url) && $this->isRelative($url) )
+            try
             {
-                // replaces links that reference other documents to the right url
-                $element->setAttribute('href', $this->getDocumentUrl($url));
+                if ( $this->isAction($url) )
+                {
+                    $this->callAction($element);
+                }
+                elseif ( $this->isDocument($url) && $this->isRelative($url) )
+                {
+                    // replaces links that reference other documents to the right url
+                    $element->setAttribute('href', $this->getDocumentUrl($url));
+                }
+            }
+            catch (InvalidArgumentException $e)
+            {
+                $this->codex->log('debug', static::class . " throws exception: {$e->getMessage()} | file: {$e->getFile()} | line: {$e->getLine()} | trace: {$e->getTraceAsString()}");
             }
         });
         $document->setDom($d);
@@ -62,7 +74,13 @@ class LinksProcessor
     public function normalizeUrl($url)
     {
         $normalizer = new Normalize();
+
         return (string)$normalizer(Uri::createFromString($url));
+    }
+
+    public function isInvalidUrl($url)
+    {
+        return filter_var($url, FILTER_VALIDATE_URL) === false;
     }
 
     public function getDocumentUrl($url)
@@ -75,8 +93,10 @@ class LinksProcessor
         $url = "../{$url}";
         // endfix
 
+
         $url = str_replace_last('.' . $this->getExtension($url), '', $url);
         $url = url()->current() . Str::ensureLeft($url, '/');
+
         return $this->normalizeUrl($url);
     }
 
@@ -88,6 +108,7 @@ class LinksProcessor
     public function isDocument($url)
     {
         $extensions = config('codex.document.extensions', [ ]);
+
         return array_key_exists($this->getExtension($url), $extensions);
     }
 
@@ -103,7 +124,7 @@ class LinksProcessor
 
     public function callAction(Element $element)
     {
-        $url    = Uri::createFromString($element->getAttribute('href'));
+        $url = Uri::createFromString($element->getAttribute('href'));
         $action = new Action($this, $url, $element);
         $params = explode(':', urldecode($url->getFragment()));
 
@@ -129,6 +150,7 @@ class LinksProcessor
     {
         $definitions = $this->codex->config('processors.links', [ ]);
         $definitions = array_merge($definitions, $this->config[ 'actions' ]);
+
         return array_merge($definitions, $this->document->attr('processors.links', [ ]));
     }
 

@@ -44,7 +44,7 @@ use Illuminate\Filesystem\Filesystem;
  * @hookPoint      constructed
  *
  */
-class Codex extends Extendable implements Contracts\Codex, Arrayable
+class Codex extends Extendable implements Arrayable
 {
     use Traits\FilesTrait,
         Traits\ConfigTrait;

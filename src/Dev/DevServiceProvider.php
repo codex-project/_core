@@ -92,7 +92,7 @@ class DevServiceProvider extends ServiceProvider
         if ( $this->app->bound('debugbar') )
         {
             $this->app->make('debugbar')->addCollector($collector = $this->app->make('codex.dev.debugbar.collector'));
-            $this->codexHook('controller:document', function (CodexController $controller, Document $document, Codex $codex, Project $project)
+            $this->codexHook('controller:document', function (CodexController $controller, Document $document) //, Codex $codex, Project $project
             {
                 /** @var CodexSimpleCollector $collector */
                 $collector = $this->app->make('debugbar')->getCollector('codex');

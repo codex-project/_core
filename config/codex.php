@@ -4,7 +4,7 @@
 return [
 
 
-    'display_name' => env('CODEX_DISPLAY_NAME', 'Codex'),
+    'display_name' => env('CODEX_DISPLAY_NAME', 'Codex (BETA)'),
 
     'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
 
@@ -28,9 +28,10 @@ return [
 
     'log' => true,
     'dev' => [
-        'enabled'   => env('CODEX_DEV_ENABLED', false),
-        'debugbar'  => true,
-        'benchmark' => true,
+        'enabled'    => env('CODEX_DEV_ENABLED', false),
+        'debugbar'   => true,
+        'benchmark'  => true,
+        'hookpoints' => true,
     ],
 
     'document' => [

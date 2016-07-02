@@ -35,7 +35,7 @@ class Dev extends Extendable
     /**
      * Theme constructor.
      *
-     * @param \Codex\Contracts\Codex|\Codex\Codex $parent
+     * @param \Codex\Codex $parent
      */
     protected function __construct()
     {

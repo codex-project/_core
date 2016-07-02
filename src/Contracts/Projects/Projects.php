@@ -10,7 +10,7 @@ interface Projects
 {
     /**
      * getCodex method
-     * @return \Codex\Codex|\Codex\Contracts\Codex
+     * @return \Codex\Codex
      */
     public function getCodex();
 
@@ -102,7 +102,7 @@ interface Projects
 
     /**
      * Returns the items (projects) Collection instance to provide advanced sorting and filtering
-     * 
+     *
      * @return \Codex\Support\Collection|\Codex\Projects\Project[]
      */
     public function query();

@@ -18,13 +18,13 @@ use Codex\Codex;
 trait CodexTrait
 {
     /**
-     * @var \Codex\Contracts\Codex|\Codex\Codex
+     * @var \Codex\Codex
      */
     protected $codex;
 
     /**
      * getCodex method
-     * @return \Codex\Codex|\Codex\Contracts\Codex
+     * @return \Codex\Codex
      */
     public function getCodex()
     {

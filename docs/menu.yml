@@ -5,34 +5,34 @@ menu:
       - name: Overview
         document: index
 
+      - name: Preview pages
+        document: preview-pages/index
+
       - name: Todo
         document: todo
 
       - name: Issues
         document: issues
 
-
-
-      - name: Preview pages
-        document: preview-pages/toc-tree
-        children:
-          - name: ToC Tree
-            document: preview-pages/toc-tree
-          - name: Syntax highlighting
-            document: preview-pages/syntax-highlight
-          - name: PHPDoc
-            document: preview-pages/phpdoc
+#        children:
+#          - name: ToC Tree
+#            document: preview-pages/toc-tree
+#          - name: Syntax highlighting
+#            document: preview-pages/syntax-highlight
+#          - name: Markdown
+#            document: preview-pages/markdown
+#          - name: PHPDoc
+#            document: preview-pages/phpdoc
 
 
   - name: Getting started
-    icon: fa fa-eye
+    icon: fa fa-rocket
     children:
-
-      - name: Overview
-        document: index
-
       - name: Installation
         document: getting-started/installation
+
+      - name: Configuration
+        document: getting-started/configuration
 
       - name: Creating a project
         document: getting-started/creating-a-project
@@ -67,30 +67,36 @@ menu:
             document: configuration/processors/links
           - name: Buttons
             document: configuration/processors/buttons
+          - name: Prism
+            document: configuration/processors/toc
 
 
   - name: Develop
     icon: fa fa-code
     children:
+
       - name: Getting Started
         document: develop/getting-started
-        children:
-          - name: Examples
-            document: develop/api
-          - name: API Documentation
-            document: phpdoc
-          - name: IntelliJ IDEA &amp; PHPStorm
-            document: develop/intellij-idea-phpstorm
-
-
-      - name: Processors
-        document: develop/processors
-
-      - name: Hooks
-        document: develop/hooks
 
       - name: Addons
-        document: develop/addons
+        children:
+          - name: Plugins
+            document: develop/plugins
+          - name: Processors
+            document: develop/processors
+          - name: Hooks
+            document: develop/hooks
+
+      - name: Examples
+        document: develop/api
+
+      - name: API Documentation
+        document: phpdoc
+
+      - name: IntelliJ IDEA &amp; PHPStorm
+        document: develop/intellij-idea-phpstorm
+
+
 
 
   - name: Contributing

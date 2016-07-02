@@ -10,7 +10,7 @@
  */
 namespace Codex\Helpers;
 
-use Codex\Contracts\Codex as CodexContract;
+use Codex\Codex;
 use Codex\Support\Extendable;
 
 class CacheHelper extends Extendable
@@ -18,9 +18,9 @@ class CacheHelper extends Extendable
     /**
      * Theme constructor.
      *
-     * @param \Codex\Contracts\Codex|\Codex\Codex $parent
+     * @param \Codex\Codex $parent
      */
-    public function __construct(CodexContract $parent)
+    public function __construct(Codex $parent)
     {
         $this->setCodex($parent);
     }

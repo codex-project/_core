@@ -6,53 +6,31 @@ subtitle: Develop
 
 ## Hook points
 
-- `constructed` in [`Codex::__construct`](#phpdoc:popover:Codex\Codex::__construct)
-
-#### CodexController
-- `controller:construct` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-- `controller:constructed` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-- `controller:index` in [`CodexController::index`](#phpdoc:popover:Codex\Http\Controllers\CodexController::index)
-- `controller:document` in [`CodexController::document`](#phpdoc:popover:Codex\Http\Controllers\CodexController::document)
-- `controller:view` in [`CodexController::document`](#phpdoc:popover:Codex\Http\Controllers\CodexController::document)
-- `controller:construct` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-
-#### Documents
-- `documents:constructed` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-- `documents:resolve:path` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-- `documents:resolve` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-- `project:document` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-
-#### Document
-- `document:construct` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-- `document:constructed` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-- `documents:render` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-- `documents:rendered` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-
-#### Menus
-- `menus:constructed` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-- `menus:add` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-- `menus:forget` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-
-#### Menu
-- `menu:construct` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-- `menu:constructed` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-- `menu:render` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-- `menu:rendered` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-
-
-#### ProcessorAddons
-- `controller:construct` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-
-#### Projects
-- `controller:construct` in [`CodexController::__construct`](#phpdoc:popover:Codex\Http\Controllers\CodexController::__construct)
-
-
-#### Project
-
-#### ProjectGenerator
-
-
-| Point | Class | Description |
-|:-----|:-----|:-----------|
-|       |       |             |
-| asdf  | as    | sdfg        |
+| Hook point                       | Fired by                                                                                                                         |
+|:---------------------------------|:---------------------------------------------------------------------------------------------------------------------------------|
+| `constructed`              | [`Codex\Codex::__construct`](hooks.md#codex:phpdoc:popover:Codex\Codex:__construct)                                                     |
+| `menus:constructed`        | [`Codex\Menus\Menus::__construct`](#codex:phpdoc:popover:Codex\Menus\Menus:__construct)                                         |
+| `menu:construct`           | [`Codex\Menus\Menu::__construct`](#codex:phpdoc:popover:Codex\Menus\Menu::__construct)                                           |
+| `menu:constructed`         | [`Codex\Menus\Menu::__construct`](#codex:phpdoc:popover:Codex\Menus\Menu::__construct)                                           |
+| `menus:add`                | [`Codex\Menus\Menus::add`](#codex:phpdoc:popover:Codex\Menus\Menus::add)                                                         |
+| `projects:construct`       | [`Codex\Projects\Projects::__construct`](#codex:phpdoc:popover:Codex\Projects\Projects::__construct)                             |
+| `projects:resolve`         | [`Codex\Projects\Projects::resolve`](#codex:phpdoc:popover:Codex\Projects\Projects::resolve)                                     |
+| `project:construct`        | [`Codex\Projects\Project::__construct`](#codex:phpdoc:popover:Codex\Projects\Project::__construct)                               |
+| `project:constructed`      | [`Codex\Projects\Project::__construct`](#codex:phpdoc:popover:Codex\Projects\Project::__construct)                               |
+| `project:make`             | [`Codex\Projects\Projects::resolve`](#codex:phpdoc:popover:Codex\Projects\Projects::resolve)                                     |
+| `projects:resolved:node`   | [`Codex\Projects\Projects::resolve`](#codex:phpdoc:popover:Codex\Projects\Projects::resolve)                                     |
+| `projects:resolved`        | [`Codex\Projects\Projects::resolve`](#codex:phpdoc:popover:Codex\Projects\Projects::resolve)                                     |
+| `projects:constructed`     | [`Codex\Projects\Projects::__construct`](#codex:phpdoc:popover:Codex\Projects\Projects::__construct)                             |
+| `documents:constructed`    | [`Codex\Documents\Documents::__construct`](#codex:phpdoc:popover:Codex\Documents\Documents::__construct)                         |
+| `documents:resolve:path`   | [`Codex\Documents\Documents::resolvePathName`](#codex:phpdoc:popover:Codex\Documents\Documents::resolvePathName)                 |
+| `documents:resolve`        | [`Codex\Documents\Documents::resolve`](#codex:phpdoc:popover:Codex\Documents\Documents::resolve)                                 |
+| `document:construct`       | [`Codex\Documents\Document::__construct`](#codex:phpdoc:popover:Codex\Documents\Document::__construct)                           |
+| `menus:forget`             | [`Codex\Menus\Menus::forget`](#codex:phpdoc:popover:Codex\Menus\Menus::forget)                                                   |
+| `projects:sidebar:resolve` | [`Codex\Projects\Projects::resolveProjectSidebarMenu`](#codex:phpdoc:popover:Codex\Projects\Projects::resolveProjectSidebarMenu) |
+| `projects:active`          | [`Codex\Projects\Projects::setActive`](#codex:phpdoc:popover:Codex\Projects\Projects::setActive)                                 |
+| `document:constructed`     | [`Codex\Documents\Document::__construct`](#codex:phpdoc:popover:Codex\Documents\Document::__construct)                           |
+| `project:document`         | [`Codex\Documents\Documents::resolve`](#codex:phpdoc:popover:Codex\Documents\Documents::resolve)                                 |
+| `document:render`          | [`Codex\Documents\Document::render`](#codex:phpdoc:popover:Codex\Documents\Document::render)                                     |
+| `document:rendered`        | [`Codex\Documents\Document::render`](#codex:phpdoc:popover:Codex\Documents\Document::render)                                     |
+| `menu:render`              | [`Codex\Menus\Menu::render`](#codex:phpdoc:popover:Codex\Menus\Menu::render)                                                     |
+| `menu:rendered`            | [`Codex\Menus\Menu::render`](#codex:phpdoc:popover:Codex\Menus\Menu::render)                                                     |

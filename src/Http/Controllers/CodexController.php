@@ -20,7 +20,7 @@ class CodexController extends Controller
     /**
      * CodexController constructor.
      *
-     * @param \Codex\Contracts\Codex|\Codex\Codex $codex
+     * @param \Codex\Codex $codex
      * @param \Illuminate\Contracts\View\Factory $view
      */
     public function __construct(Codex $codex, View $view)

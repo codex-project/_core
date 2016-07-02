@@ -2,6 +2,7 @@
 
 
 use Closure;
+use Codex\Codex;
 use Exception;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -17,14 +18,20 @@ class CodexDev
     protected $container;
 
     /**
+     * @var \Codex\Codex
+     */
+    protected $codex;
+
+    /**
      * Create a new middleware instance.
      *
      * @param  Container       $container
      * @param  LaravelDebugbar $debugbar
      */
-    public function __construct(Container $container)
+    public function __construct(Container $container, Codex $codex)
     {
         $this->container = $container;
+        $this->codex = $codex;
     }
 
     /**
@@ -45,12 +52,24 @@ class CodexDev
             $response = $this->handleException($request, $e);
         }
 
+        $this->codex->config('dev.debugbar', false) && $this->handleDebugbar($response);
+        $this->codex->config('dev.hookpoints', false) && $this->handleHookPoints();
+
+        return $response;
+    }
+
+    /**
+     * @param \Illuminate\Http\Response $response
+     */
+    protected function handleDebugbar($response)
+    {
+
         $content = $response->getContent();
 
         $assets = [
             'debugbar.css',
             'codex-debugbar.css',
-         #   'codex-debugbar.js'
+            #   'codex-debugbar.js'
         ];
         $out = '';
         foreach($assets as $style){
@@ -60,7 +79,10 @@ class CodexDev
 
         $response->setContent($content);
 
-        return $response;
+    }
+
+    protected function handleHookPoints()
+    {
     }
 
     /**

@@ -11,7 +11,6 @@
 namespace Codex\Helpers;
 
 use Codex\Codex;
-use Codex\Contracts\Codex as CodexContract;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
 use Codex\Support\Sorter;
@@ -48,9 +47,9 @@ class ThemeHelper extends Extendable implements Arrayable
     /**
      * Theme constructor.
      *
-     * @param \Codex\Contracts\Codex|\Codex\Codex $parent
+     * @param \Codex\Codex $parent
      */
-    public function __construct(CodexContract $parent)
+    public function __construct(Codex $parent)
     {
         $this->setCodex($parent);
         $this->data  = new Collection;

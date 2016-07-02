@@ -16,7 +16,7 @@ class CodexMiddleware
     protected $app;
 
     /**
-     * @var \Codex\Codex|\Codex\Contracts\Codex
+     * @var \Codex\Codex
      */
     protected $codex;
 

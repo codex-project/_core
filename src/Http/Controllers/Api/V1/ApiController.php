@@ -32,7 +32,7 @@ abstract class ApiController extends Controller
     public function __construct(Codex $codex, ViewFactory $view)
     {
         parent::__construct($codex, $view);
-        $this->codex = codex();
+        $this->codex = $codex;
         $this->addons = $this->codex->addons;
         $this->projects = $this->codex->projects;
         $this->menus = $this->codex->menus;

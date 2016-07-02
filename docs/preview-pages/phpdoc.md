@@ -6,14 +6,19 @@ subtitle: Preview Pages
 
 # PHPDoc
 
-By using the `codex/addon-phpdoc` addon, it is possible to use the `phpdoc` filter to transform links by adding
-tooltips or popovers that link directly to it's PHPDoc page.
+### Processor
+By installing and enabling `codex/addon-phpdoc`, any project with `phpdoc` enabled will have the [phpdoc document](/codex/master/phpdoc).
 
-| Example                                         | Code                                            |
-|:------------------------------------------------|:------------------------------------------------|
-| [`Codex`](#phpdoc:Codex\Codex)                  | `[Codex](#phpdoc:Codex\Codex)`                  |
-| [`Codex`](#phpdoc:popover:Codex\Codex)          | `[Codex](#phpdoc:popover:Codex\Codex)`          |
-| [`Codex::url`](#phpdoc:popover:Codex\Codex:url) | `[Codex::url](#phpdoc:popover:Codex\Codex:url)` |
+It comes with these link processors:
+
+| Example                                                                            | Code                                                                               |
+|:-----------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------|
+| [`Codex`](http://codex-project.ninja/codex/master/phpdoc#codex:phpdoc:Codex\Codex) | `[Codex](http://codex-project.ninja/codex/master/phpdoc#codex:phpdoc:Codex\Codex)` |
+| [`Codex`](http://newsflash.com#codex:phpdoc:popover:Codex\Codex)                   | `[Codex](http://newsflash.com#codex:phpdoc:popover:Codex\Codex)`                   |
+| [`Codex::url`](#codex:phpdoc:popover:Codex\Codex:url)                              | `[Codex::url](#codex:phpdoc:popover:Codex\Codex:url)`                              |
 
 
-Click on any of the examples to view the PHPDoc page.
+Simply add `#codex:phpdoc:xxxx` after the link.
+
+### Custom Document
+Just click on any of the example links. 

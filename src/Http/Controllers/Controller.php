@@ -16,7 +16,7 @@ use Illuminate\Routing\Controller as BaseController;
 abstract class Controller extends BaseController
 {
     /**
-     * @var \Codex\Contracts\Codex|\Codex\Codex
+     * @var \Codex\Codex
      */
     protected $codex;
 
@@ -26,7 +26,7 @@ abstract class Controller extends BaseController
     protected $view;
 
     /**
-     * @param \Codex\Contracts\Codex|\Codex\Codex                         $codex
+     * @param \Codex\Codex                         $codex
      * @param \Illuminate\Contracts\View\Factory|\Illuminate\View\Factory $view
      */
     public function __construct(Codex $codex, ViewFactory $view)

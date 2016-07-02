@@ -85,7 +85,7 @@ class Documents extends Extendable implements Contracts\Documents\Documents
         $this->hookPoint('documents:resolve', [ $pathName ]);
         $resolved = $this->resolvePathName($pathName);
 
-        if ( $resolved[ 'path' ] === false ) {
+        if ( $resolved === false ) {
             throw CodexException::documentNotFound($pathName);
         }
 
@@ -127,6 +127,6 @@ class Documents extends Extendable implements Contracts\Documents\Documents
 
     public function has($pathName = null)
     {
-        return $this->resolve($pathName) !== false;
+        return $this->resolvePathName($pathName) !== false;
     }
 }

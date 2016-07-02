@@ -101,7 +101,7 @@ class Project extends Extendable implements Arrayable
      * Project constructor. Should be slim, as it gets instanciated for each project.
      *
      * @param \Codex\Projects\Projects                      $projects
-     * @param \Codex\Contracts\Codex|\Codex\Codex           $codex
+     * @param \Codex\Codex           $codex
      * @param \Illuminate\Filesystem\FilesystemManager      $fsm
      * @param \Illuminate\Contracts\Config\Repository       $repository
      * @param \Illuminate\Contracts\Container\Container     $container

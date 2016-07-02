@@ -2,6 +2,7 @@
 namespace Codex\Console;
 
 
+use Codex\Codex;
 use Illuminate\Console\Command;
 use Illuminate\Support\Traits\Macroable;
 
@@ -49,4 +50,5 @@ FILTER
             }
         }
     }
+
 }

@@ -138,7 +138,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerCodex()
     {
-        $this->codexHook('constructed', function (Contracts\Codex $codex)
+        $this->codexHook('constructed', function (Codex $codex)
         {
             $codex->extend('projects', Projects\Projects::class);
             $codex->extend('menus', Menus\Menus::class);
@@ -179,9 +179,9 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerTheme()
     {
-        $this->codexHook('constructed', function (Contracts\Codex $codex)
+        $this->codexHook('constructed', function (Codex $codex)
         {
-            /** @var \Codex\Codex|\Codex\Contracts\Codex $codex */
+            /** @var \Codex\Codex $codex */
             $codex->theme->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [ ], true);
             $codex->theme->addStylesheet('theme', 'vendor/codex/styles/stylesheet', [ 'vendor' ]);
             $codex->theme->addStylesheet('prism', 'vendor/codex/styles/prism', [ 'theme' ]);
@@ -213,7 +213,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerJavascriptData()
     {
-        $this->codexHook('controller:view', function (CodexController $controller, $view, Contracts\Codex $codex, Project $project, Documents\Document $document)
+        $this->codexHook('controller:view', function (CodexController $controller, $view, Codex $codex, Project $project, Documents\Document $document)
         {
             /** @var Codex $codex */
             $theme = $codex->theme;

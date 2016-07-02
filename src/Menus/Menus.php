@@ -9,6 +9,7 @@
 namespace Codex\Menus;
 
 
+use Codex\Codex;
 use Codex\Contracts;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
@@ -52,12 +53,12 @@ class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
     /**
      * Menus constructor.
      *
-     * @param \Codex\Contracts\Codex|\Codex\Codex        $parent
+     * @param \Codex\Codex        $parent
      * @param \Illuminate\Routing\Router                 $router
      * @param \Illuminate\Contracts\Routing\UrlGenerator $url
      * @param \Illuminate\Contracts\View\View            $view
      */
-    public function __construct(Contracts\Codex $parent, Router $router, Cache $cache, UrlGenerator $url, View $view)
+    public function __construct(Codex $parent, Router $router, Cache $cache, UrlGenerator $url, View $view)
     {
         $this->setCodex($parent);
         $this->setFiles($parent->getFiles());
