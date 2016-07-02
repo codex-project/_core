@@ -26,7 +26,7 @@ class LinksProcessor
     /** @var Collection */
     public $config = [
         'needle'  => 'codex',
-        'actions' => [
+        'links' => [
 
         ],
     ];
@@ -149,7 +149,7 @@ class LinksProcessor
     public function getLinkActions()
     {
         $definitions = $this->codex->config('processors.links', [ ]);
-        $definitions = array_merge($definitions, $this->config[ 'actions' ]);
+        $definitions = array_merge($definitions, $this->config[ 'links' ]);
 
         return array_merge($definitions, $this->document->attr('processors.links', [ ]));
     }
