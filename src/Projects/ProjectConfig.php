@@ -2,7 +2,7 @@
 namespace Codex\Projects;
 
 use ArrayAccess;
-use Codex\Contracts\Codex;
+use Codex\Codex;
 use Codex\Support\Collection;
 use Codex\Traits\CodexTrait;
 use Illuminate\Contracts\Support\Arrayable;

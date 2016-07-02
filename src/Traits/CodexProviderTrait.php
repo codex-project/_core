@@ -39,7 +39,7 @@ trait CodexProviderTrait
 
     protected function codexHook($point, $listener)
     {
-        return $this->codexAddons()->hooks->hook($point, $listener);
+        return $this->codexAddons()->hook($point, $listener);
     }
 
     /**

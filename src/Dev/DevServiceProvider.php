@@ -1,7 +1,7 @@
 <?php
 namespace Codex\Dev;
 
-use Codex\Contracts\Codex;
+use Codex\Codex;
 use Codex\Dev\Debugbar\CodexSimpleCollector;
 use Codex\Documents\Document;
 use Codex\Http\Controllers\CodexController;
@@ -99,7 +99,12 @@ class DevServiceProvider extends ServiceProvider
                 $collector->setDocument($document);
                 $collector->data()->set('document', $document->toArray());
                 $collector->data()->set('hookPoints', \Codex\Codex::$hookPoints);
-
+                $hooks = [ ];
+                foreach ( $this->codexAddons()->hooks->all() as $hook )
+                {
+                    $hooks[] = [ 'name' => $hook[ 'name' ], 'class' => $hook[ 'class' ], 'listener' => $hook[ 'listener' ] ];
+                }
+                $collector->data()->set('hooks', $hooks);
             });
         }
         return;

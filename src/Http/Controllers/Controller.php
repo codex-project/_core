@@ -1,7 +1,7 @@
 <?php
 namespace Codex\Http\Controllers;
 
-use Codex\Contracts\Codex;
+use Codex\Codex;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Routing\Controller as BaseController;
 

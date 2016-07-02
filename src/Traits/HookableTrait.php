@@ -35,18 +35,6 @@ trait HookableTrait
     }
 
     /**
-     * Create a Codex Hook
-     *
-     * @param string          $event    The hook name
-     * @param string|\Closure $callback The callback to execute
-     * @param int             $priority (optional) The priority
-     */
-    public static function hook($event, $callback, $priority = 1)
-    {
-        static::registerEventListener($event, $callback, $priority);
-    }
-
-    /**
      * Defines a point where hooks can hook
      *
      * @param string $event The hook name

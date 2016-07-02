@@ -30,7 +30,15 @@ class Scanner
 
     protected $addons;
 
-    public function __construct(Factory $addons)
+    /**
+     * Scanner constructor.
+     *
+     * @param \Codex\Addons\Factory                         $addons
+     * @param \Codex\Addons\Manifest                        $manifest
+     * @param \Doctrine\Common\Annotations\AnnotationReader $reader
+     * @param \Sebwite\Filesystem\Filesystem                $fs
+     */
+    public function __construct(Factory $addons, Manifest $manifest, AnnotationReader $reader, Filesystem $fs)
     {
         $this->addons   = $addons;
         $this->manifest = new Collection();

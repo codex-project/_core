@@ -12,7 +12,7 @@ namespace Codex\Documents;
 
 
 use Codex\Contracts;
-use Codex\Contracts\Codex;
+use Codex\Codex;
 use Codex\Exception\CodexException;
 use Codex\Projects\Project;
 use Codex\Support\Collection;

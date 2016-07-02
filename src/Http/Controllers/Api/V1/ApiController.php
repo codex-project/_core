@@ -1,7 +1,7 @@
 <?php
 namespace Codex\Http\Controllers\Api\V1;
 
-use Codex\Contracts\Codex;
+use Codex\Codex;
 use Codex\Http\Controllers\Controller;
 use Codex\Projects\Project;
 use Illuminate\Contracts\View\Factory as ViewFactory;

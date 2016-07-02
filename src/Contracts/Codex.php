@@ -243,15 +243,6 @@ interface Codex
     public function setFiles($files);
 
     /**
-     * Create a Codex Hook
-     *
-     * @param string          $event    The hook name
-     * @param string|\Closure $callback The callback to execute
-     * @param int             $priority (optional) The priority
-     */
-    public static function hook($event, $callback, $priority = 1);
-
-    /**
      * Register an observer with the Model.
      *
      * @param  object|string $class

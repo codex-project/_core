@@ -1,7 +1,7 @@
 <?php
 namespace Codex\Http\Controllers;
 
-use Codex\Contracts\Codex;
+use Codex\Codex;
 use Codex\Traits\HookableTrait;
 use Illuminate\Contracts\View\Factory as View;
 
@@ -21,7 +21,7 @@ class CodexController extends Controller
      * CodexController constructor.
      *
      * @param \Codex\Contracts\Codex|\Codex\Codex $codex
-     * @param \Illuminate\Contracts\View\Factory  $view
+     * @param \Illuminate\Contracts\View\Factory $view
      */
     public function __construct(Codex $codex, View $view)
     {
@@ -40,6 +40,8 @@ class CodexController extends Controller
     {
         $this->hookPoint('controller:index');
 
+        #codex()->addons->getManifest()->load()->set('asdf.a', 'asdf')->save();
+        codex('addons');
 
         return redirect(route('codex.document', [
             'projectSlug' => $this->codex->config('default_project'),
@@ -49,9 +51,9 @@ class CodexController extends Controller
     /**
      * Render the documentation page for the given project and version.
      *
-     * @param string      $projectSlug
+     * @param string $projectSlug
      * @param string|null $ref
-     * @param string      $path
+     * @param string $path
      *
      * @return $this
      */
@@ -60,73 +62,60 @@ class CodexController extends Controller
         /** @var Codex $codex */
         $codex = $this->codex;
 
-        // get project
-        if ( false === $codex->projects->has($projectSlug) )
-        {
+        #
+        # get project
+        #
+        if ( false === $codex->projects->has($projectSlug) ) {
             return $codex->error('Not found', 'The project could not be found', 404);
         }
         $project = $codex->projects->get($projectSlug);
 
-
         // share project in views
         $this->view->share('project', $project);
 
-        // get ref (version)
-        if ( null === $ref )
-        {
+        #
+        # get ref (version)
+        #
+        if ( null === $ref ) {
             $ref = $project->getDefaultRef();
         }
-        if ( false === $project->hasRef($ref) )
-        {
+        if ( false === $project->hasRef($ref) ) {
             return $codex->error('Not found', 'The version could not be found', 404);
         }
         $project->setRef($ref);
         $path = $path === '' ? $project->config('index') : $path;
 
-
-        // get document
-        if ( false === $project->documents->has($path) )
-        {
+        #
+        # get document
+        #
+        if ( false === $project->documents->has($path) ) {
             return $codex->error('Not found', 'The document could not be found', 404);
         }
-        $document   = $project->documents->get($path);
-        $content    = $document->render();
+        $document = $project->documents->get($path);
+        $content = $document->render();
         $breadcrumb = $document->getBreadcrumb();
 
         $res = $this->hookPoint('controller:document', [ $document, $codex, $project ]);
-        if ( $res )
-        {
+        if ( $res ) {
             return $res;
         }
 
-
-        // prepare view
+        #
+        # prepare view
+        #
         $view = $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
 
         $res = $this->hookPoint('controller:view', [ $view, $codex, $project, $document ]);
-        if ( $res )
-        {
+        if ( $res ) {
             return $res;
         }
 
-        $this->dbg();
         return $view;
-    }
-
-    public function dbg()
-    {
-        if ( app()->bound('debugbar') )
-        {
-            $d = app('debugbar');
-            $c = $this->codex;
-            $d->addMessage($c->config());
-        }
     }
 
     public function markdown()
     {
-        if ( ! request()->has('code') )
-        {
+        if ( !request()->has('code') ) {
             return abort(500, 'You did not provide the [code]');
         }
         $code = request()->get('code');

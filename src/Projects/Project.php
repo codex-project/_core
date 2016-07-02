@@ -7,6 +7,7 @@
 namespace Codex\Projects;
 
 
+use Codex\Codex;
 use Codex\Contracts;
 use Codex\Support\Extendable;
 use Codex\Traits;
@@ -107,7 +108,7 @@ class Project extends Extendable implements Arrayable
      * @param                                               $name
      * @param                                               $config
      */
-    public function __construct(Contracts\Codex $codex, FilesystemManager $fsm, Repository $repository, Container $container, Projects $projects, $name, $config)
+    public function __construct(Codex $codex, FilesystemManager $fsm, Repository $repository, Container $container, Projects $projects, $name, $config)
     {
         $this->setCodex($codex);
         $this->fsm        = $fsm;

@@ -12,7 +12,7 @@
 namespace Codex\Addons\Types;
 
 
-interface Type
+interface Presenter
 {
 
 }

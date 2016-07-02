@@ -4,11 +4,14 @@ namespace Codex\Addons;
 use BadMethodCallException;
 use Codex\Addons\Annotations;
 use Codex\Addons\Scanner\ClassFileInfo;
+use Codex\Addons\Scanner\ClassInspector;
 use Codex\Dev\Dev;
+use Doctrine\Common\Annotations\AnnotationReader;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Traits\Macroable;
 use Sebwite\Filesystem\Filesystem;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * This is the class Addons.
@@ -56,6 +59,7 @@ class Factory implements Arrayable
 
     protected $registered = [ ];
 
+    /** @var \Codex\Addons\Scanner */
     protected $scanner;
 
     /** @var \Illuminate\Foundation\Application */
@@ -69,16 +73,22 @@ class Factory implements Arrayable
     /** @var Manifest */
     protected $manifest;
 
+    /** @var \Doctrine\Common\Annotations\AnnotationReader */
+    protected $reader;
+
     protected function __construct()
     {
+        $this->app = Container::getInstance();
+
         $this->processors = new Collections\Processors([ ], $this);
         $this->hooks      = new Collections\Hooks([ ], $this);
         $this->views      = new Collections\Views([ ], $this);
         $this->plugins    = new Collections\Plugins([ ], $this);
 
-        $this->scanner = new Scanner($this);
-        $this->fs      = new Filesystem();
-        $this->app     = Container::getInstance();
+        $this->reader   = new AnnotationReader();
+        $this->fs       = new Filesystem();
+        $this->manifest = Manifest::make()->load();
+        $this->scanner  = new Scanner($this, $this->manifest, $this->reader, $this->fs);
     }
 
     public static function __callStatic($method, array $parameters = [ ])
@@ -110,7 +120,36 @@ class Factory implements Arrayable
         return $this;
     }
 
-    public function register(ClassFileInfo $file)
+    /**
+     * Add a hook on the fly
+     *
+     * @param      $name
+     * @param      $listener
+     * @param bool $replace
+     */
+    public function hook($name, $listener, $replace = false)
+    {
+        $hook          = new Annotations\Hook();
+        $hook->name    = $name;
+        $hook->replace = $replace;
+        $file          = debug_backtrace()[ 1 ][ 'file' ];
+        $class         = debug_backtrace()[ 1 ][ 'class' ];
+        $this->hooks->add($this->getClassFileInfo($file, $class), $hook, $listener);
+    }
+
+    protected function getClassFileInfo($file, $class)
+    {
+        $fileInfo      = new SplFileInfo($file, $file, $file);
+        return new ClassFileInfo($fileInfo, new ClassInspector($class, $this->reader));
+    }
+
+
+    /**
+     * Search file for matching addon annotations and automaticly resolve and add them into their collections
+     *
+     * @param \Codex\Addons\Scanner\ClassFileInfo $file
+     */
+    public function resolveAndRegister(ClassFileInfo $file)
     {
         $class = $file->getClassName();
         if ( array_key_exists($class, $this->registered) )
@@ -147,41 +186,50 @@ class Factory implements Arrayable
         }
     }
 
-    public function registerAtPath($filePath)
+    /**
+     * Scan a file and resolve annotations
+     *
+     * @param $filePath
+     *
+     * @return bool
+     */
+    public function scanAndResolveFile($filePath)
     {
         $file = $this->scanner->scanFile($filePath);
         if ( $file instanceof ClassFileInfo )
         {
-            $this->register($file);
+            $this->resolveAndRegister($file);
             return true;
         }
         return false;
     }
 
-    public function registerInPath($path)
+    public function scanAndResolveDirectory($path)
     {
         $registered = 0;
         foreach ( $this->scanner->scanDirectory($path) as $info )
         {
-            $this->register($info);
+            $this->resolveAndRegister($info);
             $registered++;
         }
         return $registered;
     }
 
-    public function findAndRegisterAll()
+    public function scanAndResolveAddonPackages()
     {
         Dev::getInstance()->benchmark('Codex Addon Factory findAndRegisterAll');
         $files = $this->scanner->findAll();
         foreach ( $files as $file )
         {
-            $this->register($file);
+            $this->resolveAndRegister($file);
         }
         Dev::getInstance()->addMessage(array_keys($this->registered));
 
         Dev::getInstance()->benchmark('-');
         #codex()->dev->stopMeasure('Codex\Addons\Factory::findAndRegisterAll');
     }
+
+
 
     public function mergeDefaultProjectConfig($config, $method = 'array_replace_recursive')
     {
@@ -201,6 +249,8 @@ class Factory implements Arrayable
     {
         $this->mergeDefaults('default_document_attributes', $config, $method);
     }
+
+
 
     public function toArray()
     {

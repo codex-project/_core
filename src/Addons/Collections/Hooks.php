@@ -4,14 +4,18 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author Robin Radic
+ * @author    Robin Radic
  * @copyright Copyright 2016 (c) Codex Project
- * @license http://codex-project.ninja/license The MIT License
+ * @license   http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Addons\Collections;
 
+use Closure;
 use Codex\Addons\Annotations\Hook;
 use Codex\Addons\Scanner\ClassFileInfo;
+use Codex\Addons\Scanner\ClassInspector;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Symfony\Component\Finder\SplFileInfo;
 
 class Hooks extends BaseCollection
 {
@@ -28,24 +32,43 @@ class Hooks extends BaseCollection
     {
         $class = $file->getClassName();
 
-        $id       = $method === null ? $class : "{$class}@{$method}";
-        $listener = $id;
+        if ( $method instanceof Closure )
+        {
+            $id       = $class . '@' . str_random();
+            $listener = $method;
+        }
+        else
+        {
+            $id       = $method === null ? $class : "{$class}@{$method}";
+            $listener = $id;
+        }
+
         $this->set($id, array_merge(compact('file', 'annotation', 'class', 'listener'), (array)$annotation));
 
-        if ( $annotation->replace ) {
+        if ( $annotation->replace )
+        {
             $this->set("{$annotation->replace}.replaced", $id);
         }
 
         $hooks = $this;
-        $this->app->make('events')->listen('codex:' . $annotation->name, function () use ($hooks, $id) {
-            if ( $hooks->has("{$id}.replaced") ) {
+        $this->app->make('events')->listen('codex:' . $annotation->name, function () use ($hooks, $id)
+        {
+            if ( $this->has("{$id}.replaced") )
+            {
                 return;
             }
-            $listener = $hooks->get("{$id}.listener");
+            $listener = $this->get("{$id}.listener");
+            if ( $listener instanceof Closure )
+            {
+                return call_user_func_array($listener, func_get_args());
+            }
             $method = 'handle';
-            if(str_contains($listener, '@')){
+            if ( str_contains($listener, '@') )
+            {
                 list($class, $method) = explode('@', $listener);
-            } else {
+            }
+            else
+            {
                 $class = $listener;
             }
             $instance = $this->app->build($class);
@@ -53,9 +76,17 @@ class Hooks extends BaseCollection
         });
     }
 
-    public function hook($name, $hook)
+    public function hook($name, $hook, $replace = false)
     {
-        $this->app->make('events')->listen("codex:{$name}", $hook);
+        $annotation          = new Hook();
+        $annotation->name    = $name;
+        $annotation->replace = $replace;
+        $file                = debug_backtrace()[ 1 ][ 'file' ];
+        $class               = debug_backtrace()[ 1 ][ 'class' ];
+        $fileInfo            = new SplFileInfo($file, $file, $file);
+        $classFileInfo       = new ClassFileInfo($fileInfo, new ClassInspector($class, new AnnotationReader()));
+        $this->add($classFileInfo, $annotation, $hook);
+        //$this->app->make('events')->listen("codex:{$name}", $annotation);
         return $this;
     }
 

@@ -23,13 +23,6 @@ if (!function_exists('version')) {
 }
 
 if (!function_exists('codex')) {
-    /**
-     * codex method
-     *
-     * @param null|string $ext
-     *
-     * @return \Codex\Contracts\Codex|mixed
-     */
     function codex($ext = null)
     {
         if(!app()->bound('codex') || !app()->hasBeenBootstrapped()){

@@ -11,7 +11,7 @@ namespace Codex\Documents;
 
 use Closure;
 use Codex\Contracts;
-use Codex\Contracts\Codex;
+use Codex\Codex;
 use Codex\Exception\CodexException;
 use Codex\Projects\Project;
 use Codex\Support\Extendable;

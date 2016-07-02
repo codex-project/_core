@@ -63,13 +63,17 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $singletons = [
-        'codex'        => Codex::class,
+       # 'codex'        => Codex::class,
         'codex.addons' => Addons\Factory::class,
+    ];
+
+    protected $shared = [
+        'codex' => Codex::class
     ];
 
     protected $aliases = [
         'codex.log' => Contracts\Log\Log::class,
-        'codex'     => Contracts\Codex::class,
+        #'codex'     => Contracts\Codex::class,
     ];
 
     /** @var Addons\Factory */
@@ -227,8 +231,8 @@ class CodexServiceProvider extends ServiceProvider
     {
         $this->app->instance('codex.addons', $this->addons = Addons\Factory::getInstance());
         $this->addons->setManifestPath($this->app[ 'config' ][ 'codex.paths.manifest' ]);
-        $this->addons->registerInPath(__DIR__ . '/Processors');
-        $this->addons->findAndRegisterAll();
+        $this->addons->scanAndResolveDirectory(__DIR__ . '/Processors');
+        $this->addons->scanAndResolveAddonPackages();
     }
 
     protected function bootAttributesProcessor()

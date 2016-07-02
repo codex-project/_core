@@ -10,7 +10,7 @@
  */
 namespace Codex\Addons\Types;
 
-class Plugin extends BaseType
+class Plugin extends BasePresenter
 {
 
 }

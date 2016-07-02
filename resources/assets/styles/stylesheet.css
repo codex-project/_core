@@ -5836,17 +5836,17 @@ article.content .toc-header-link:before {
   opacity: .4;
 }
 
-h3 article.content .toc-header-link:before {
+article.content h3 .toc-header-link:before {
   font-size: 26px;
   top: 0;
 }
 
-h4 article.content .toc-header-link:before {
+article.content h4 .toc-header-link:before {
   font-size: 21px;
   top: -1px;
 }
 
-h5 article.content .toc-header-link:before {
+article.content h5 .toc-header-link:before {
   font-size: 20px;
   top: -3px;
 }

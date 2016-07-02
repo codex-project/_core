@@ -10,7 +10,7 @@
  */
 namespace Codex\Addons\Types;
 
-class Processor extends BaseType
+class Processor extends BasePresenter
 {
 
 }

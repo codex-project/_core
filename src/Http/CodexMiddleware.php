@@ -2,7 +2,7 @@
 namespace Codex\Http;
 
 use Closure;
-use Codex\Contracts\Codex;
+use Codex\Codex;
 use Illuminate\Contracts\Foundation\Application;
 
 class CodexMiddleware
@@ -48,8 +48,8 @@ class CodexMiddleware
     public function terminate($request, $response)
     {
         $codex = $this->codex;
-        
-        
+
+
         return $response;
     }
 

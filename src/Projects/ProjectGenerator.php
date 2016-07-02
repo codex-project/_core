@@ -7,7 +7,7 @@
  */
 namespace Codex\Projects;
 
-use Codex\Contracts\Codex;
+use Codex\Codex;
 use Codex\Support\Extendable;
 use Illuminate\Contracts\View\Factory;
 use Sebwite\Filesystem\Filesystem;
