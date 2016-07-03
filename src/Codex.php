@@ -97,6 +97,12 @@ class Codex extends Extendable implements Arrayable
         $this->cache = $cache;
         $this->log   = $log;
 
+//        $this->theme->head->add('meta', 'google-analytics', 'asdfasdf');
+//        $this->theme->head->add([
+//            ['meta', 'google-analytics', 'asf'],
+//            ['tag' => 'meta', 'property' => 'og:title', 'content' => 'The Codex'],
+//            ['']
+//        ])
         $this->docsPath = config('codex.paths.docs');
         if ( path_is_relative($this->docsPath) )
         {

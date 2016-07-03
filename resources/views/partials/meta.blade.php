@@ -30,7 +30,7 @@ $sizes = [ 57, 60, 72, 76, 114, 120, 144, 152, 180 ];
 @endif
 
 @if(isset($facebookAppId))
-<meta property="fb:app_id" content="$facebookAppId">
+    <meta property="fb:app_id" content="$facebookAppId">
 @endif
 
 <meta property="og:title" content="The Rock"/>
