@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author Robin Radic
+ * @author    Robin Radic
  * @copyright Copyright 2016 (c) Codex Project
- * @license http://codex-project.ninja/license The MIT License
+ * @license   http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Helpers;
 
@@ -52,8 +52,9 @@ class ThemeHelper extends Extendable implements Arrayable
     public function __construct(Codex $parent)
     {
         $this->setCodex($parent);
-        $this->data  = new Collection;
         $this->reset();
+        #$this->scripts = new Theme\Scripts;
+
     }
 
     /**
@@ -67,6 +68,7 @@ class ThemeHelper extends Extendable implements Arrayable
     public function set($key, $value)
     {
         $this->data->put($key, $value);
+
         return $this;
     }
 
@@ -121,6 +123,7 @@ class ThemeHelper extends Extendable implements Arrayable
         $src = Str::ensureRight($src, '.js');
         $src = $external ? $src : asset($src);
         $this->javascripts->put($name, compact('src', 'depends', 'external', 'name'));
+
         return $this;
     }
 
@@ -139,6 +142,7 @@ class ThemeHelper extends Extendable implements Arrayable
         $src = Str::ensureRight($src, '.css');
         $src = $external ? $src : asset($src);
         $this->stylesheets->put($name, compact('src', 'depends', 'external', 'name'));
+
         return $this;
     }
 
@@ -155,6 +159,7 @@ class ThemeHelper extends Extendable implements Arrayable
     public function addScript($name, $value, array $depends = [ ], array $attr = [ ])
     {
         $this->scripts->set($name, compact('name', 'value', 'depends', 'attr'));
+
         return $this;
     }
 
@@ -171,6 +176,7 @@ class ThemeHelper extends Extendable implements Arrayable
     public function addStyle($name, $value, array $depends = [ ], array $attr = [ ])
     {
         $this->styles->set($name, compact('name', 'value', 'depends', 'attr'));
+
         return $this;
     }
 
@@ -236,11 +242,14 @@ class ThemeHelper extends Extendable implements Arrayable
     public function addBodyClass($class)
     {
         $classes = is_array($class) ? $class : explode(' ', $class);
-        foreach ( $classes as $c ) {
-            if ( $this->hasBodyClass($c) === false ) {
+        foreach ( $classes as $c )
+        {
+            if ( $this->hasBodyClass($c) === false )
+            {
                 $this->bodyClass[] = $c;
             }
         }
+
         return $this;
     }
 
@@ -254,6 +263,7 @@ class ThemeHelper extends Extendable implements Arrayable
     public function setBodyClass($val)
     {
         $this->bodyClass = $val;
+
         return $this;
     }
 
@@ -300,6 +310,7 @@ class ThemeHelper extends Extendable implements Arrayable
     {
         $classes         = is_array($classes) ? $classes : explode(' ', $classes);
         $this->bodyClass = array_diff($this->bodyClass, $classes);
+
         return $this;
     }
 
@@ -322,9 +333,11 @@ class ThemeHelper extends Extendable implements Arrayable
     public function renderJavascripts()
     {
         $scripts = [ ];
-        foreach ( $this->javascripts() as $js ) {
+        foreach ( $this->javascripts() as $js )
+        {
             $scripts[] = "<script src=\"{$js['src']}\"></script>";
         }
+
         return implode("\n", $scripts);
     }
 
@@ -336,9 +349,11 @@ class ThemeHelper extends Extendable implements Arrayable
     public function renderStylesheets()
     {
         $styles = [ ];
-        foreach ( $this->stylesheets() as $css ) {
+        foreach ( $this->stylesheets() as $css )
+        {
             $styles[] = "<link type='text/css' rel='stylesheet' href=\"{$css['src']}\"/>";
         }
+
         return implode("\n", $styles);
     }
 
@@ -350,9 +365,11 @@ class ThemeHelper extends Extendable implements Arrayable
     public function renderStyles()
     {
         $styles = [ ];
-        foreach ( $this->styles() as $style ) {
+        foreach ( $this->styles() as $style )
+        {
             $styles[] = "<style type='text/css'>{$style['value']}</style>";
         }
+
         return implode("\n", $styles);
     }
 
@@ -364,12 +381,13 @@ class ThemeHelper extends Extendable implements Arrayable
     public function renderScripts()
     {
         $scripts = [ ];
-        foreach ( $this->scripts() as $js ) {
+        foreach ( $this->scripts() as $js )
+        {
             $scripts[] = "<script>{$js['value']}</script>";
         }
+
         return implode("\n", $scripts);
     }
-
 
 
     public function view($name, $view = null)
@@ -389,7 +407,9 @@ class ThemeHelper extends Extendable implements Arrayable
         $this->stylesheets = new Collection;
         $this->scripts     = new Collection;
         $this->styles      = new Collection;
-        $this->body        = new Collection;
+        $this->data        = new Collection;
+        $this->bodyClass   = [];
+
         return $this;
     }
 
@@ -405,11 +425,13 @@ class ThemeHelper extends Extendable implements Arrayable
         $all    = $all instanceof Collection ? $all : new Collection($all);
         $sorter = new Sorter;
         $sorted = new Collection;
-        foreach ( $all as $name => $asset ) {
+        foreach ( $all as $name => $asset )
+        {
             $sorter->addItem($asset[ 'name' ], $asset[ 'depends' ]);
         }
 
-        foreach ( $sorter->sort() as $name ) {
+        foreach ( $sorter->sort() as $name )
+        {
             $sorted->add($all->where('name', $name)->first());
         }
 
@@ -424,10 +446,21 @@ class ThemeHelper extends Extendable implements Arrayable
     public function toArray()
     {
         $data       = [ 'bodyClass' => $this->bodyClass ];
-        $arrayables = [ 'javascripts', 'stylesheets', 'scripts', 'styles', 'data' ];
-        foreach ( $arrayables as $arrayable ) {
-            $data[ $arrayable ] = call_user_func([ $this, $arrayable ])->toArray();
+        $arrayables = [
+            'javascripts',
+            'stylesheets',
+            'scripts',
+            'styles',
+            'data',
+        ];
+        foreach ( $arrayables as $arrayable )
+        {
+            $data[ $arrayable ] = call_user_func([
+                $this,
+                $arrayable,
+            ])->toArray();
         }
+
         return $data;
     }
 }
