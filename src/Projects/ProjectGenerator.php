@@ -35,6 +35,7 @@ class ProjectGenerator extends Extendable
 
     protected $views = [
         'config' => 'codex-stubs::config',
+        'config-example' => 'codex-stubs::config-example',
         'index' => 'codex-stubs::index',
         'menu' => 'codex-stubs::menu'
     ];
@@ -102,6 +103,7 @@ class ProjectGenerator extends Extendable
         $this->renderTo('config.php', $this->views['config'], []);
         $this->renderTo('master/menu.yml', $this->views['menu'], []);
         $this->renderTo('master/index.md', $this->views['index'], []);
+        $this->renderTo('config.example.php', $this->views['config-example'], []);
 
     }
 
