@@ -296,7 +296,7 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
      */
     public function createGenerator()
     {
-        return $this->container->make('codex.generator');
+        return $this->container->make('codex.project.generator');
     }
 
 }
