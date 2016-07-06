@@ -47,8 +47,13 @@ class Scanner
 
         foreach ( $this->fs->globule(__DIR__ . '/Annotations/*.php') as $filePath )
         {
-            AnnotationRegistry::registerFile($filePath);
+            $this->registerAnnotation($filePath);
         }
+    }
+
+    public function registerAnnotation($filePath)
+    {
+        AnnotationRegistry::registerFile($filePath);
     }
 
     public function getAddonPaths()

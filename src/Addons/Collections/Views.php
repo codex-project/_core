@@ -24,6 +24,7 @@ class Views extends BaseCollection
             'document'   => 'codex::document',
             'error'      => 'codex::error',
             'menus'      => [
+                'default'  => 'codex::menus.header-dropdown',
                 'sidebar'  => 'codex::menus.sidebar',
                 'projects' => 'codex::menus.header-dropdown',
                 'versions' => 'codex::menus.header-dropdown',

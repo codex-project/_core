@@ -5,7 +5,6 @@ use Codex\Codex;
 use Codex\Dev\Debugbar\CodexSimpleCollector;
 use Codex\Documents\Document;
 use Codex\Http\Controllers\CodexController;
-use Codex\Projects\Project;
 use Codex\Traits\CodexProviderTrait;
 use Sebwite\Support\ServiceProvider;
 
@@ -53,16 +52,14 @@ class DevServiceProvider extends ServiceProvider
 
     protected function registerMetas()
     {
-        if ( class_exists('Sebwite\IdeaMeta\IdeaMetaServiceProvider') && $this->app->bound('idea-meta') === false )
-        {
+        if ( class_exists('Sebwite\IdeaMeta\IdeaMetaServiceProvider') && $this->app->bound('idea-meta') === false ) {
             $this->app->register('Sebwite\IdeaMeta\IdeaMetaServiceProvider');
         }
     }
 
     protected function registerDebugbar()
     {
-        if ( class_exists('Barryvdh\Debugbar\ServiceProvider') && $this->app->bound('idea-meta') === false )
-        {
+        if ( class_exists('Barryvdh\Debugbar\ServiceProvider') && $this->app->bound('idea-meta') === false ) {
             $this->app->register('Barryvdh\Debugbar\ServiceProvider');
         }
     }
@@ -71,16 +68,14 @@ class DevServiceProvider extends ServiceProvider
     {
         $this->app->instance('codex.dev', $this->dev = Dev::getInstance());
 
-        $this->codexHook('document:render', function ()
-        {
+        $this->codexHook('document:render', function () {
             $this->dev->stopBenchmark(true);
         });
     }
 
     protected function bootMetas()
     {
-        if ( $this->app->bound('idea-meta') )
-        {
+        if ( $this->app->bound('idea-meta') ) {
             $this->app[ 'idea-meta' ]->add('codex', Metas\CodexMeta::class);
             $this->app[ 'idea-meta' ]->add('codex-projects', Metas\CodexProjectsMeta::class);
         }
@@ -89,8 +84,7 @@ class DevServiceProvider extends ServiceProvider
     protected function bootDebugbar()
     {
 
-        if ( $this->app->bound('debugbar') )
-        {
+        if ( $this->app->bound('debugbar') ) {
             $this->app->make('debugbar')->addCollector($collector = $this->app->make('codex.dev.debugbar.collector'));
             $this->codexHook('controller:document', function (CodexController $controller, Document $document) //, Codex $codex, Project $project
             {
@@ -100,16 +94,14 @@ class DevServiceProvider extends ServiceProvider
                 $collector->data()->set('document', $document->toArray());
                 $collector->data()->set('hookPoints', \Codex\Codex::$hookPoints);
                 $hooks = [ ];
-                foreach ( $this->codexAddons()->hooks->all() as $hook )
-                {
+                foreach ( $this->codexAddons()->hooks->all() as $hook ) {
                     $hooks[] = [ 'name' => $hook[ 'name' ], 'class' => $hook[ 'class' ], 'listener' => $hook[ 'listener' ] ];
                 }
                 $collector->data()->set('hooks', $hooks);
             });
         }
         return;
-        if ( $this->app->bound('debugbar') )
-        {
+        if ( $this->app->bound('debugbar') ) {
             $db = $this->app->make('debugbar');
             #$db->getJavascriptRenderer()->addControl('asdf', [])
             $db->getJavascriptRenderer()->addAssets([
@@ -139,8 +131,13 @@ class DevServiceProvider extends ServiceProvider
 
     protected function bootMenus()
     {
-        $menus = $this->codex()->menus;
-        $menu  = $menus->add('dev');
+        $this->codexView('menus.dev', 'codex::menus.header-dropdown');
+
+        $menu  = $this->codex()->menus->add('dev', [ 'title' => 'Dev' ]);
+
         $menu->add('dev-log', 'Log')->setAttribute('href', '#'); //route('codex.dev.log'));
+        $this->codex()->theme->pushContentToStack('nav', $this->codexView('layout'), function ($view) use ($menu) {
+            return $menu->render();
+        });
     }
 }

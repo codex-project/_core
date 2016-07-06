@@ -14,17 +14,18 @@ use Sebwite\Filesystem\Filesystem;
 
 /**
  * Class Generator
+ *
  * @package Codex\Projects
  */
 class ProjectGenerator extends Extendable
 {
-    /** @var \Codex\Codex  */
+    /** @var \Codex\Codex */
     protected $codex;
 
-    /** @var \Illuminate\Contracts\View\Factory  */
+    /** @var \Illuminate\Contracts\View\Factory */
     protected $view;
 
-    /** @var \Sebwite\Filesystem\Filesystem  */
+    /** @var \Sebwite\Filesystem\Filesystem */
     protected $fs;
 
     protected $vars = [
@@ -34,18 +35,18 @@ class ProjectGenerator extends Extendable
     protected $name;
 
     protected $views = [
-        'config' => 'codex-stubs::config',
+        'config'         => 'codex-stubs::config',
         'config-example' => 'codex-stubs::config-example',
-        'index' => 'codex-stubs::index',
-        'menu' => 'codex-stubs::menu'
+        'index'          => 'codex-stubs::index',
+        'menu'           => 'codex-stubs::menu',
     ];
 
     /**
      * ProjectGenerator constructor.
      *
-     * @param \Codex\Codex             $codex
+     * @param \Codex\Codex                                                $codex
      * @param \Illuminate\Contracts\View\Factory|\Illuminate\View\Factory $view
-     * @param \Sebwite\Filesystem\Filesystem     $fs
+     * @param \Sebwite\Filesystem\Filesystem                              $fs
      */
     public function __construct(Codex $codex, Factory $view, Filesystem $fs)
     {
@@ -59,24 +60,30 @@ class ProjectGenerator extends Extendable
     protected function registerViewExtension()
     {
         $hasExtension = in_array('stub', $this->view->getExtensions(), true);
-        if ( $hasExtension === false ) {
+        if ( $hasExtension === false )
+        {
             $this->view->addExtension('stub', 'blade');
         }
     }
 
     public function set($key, $value = null)
     {
-        if($value === null){
+        if ( $value === null )
+        {
             $this->vars = $key;
-        } else {
+        }
+        else
+        {
             data_set($this->vars, $key, $value);
         }
+
         return $this;
     }
 
     public function merge(array $data)
     {
         $this->vars = array_replace($this->vars, $data);
+
         return $this;
     }
 
@@ -88,23 +95,24 @@ class ProjectGenerator extends Extendable
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
     public function setView($name, $view)
     {
-        $this->views[$name] = $view;
+        $this->views[ $name ] = $view;
+
         return $this;
     }
 
     public function generate()
     {
         $this->fs->ensureDirectory($projectPath = path_join(config('codex.paths.docs'), $this->name, 'master'));
-        $this->renderTo('config.php', $this->views['config'], []);
-        $this->renderTo('master/menu.yml', $this->views['menu'], []);
-        $this->renderTo('master/index.md', $this->views['index'], []);
-        $this->renderTo('config.example.php', $this->views['config-example'], []);
-
+        $this->renderTo('config.php', $this->views[ 'config' ], [ ]);
+        $this->renderTo('master/menu.yml', $this->views[ 'menu' ], [ ]);
+        $this->renderTo('master/index.md', $this->views[ 'index' ], [ ]);
+        $this->renderTo('config.example.php', $this->views[ 'config-example' ], [ ]);
     }
 
     protected function renderTo($dest, $view, array $data = [ ])
@@ -115,6 +123,7 @@ class ProjectGenerator extends Extendable
     protected function render($view, array $data = [ ])
     {
         $data = array_merge($this->vars, $data);
+
         return view($view, $data)->render();
     }
 }

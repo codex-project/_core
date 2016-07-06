@@ -77,9 +77,12 @@ class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
      *
      * @param string $id
      *
+     * @param array  $attributes
+     *
      * @return \Codex\Menus\Menu
+     * @throws \Codex\Exception\CodexException
      */
-    public function add($id)
+    public function add($id, array $attributes = [])
     {
         if ( $this->has($id) ) {
             return $this->get($id);
@@ -89,7 +92,7 @@ class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
             'menus' => $this,
             'id'    => $id,
         ]);
-
+        $menu->setAttributes($attributes);
         $this->hookPoint('menus:add', [ $id, $menu ]);
         $this->items->put($id, $menu);
 

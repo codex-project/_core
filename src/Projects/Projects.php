@@ -51,7 +51,8 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
 
         $this->hookPoint('projects:construct', [ $this ]);
 
-        $this->resolve();
+        $this->findAndRegisterAll();
+        $this->resolveProjectsMenu();
 
         $this->hookPoint('projects:constructed', [ $this ]);
     }
@@ -68,7 +69,6 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
             $project = $this->get($project);
         }
         $this->activeProject = $project;
-        $this->resolveProjectSidebarMenu($project);
         $this->codex->menus->get('projects')->setAttribute('title', $project->getDisplayName());
         $this->hookPoint('projects:active', [ $project ]);
     }
@@ -172,16 +172,13 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected function resolve()
+    protected function findAndRegisterAll()
     {
         if ( ! $this->items->isEmpty() ) {
             return;
         }
         $this->hookPoint('projects:resolve', [ $this ]);
-        /** @var \Codex\Menus\Menu $menu */
-        $menu = $this->codex->menus->add('projects');
-        $menu->setAttribute('title', 'Pick...');
-        $menu->setAttribute('subtitle', 'project');
+
         $finder   = new Finder();
         $projects = $finder
             ->in($this->getCodex()->getDocsPath())
@@ -205,12 +202,26 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
 
 
             // This hook allows us to exclude projects from resolving, or do some other stuff
-            $hook = $this->hookPoint('project:make', [ $project ]);
+            $hook = $this->hookPoint('projects:resolving', [ $project ]);
             if ( $hook === false ) {
                 continue;
             }
 
             $this->items->put($name, $project);
+
+        }
+        $this->hookPoint('projects:resolved', [ $this ]);
+    }
+
+    protected function resolveProjectsMenu()
+    {
+        /** @var \Codex\Menus\Menu $menu */
+        $menu = $this->codex->menus->add('projects');
+        $menu->setAttribute('title', 'Pick...');
+        $menu->setAttribute('subtitle', 'project');
+
+        foreach($this->items->all() as $project){
+            /** @var Project $project */
 
             # Add to menu
             $name  = (string)$project->config('display_name');
@@ -241,7 +252,6 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
                 $this->hookPoint('projects:resolved:node', [ $project, $node ]);
             }
         }
-        $this->hookPoint('projects:resolved', [ $this ]);
     }
 
     /**

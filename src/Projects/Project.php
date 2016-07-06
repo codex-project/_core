@@ -9,6 +9,7 @@ namespace Codex\Projects;
 
 use Codex\Codex;
 use Codex\Contracts;
+use Codex\Exception\CodexException;
 use Codex\Support\Extendable;
 use Codex\Traits;
 use Illuminate\Contracts\Config\Repository;
@@ -130,6 +131,7 @@ class Project extends Extendable implements Arrayable
 
     public function setActive()
     {
+        $this->resolveSidebarMenu();
         $this->projects->setActive($this);
         return $this;
     }
@@ -241,6 +243,50 @@ class Project extends Extendable implements Arrayable
         $this->ref = $this->defaultRef = (string)$defaultRef;
     }
 
+    protected function resolveSidebarMenu($items = null, $parentId = 'root')
+    {
+        $this->hookPoint('project:sidebar:resolving', [ $items, $parentId ]);
+        if ( $items === null ) {
+            $path  = $this->refPath('menu.yml');
+            $yaml  = $this->getFiles()->get($path);
+            $items = Yaml::parse($yaml)[ 'menu' ];
+            $this->codex->menus->forget('sidebar');
+        }
+
+        $menu = $this->codex->menus->add('sidebar');
+        $menu->setView($this->codex->view('menus.sidebar'));
+
+        if(!is_array($items)){
+            throw CodexException::invalidMenuConfiguration(": menu.yml in [{$this}]");
+        }
+
+        foreach ( $items as $item ) {
+            $link = '#';
+            if ( array_key_exists('document', $item) ) {
+                // remove .md extension if present
+                $path = Str::endsWith($item[ 'document' ], '.md', false) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
+                $link = $this->codex->url($this, $this->getRef(), $path);
+            } elseif ( array_key_exists('href', $item) ) {
+                $link = $item[ 'href' ];
+            }
+
+            $id = md5($item[ 'name' ] . $link);
+
+            $node = $menu->add($id, $item[ 'name' ], $parentId);
+            $node->setAttribute('href', $link);
+            $node->setAttribute('id', $id);
+
+            if ( isset($item[ 'icon' ]) ) {
+                $node->setMeta('icon', $item[ 'icon' ]);
+            }
+
+            if ( isset($item[ 'children' ]) ) {
+                $this->resolveSidebarMenu($item[ 'children' ], $id);
+            }
+        }
+        $this->hookPoint('project:sidebar:resolved', [ $menu ]);
+    }
+
     public function getDisk()
     {
         return $this->fsm->disk($this->getDiskName());
@@ -304,15 +350,6 @@ class Project extends Extendable implements Arrayable
     public function getSidebarMenu()
     {
         return $this->getCodex()->menus->get('sidebar');
-        $path  = $this->refPath('menu.yml');
-        $yaml  = $this->getFiles()->get($path);
-        $array = Yaml::parse($yaml);
-
-
-        $menu = $this->setupSidebarMenu($array[ 'menu' ]);
-        $this->hookPoint('project:documents-menu', [ $this, $menu ]);
-
-        return $menu;
     }
 
     public function refPath($path = null)
@@ -347,55 +384,6 @@ class Project extends Extendable implements Arrayable
     public function hasRef($name)
     {
         return $this->getFiles()->exists($name);
-    }
-
-    /**
-     * Resolves and creates the documents menu from the parsed menu.yml
-     *
-     * @param array  $items The array converted from yaml
-     * @param string $parentId
-     *
-     * @return \Codex\Menus\Menu
-     */
-    protected function setupSidebarMenu($items, $parentId = 'root')
-    {
-        /**
-         * @var \Codex\Menus\Menu $menu
-         */
-        $menu = $this->codex->menus->add('sidebar');
-
-        foreach ( $items as $item )
-        {
-            $link = '#';
-            if ( array_key_exists('document', $item) )
-            {
-                // remove .md extension if present
-                $path = Str::endsWith($item[ 'document' ], '.md', false) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
-                $link = $this->codex->url($this, $this->getRef(), $path);
-            }
-            elseif ( array_key_exists('href', $item) )
-            {
-                $link = $item[ 'href' ];
-            }
-
-            $id = md5($item[ 'name' ] . $link);
-
-            $node = $menu->add($id, $item[ 'name' ], $parentId);
-            $node->setAttribute('href', $link);
-            $node->setAttribute('id', $id);
-
-            if ( isset($item[ 'icon' ]) )
-            {
-                $node->setMeta('icon', $item[ 'icon' ]);
-            }
-
-            if ( isset($item[ 'children' ]) )
-            {
-                $this->setupSidebarMenu($item[ 'children' ], $id);
-            }
-        }
-
-        return $menu;
     }
 
     /**

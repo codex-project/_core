@@ -46,12 +46,11 @@ class IconsCommand extends Command
         }
 
         $generator->setSizes($sizes);
-
-        $generator->setIcons($this->ask('Enter icons seperated by a space (ex: book code fork)'));
-        $generator->setColors($this->ask('Enter hex colores seperated by a space.'));
-
+        $generator->setIcons(explode(' ', $this->ask('Enter icons seperated by a space (ex: book code fork)')));
+        $generator->setColors(explode(' ', $this->ask('Enter hex colores seperated by a space.')));
         $generator->setOutDir(__DIR__ . '/out');
-
         $generator->generate();
+
+        $this->info('All done sire!');
     }
 }

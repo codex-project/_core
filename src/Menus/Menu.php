@@ -97,7 +97,7 @@ class Menu extends Extendable implements Arrayable
         $this->files       = $files;
         $this->viewFactory = $viewFactory;
         $this->id          = $id;
-        $this->view        = $menus->getCodex()->view("menus.{$id}");
+        $this->view        = $menus->getCodex()->view('menus.default');
         $this->items       = new Collection();
         $this->attributes  = [
             'title' => '',

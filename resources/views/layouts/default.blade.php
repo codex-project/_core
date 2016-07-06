@@ -17,16 +17,21 @@
 {{-- Body --}}
 @section('body')
     <nav class="main" data-layout="nav">
-        <a href="/" class="brand">
-            {{--<img src="{{ $assetPath }}/img/laravel-logo.png" height="30" alt="Laravel logo">--}}
-            {{ config('codex.display_name') }}
-        </a>
-
-        <div class="responsive-sidebar-nav">
-            <a href="#" class="toggle-slide menu-link btn">&#9776;</a>
-        </div>
 
         @section('header')
+            @section('brand')
+            <a href="/" class="brand">
+                {{--<img src="{{ $assetPath }}/img/laravel-logo.png" height="30" alt="Laravel logo">--}}
+                {{ config('codex.display_name') }}
+            </a>
+            @show
+
+            @section('responsive-sidebar-toggle')
+            <div class="responsive-sidebar-nav">
+                <a href="#" class="toggle-slide menu-link btn">&#9776;</a>
+            </div>
+            @show
+
             @stack('nav')
 
             @section('menu-projects')
@@ -39,7 +44,11 @@
 
     <!-- CONTENT -->
     <div class="docs-wrapper" data-layout="wrapper">
+
+        @section('sidebar-toggle')
         <a class="sidebar-toggle" data-action='sidebar-toggle' title='Toggle sidebar'><i class="fa fa-list"></i></a>
+        @show
+
         @section('menu-sidebar')
             {!! $codex->projects->renderSidebar() !!}
         @show
@@ -49,11 +58,14 @@
         @show
 
         <article class="content @yield('articleClass', '')" data-layout="article">
-            <div class="btn-group pull-right">
-                @section('buttons')
-                @show
-            </div>
-            @yield('content')
+            @section('article')
+                <div class="btn-group pull-right">
+                    @section('buttons')
+                    @show
+                </div>
+
+                @yield('content')
+            @show
         </article>
 
         @stack('content')

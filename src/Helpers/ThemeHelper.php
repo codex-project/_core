@@ -10,6 +10,7 @@
  */
 namespace Codex\Helpers;
 
+use Closure;
 use Codex\Codex;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
@@ -84,8 +85,7 @@ class ThemeHelper extends Extendable implements Arrayable
      */
     public function pushToStack($stackName, $viewName, $data = null, $appendTo = 'codex::layouts.default')
     {
-        $this->codex->getContainer()->make('events')->listen('composing: ' . $appendTo, function ($view) use ($stackName, $viewName, $data)
-        {
+        $this->pushContentToStack($stackName, $appendTo, function($view) use ($viewName, $data){
             /** @var \Illuminate\View\View $view */
             if ( $data instanceof \Closure )
             {
@@ -101,11 +101,22 @@ class ThemeHelper extends Extendable implements Arrayable
                 throw new \InvalidArgumentException("appendSectionsView data is not a array");
             }
 
-            $content = $view->getFactory()->make($viewName, $data)->render();
-            $view->getFactory()->startPush($stackName, $content);
+            return $view->getFactory()->make($viewName, $data)->render();
         });
 
         return $this;
+    }
+
+    public function pushContentToStack($stackName, $appendTo, $content)
+    {
+        $this->codex->getContainer()->make('events')->listen('composing: ' . $appendTo, function ($view) use ($stackName, $content)
+        {
+
+            $view->getFactory()->startPush($stackName, $content instanceof Closure ? $content($view) : $content);
+        });
+
+        return $this;
+
     }
 
     /**

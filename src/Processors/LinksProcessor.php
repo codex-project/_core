@@ -47,10 +47,6 @@ class LinksProcessor
         {
             $url = $element->getAttribute('href');
 
-            if ( $this->isInvalidUrl($url) )
-            {
-                return;
-            }
             try
             {
                 if ( $this->isAction($url) )

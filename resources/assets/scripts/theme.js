@@ -51,7 +51,12 @@ var codex;
                     _this.toggleSidebar();
                 });
                 this.$body.tooltip({
-                    selector: '[rel=tooltip]'
+                    selector: '[rel=tooltip]',
+                    trigger: 'hover',
+                    html: true,
+                    viewport: 'body',
+                    container: 'body',
+                    placement: 'top'
                 });
                 $(function () {
                     _this.$article.hasClass('loaded') === false && _this.$article.addClass('loaded');
