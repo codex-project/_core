@@ -9,6 +9,8 @@
 namespace Codex\Support;
 
 
+use Sebwite\Support\Arr;
+
 class Collection extends \Illuminate\Support\Collection
 {
     public function get($key, $default = null)
@@ -41,6 +43,11 @@ class Collection extends \Illuminate\Support\Collection
         {
             return in_array($value, data_get($item, $key, [ ]), true);
         });
+    }
+
+    public function has($key)
+    {
+        return Arr::has($this->items, $key);
     }
 
     /** @return static */

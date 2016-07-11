@@ -23,7 +23,7 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class Projects
  * @package Codex\Projects
- * @method Project[]|Collection getPhpdocProjects()
+ * @method Project[]|Collection getPhpdocProjects() getPhpdocProjects()
  */
 class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
 {

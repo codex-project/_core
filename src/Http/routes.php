@@ -18,3 +18,9 @@ if ( is_array($ignored) && count($ignored) > 0 ) {
 Route::get('_markdown', [ 'as' => 'markdown', 'uses' => 'CodexController@markdown' ]);
 
 
+if(codex()->isDev()){
+
+    Route::group(['prefix' => 'dev'], function(){
+
+    });
+}

@@ -71,6 +71,8 @@ class DevServiceProvider extends ServiceProvider
         $this->codexHook('document:render', function () {
             $this->dev->stopBenchmark(true);
         });
+
+        $this->codexIgnoreRoute('dev');
     }
 
     protected function bootMetas()
@@ -93,6 +95,7 @@ class DevServiceProvider extends ServiceProvider
                 $collector->setDocument($document);
                 $collector->data()->set('document', $document->toArray());
                 $collector->data()->set('hookPoints', \Codex\Codex::$hookPoints);
+                $collector->data()->set('views', $this->codexAddons()->views->toArray());
                 $hooks = [ ];
                 foreach ( $this->codexAddons()->hooks->all() as $hook ) {
                     $hooks[] = [ 'name' => $hook[ 'name' ], 'class' => $hook[ 'class' ], 'listener' => $hook[ 'listener' ] ];

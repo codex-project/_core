@@ -11,8 +11,8 @@
 namespace Codex\Documents;
 
 
-use Codex\Contracts;
 use Codex\Codex;
+use Codex\Contracts;
 use Codex\Exception\CodexException;
 use Codex\Projects\Project;
 use Codex\Support\Collection;
@@ -117,17 +117,16 @@ class Document extends Extendable implements Arrayable
 
         $this->codex->projects->hasActive() === false && $project->setActive();
 
-        if ( ! $this->getFiles()->exists($this->getPath()) )
-        {
+        if ( !$this->getFiles()->exists($this->getPath()) ) {
             throw CodexException::documentNotFound("{$this} in [{$project}]");
         }
 
         $this->attributes   = $codex->config('default_document_attributes');
         $this->lastModified = $this->getFiles()->lastModified($this->getPath());
-        $this->content      = $this->getFiles()->get($this->getPath());
         $this->setCacheMode($this->getCodex()->config('document.cache.mode', self::CACHE_DISABLED));
-        $this->attr('view', null) === null && $this->setAttribute('view', $codex->view('document'));
 
+        //$this->content = $this->getFiles()->get($this->getPath());
+        $this->attr('view', null) === null && $this->setAttribute('view', $codex->view('document'));
 
 
         $this->hookPoint('document:constructed', [ $this ]);
@@ -153,42 +152,37 @@ class Document extends Extendable implements Arrayable
      */
     public function render()
     {
-        if ( $this->rendered )
-        {
+        if ( $this->rendered ) {
             return $this->content;
         }
+        // todo implement this. if changes are made that influence the attributes (ex, the project config), the cache should drop.
+        // this is a example of how to create a unique hash for it. not sure if it would work out
+//        $attributesChanged = md5(collect(array_dot($this->attributes))->values()->transform(function ($val) {
+//            return md5((string)$val);
+//        })->implode('.'));
+
+
 
         $this->hookPoint('document:render');
-        if ( $this->shouldCache() )
-        {
+        if ( $this->shouldCache() ) {
             $minutes = $this->getCodex()->config('document.cache.minutes', null);
-            if ( $minutes === null )
-            {
-                $lastModified = (int)$this->cache->rememberForever($this->getCacheKey(':last_modified'), function ()
-                {
+            if ( $minutes === null ) {
+                $lastModified = (int)$this->cache->rememberForever($this->getCacheKey(':last_modified'), function () {
+                    return 0;
+                });
+            } else {
+                $lastModified = (int)$this->cache->remember($this->getCacheKey(':last_modified'), $minutes, function () {
                     return 0;
                 });
             }
-            else
-            {
-                $lastModified = (int)$this->cache->remember($this->getCacheKey(':last_modified'), $minutes, function ()
-                {
-                    return 0;
-                });
-            }
-            if ( $this->lastModified !== $lastModified || $this->cache->has($this->getCacheKey()) === false )
-            {
+            if ( $this->lastModified !== $lastModified || $this->cache->has($this->getCacheKey()) === false ) {
                 $this->runProcessors();
                 $this->cache->put($this->getCacheKey(':last_modified'), $this->lastModified, $minutes);
                 $this->cache->put($this->getCacheKey(':content'), $this->content, $minutes);
-            }
-            else
-            {
+            } else {
                 $this->content = $this->cache->get($this->getCacheKey(':content'));
             }
-        }
-        else
-        {
+        } else {
             $this->runProcessors();
         }
         $this->rendered = true;
@@ -196,7 +190,6 @@ class Document extends Extendable implements Arrayable
         $this->codex->dev->addMessage($this->toArray());
         return $this->content;
     }
-
 
     public function getCacheKey($suffix = '')
     {
@@ -212,8 +205,7 @@ class Document extends Extendable implements Arrayable
     {
         $this->runProcessor('attributes');
         $processors = $this->getEnabledProcessors();
-        foreach ( $this->getProcessors()->getSorted($processors) as $processor )
-        {
+        foreach ( $this->getProcessors()->getSorted($processors) as $processor ) {
             $this->runProcessor($processor);
         }
     }
@@ -227,8 +219,7 @@ class Document extends Extendable implements Arrayable
      */
     protected function runProcessor($name)
     {
-        if ( $this->processed->has($name) )
-        {
+        if ( $this->processed->has($name) ) {
             return;
         }
         $this->processed->set($name, $this->getProcessors()->run($name, $this));
@@ -288,8 +279,7 @@ class Document extends Extendable implements Arrayable
      */
     public function setContent($content)
     {
-        if ( $content instanceof ContentDom )
-        {
+        if ( $content instanceof ContentDom ) {
             $content = (string)$content->root->outerhtml();
         }
         $this->content = $content;
@@ -303,16 +293,15 @@ class Document extends Extendable implements Arrayable
      */
     public function getContentDom()
     {
-        if ( null === $this->contentDom )
-        {
+        if ( null === $this->contentDom ) {
             $this->contentDom = new ContentDom($this);
         }
-        return $this->contentDom->set($this->content);
+        return $this->contentDom->set($this->getContent());
     }
 
     public function getDom()
     {
-        return \FluentDOM::Query($this->content, 'text/html');
+        return \FluentDOM::Query($this->getContent(), 'text/html');
     }
 
     /** @param \FluentDOM\Query $dom */
@@ -328,20 +317,14 @@ class Document extends Extendable implements Arrayable
 
     public function setCacheMode($mode)
     {
-        if ( $mode === true )
-        {
+        if ( $mode === true ) {
             $mode = self::CACHE_ENABLED;
-        }
-        elseif ( $mode === false )
-        {
+        } elseif ( $mode === false ) {
             $mode = self::CACHE_DISABLED;
-        }
-        elseif ( $mode === null )
-        {
+        } elseif ( $mode === null ) {
             $mode = self::CACHE_AUTO;
         }
-        if ( ! in_array($mode, [ self::CACHE_ENABLED, self::CACHE_DISABLED, self::CACHE_AUTO ], true) )
-        {
+        if ( !in_array($mode, [ self::CACHE_ENABLED, self::CACHE_DISABLED, self::CACHE_AUTO ], true) ) {
             throw CodexException::because('Cache mode not supported: ' . (string)$mode);
         }
         $this->mode = $mode;
@@ -391,6 +374,9 @@ class Document extends Extendable implements Arrayable
      */
     public function getContent()
     {
+        if ( false === isset($this->content) ) {
+            $this->content = $this->getFiles()->get($this->getPath());
+        }
         return $this->content;
     }
 

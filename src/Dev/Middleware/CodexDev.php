@@ -3,6 +3,7 @@
 
 use Closure;
 use Codex\Codex;
+use Codex\Support\Collection;
 use Exception;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -51,7 +52,9 @@ class CodexDev
         catch (Exception $e) {
             $response = $this->handleException($request, $e);
         }
+        if($this->codex->config('dev.enabled', false) === true && $this->codex->config('dev.debugbar', false) === true){
 
+        }
         $this->codex->config('dev.debugbar', false) && $this->handleDebugbar($response);
         $this->codex->config('dev.hookpoints', false) && $this->handleHookPoints();
 

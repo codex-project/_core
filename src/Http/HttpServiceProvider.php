@@ -65,6 +65,15 @@ class HttpServiceProvider extends ServiceProvider
         ], function () {
             require __DIR__ . '/routes.php';
         });
+        // dev
+        $router->group([
+            'as'         => 'codex.dev.',
+            'prefix'     => config('codex.base_route') . '/dev',
+            'namespace'  => $this->namespace,
+            'middleware' => $useMiddleware ? [ 'web' ] : [ ],
+        ], function () {
+            require __DIR__ . '/routes.dev.php';
+        });
 
         // api v1
         $router->group([

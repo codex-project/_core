@@ -14,8 +14,10 @@ use Codex\Contracts;
 use Codex\Codex;
 use Codex\Exception\CodexException;
 use Codex\Projects\Project;
+use Codex\Support\Collection;
 use Codex\Support\Extendable;
 use Codex\Traits;
+use Sebwite\Support\Str;
 
 class Documents extends Extendable implements Contracts\Documents\Documents
 {
@@ -37,7 +39,20 @@ class Documents extends Extendable implements Contracts\Documents\Documents
         $this->project = $parent;
         $this->setCodex($codex);
 
+        $this->hookPoint('documents:constructing');
+        $this->resolveAll();
         $this->hookPoint('documents:constructed');
+    }
+
+    public function resolveAll()
+    {
+        $fs = $this->project->getFiles();
+        $files = $fs->files($this->project->refPath(), true);
+        foreach($files as $file){
+            $file = Str::removeLeft($file, $this->project->getRef() . DIRECTORY_SEPARATOR);
+            $file = Str::removeRight($file, '.' . path_get_extension($file));
+            $this->resolvePathName($file) && $this->resolve($file);
+        }
     }
 
     /**
@@ -48,6 +63,13 @@ class Documents extends Extendable implements Contracts\Documents\Documents
     public function all()
     {
         return $this->items->all();
+    }
+
+    public function in($dir)
+    {
+        return $this->items->filter(function($doc, $path) use ($dir) {
+            return Str::startsWith($path, $dir);
+        });
     }
 
     /**

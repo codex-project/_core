@@ -25,7 +25,7 @@ class CacheHelper extends Extendable
         $this->setCodex($parent);
     }
 
-    public function getCachedLastModified($key, $lastModified, \Closure $create)
+    public function lastModified($key, $lastModified, \Closure $create)
     {
         /** @var \Illuminate\Contracts\Cache\Repository $cache */
         $cache = $this->getCodex()->getCache();

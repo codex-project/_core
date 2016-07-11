@@ -5726,7 +5726,7 @@ article.content li > ul ul {
   font-weight: 400;
 }
 
-article.content ul, article.content ol {
+article.content table + ul, article.content table + ol {
   margin-top: 10px;
 }
 
