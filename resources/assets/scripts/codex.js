@@ -9,9 +9,28 @@ var codex;
         apiUrl: '/api',
         debug: false
     };
+    Vue.use(window['VueResource']);
 })(codex || (codex = {}));
 var codex;
 (function (codex) {
+    var BaseApi = (function () {
+        function BaseApi() {
+            this.url = '';
+            this.version = '1';
+            this.debug = false;
+        }
+        BaseApi.prototype.request = function (method, endpoint, data, _settings) {
+            if (data === void 0) { data = {}; }
+            if (_settings === void 0) { _settings = {}; }
+            var settings = {};
+            settings.url = this.url + '/v' + this.version + endpoint;
+            settings.data = data;
+            settings.method = method;
+            return $.ajax(_.merge(settings, _settings));
+        };
+        return BaseApi;
+    }());
+    codex.BaseApi = BaseApi;
     var Api = (function () {
         function Api(url, wrappedEndpoint) {
             this.url = url;
@@ -2036,6 +2055,372 @@ var codex;
 })(codex || (codex = {}));
 var codex;
 (function (codex) {
+    codex.namespacePrefix = 'codex.';
+    console.log('packadic namespace ' + codex.namespacePrefix);
+    if (typeof window['Vue'] !== 'undefined') {
+        Vue.config.debug = true;
+        Vue.config.devtools = true;
+    }
+    function directive(name, isElementDirective) {
+        if (isElementDirective === void 0) { isElementDirective = false; }
+        return function (cls) {
+            var definition = {
+                isLiteral: false,
+                twoWay: false,
+                acceptStatement: false,
+                deep: false
+            };
+            var obj = new cls();
+            var proto = Object.getPrototypeOf(obj);
+            Object.getOwnPropertyNames(obj).forEach(function (defName) {
+                definition[defName] = obj[defName];
+            });
+            Object.getOwnPropertyNames(proto).forEach(function (method) {
+                if (['constructor'].indexOf(method) > -1)
+                    return;
+                var desc = Object.getOwnPropertyDescriptor(proto, method);
+                if (typeof desc.value === 'function') {
+                    definition[method] = proto[method];
+                }
+                else if (typeof desc.set === 'function') {
+                    Object.defineProperty(definition, method, desc);
+                }
+                else if (typeof desc.get === 'function') {
+                    Object.defineProperty(definition, method, desc);
+                }
+            });
+            console.log('@directive ', name, definition, proto);
+            if (isElementDirective) {
+                Vue.elementDirective(name, definition);
+            }
+            else {
+                Vue.directive(name, definition);
+            }
+        };
+    }
+    codex.directive = directive;
+    function filter(name) {
+        return function (target, propertyKey, descriptor) {
+            name = name || propertyKey;
+            var originalMethod = descriptor.value;
+            descriptor.value = function () {
+                var args = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    args[_i - 0] = arguments[_i];
+                }
+                console.log("The method args are: " + JSON.stringify(args));
+                var result = originalMethod.apply(this, args);
+                console.log("The return value is: " + result);
+                return result;
+            };
+            Vue.filter(name, target);
+            return descriptor;
+        };
+    }
+    codex.filter = filter;
+    function component(name) {
+        return function (cls) {
+            var options = {
+                props: {},
+                methods: {},
+                computed: {}
+            };
+            if (cls.hasOwnProperty('replace'))
+                options.replace = cls.replace;
+            if (cls.hasOwnProperty('template'))
+                options.template = cls.template;
+            var obj = new cls();
+            var proto = Object.getPrototypeOf(obj);
+            if (proto.hasOwnProperty('__props__')) {
+                options.props = proto.__props__;
+            }
+            Object.getOwnPropertyNames(obj).forEach(function (name) {
+                var type = null;
+                var t = typeof obj[name];
+                if (t === 'string') {
+                    type = String;
+                }
+                else if (t === 'number') {
+                    type = Number;
+                }
+                else if (t === 'boolean') {
+                    type = Boolean;
+                }
+                options.props[name] = { type: type, 'default': obj[name] };
+            });
+            if (proto.hasOwnProperty('__events__'))
+                options.events = proto.__events__;
+            if (proto.hasOwnProperty('__hooks__'))
+                Object.keys(proto.__hooks__).forEach(function (name) {
+                    options[name] = proto.__hooks__[name];
+                });
+            Object.getOwnPropertyNames(proto).forEach(function (method) {
+                if (['constructor'].indexOf(method) > -1)
+                    return;
+                var desc = Object.getOwnPropertyDescriptor(proto, method);
+                if (typeof desc.value === 'function')
+                    options.methods[method] = proto[method];
+                else if (typeof desc.set === 'function')
+                    options.computed[method] = {
+                        get: desc.get,
+                        set: desc.set
+                    };
+                else if (typeof desc.get === 'function')
+                    options.computed[method] = desc.get;
+            });
+            if (name === 'modal') {
+                console.log('!component cls', cls);
+                console.log('!component obj', obj);
+                console.log('!component proto', proto);
+                console.log('!component options', options);
+            }
+            Vue.component(name, options);
+        };
+    }
+    codex.component = component;
+    function widget(name, parent) {
+        return function (cls) {
+            if (parent) {
+                $.widget(codex.namespacePrefix + name, new cls, parent);
+            }
+            else {
+                $.widget(codex.namespacePrefix + name, new cls);
+            }
+            console.log('Widget', name, 'registered', cls);
+        };
+    }
+    codex.widget = widget;
+    var Directive = (function () {
+        function Directive() {
+            var myPrototype = Directive.prototype;
+            $.each(myPrototype, function (propertyName, value) {
+                delete myPrototype[propertyName];
+            });
+        }
+        Object.defineProperty(Directive.prototype, "$el", {
+            get: function () {
+                return $(this.el);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Directive.prototype.$set = function (exp, val) {
+        };
+        Directive.prototype.$delete = function (key) {
+        };
+        Directive.prototype.set = function (value) {
+        };
+        Directive.prototype.on = function (event, handler) {
+        };
+        Directive.prototype.bind = function () {
+        };
+        Directive.prototype.unbind = function () {
+        };
+        Directive.prototype.update = function (newValue, oldValue) {
+        };
+        return Directive;
+    }());
+    codex.Directive = Directive;
+    var ElementDirective = (function (_super) {
+        __extends(ElementDirective, _super);
+        function ElementDirective() {
+            _super.apply(this, arguments);
+        }
+        return ElementDirective;
+    }(Directive));
+    codex.ElementDirective = ElementDirective;
+    function FilterCollection(excludedFunctions) {
+        if (excludedFunctions === void 0) { excludedFunctions = []; }
+        return function (target) {
+            var proto = Object.getPrototypeOf(target);
+            var filters = {};
+            Object.getOwnPropertyNames(proto).forEach(function (method) {
+                if (['constructor'].concat(excludedFunctions).indexOf(method) > -1) {
+                    return;
+                }
+                var desc = Object.getOwnPropertyDescriptor(proto, method);
+                if (typeof desc.value === 'function') {
+                    Vue.filter(method, proto[method]);
+                }
+            });
+        };
+    }
+    codex.FilterCollection = FilterCollection;
+    var Component = (function () {
+        function Component() {
+        }
+        Component.prototype.$add = function (key, val) {
+        };
+        Component.prototype.$addChild = function (options, constructor) {
+        };
+        Component.prototype.$after = function (target, cb) {
+        };
+        Component.prototype.$appendTo = function (target, cb) {
+        };
+        Component.prototype.$before = function (target, cb) {
+        };
+        Component.prototype.$broadcast = function (event) {
+            var args = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                args[_i - 1] = arguments[_i];
+            }
+        };
+        Component.prototype.$compile = function (el) {
+            return function () {
+            };
+        };
+        Component.prototype.$delete = function (key) {
+        };
+        Component.prototype.$destroy = function (remove) {
+        };
+        Component.prototype.$dispatch = function (event) {
+            var args = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                args[_i - 1] = arguments[_i];
+            }
+        };
+        Component.prototype.$emit = function (event) {
+            var args = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                args[_i - 1] = arguments[_i];
+            }
+        };
+        Component.prototype.$eval = function (text) {
+        };
+        Component.prototype.$get = function (exp) {
+        };
+        Component.prototype.$interpolate = function (text) {
+        };
+        Component.prototype.$log = function (path) {
+        };
+        Component.prototype.$mount = function (el) {
+        };
+        Component.prototype.$nextTick = function (fn) {
+        };
+        Component.prototype.$off = function (event, fn) {
+        };
+        Component.prototype.$on = function (event, fn) {
+        };
+        Component.prototype.$once = function (event, fn) {
+        };
+        Component.prototype.$remove = function (cb) {
+        };
+        Component.prototype.$set = function (exp, val) {
+        };
+        Component.prototype.$watch = function (exp, cb, options) {
+        };
+        return Component;
+    }());
+    codex.Component = Component;
+    function lifecycleHook(hook) {
+        return function (cls, name, desc) {
+            if ([
+                'created', 'beforeCompile', 'compiled', 'ready', 'attached', 'detached', 'beforeDestroy', 'destroyed'
+            ].indexOf(hook) == -1)
+                throw new Error('Unknown Lifecyle Hook: ' + hook);
+            if (!cls.hasOwnProperty('__hooks__'))
+                cls.__hooks__ = {};
+            cls.__hooks__[name] = cls[name];
+            desc.value = void 0;
+            return desc;
+        };
+    }
+    codex.lifecycleHook = lifecycleHook;
+    function eventHook(hook) {
+        return function (cls, name, desc) {
+            if (!cls.hasOwnProperty('__events__'))
+                cls.__events__ = {};
+            cls.__events__[name] = cls[name];
+            desc.value = void 0;
+            return desc;
+        };
+    }
+    codex.eventHook = eventHook;
+    function prop(options) {
+        return function (cls, name) {
+            if (!cls.hasOwnProperty('__props__'))
+                cls.__props__ = {};
+            cls.__props__[name] = options;
+        };
+    }
+    codex.prop = prop;
+    var Widget = (function () {
+        function Widget() {
+            var myPrototype = Widget.prototype;
+            $.each(myPrototype, function (propertyName, value) {
+                delete myPrototype[propertyName];
+            });
+        }
+        Widget.prototype._create = function () {
+            return undefined;
+        };
+        Widget.prototype._destroy = function () {
+        };
+        Widget.prototype._init = function () {
+            return undefined;
+        };
+        Widget.prototype._delay = function (fn, delay) {
+            return undefined;
+        };
+        Widget.prototype._focusable = function (element) {
+            return undefined;
+        };
+        Widget.prototype._getCreateEventData = function () {
+            return undefined;
+        };
+        Widget.prototype._getCreateOptions = function () {
+            return undefined;
+        };
+        Widget.prototype._hide = function (element, option, callback) {
+            return undefined;
+        };
+        Widget.prototype._hoverable = function (element) {
+            return undefined;
+        };
+        Widget.prototype._off = function (element, eventName) {
+            return undefined;
+        };
+        Widget.prototype._on = function (element, handlers) {
+            return undefined;
+        };
+        Widget.prototype._setOption = function (key, value) {
+            return undefined;
+        };
+        Widget.prototype._setOptions = function (options) {
+            return undefined;
+        };
+        Widget.prototype._show = function (element, option, callback) {
+            return undefined;
+        };
+        Widget.prototype._super = function () {
+            var arg = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                arg[_i - 0] = arguments[_i];
+            }
+        };
+        Widget.prototype._superApply = function (args) {
+        };
+        Widget.prototype._trigger = function (type, args, data) {
+            return undefined;
+        };
+        Widget.prototype.destroy = function () {
+        };
+        Widget.prototype.disable = function () {
+        };
+        Widget.prototype.enable = function () {
+        };
+        Widget.prototype.instance = function () {
+            return undefined;
+        };
+        Widget.prototype.option = function (arg) {
+            return undefined;
+        };
+        return Widget;
+    }());
+    codex.Widget = Widget;
+})(codex || (codex = {}));
+var codex;
+(function (codex) {
     codex.util.registerJQueryHelpers();
     var _config;
     function init(options) {
@@ -2051,7 +2436,6 @@ var codex;
         if (codex.config('debug')) {
             codex.debug.enable();
         }
-        codex.api = new codex.Api(codex.config('apiUrl'));
     }
     codex.init = init;
 })(codex || (codex = {}));

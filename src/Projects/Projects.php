@@ -135,6 +135,9 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
      */
     public function has($name)
     {
+        if($name === null){
+            return false;
+        }
         return $this->items->has($name);
     }
 

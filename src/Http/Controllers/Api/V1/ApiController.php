@@ -5,6 +5,7 @@ use Codex\Codex;
 use Codex\Http\Controllers\Controller;
 use Codex\Projects\Project;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class ApiController extends Controller
 {
@@ -40,10 +41,9 @@ abstract class ApiController extends Controller
 
     protected function resolveProject($projectSlug, $ref = null)
     {
-
         if ( !$this->projects->has($projectSlug) )
         {
-            return $this->error('Project does not exist', 404);
+            return $this->error('Project does not exist', Response::HTTP_BAD_REQUEST);
         }
         $project = $this->projects->get($projectSlug);
 
