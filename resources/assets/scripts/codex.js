@@ -9,13 +9,11 @@ var codex;
         apiUrl: '/api',
         debug: false
     };
-    Vue.use(window['VueResource']);
 })(codex || (codex = {}));
 var codex;
 (function (codex) {
     var BaseApi = (function () {
         function BaseApi() {
-            this.url = '';
             this.version = '1';
             this.debug = false;
         }
@@ -23,55 +21,52 @@ var codex;
             if (data === void 0) { data = {}; }
             if (_settings === void 0) { _settings = {}; }
             var settings = {};
-            settings.url = this.url + '/v' + this.version + endpoint;
+            settings.url = codex.config('apiUrl') + '/v' + this.version + endpoint;
             settings.data = data;
             settings.method = method;
-            return $.ajax(_.merge(settings, _settings));
+            var jqxhr = $.ajax(_.merge(settings, _settings));
+            codex.config('debug') === true && jqxhr.then(function (result) {
+                console.log('jqxhr url(%s) settings: %o with result: %o', settings.url, settings, result);
+            });
+            return jqxhr;
         };
         return BaseApi;
     }());
     codex.BaseApi = BaseApi;
-    var Api = (function () {
-        function Api(url, wrappedEndpoint) {
-            this.url = url;
-            this.wrappedEndpoint = wrappedEndpoint;
+    var Api = (function (_super) {
+        __extends(Api, _super);
+        function Api() {
+            _super.apply(this, arguments);
         }
-        Api.prototype.get = function (endpoint, data) {
-            if (endpoint === void 0) { endpoint = ''; }
-            if (data === void 0) { data = {}; }
-            return this.ajax(endpoint, data);
+        Api.prototype.getProject = function (project) {
+            return this.request('get', '/project', { project: project });
         };
-        Api.prototype.ajax = function (endpoint, data) {
-            if (endpoint === void 0) { endpoint = ''; }
-            if (data === void 0) { data = {}; }
-            var defer = codex.util.create();
-            $.ajax({
-                url: this.endpoint(endpoint),
-                data: data
-            }).then(function (response) {
-                codex.debug.log('Api response for endpoint', endpoint, 'response', response);
-                if (response.success) {
-                    defer.resolve(response);
-                }
-                else {
-                    throw Error('Codex PHPDoc AJAX request failed: ' + response.message);
-                }
+        Api.prototype.getProjects = function () {
+            return this.request('get', '/projects');
+        };
+        Api.prototype.getDocuments = function (project, ref) {
+            if (ref === void 0) { ref = null; }
+            return this.request('get', '/documents', {
+                project: project,
+                ref: ref
             });
-            return defer.promise;
         };
-        Api.prototype.endpoint = function (endpoint) {
-            var url = this.url + '/v' + Api.VERSION;
-            if (codex.util.defined(this.wrappedEndpoint)) {
-                url += '/' + this.wrappedEndpoint;
-            }
-            if (codex.util.defined(endpoint)) {
-                url += '/' + endpoint;
-            }
-            return url;
+        Api.prototype.getDocument = function (project, document, ref) {
+            if (ref === void 0) { ref = null; }
+            return this.request('get', '/document', {
+                project: project,
+                ref: ref,
+                document: document
+            });
         };
-        Api.VERSION = '1';
+        Api.prototype.getMenus = function () {
+            return this.request('get', '/menus');
+        };
+        Api.prototype.getMenu = function (id) {
+            return this.request('get', '/menu', { id: id });
+        };
         return Api;
-    }());
+    }(BaseApi));
     codex.Api = Api;
 })(codex || (codex = {}));
 var codex;
@@ -2423,6 +2418,17 @@ var codex;
 (function (codex) {
     codex.util.registerJQueryHelpers();
     var _config;
+    var initialised = false;
+    var readies = [];
+    function ready(cb) {
+        if (initialised) {
+            cb();
+        }
+        else {
+            readies.push(cb);
+        }
+    }
+    codex.ready = ready;
     function init(options) {
         if (options === void 0) { options = {}; }
         codex.debug = new codex.util.Debug('Codex');
@@ -2436,6 +2442,9 @@ var codex;
         if (codex.config('debug')) {
             codex.debug.enable();
         }
+        codex.api = new codex.Api;
+        initialised = true;
+        readies.forEach(function (cb) { return cb(); });
     }
     codex.init = init;
 })(codex || (codex = {}));

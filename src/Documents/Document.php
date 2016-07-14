@@ -162,7 +162,7 @@ class Document extends Extendable implements Arrayable
 //        })->implode('.'));
 
 
-
+        $this->codex->dev->benchmark('document');
         $this->hookPoint('document:render');
         if ( $this->shouldCache() ) {
             $minutes = $this->getCodex()->config('document.cache.minutes', null);
@@ -188,6 +188,7 @@ class Document extends Extendable implements Arrayable
         $this->rendered = true;
         $this->hookPoint('document:rendered');
         $this->codex->dev->addMessage($this->toArray());
+        $this->codex->dev->stopBenchmark(true);
         return $this->content;
     }
 

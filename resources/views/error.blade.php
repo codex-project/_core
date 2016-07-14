@@ -28,9 +28,9 @@
         @section('header')
             @stack('nav')
 
-            @section('menu-projects')
-                {!! $codex->projects->renderMenu() !!}
-            @show
+        @section('menu-projects')
+            {!! codex()->projects->renderMenu() !!}
+        @show
         @show
 
 
@@ -41,11 +41,19 @@
         <a class="sidebar-toggle" data-action='sidebar-toggle' title='Toggle sidebar'><i class="fa fa-list"></i></a>
 
         <div class="text-center">
-            <h1>{{ $title }}</h1>
-            <p>{{ $text }}</p>
+            <h1>{{ isset($title ) ? $title  : 'Error' }}</h1>
+            @if(isset($text))
+                <p>{{ $text }}</p>
+            @endif
             @if(isset($goBack) && $goBack !== false)
                 @set($goBackCount, is_int($goBack) ? $goBack : 1)
                 <a href="javascript:history.back({{ $goBackCount }});">Go back</a>
+            @endif
+
+            @if(isset($trace) && config('app.debug', false) )
+                <div class="trace">
+                    {!! $trace !!}
+                </div>
             @endif
         </div>
 
