@@ -46,7 +46,7 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $providers = [
-        \Radic\BladeExtensions\BladeExtensionsServiceProvider::class
+        \Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
     ];
 
     protected $commands = [
@@ -64,12 +64,12 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $singletons = [
-       # 'codex'        => Codex::class,
+        # 'codex'        => Codex::class,
         'codex.addons' => Addons\Factory::class,
     ];
 
     protected $shared = [
-        'codex' => Codex::class
+        'codex' => Codex::class,
     ];
 
     protected $aliases = [
@@ -109,8 +109,7 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerJavascriptData();
 
-        if ( $this->app[ 'config' ][ 'codex.http.enabled' ] === true )
-        {
+        if ( $this->app[ 'config' ][ 'codex.http.enabled' ] === true ) {
             $this->registerRouting();
         }
 
@@ -139,29 +138,25 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerCodex()
     {
-        $this->codexHook('constructed', function (Codex $codex)
-        {
+        $this->codexHook('constructed', function (Codex $codex) {
             $codex->extend('projects', Projects\Projects::class);
             $codex->extend('menus', Menus\Menus::class);
 
             $codex->extend('theme', Helpers\ThemeHelper::class);
             $codex->extend('cache', Helpers\CacheHelper::class);
-
         });
 
         #$this->share('codex', Codex::class, [ ], true);
         #$this->app->alias('codex', Contracts\Codex::class);
 
-        $this->codexHook('project:construct', function (Project $project)
-        {
+        $this->codexHook('project:construct', function (Project $project) {
             $project->extend('documents', Documents\Documents::class);
         });
     }
 
     protected function registerDefaultFilesystem()
     {
-        $this->app->make('filesystem')->extend('codex-local', function (LaravelApplication $app, array $config = [ ])
-        {
+        $this->app->make('filesystem')->extend('codex-local', function (LaravelApplication $app, array $config = [ ]) {
             $flysystemAdapter    = new Filesystem\Local($config[ 'root' ]);
             $flysystemFilesystem = new Flysystem($flysystemAdapter);
             return new FilesystemAdapter($flysystemFilesystem);
@@ -180,8 +175,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerTheme()
     {
-        $this->codexHook('constructed', function (Codex $codex)
-        {
+        $this->codexHook('constructed', function (Codex $codex) {
             /** @var \Codex\Codex $codex */
             $codex->theme->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [ ], true);
             $codex->theme->addStylesheet('theme', 'vendor/codex/styles/stylesheet', [ 'vendor' ]);
@@ -201,27 +195,26 @@ class CodexServiceProvider extends ServiceProvider
         /** @var \Illuminate\View\Compilers\BladeCompiler $blade */
         $blade = $this->app[ 'view' ]->getEngineResolver()->resolve('blade')->getCompiler();
         //Register the Starting Tag
-        $blade->directive('spaceless', function ()
-        {
+        $blade->directive('spaceless', function () {
             return '<?php ob_start() ?>';
         });
         //Register the Ending Tag
-        $blade->directive('endspaceless', function ()
-        {
+        $blade->directive('endspaceless', function () {
             return "<?php echo preg_replace('/>\\s+</', '><', ob_get_clean()); ?>";
         });
     }
 
     protected function registerJavascriptData()
     {
-        $this->codexHook('controller:view', function (CodexController $controller, $view, Codex $codex, Project $project, Documents\Document $document)
-        {
+        $this->codexHook('controller:view', function (CodexController $controller, $view, Codex $codex, Project $project, Documents\Document $document) {
             /** @var Codex $codex */
             $theme = $codex->theme;
             $theme->set('codex', $c = $codex->config()->only('display_name', 'doctags', 'document', 'default_project')->toArray());
-            $theme->set('project', $project->getName());
-            $theme->set('display_name', $project->getDisplayName());
-            $theme->set('document', $document->getName());
+            $theme->set('project', [
+                'name'         => $project->getName(),
+                'display_name' => $project->getDisplayName(),
+            ]);
+            $theme->set('document', $document->toArray());
             $theme->set('theme', $theme->toArray());
             $theme->set('apiUrl', url('api'));
             $theme->set('debug', config('app.debug', false));
@@ -240,8 +233,7 @@ class CodexServiceProvider extends ServiceProvider
     {
         // Individually run the attributes processor first.
         // This way we get the document attributes filled and disable, enable or configure other processors.
-        $this->codexHook('document:constructed', function (Document $document)
-        {
+        $this->codexHook('document:constructed', function (Document $document) {
             $document->runProcessor('attributes');
         });
     }

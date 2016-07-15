@@ -4,7 +4,9 @@ namespace Codex\Http\Controllers\Api\V1;
 use Codex\Codex;
 use Codex\Http\Controllers\Controller;
 use Codex\Projects\Project;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use JsonSerializable;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class ApiController extends Controller
@@ -33,22 +35,20 @@ abstract class ApiController extends Controller
     public function __construct(Codex $codex, ViewFactory $view)
     {
         parent::__construct($codex, $view);
-        $this->codex = $codex;
-        $this->addons = $this->codex->addons;
+        $this->codex    = $codex;
+        $this->addons   = $this->codex->addons;
         $this->projects = $this->codex->projects;
-        $this->menus = $this->codex->menus;
+        $this->menus    = $this->codex->menus;
     }
 
     protected function resolveProject($projectSlug, $ref = null)
     {
-        if ( !$this->projects->has($projectSlug) )
-        {
+        if ( !$this->projects->has($projectSlug) ) {
             return $this->error('Project does not exist', Response::HTTP_BAD_REQUEST);
         }
         $project = $this->projects->get($projectSlug);
 
-        if ( is_null($ref) )
-        {
+        if ( is_null($ref) ) {
             $ref = $project->getDefaultRef();
         }
         $project->setRef($ref);
@@ -56,8 +56,11 @@ abstract class ApiController extends Controller
         return $this->project = $project;
     }
 
-    protected function response(array $data = [ ])
+    protected function response($data = [ ])
     {
+        if ( $data instanceof Arrayable && !$data instanceof JsonSerializable ) {
+            $data = $data->toArray();
+        }
         return response()->json([ 'success' => true, 'message' => '', 'data' => $data ]);
     }
 

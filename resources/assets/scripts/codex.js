@@ -2163,12 +2163,6 @@ var codex;
                 else if (typeof desc.get === 'function')
                     options.computed[method] = desc.get;
             });
-            if (name === 'modal') {
-                console.log('!component cls', cls);
-                console.log('!component obj', obj);
-                console.log('!component proto', proto);
-                console.log('!component options', options);
-            }
             Vue.component(name, options);
         };
     }
