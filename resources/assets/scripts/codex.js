@@ -9,6 +9,7 @@ var codex;
         apiUrl: '/api',
         debug: false
     };
+    codex.templates = {};
 })(codex || (codex = {}));
 var codex;
 (function (codex) {
@@ -2153,8 +2154,14 @@ var codex;
                 if (['constructor'].indexOf(method) > -1)
                     return;
                 var desc = Object.getOwnPropertyDescriptor(proto, method);
-                if (typeof desc.value === 'function')
-                    options.methods[method] = proto[method];
+                if (typeof desc.value === 'function') {
+                    if (method === 'activate') {
+                        options.activate = proto[method];
+                    }
+                    else {
+                        options.methods[method] = proto[method];
+                    }
+                }
                 else if (typeof desc.set === 'function')
                     options.computed[method] = {
                         get: desc.get,

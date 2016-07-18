@@ -19,7 +19,9 @@ trait ExtendableTrait
 
     static protected $_macros = [ ];
 
-    static protected $_extensions = [ ];
+    static protected $_extensions = [
+        // called class => [ name => class ]
+    ];
 
     protected $extensionInstances = [ ];
 
@@ -42,7 +44,10 @@ trait ExtendableTrait
     public static function &getExtenableProperty($type)
     {
         $property = property_exists(static::class, $type) ? $type : "_{$type}";
-        return static::$$property;
+        if(!array_key_exists(get_called_class(), static::$$property)){
+            static::$$property[get_called_class()] = [];
+        }
+        return static::$$property[get_called_class()];
     }
 
     /**
