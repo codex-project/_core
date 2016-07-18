@@ -12,8 +12,8 @@ namespace Codex\Contracts\Traits;
 interface Extendable
 {
 
-    public function extensions();
+    public static function extensions();
 
-    public function extend($name, $extension);
+    public static function extend($name, $extension);
 
 }

@@ -17,9 +17,9 @@ trait ExtendableTrait
 {
     use ContainerTrait;
 
-    protected $_macros = [ ];
+    static protected $_macros = [ ];
 
-    protected $_extensions = [ ];
+    static protected $_extensions = [ ];
 
     protected $extensionInstances = [ ];
 
@@ -27,9 +27,9 @@ trait ExtendableTrait
      * Returns all registered extensions for this class
      * @return array The registered extensions for this class
      */
-    public function extensions()
+    public static function extensions()
     {
-        return array_merge(array_keys($this->getExtenableProperty('macros')), array_keys($this->getExtenableProperty('extensions')));
+        return array_merge(array_keys(static::getExtenableProperty('macros')), array_keys(static::getExtenableProperty('extensions')));
     }
 
     /**
@@ -39,10 +39,10 @@ trait ExtendableTrait
      *
      * @return mixed
      */
-    public function &getExtenableProperty($type)
+    public static function &getExtenableProperty($type)
     {
-        $property = property_exists($this, $type) ? $type : "_{$type}";
-        return $this->{$property};
+        $property = property_exists(static::class, $type) ? $type : "_{$type}";
+        return static::$$property;
     }
 
     /**
@@ -51,18 +51,18 @@ trait ExtendableTrait
      * @param string          $name      The name to register the extension under
      * @param string|\Closure $extension The extension that should be used
      */
-    public function extend($name, $extension)
+    public static function extend($name, $extension)
     {
         if ( is_string($extension) && !Str::contains($extension, '@') ) {
-            if ( array_key_exists($name, $this->getExtenableProperty('macros')) ) {
+            if ( array_key_exists($name, static::getExtenableProperty('macros')) ) {
                 throw new \InvalidArgumentException("Cannot extend [macro][{$name}] as [extension] because it already exists as [macro]. You can only replace [macro][{$name}] with an [macro]");
             }
-            $this->getExtenableProperty('extensions')[ $name ] = $extension;
+            static::getExtenableProperty('extensions')[ $name ] = $extension;
         } else {
-            if ( array_key_exists($name, $this->getExtenableProperty('extensions')) ) {
+            if ( array_key_exists($name, static::getExtenableProperty('extensions')) ) {
                 throw new \InvalidArgumentException("Cannot extend [extension][{$name}] as [macro] because it already exists as [extension]. You can only replace [extension][{$name}] with an [extension]");
             }
-            $this->getExtenableProperty('macros')[ $name ] = $extension;
+            static::getExtenableProperty('macros')[ $name ] = $extension;
         }
     }
 
@@ -78,7 +78,7 @@ trait ExtendableTrait
      */
     protected function callMacro($name, $parameters = [ ])
     {
-        $callback = $this->getExtenableProperty('macros')[ $name ];
+        $callback = static::getExtenableProperty('macros')[ $name ];
 
         if ( $callback instanceof Closure ) {
             return call_user_func_array($callback->bindTo($this, get_class($this)), $parameters);
@@ -119,7 +119,7 @@ trait ExtendableTrait
      */
     protected function getExtensionClassInstance($name)
     {
-        $extension = $this->getExtenableProperty('extensions')[ $name ];
+        $extension = static::getExtenableProperty('extensions')[ $name ];
 
         if ( is_string($extension) && class_exists($extension) ) {
             if ( !array_key_exists($name, $this->extensionInstances) ) {
@@ -142,7 +142,7 @@ trait ExtendableTrait
      */
     public function __call($name, array $params = [ ])
     {
-        if ( array_key_exists($name, $this->getExtenableProperty('macros')) ) {
+        if ( array_key_exists($name, static::getExtenableProperty('macros')) ) {
             return $this->callMacro($name, $params);
         }
         throw new BadMethodCallException("Method [$name] does not exist.");
@@ -157,7 +157,7 @@ trait ExtendableTrait
      */
     public function __get($name)
     {
-        if ( array_key_exists($name, $this->getExtenableProperty('extensions')) ) {
+        if ( array_key_exists($name, static::getExtenableProperty('extensions')) ) {
             return $this->getExtensionClassInstance($name);
         }
     }

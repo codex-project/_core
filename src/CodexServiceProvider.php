@@ -138,20 +138,11 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerCodex()
     {
-        $this->codexHook('constructed', function (Codex $codex) {
-            $codex->extend('projects', Projects\Projects::class);
-            $codex->extend('menus', Menus\Menus::class);
-
-            $codex->extend('theme', Helpers\ThemeHelper::class);
-            $codex->extend('cache', Helpers\CacheHelper::class);
-        });
-
-        #$this->share('codex', Codex::class, [ ], true);
-        #$this->app->alias('codex', Contracts\Codex::class);
-
-        $this->codexHook('project:construct', function (Project $project) {
-            $project->extend('documents', Documents\Documents::class);
-        });
+        Codex::extend('projects', Projects\Projects::class);
+        Codex::extend('menus', Menus\Menus::class);
+        Codex::extend('theme', Helpers\ThemeHelper::class);
+        Codex::extend('cache', Helpers\CacheHelper::class);
+        Project::extend('documents', Documents\Documents::class);
     }
 
     protected function registerDefaultFilesystem()
@@ -209,7 +200,7 @@ class CodexServiceProvider extends ServiceProvider
         $this->codexHook('controller:view', function (CodexController $controller, $view, Codex $codex, Project $project, Documents\Document $document) {
             /** @var Codex $codex */
             $theme = $codex->theme;
-            $theme->set('codex', $c = $codex->config()->only('display_name', 'doctags', 'document', 'default_project')->toArray());
+            $theme->set('codex', $c = $codex->config()->only('display_name', 'macros', 'links', 'document', 'default_project')->toArray());
             $theme->set('project', [
                 'name'         => $project->getName(),
                 'display_name' => $project->getDisplayName(),

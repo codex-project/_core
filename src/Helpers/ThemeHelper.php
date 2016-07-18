@@ -146,7 +146,7 @@ class ThemeHelper extends Extendable implements Arrayable
      * @param array $depends
      * @param bool  $external
      *
-     * @return \Codex\ThemeHelper
+     * @return static
      */
     public function addStylesheet($name, $src, array $depends = [ ], $external = false)
     {

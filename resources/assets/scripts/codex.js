@@ -674,7 +674,7 @@ var codex;
     var util;
     (function (util) {
         var Config = (function () {
-            function Config(obj, storageBag) {
+            function Config(obj) {
                 this.allDelimiters = {};
                 this.addDelimiters('config', '<%', '%>');
                 this.data = obj || {};
