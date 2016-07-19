@@ -44,10 +44,13 @@ trait ExtendableTrait
     public static function &getExtenableProperty($type)
     {
         $property = property_exists(static::class, $type) ? $type : "_{$type}";
-        if(!array_key_exists(get_called_class(), static::$$property)){
-            static::$$property[get_called_class()] = [];
+        $props =& static::$$property;
+        $class = get_called_class();
+        if(!array_key_exists($class, $props)){
+            $props[$class] = [];
+
         }
-        return static::$$property[get_called_class()];
+        return $props[$class];
     }
 
     /**
