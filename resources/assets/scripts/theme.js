@@ -2,6 +2,14 @@ var codex;
 (function (codex) {
     var theme;
     (function (theme) {
+        codex.defaultConfig.tooltips = {
+            selector: '[rel=tooltip]',
+            trigger: 'hover',
+            html: true,
+            viewport: 'body',
+            container: 'body',
+            placement: 'top'
+        };
         (function (LayoutMode) {
             LayoutMode[LayoutMode["DEFAULT"] = 0] = "DEFAULT";
             LayoutMode[LayoutMode["WIDE"] = 1] = "WIDE";
@@ -50,14 +58,7 @@ var codex;
                 this.$body.on('click', 'a[data-action="sidebar-toggle"]', function (event) {
                     _this.toggleSidebar();
                 });
-                this.$body.tooltip({
-                    selector: '[rel=tooltip]',
-                    trigger: 'hover',
-                    html: true,
-                    viewport: 'body',
-                    container: 'body',
-                    placement: 'top'
-                });
+                this.$body.tooltip(codex.config('tooltips'));
                 $(function () {
                     _this.$article.hasClass('loaded') === false && _this.$article.addClass('loaded');
                     $(window).scroll(function () {
@@ -75,6 +76,10 @@ var codex;
                     defer.resolve();
                 });
                 return defer.promise;
+            };
+            Layout.prototype.hideTooltips = function () {
+                $(codex.config('tooltips.selector')).tooltip('hide');
+                $('.tooltip').remove();
             };
             Layout.prototype.toggleSidebar = function () {
                 if (this.$body.hasClass('sidebar-closed')) {

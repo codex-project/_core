@@ -42,6 +42,9 @@ use Illuminate\Filesystem\Filesystem;
  *
  * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
  * @hookPoint      constructed
+ * @example
+ * <?php
+ * codex()->projects->get('codex')->documents->get('index')->render();
  *
  */
 class Codex extends Extendable implements Arrayable
@@ -73,6 +76,9 @@ class Codex extends Extendable implements Arrayable
      * Path to the directory containing all docs
      *
      * @var string
+     * @example
+     * <?php
+     * codex()->projects->get('codex')->documents->get('index')->render();
      */
     protected $docsPath;
 
@@ -88,6 +94,9 @@ class Codex extends Extendable implements Arrayable
      * @param \Codex\Contracts\Log\Log                  $log       The log instance
      *
      * @hook constructed After Codex has been constructed
+     * @example
+     * <?php
+     * codex()->projects->get('codex')->documents->get('index')->render();
      */
     public function __construct(Container $container, Filesystem $files, Cache $cache, Contracts\Log\Log $log)
     {
@@ -129,6 +138,9 @@ class Codex extends Extendable implements Arrayable
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      * @throws \Throwable
+     * @example
+     * <?php
+     * codex()->projects->get('codex')->documents->get('index')->render();
      */
     public function error($title, $text, $code = 500, $goBack = true)
     {

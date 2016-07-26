@@ -491,18 +491,9 @@ class Project extends Extendable implements Arrayable
     {
         return [
             'name'     => $this->getName(),
-            'config'   => $this->getConfig()->toArray(),
+            'config'   => $this->getConfig(),
             'versions' => $this->refs,
         ];
-    }
-
-    /**
-     * getConfig method
-     * @return \Codex\Projects\ProjectConfig
-     */
-    public function getConfig()
-    {
-        return $this->getContainer()->make(ProjectConfig::class, [ 'config' => $this->config ]);
     }
 
     /**

@@ -675,16 +675,53 @@ var codex;
     var util;
     (function (util) {
         var Config = (function () {
-            function Config(obj) {
+            function Config(obj, opts) {
+                this.data = obj || {};
+                this.options = _.merge(Config.defaultOptions, opts);
                 this.allDelimiters = {};
                 this.addDelimiters('config', '<%', '%>');
-                this.data = obj || {};
+                this.load();
             }
+            Config.prototype.save = function () {
+                var _this = this;
+                if (this.options.enablePersistence !== true) {
+                    return;
+                }
+                var config = {};
+                if (this.options.persistentProperties.indexOf('*') !== -1) {
+                    config = this.data;
+                }
+                else {
+                    this.options.persistentProperties.forEach(function (key) {
+                        config[key] = _this.raw(key);
+                    });
+                }
+                localStorage.setItem("config." + this.options.prefix, JSON.stringify(config));
+            };
+            Config.prototype.load = function () {
+                var _this = this;
+                if (this.options.enablePersistence !== true) {
+                    return;
+                }
+                if (typeof window.localStorage.getItem("config." + this.options.prefix) === 'string') {
+                    var config = JSON.parse(window.localStorage.getItem("config." + this.options.prefix));
+                    if (this.options.persistentProperties.indexOf('*') !== -1) {
+                        this.data = config;
+                    }
+                    else {
+                        Object.keys(config).forEach(function (key) {
+                            _this.set(key, config[key]);
+                        });
+                    }
+                }
+            };
             Config.prototype.unset = function (prop) {
                 prop = prop.split('.');
                 var key = prop.pop();
                 var obj = util.objectGet(this.data, Config.getPropString(prop.join('.')));
                 delete obj[key];
+                this.save();
+                return this;
             };
             Config.prototype.has = function (prop) {
                 return util.objectExists(this.data, Config.getPropString(prop));
@@ -702,6 +739,7 @@ var codex;
             };
             Config.prototype.set = function (prop, value) {
                 util.objectSet(this.data, Config.getPropString(prop), value);
+                this.save();
                 return this;
             };
             Config.prototype.merge = function () {
@@ -716,6 +754,7 @@ var codex;
                     var prop = args[0];
                     this.set(prop, _.merge(this.raw(prop), args[1]));
                 }
+                this.save();
                 return this;
             };
             Config.prototype.process = function (raw) {
@@ -793,6 +832,11 @@ var codex;
             };
             Config.prototype.toString = function () {
                 return this.raw();
+            };
+            Config.defaultOptions = {
+                enablePersistence: false,
+                persistentProperties: [],
+                prefix: 'config'
             };
             Config.propStringTmplRe = /^<%=\s*([a-z0-9_$]+(?:\.[a-z0-9_$]+)*)\s*%>$/i;
             return Config;
@@ -2155,12 +2199,7 @@ var codex;
                     return;
                 var desc = Object.getOwnPropertyDescriptor(proto, method);
                 if (typeof desc.value === 'function') {
-                    if (method === 'activate') {
-                        options.activate = proto[method];
-                    }
-                    else {
-                        options.methods[method] = proto[method];
-                    }
+                    options.methods[method] = proto[method];
                 }
                 else if (typeof desc.set === 'function')
                     options.computed[method] = {
@@ -2170,6 +2209,7 @@ var codex;
                 else if (typeof desc.get === 'function')
                     options.computed[method] = desc.get;
             });
+            console.log('component', name, options);
             Vue.component(name, options);
         };
     }
@@ -2311,7 +2351,7 @@ var codex;
     function lifecycleHook(hook) {
         return function (cls, name, desc) {
             if ([
-                'created', 'beforeCompile', 'compiled', 'ready', 'attached', 'detached', 'beforeDestroy', 'destroyed'
+                'activate', 'created', 'beforeCompile', 'compiled', 'ready', 'attached', 'detached', 'beforeDestroy', 'destroyed'
             ].indexOf(hook) == -1)
                 throw new Error('Unknown Lifecyle Hook: ' + hook);
             if (!cls.hasOwnProperty('__hooks__'))
@@ -2332,14 +2372,20 @@ var codex;
         };
     }
     codex.eventHook = eventHook;
-    function prop(options) {
+    function prop(first, second) {
+        if (second)
+            propDecorator(null)(first, second);
+        else
+            return propDecorator(first);
+    }
+    codex.prop = prop;
+    function propDecorator(options) {
         return function (cls, name) {
             if (!cls.hasOwnProperty('__props__'))
                 cls.__props__ = {};
             cls.__props__[name] = options;
         };
     }
-    codex.prop = prop;
     var Widget = (function () {
         function Widget() {
             var myPrototype = Widget.prototype;
