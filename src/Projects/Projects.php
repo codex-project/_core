@@ -58,38 +58,51 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
     }
 
     /**
-     * Mark a project as active
+     * Scans the configured documentation root directory for projects and resolves them and puts them into the projects collection
      *
-     * @param $project
-     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function setActive($project)
+    protected function findAndRegisterAll()
     {
-        if ( ! $project instanceof Project ) {
-            $project = $this->get($project);
+        if ( ! $this->items->isEmpty() ) {
+            return;
         }
-        $this->activeProject = $project;
-        $this->codex->menus->get('projects')->setAttribute('title', $project->getDisplayName());
-        $this->hookPoint('projects:active', [ $project ]);
+        $this->hookPoint('projects:resolve', [ $this ]);
+
+        $finder   = new Finder();
+        $projects = $finder
+            ->in($this->getCodex()->getDocsPath())
+            ->files()
+            ->name('config.php')
+            ->depth('<= 1')
+            ->followLinks();
+
+        foreach ( $projects as $projectDir ) {
+            /** @var \SplFileInfo $projectDir */
+            $name   = Path::getDirectoryName($projectDir->getPath());
+            $config = $this->getContainer()->make('fs')->getRequire($projectDir->getRealPath());
+            $config = array_replace_recursive($this->getCodex()->config('default_project_config'), $config);
+
+            /** @var \Codex\Projects\Project $project */
+            $project = $this->getContainer()->make('codex.project', [
+                'projects' => $this,
+                'name'     => $name,
+                'config'   => $config,
+            ]);
+
+
+            // This hook allows us to exclude projects from resolving, or do some other stuff
+            $hook = $this->hookPoint('projects:resolving', [ $project ]);
+            if ( $hook === false ) {
+                continue;
+            }
+
+            $this->items->put($name, $project);
+
+        }
+        $this->hookPoint('projects:resolved', [ $this ]);
     }
 
-    /**
-     * Check if a active project has been set
-     * @return bool
-     */
-    public function hasActive()
-    {
-        return $this->activeProject !== null;
-    }
-
-    /**
-     * Gets the active project. Returns null if not set
-     * @return \Codex\Projects\Project|null
-     */
-    public function getActive()
-    {
-        return $this->activeProject;
-    }
 
     /**
      * Gets a project by name
@@ -150,52 +163,6 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
     public function toArray()
     {
         return $this->items->toArray();
-    }
-
-    /**
-     * Scans the configured documentation root directory for projects and resolves them and puts them into the projects collection
-     *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    protected function findAndRegisterAll()
-    {
-        if ( ! $this->items->isEmpty() ) {
-            return;
-        }
-        $this->hookPoint('projects:resolve', [ $this ]);
-
-        $finder   = new Finder();
-        $projects = $finder
-            ->in($this->getCodex()->getDocsPath())
-            ->files()
-            ->name('config.php')
-            ->depth('<= 1')
-            ->followLinks();
-
-        foreach ( $projects as $projectDir ) {
-            /** @var \SplFileInfo $projectDir */
-            $name   = Path::getDirectoryName($projectDir->getPath());
-            $config = $this->getContainer()->make('fs')->getRequire($projectDir->getRealPath());
-            $config = array_replace_recursive($this->getCodex()->config('default_project_config'), $config);
-
-            /** @var \Codex\Projects\Project $project */
-            $project = $this->getContainer()->make('codex.project', [
-                'projects' => $this,
-                'name'     => $name,
-                'config'   => $config,
-            ]);
-
-
-            // This hook allows us to exclude projects from resolving, or do some other stuff
-            $hook = $this->hookPoint('projects:resolving', [ $project ]);
-            if ( $hook === false ) {
-                continue;
-            }
-
-            $this->items->put($name, $project);
-
-        }
-        $this->hookPoint('projects:resolved', [ $this ]);
     }
 
 
@@ -260,6 +227,7 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
             }
         }
     }
+
 
     /**
      * createGenerator method

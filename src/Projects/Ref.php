@@ -16,17 +16,21 @@ use Codex\Contracts;
 use Codex\Exception\CodexException;
 use Codex\Support\Extendable;
 use Codex\Traits;
+use Sebwite\Support\Str;
+use Symfony\Component\Yaml\Yaml;
 use vierbergenlars\SemVer\SemVerException;
 use vierbergenlars\SemVer\version;
 
 /**
  * This is the class Ref.
  *
+ * @property \Codex\Documents\Documents    $documents
+ * @property \Codex\Addon\Phpdoc\PhpdocRef $phpdoc
+ *
  * @package        Codex\Projects
  * @author         CLI
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  *
- * @property \Codex\Documents\Documents $documents
  *
  */
 class Ref extends Extendable
@@ -45,6 +49,8 @@ class Ref extends Extendable
 
     protected $version;
 
+    protected $path;
+
     /**
      * Ref constructor.
      *
@@ -61,6 +67,25 @@ class Ref extends Extendable
         $this->name    = $name;
         $this->project = $project;
         $this->refs    = $refs;
+        $this->path    = $project->path($name);
+
+        $this->hookPoint('refs:construct', [ $this ]);
+
+        $this->resolve();
+
+        $this->hookPoint('refs:constructed', [ $this ]);
+    }
+
+    protected function resolve()
+    {
+        $fs = $this->getFiles();
+        if ( $fs->exists($this->path('codex.yml')) ) {
+            $yaml = $fs->get($this->path('codex.yml'));
+        } elseif ( $fs->exists($this->path('menu.yml')) ) {
+            $yaml = $fs->get($this->path('menu.yml'));
+        }
+
+        isset($yaml) && $this->setConfig(Yaml::parse($yaml));
     }
 
     /**
@@ -104,12 +129,105 @@ class Ref extends Extendable
         return $this->name;
     }
 
+    public function path($path = null)
+    {
+        return $path === null ? $this->name : path_join($this->name, $path);
+    }
+
     /**
      * @return string
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+
+
+    /**
+     * resolveSidebarMenu method
+     *
+     * @param array|null|mixed $items
+     * @param string           $parentId
+     *
+     * @throws \Codex\Exception\CodexException
+     */
+    protected function resolveSidebarMenu($items = null, $parentId = 'root')
+    {
+        #if($this->config('menu'))
+        $this->hookPoint('project:sidebar:resolving', [ $items, $parentId ]);
+        if ( $items === null ) {
+            $items = $this->config('menu', []);
+            $this->codex->menus->forget('sidebar');
+        }
+
+        $menu = $this->codex->menus->add('sidebar');
+        $menu->setView($this->codex->view('menus.sidebar'));
+
+        if ( !is_array($items) ) {
+            throw CodexException::invalidMenuConfiguration(": menu.yml in [{$this}]");
+        }
+
+        foreach ( $items as $item ) {
+            $link = '#';
+            if ( array_key_exists('document', $item) ) {
+                // remove .md extension if present
+                $path = ends_with($item[ 'document' ], [ '.md' ]) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
+                $link = $this->codex->url($this->getProject(), $this->name, $path);
+            } elseif ( array_key_exists('href', $item) ) {
+                $link = $item[ 'href' ];
+            }
+
+            $id = md5($item[ 'name' ] . $link);
+
+            $node = $menu->add($id, $item[ 'name' ], $parentId);
+            $node->setAttribute('href', $link);
+            $node->setAttribute('id', $id);
+
+            if ( isset($item[ 'icon' ]) ) {
+                $node->setMeta('icon', $item[ 'icon' ]);
+            }
+
+            if ( isset($item[ 'children' ]) ) {
+                $this->resolveSidebarMenu($item[ 'children' ], $id);
+            }
+        }
+        $this->hookPoint('project:sidebar:resolved', [ $menu ]);
+    }
+
+    /**
+     * Returns the menu for this project
+     * @deprecated
+     * @return \Codex\Menus\Menu
+     */
+    public function getSidebarMenu()
+    {
+        if ( false === $this->codex->menus->has('sidebar') ) {
+            $this->resolveSidebarMenu();
+        }
+        return $this->getCodex()->menus->get('sidebar');
+    }
+
+    /** @deprecated */
+    public function renderSidebarMenu()
+    {
+        return $this->getSidebarMenu()->render();
     }
 
 

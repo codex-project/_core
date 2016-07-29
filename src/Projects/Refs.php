@@ -78,27 +78,35 @@ class Refs extends Extendable
     /**
      * get method
      *
-     * @param $ref
+     * @param string $name
      *
      * @return Ref
      */
-    public function get($ref)
+    public function get($name)
     {
-        return $this->items->get($ref);
+        return $this->items->get($name);
     }
 
     /**
      * has method
      *
-     * @param $ref
+     * @param $name
      *
      * @return boolean
      */
-    public function has($ref)
+    public function has($name)
     {
-        return $this->items->get($ref);
+        return $this->items->get($name);
     }
 
+    /**
+     * all method
+     * @return Ref[]
+     */
+    public function all()
+    {
+        return $this->items->all();
+    }
 
     protected function resolveRefs()
     {
@@ -116,7 +124,9 @@ class Refs extends Extendable
 
             // if the ref is a (semver) version, we add it to versions, so we can easily reference it laster (sort etc)
             if ( $ref->isVersion() ) {
-                $this->versions[] = $ref->getVersion();
+                $this->versions[] = $ref;
+            } elseif ( $ref->isBranch() ) {
+                $this->branches[] = $ref;
             }
         }
 
@@ -131,9 +141,9 @@ class Refs extends Extendable
                 $defaultRef = 'master';
                 break;
             case static::DEFAULT_LAST_VERSION:
-                $defaultRef = collect($this->versions)->sort(function (version $v1, version $v2) {
-                    return version::gt($v1, $v2) ? -1 : 1;
-                })->first();
+                $defaultRef = collect($this->versions)->sort(function (Ref $one, Ref $two) {
+                    return version::gt($one->getVersion(), $two->getVersion()) ? -1 : 1;
+                })->first()->getName();
                 break;
             case static::DEFAULT_FIRST_DIRECTORY:
                 $defaultRef = $this->items->first()->getName();
@@ -146,13 +156,17 @@ class Refs extends Extendable
         $this->default = (string)$defaultRef;
     }
 
-
     /**
      * Get default ref.
      *
-     * @return string
+     * @return Ref
      */
     public function getDefault()
+    {
+        return $this->items->get($this->default);
+    }
+
+    public function getDefaultName()
     {
         return $this->default;
     }
@@ -161,35 +175,19 @@ class Refs extends Extendable
     # Getters / setters
 
     /**
-     * Get refs sorted by the configured order.
-     *
-     * @return array
+     * getBranches method
+     * @return Ref[]
      */
-    public function getSortedRefs()
+    public function getBranches()
     {
-        $versions = $this->versions;
-
-
-        usort($versions, function (version $v1, version $v2) {
-
-
-            return version::gt($v1, $v2) ? -1 : 1;
-        });
-
-        $versions = array_map(function (version $v) {
-
-
-            return $v->getVersion();
-        }, $versions);
-
-        return array_merge($this->branches, $versions);
+        return $this->branches;
     }
 
     /**
      * Get versions.
      *
      * @deprecated
-     * @return array
+     * @return Ref[]
      */
     public function getVersions()
     {
@@ -207,13 +205,44 @@ class Refs extends Extendable
 
     /**
      * getLastVersion method
-     * @return version
+     * @return Ref
      */
     public function getLastVersion()
     {
+        return head($this->getSortedVersions());
+    }
+
+    /**
+     * getSortedVersions method
+     * @return Ref[]
+     */
+    public function getSortedVersions()
+    {
         return collect($this->versions)->sort(function (version $v1, version $v2) {
             return version::gt($v1, $v2) ? -1 : 1;
-        })->first();
+        })->toArray();
+    }
+
+    /**
+     * getSortedBranches method
+     * @return Ref[]
+     */
+    public function getSortedBranches()
+    {
+        $branches = $this->branches;
+        usort($branches, function ($a, $b) {
+            return strcmp((string)$a, (string)$b);
+        });
+        return $branches;
+    }
+
+    /**
+     * getSorted method
+     * @return Ref[]
+     */
+    public function getSorted()
+    {
+        return array_merge($this->getSortedBranches(), $this->getSortedVersions());
     }
 
 }

@@ -10,11 +10,11 @@ namespace Codex\Documents;
 
 
 use Closure;
-use Codex\Contracts;
 use Codex\Codex;
+use Codex\Contracts;
 use Codex\Exception\CodexException;
 use Codex\Projects\Project;
-use Codex\Support\Collection;
+use Codex\Projects\Ref;
 use Codex\Support\Extendable;
 use Codex\Traits;
 use Sebwite\Support\Str;
@@ -31,12 +31,15 @@ class Documents extends Extendable implements Contracts\Documents\Documents
      */
     protected $project;
 
+    protected $ref;
+
     protected $extension;
 
-    public function __construct(Project $parent, Codex $codex)
+    public function __construct(Ref $parent, Codex $codex)
     {
         $this->items   = collect();
-        $this->project = $parent;
+        $this->ref     = $parent;
+        $this->project = $parent->getProject();
         $this->setCodex($codex);
 
         $this->hookPoint('documents:constructing');
@@ -46,10 +49,10 @@ class Documents extends Extendable implements Contracts\Documents\Documents
 
     public function resolveAll()
     {
-        $fs = $this->project->getFiles();
-        $files = $fs->files($this->project->refPath(), true);
-        foreach($files as $file){
-            $file = Str::removeLeft($file, $this->project->getRef() . DIRECTORY_SEPARATOR);
+        $fs    = $this->project->getFiles();
+        $files = $fs->files($this->ref->path(), true);
+        foreach ( $files as $file ) {
+            $file = Str::removeLeft($file, $this->ref->getName() . DIRECTORY_SEPARATOR);
             $file = Str::removeRight($file, '.' . path_get_extension($file));
             $this->resolvePathName($file) && $this->resolve($file);
         }
@@ -67,7 +70,7 @@ class Documents extends Extendable implements Contracts\Documents\Documents
 
     public function in($dir)
     {
-        return $this->items->filter(function($doc, $path) use ($dir) {
+        return $this->items->filter(function ($doc, $path) use ($dir) {
             return Str::startsWith($path, $dir);
         });
     }
@@ -93,7 +96,7 @@ class Documents extends Extendable implements Contracts\Documents\Documents
             return $this->getCodex()->getContainer()->call($this->customDocuments[ $pathName ], [ 'documents' => $this ]);
         }
         foreach ( $this->getCodex()->config('document.extensions', [ ]) as $extension => $binding ) {
-            $path = $this->project->refPath("{$pathName}.{$extension}");
+            $path = $this->ref->path("{$pathName}.{$extension}");
             if ( $this->project->getFiles()->exists($path) ) {
                 return compact('path', 'extension', 'binding');
             }
@@ -115,6 +118,7 @@ class Documents extends Extendable implements Contracts\Documents\Documents
             $document = $this->getCodex()->getContainer()->make($resolved[ 'binding' ], [
                 'codex'    => $this->getCodex(),
                 'project'  => $this->getProject(),
+                'ref' => $this->getRef(),
                 'path'     => $resolved[ 'path' ],
                 'pathName' => $pathName,
             ]);
@@ -151,4 +155,22 @@ class Documents extends Extendable implements Contracts\Documents\Documents
     {
         return $this->resolvePathName($pathName) !== false;
     }
+
+    /**
+     * @return \Codex\Projects\Ref
+     */
+    public function getRef()
+    {
+        return $this->ref;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
+
 }

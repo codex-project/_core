@@ -142,20 +142,23 @@ class Codex extends Extendable implements Arrayable
     }
 
     /**
-     * get method. shorthand for getting
+     * Shorthand helper method for getting projects, refs or documents
      *
      * <strong>Example:</strong>
      * <code>
      * <?php
-     * $projects    = codex()->query('*'); # Codex\Projects\Projects
-     * $project     = codex()->query('codex'); # Codex\Projects\Project
-     * $project     = codex()->query('codex/master'); # Codex\Projects\Project
-     * $refs        = codex()->query('codex/*'); # Codex\Projects\Refs
-     * $ref         = codex()->query('codex/master'); # Codex\Projects\Ref
-     * $ref         = codex()->query('codex/1.0.0'); # Codex\Projects\Ref
-     * $documents   = codex()->query('codex/master::*'); # Codex\Documents\Documents
-     * $document    = codex()->query('codex/master::index'); # Codex\Documents\Document
-     * $document    = codex()->query('codex/master::develop/hooks'); # Codex\Documents\Document
+     * $projects    = codex()->get('*'); # Codex\Projects\Projects
+     * $project     = codex()->get('codex'); # Codex\Projects\Project
+     * $project     = codex()->get('codex/master'); # Codex\Projects\Project
+     * $refs        = codex()->get('codex/*'); # Codex\Projects\Refs
+     * $ref         = codex()->get('codex/!'); # Codex\Projects\Ref (default ref)
+     * $ref         = codex()->get('codex/master'); # Codex\Projects\Ref
+     * $ref         = codex()->get('codex/1.0.0'); # Codex\Projects\Ref
+     * $documents   = codex()->get('codex::index); # Codex\Documents\Document (from default ref)
+     * $documents   = codex()->get('codex/master::*'); # Codex\Documents\Documents
+     * $document    = codex()->get('codex/master::!'); # Codex\Documents\Document (default document)
+     * $document    = codex()->get('codex/master::index'); # Codex\Documents\Document
+     * $document    = codex()->get('codex/master::develop/hooks'); # Codex\Documents\Document
      * </code>
      *
      *
@@ -165,12 +168,19 @@ class Codex extends Extendable implements Arrayable
      * @throws \Codex\Exception\CodexException
      * @example
      * <?php
-     * $projects    = codex()->query('*'); # Codex\Projects\Projects
-     * $project     = codex()->query('codex'); # Codex\Projects\Project
-     * $project     = codex()->query('codex/master'); # Codex\Projects\Project
-     * $documents   = codex()->query('codex/master::*'); # Codex\Documents\Documents
-     * $document    = codex()->query('codex/master::index'); # Codex\Documents\Document
-     * $document    = codex()->query('codex/master::develop/hooks'); # Codex\Documents\Document
+     * $projects    = codex()->get('*'); # Codex\Projects\Projects
+     * $project     = codex()->get('codex'); # Codex\Projects\Project
+     * $project     = codex()->get('codex/master'); # Codex\Projects\Project
+     * $refs        = codex()->get('codex/*'); # Codex\Projects\Refs
+     * $ref         = codex()->get('codex/!'); # Codex\Projects\Ref (default ref)
+     * $ref         = codex()->get('codex/master'); # Codex\Projects\Ref
+     * $ref         = codex()->get('codex/1.0.0'); # Codex\Projects\Ref
+     * $documents   = codex()->get('codex::index); # Codex\Documents\Document (from default ref)
+     * $documents   = codex()->get('codex/master::*'); # Codex\Documents\Documents
+     * $document    = codex()->get('codex/master::!'); # Codex\Documents\Document (default document)
+     * $document    = codex()->get('codex::!'); # Codex\Documents\Document (from default ref, default document)
+     * $document    = codex()->get('codex/master::index'); # Codex\Documents\Document
+     * $document    = codex()->get('codex/master::develop/hooks'); # Codex\Documents\Document
      */
     public function get($query)
     {
@@ -180,33 +190,57 @@ class Codex extends Extendable implements Arrayable
         $psegments = explode('/', $segments[ 0 ]);
 
         $projectName      = $psegments[ 0 ];
-        $projectRef       = isset($psegments[ 1 ]) ? $psegments[ 1 ] : null;
+        $projectRef       = isset($psegments[ 1 ]) ? $psegments[ 1 ] : false;
         $documentPathName = isset($segments[ 1 ]) ? $segments[ 1 ] : false;
 
-        // projects / project
+        #
+        # Projects / Project
         if ( $projectName === '*' ) {
+            // get('*')
             return $this->projects;
         } elseif ( false === $this->projects->has($projectName) ) {
             throw CodexException::projectNotFound($projectName);
         }
         $project = $this->projects->get($projectName);
 
-        // ref
-        if ( $projectRef !== null ) {
-            $project->hasRef($projectRef) && $project->setRef($projectRef);
+        #
+        # Refs / Ref
+        if($projectRef === false){
+            if($documentPathName === false){
+                // get('codex')
+                return $project;
+            }
+            $projectRef = '!'; // make it so that the default ref will be chosen when using get('codex::path/to/document')
         }
-        if ( $documentPathName === false ) {
-            return $project;
+        if($projectRef === '*'){
+            // get('codex/*')
+            return $project->refs;
+        }
+        if($projectRef === '!'){
+            $ref = $project->refs->getDefault();
+        } else {
+            if(false === $project->refs->has($projectRef)){
+                throw CodexException::refNotFound($projectRef);
+            }
+            $ref = $project->refs->get($projectRef);
+        }
+        if($documentPathName === false){
+            // get('codex/!')
+            // get('codex/ref')
+            return $ref;
         }
 
-        // documents / document
+        #
+        # Documents / Document
         if ( $documentPathName === '*' ) {
-            return $project->documents;
-        } elseif ( false === $project->documents->has($documentPathName) ) {
+            return $ref->documents;
+        } elseif($documentPathName === '!'){
+            $documentPathName = $project->config('index');
+        } elseif ( false === $ref->documents->has($documentPathName) ) {
             throw CodexException::documentNotFound($documentPathName);
         }
 
-        return $project->documents->get($documentPathName);
+        return $ref->documents->get($documentPathName);
     }
 
     /**
@@ -260,7 +294,7 @@ class Codex extends Extendable implements Arrayable
 
             $uri = "{$uri}/{$project->getName()}";
 
-            $ref = $ref === null ? $project->getDefaultRef() : $ref;
+            $ref = $ref === null ? $project->refs->getDefaultName() : $ref;
             $doc = $doc === null ? '' : "/{$doc}";
             $uri = "{$uri}/{$ref}{$doc}";
         }
@@ -306,6 +340,26 @@ class Codex extends Extendable implements Arrayable
         return $cache->get($key);
     }
 
+    public function isDev()
+    {
+        return $this->config('codex.dev', false) !== false;
+    }
+
+    public function setConfig($key, $value = null)
+    {
+        config()->set("codex.{$key}", $value);
+        return $this;
+    }
+
+    public function config($key = null, $default = null)
+    {
+        if ( $key === null ) {
+            return new Collection($this->app[ 'config' ][ 'codex' ]);
+        }
+        return $this->app[ 'config' ]->get("codex.{$key}", $default);
+    }
+
+
     /**
      * Get cache.
      *
@@ -342,11 +396,6 @@ class Codex extends Extendable implements Arrayable
         return $this;
     }
 
-    public function isDev()
-    {
-        return $this->config('codex.dev', false) !== false;
-    }
-
     public function toArray()
     {
         return [
@@ -363,20 +412,6 @@ class Codex extends Extendable implements Arrayable
             return $this->container->make('codex.' . $name);
         }
         return parent::__get($name);
-    }
-
-    public function setConfig($key, $value = null)
-    {
-        config()->set("codex.{$key}", $value);
-        return $this;
-    }
-
-    public function config($key = null, $default = null)
-    {
-        if ( $key === null ) {
-            return new Collection($this->app[ 'config' ][ 'codex' ]);
-        }
-        return $this->app[ 'config' ]->get("codex.{$key}", $default);
     }
 
 

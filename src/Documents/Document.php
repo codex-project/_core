@@ -15,6 +15,7 @@ use Codex\Codex;
 use Codex\Contracts;
 use Codex\Exception\CodexException;
 use Codex\Projects\Project;
+use Codex\Projects\Ref;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
 use Codex\Traits;
@@ -93,22 +94,26 @@ class Document extends Extendable implements Arrayable
      */
     protected $mode = self::CACHE_AUTO;
 
+    /** @var \Codex\Projects\Ref  */
+    protected $ref;
 
     /**
      * Document constructor.
      *
-     * @param \Codex\Contracts\Codex                 $codex
+     * @param \Codex\Codex|\Codex\Contracts\Codex    $codex
      * @param \Codex\Projects\Project                $project
+     * @param \Codex\Projects\Ref                    $ref
      * @param \Illuminate\Contracts\Cache\Repository $cache
      * @param                                        $path
      * @param                                        $pathName
      *
      * @throws \Codex\Exception\CodexException
      */
-    public function __construct(Codex $codex, Project $project, Repository $cache, $path, $pathName)
+    public function __construct(Codex $codex, Project $project, Ref $ref, Repository $cache, $path, $pathName)
     {
         $this->setCodex($codex);
         $this->setFiles($project->getFiles());
+        $this->ref = $ref;
         $this->project   = $project;
         $this->path      = $path;
         $this->pathName  = $pathName;
@@ -118,7 +123,7 @@ class Document extends Extendable implements Arrayable
 
         $this->hookPoint('document:construct', [ $this ]);
 
-        $this->codex->projects->hasActive() === false && $project->setActive();
+        #$this->codex->projects->hasActive() === false && $project->setActive();
 
         if ( !$this->getFiles()->exists($this->getPath()) ) {
             throw CodexException::documentNotFound("{$this} in [{$project}]");
@@ -271,7 +276,7 @@ class Document extends Extendable implements Arrayable
      */
     public function getBreadcrumb()
     {
-        return $this->project->getSidebarMenu()->getBreadcrumbToHref($this->url());
+        return []; //$this->ref->getSidebarMenu()->getBreadcrumbToHref($this->url());
     }
 
     /**
@@ -303,6 +308,10 @@ class Document extends Extendable implements Arrayable
         return $this->contentDom->set($this->getContent());
     }
 
+    /**
+     * getDom method
+     * @return \FluentDOM\Query
+     */
     public function getDom()
     {
         return \FluentDOM::Query($this->getContent(), 'text/html');
@@ -333,6 +342,8 @@ class Document extends Extendable implements Arrayable
         }
         $this->mode = $mode;
     }
+
+
     #
     # GETTERS & SETTERS
     #
@@ -400,6 +411,22 @@ class Document extends Extendable implements Arrayable
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * @return Ref
+     */
+    public function getRef()
+    {
+        return $this->ref;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMode()
+    {
+        return $this->mode;
     }
 
     public function getExtension()

@@ -37,25 +37,7 @@ interface Projects
      */
     public function setFiles($files);
 
-    /**
-     * Mark a project as active
-     *
-     * @param $project
-     *
-     */
-    public function setActive($project);
 
-    /**
-     * Check if a active project has been set
-     * @return bool
-     */
-    public function hasActive();
-
-    /**
-     * Gets the active project. Returns null if not set
-     * @return \Codex\Projects\Project|null
-     */
-    public function getActive();
 
     /**
      * Renders the project picker menu

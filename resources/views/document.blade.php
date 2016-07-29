@@ -13,7 +13,7 @@
 @endpush
 
 @section('menu-sidebar')
-    {!! $project->renderSidebarMenu() !!}
+    {!! $ref->renderSidebarMenu() !!}
 @stop
 
 @section('content')

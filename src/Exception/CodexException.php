@@ -35,7 +35,7 @@ class CodexException extends Exception
 
     public function setClass($class)
     {
-        if(!is_string($class)){
+        if ( !is_string($class) ) {
             $class = get_class($class);
         }
         $this->class = $class;
@@ -76,6 +76,11 @@ class CodexException extends Exception
         return new static('[Project Not Found] ' . $msg);
     }
 
+    public static function refNotFound($msg = '')
+    {
+        return new static('[Ref Not Found] ' . $msg);
+    }
+
     public static function manifestNotFound($msg = '')
     {
         return new static('[Manifest Not Found] ' . $msg);
@@ -89,7 +94,7 @@ class CodexException extends Exception
     public static function processorNotFound($msg = '', Document $document = null)
     {
         $msg = '[Processor Not Found] ' . $msg;
-        if($document){
+        if ( $document ) {
             $msg .= " for project: [{$document->getProject()->getName()}]";
         }
         return new static($msg);

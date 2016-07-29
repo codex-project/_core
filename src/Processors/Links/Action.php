@@ -46,6 +46,9 @@ class Action
     /** @var \Codex\Projects\Project */
     protected $project;
 
+    /** @var \Codex\Projects\Ref */
+    protected $ref;
+
     /**
      * Action constructor.
      *
@@ -59,6 +62,7 @@ class Action
         $this->processor = $processor;
         $this->document  = $processor->document;
         $this->project   = $processor->document->getProject();
+        $this->ref       = $processor->document->getRef();
         $this->url       = $url;
         $this->element   = $element;
     }
@@ -70,8 +74,7 @@ class Action
      */
     public function setParameters($parameters)
     {
-        if ( is_array($parameters) && count($parameters) > 0 )
-        {
+        if ( is_array($parameters) && count($parameters) > 0 ) {
             $this->parameters = $parameters;
         }
     }
@@ -166,5 +169,15 @@ class Action
     {
         return $this->project;
     }
+
+    /**
+     * @return \Codex\Projects\Ref
+     */
+    public function getRef()
+    {
+        return $this->ref;
+    }
+
+
 
 }

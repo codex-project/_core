@@ -23,14 +23,14 @@ use vierbergenlars\SemVer\version;
 /**
  * This is the class Project.
  *
+ * @property \Codex\Documents\Documents    $documents Get documents
+ * @property \Codex\Projects\Refs          $refs
+ *
  * @package        Codex\Core
  * @author         Robin Radic
  * @copyright      Copyright (c) 2015, Robin Radic. All rights reserved
  *
- * @property \Codex\Documents\Documents        $documents Get documents
- * @property \Codex\Addon\Phpdoc\PhpdocProject $phpdoc
- * @property \Codex\Projects\Refs              $refs
- * @property \Codex\Documents\Documents        $documents2
+ * @property \Codex\Documents\Documents    $documents2
  *
  * @method boolean hasEnabledAuth()
  * @method boolean hasAccess()
@@ -42,25 +42,6 @@ class Project extends Extendable implements Arrayable
     use Traits\FilesTrait,
         Traits\ConfigTrait;
 
-
-    const SHOW_MASTER_BRANCH = 0;
-    const SHOW_LAST_VERSION = 1;
-    const SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH = 2;
-    const SHOW_CUSTOM = 3;
-
-    /**
-     * A collection of branches in this project
-     *
-     * @var array
-     */
-    protected $branches;
-
-    /**
-     * The default ref/version/branch for this project
-     *
-     * @var string
-     */
-    protected $defaultRef;
 
     /**
      * The name of the project
@@ -75,21 +56,6 @@ class Project extends Extendable implements Arrayable
      * @var string
      */
     protected $path;
-
-    /**
-     * @var string
-     */
-    protected $ref;
-
-    /**
-     * @var array
-     */
-    protected $refs;
-
-    /**
-     * @var array
-     */
-    protected $versions;
 
     protected $repository;
 
@@ -124,32 +90,15 @@ class Project extends Extendable implements Arrayable
 
         $this->diskName = $this->getDefaultDiskName();
         $this->setDisk();
-        $this->resolveRefs();
 
         # Resolve menu
         $this->hookPoint('project:constructed');
     }
 
-    public function setActive()
-    {
-        $this->resolveSidebarMenu();
-        $this->projects->setActive($this);
-        return $this;
-    }
-
-    public function isActive()
-    {
-        return $this->projects->getActive() === $this;
-    }
 
     public function getDefaultDiskName()
     {
         return 'codex-local-' . $this->getName();
-    }
-
-    public function getName()
-    {
-        return $this->name;
     }
 
     public function setDisk()
@@ -179,121 +128,7 @@ class Project extends Extendable implements Arrayable
         return collect($this->repository->get("filesystems.disks.{$this->getDiskName()}", $default));
     }
 
-    protected function resolveRefs()
-    {
 
-        $directories = $this->getFiles()->directories();
-        $branches    = [ ];
-        $this->refs  = [ ];
-
-        $this->versions = array_filter(array_map(function ($dirPath) use (&$branches) {
-            $version      = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft(DIRECTORY_SEPARATOR);
-            $version      = (string)$version->removeLeft($this->name . '/');
-            $this->refs[] = $version;
-
-            try {
-                return new version($version);
-            }
-            catch (\RuntimeException $e) {
-                $branches[] = $version;
-            }
-        }, $directories), 'is_object');
-
-        $this->branches = $branches;
-
-        // check which version/branch to show by default
-        $defaultRef = count($this->versions) > 0 ? head($this->versions) : head($branches);
-
-        switch ( $this->config[ 'default' ] ) {
-            case static::SHOW_LAST_VERSION:
-                usort($this->versions, function (version $v1, version $v2) {
-
-
-                    return version::gt($v1, $v2) ? -1 : 1;
-                });
-
-                $defaultRef = head($this->versions);
-                break;
-            case static::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH:
-                if ( count($this->versions) > 0 ) {
-                    usort($this->versions, function (version $v1, version $v2) {
-
-
-                        return version::gt($v1, $v2) ? -1 : 1;
-                    });
-                }
-
-                $defaultRef = count($this->versions) > 0 ? head($this->versions) : head($branches);
-                break;
-            case static::SHOW_MASTER_BRANCH:
-                $defaultRef = 'master';
-                break;
-            case Project::SHOW_CUSTOM:
-                $defaultRef = $this->config[ 'custom' ];
-                break;
-        }
-
-        $this->ref = $this->defaultRef = (string)$defaultRef;
-    }
-
-    protected function resolveSidebarMenu($items = null, $parentId = 'root')
-    {
-        $this->hookPoint('project:sidebar:resolving', [ $items, $parentId ]);
-        if ( $items === null ) {
-            $path  = $this->refPath('menu.yml');
-            $yaml  = $this->getFiles()->get($path);
-            $items = Yaml::parse($yaml)[ 'menu' ];
-            $this->codex->menus->forget('sidebar');
-        }
-
-        $menu = $this->codex->menus->add('sidebar');
-        $menu->setView($this->codex->view('menus.sidebar'));
-
-        if ( !is_array($items) ) {
-            throw CodexException::invalidMenuConfiguration(": menu.yml in [{$this}]");
-        }
-
-        foreach ( $items as $item ) {
-            $link = '#';
-            if ( array_key_exists('document', $item) ) {
-                // remove .md extension if present
-                $path = Str::endsWith($item[ 'document' ], '.md', false) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
-                $link = $this->codex->url($this, $this->getRef(), $path);
-            } elseif ( array_key_exists('href', $item) ) {
-                $link = $item[ 'href' ];
-            }
-
-            $id = md5($item[ 'name' ] . $link);
-
-            $node = $menu->add($id, $item[ 'name' ], $parentId);
-            $node->setAttribute('href', $link);
-            $node->setAttribute('id', $id);
-
-            if ( isset($item[ 'icon' ]) ) {
-                $node->setMeta('icon', $item[ 'icon' ]);
-            }
-
-            if ( isset($item[ 'children' ]) ) {
-                $this->resolveSidebarMenu($item[ 'children' ], $id);
-            }
-        }
-        $this->hookPoint('project:sidebar:resolved', [ $menu ]);
-    }
-
-    /**
-     * Returns the menu for this project
-     *
-     * @return \Codex\Menus\Menu
-     */
-    public function getSidebarMenu()
-    {
-        return $this->getCodex()->menus->get('sidebar');
-    }
-
-    public function renderSidebarMenu()
-    {
-        return $this->getSidebarMenu()->render();
-    }
 
     public function getDisk()
     {
@@ -350,66 +185,13 @@ class Project extends Extendable implements Arrayable
         return in_array($extension, $this->config('extensions', [ ]), true);
     }
 
-    public function refPath($path = null)
-    {
-        return path_join($this->getRef(), $path);
-    }
-
-    /**
-     * Get ref.
-     *
-     * @return string
-     */
-    public function getRef()
-    {
-        return $this->ref;
-    }
-
-    /**
-     * Set the ref (version/branch) you want to use. getDocument will be getting stuff using the ref
-     *
-     * @param  string $name
-     *
-     * @return static
-     */
-    public function setRef($name)
-    {
-        $this->ref = $name;
-
-        return $this;
-    }
-
-    public function hasRef($name)
-    {
-        return $this->getFiles()->exists($name);
-    }
-
-    /**
-     * Get default ref.
-     *
-     * @return string
-     */
-    public function getDefaultRef()
-    {
-        return $this->defaultRef;
-    }
-
-    /**
-     * Get refs.
-     *
-     * @return array
-     */
-    public function getRefs()
-    {
-        return $this->refs;
-    }
 
 
     # Getters / setters
 
     /**
      * Get refs sorted by the configured order.
-     *
+     * @deprecated
      * @return array
      */
     public function getSortedRefs()
@@ -457,28 +239,6 @@ class Project extends Extendable implements Arrayable
     }
 
     /**
-     * Get branches.
-     *
-     * @deprecated
-     * @return array
-     */
-    public function getBranches()
-    {
-        return $this->branches;
-    }
-
-    /**
-     * Get versions.
-     *
-     * @deprecated
-     * @return array
-     */
-    public function getVersions()
-    {
-        return $this->versions;
-    }
-
-    /**
      * Get the instance as an array.
      *
      * @return array
@@ -502,8 +262,20 @@ class Project extends Extendable implements Arrayable
         return last(explode(' :: ', $displayName));
     }
 
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+
+
     public function __toString()
     {
         return $this->getName();
     }
+
+
 }
