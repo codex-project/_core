@@ -52,7 +52,7 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
         $this->hookPoint('projects:construct', [ $this ]);
 
         $this->findAndRegisterAll();
-        $this->resolveProjectsMenu();
+        $this->resolveMenu();
 
         $this->hookPoint('projects:constructed', [ $this ]);
     }
@@ -89,24 +89,6 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
     public function getActive()
     {
         return $this->activeProject;
-    }
-
-    /**
-     * Renders the project picker menu
-     * @return string
-     */
-    public function renderMenu()
-    {
-        return $this->codex->menus->get('projects')->render();
-    }
-
-    /**
-     * Renders the sidebar menu
-     * @return string
-     */
-    public function renderSidebar()
-    {
-        return $this->codex->menus->get('sidebar')->render();
     }
 
     /**
@@ -216,7 +198,29 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
         $this->hookPoint('projects:resolved', [ $this ]);
     }
 
-    protected function resolveProjectsMenu()
+
+    /**
+     * Renders the project picker menu
+     * @return string
+     */
+    public function renderMenu()
+    {
+        return $this->getMenu()->render();
+    }
+
+    /**
+     * getProjectsMenu method
+     * @return \Codex\Menus\Menu
+     */
+    public function getMenu()
+    {
+        if(false === $this->codex->menus->has('projects')){
+            $this->resolveMenu();
+        }
+        return $this->codex->menus->get('projects');
+    }
+
+    protected function resolveMenu()
     {
         /** @var \Codex\Menus\Menu $menu */
         $menu = $this->codex->menus->add('projects');
@@ -255,52 +259,6 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
                 $this->hookPoint('projects:resolved:node', [ $project, $node ]);
             }
         }
-    }
-
-    /**
-     * @param \Codex\Projects\Project $project
-     * @param null                    $items
-     * @param string                  $parentId
-     */
-    protected function resolveProjectSidebarMenu(Project $project, $items = null, $parentId = 'root')
-    {
-        if ( $items === null ) {
-            $path  = $project->refPath('menu.yml');
-            $yaml  = $project->getFiles()->get($path);
-            $items = Yaml::parse($yaml)[ 'menu' ];
-            $this->codex->menus->forget('sidebar');
-        }
-        $menu = $this->codex->menus->add('sidebar');
-
-        if(!is_array($items)){
-            throw CodexException::invalidMenuConfiguration(": menu.yml in [{$project}]");
-        }
-
-        foreach ( $items as $item ) {
-            $link = '#';
-            if ( array_key_exists('document', $item) ) {
-                // remove .md extension if present
-                $path = Str::endsWith($item[ 'document' ], '.md', false) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
-                $link = $this->codex->url($project, $project->getRef(), $path);
-            } elseif ( array_key_exists('href', $item) ) {
-                $link = $item[ 'href' ];
-            }
-
-            $id = md5($item[ 'name' ] . $link);
-
-            $node = $menu->add($id, $item[ 'name' ], $parentId);
-            $node->setAttribute('href', $link);
-            $node->setAttribute('id', $id);
-
-            if ( isset($item[ 'icon' ]) ) {
-                $node->setMeta('icon', $item[ 'icon' ]);
-            }
-
-            if ( isset($item[ 'children' ]) ) {
-                $this->resolveProjectSidebarMenu($project, $item[ 'children' ], $id);
-            }
-        }
-        $this->hookPoint('projects:sidebar:resolve', [ $menu ]);
     }
 
     /**

@@ -27,6 +27,7 @@ return [
     ],
 
     'log' => true,
+
     'dev' => [
         'enabled'    => env('CODEX_DEV_ENABLED', false),
         'debugbar'   => true,
@@ -74,7 +75,7 @@ return [
 
     'default_project_config' => [
         'description' => '',
-        'default'     => \Codex\Projects\Project::SHOW_MASTER_BRANCH,
+        'default'     => \Codex\Projects\Refs::DEFAULT_AUTO,
         'custom'      => null,
         'first'       => '',
         'index'       => 'index',

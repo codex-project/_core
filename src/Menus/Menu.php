@@ -211,7 +211,7 @@ class Menu extends Extendable implements Arrayable
      * @param string     $id
      * @param null|mixed $default
      *
-     * @return \Codex\Components\Menu\Node
+     * @return \Codex\Menus\Node
      */
     public function get($id, $default = null)
     {

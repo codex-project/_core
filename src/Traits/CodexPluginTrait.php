@@ -14,14 +14,14 @@ use Sebwite\Support\ServiceProvider;
 
 /**
  * This is the class CodexProviderTrait.
- *
+ * @property \Illuminate\Foundation\Application $app
  * @package        Codex\Core
  * @author         CLI
- * @copyright      Copyright (c) 2015, CLI. All rights reserved
- * @mixin ServiceProvider
+ *
  */
 trait CodexPluginTrait
 {
+
     protected function projectConfig($config, $method = 'array_replace_recursive')
     {
         $this->addons()->mergeDefaultProjectConfig($config, $method);
@@ -41,7 +41,7 @@ trait CodexPluginTrait
         $this->addons()->mergeDefaultDocumentAttributes($config, $method);
     }
 
-    protected function ignoreRoute($route)
+    protected function excludeRoute($route)
     {
         $this->app->make('config')->push('codex.http.ignore_project_names', $route);
     }
@@ -57,7 +57,7 @@ trait CodexPluginTrait
      */
     protected function codex()
     {
-        return $this->app[ 'codex' ];
+        return $this->app->make('codex');
     }
 
     /**
@@ -71,5 +71,12 @@ trait CodexPluginTrait
     protected function view($key, $value = null)
     {
         return $this->addons()->view($key, $value);
+    }
+
+    public function __get($name)
+    {
+        if($name === 'app'){
+            return app();
+        }
     }
 }

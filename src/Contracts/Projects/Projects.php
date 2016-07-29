@@ -73,12 +73,6 @@ interface Projects
     public function get($name);
 
     /**
-     * Renders the sidebar menu
-     * @return string
-     */
-    public function renderSidebar();
-
-    /**
      * Check if the given project exists.
      *
      * @param  string $name

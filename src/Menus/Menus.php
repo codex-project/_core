@@ -162,6 +162,11 @@ class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
         return $this;
     }
 
+    public function getItems()
+    {
+        return $this->items;
+    }
+
     public function toArray()
     {
         return $this->items->toArray();

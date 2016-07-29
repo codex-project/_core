@@ -10,7 +10,18 @@
  */
 namespace Codex\Addons\Collections;
 
+use Codex\Addons\Annotations\Plugin;
+use Codex\Addons\Scanner\ClassFileInfo;
+
 class Plugins extends BaseCollection
 {
+    public function add(ClassFileInfo $file, Plugin $annotation){
+        $class = $file->getClassName();
+        $instance = null; //$this->app->make($class);
+        $data     = array_merge(compact('file', 'annotation', 'class', 'instance'), (array)$annotation);
+        $this->set($annotation->name, $data);
+
+        $a = 'a';
+    }
 
 }

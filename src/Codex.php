@@ -12,6 +12,7 @@ namespace Codex;
 
 
 use Codex\Contracts;
+use Codex\Exception\CodexException;
 use Codex\Projects\Project;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
@@ -106,15 +107,8 @@ class Codex extends Extendable implements Arrayable
         $this->cache = $cache;
         $this->log   = $log;
 
-//        $this->theme->head->add('meta', 'google-analytics', 'asdfasdf');
-//        $this->theme->head->add([
-//            ['meta', 'google-analytics', 'asf'],
-//            ['tag' => 'meta', 'property' => 'og:title', 'content' => 'The Codex'],
-//            ['']
-//        ])
         $this->docsPath = config('codex.paths.docs');
-        if ( path_is_relative($this->docsPath) )
-        {
+        if ( path_is_relative($this->docsPath) ) {
             $this->docsPath = base_path($this->docsPath);
         }
 
@@ -148,6 +142,74 @@ class Codex extends Extendable implements Arrayable
     }
 
     /**
+     * get method. shorthand for getting
+     *
+     * <strong>Example:</strong>
+     * <code>
+     * <?php
+     * $projects    = codex()->query('*'); # Codex\Projects\Projects
+     * $project     = codex()->query('codex'); # Codex\Projects\Project
+     * $project     = codex()->query('codex/master'); # Codex\Projects\Project
+     * $refs        = codex()->query('codex/*'); # Codex\Projects\Refs
+     * $ref         = codex()->query('codex/master'); # Codex\Projects\Ref
+     * $ref         = codex()->query('codex/1.0.0'); # Codex\Projects\Ref
+     * $documents   = codex()->query('codex/master::*'); # Codex\Documents\Documents
+     * $document    = codex()->query('codex/master::index'); # Codex\Documents\Document
+     * $document    = codex()->query('codex/master::develop/hooks'); # Codex\Documents\Document
+     * </code>
+     *
+     *
+     * @param $query
+     *
+     * @return \Codex\Documents\Document|\Codex\Documents\Documents|\Codex\Projects\Project|\Codex\Projects\Projects
+     * @throws \Codex\Exception\CodexException
+     * @example
+     * <?php
+     * $projects    = codex()->query('*'); # Codex\Projects\Projects
+     * $project     = codex()->query('codex'); # Codex\Projects\Project
+     * $project     = codex()->query('codex/master'); # Codex\Projects\Project
+     * $documents   = codex()->query('codex/master::*'); # Codex\Documents\Documents
+     * $document    = codex()->query('codex/master::index'); # Codex\Documents\Document
+     * $document    = codex()->query('codex/master::develop/hooks'); # Codex\Documents\Document
+     */
+    public function get($query)
+    {
+        // project/ref::path/to/document
+
+        $segments  = explode('::', $query);
+        $psegments = explode('/', $segments[ 0 ]);
+
+        $projectName      = $psegments[ 0 ];
+        $projectRef       = isset($psegments[ 1 ]) ? $psegments[ 1 ] : null;
+        $documentPathName = isset($segments[ 1 ]) ? $segments[ 1 ] : false;
+
+        // projects / project
+        if ( $projectName === '*' ) {
+            return $this->projects;
+        } elseif ( false === $this->projects->has($projectName) ) {
+            throw CodexException::projectNotFound($projectName);
+        }
+        $project = $this->projects->get($projectName);
+
+        // ref
+        if ( $projectRef !== null ) {
+            $project->hasRef($projectRef) && $project->setRef($projectRef);
+        }
+        if ( $documentPathName === false ) {
+            return $project;
+        }
+
+        // documents / document
+        if ( $documentPathName === '*' ) {
+            return $project->documents;
+        } elseif ( false === $project->documents->has($documentPathName) ) {
+            throw CodexException::documentNotFound($documentPathName);
+        }
+
+        return $project->documents->get($documentPathName);
+    }
+
+    /**
      * Returns a Codex view name
      *
      * @param string $name The simple name
@@ -162,6 +224,7 @@ class Codex extends Extendable implements Arrayable
     /**
      * Push a view to a stack
      *
+     * @deprecated
      * @param string     $stackName The name of the stack
      * @param string     $viewName  The namespaced name of the view
      * @param array|null $data      (optional) The view data array
@@ -172,28 +235,6 @@ class Codex extends Extendable implements Arrayable
     public function pushToStack($stackName, $viewName, $data = null, $appendTo = 'codex::layouts.default')
     {
         $this->theme->pushToStack($stackName, $viewName, $data, $appendTo);
-        return $this;
-        $this->container->make('events')->listen('composing: ' . $appendTo, function ($view) use ($stackName, $viewName, $data)
-        {
-            /** @var \Illuminate\View\View $view */
-            if ( $data instanceof \Closure )
-            {
-                $data = $this->container->call($data, [ $this ]);
-                $data = is_array($data) ? $data : [ ];
-            }
-            elseif ( $data === null )
-            {
-                $data = [ ];
-            }
-            if ( ! is_array($data) )
-            {
-                throw new \InvalidArgumentException("appendSectionsView data is not a array");
-            }
-
-            $content = $view->getFactory()->make($viewName, $data)->render();
-            $view->getFactory()->startPush($stackName, $content);
-        });
-
         return $this;
     }
 
@@ -210,11 +251,9 @@ class Codex extends Extendable implements Arrayable
     {
         $uri = $this->config('base_route');
 
-        if ( ! is_null($project) )
-        {
+        if ( !is_null($project) ) {
 
-            if ( ! $project instanceof Project )
-            {
+            if ( !$project instanceof Project ) {
                 $project = $this->projects->get($project);
             }
 
@@ -260,8 +299,7 @@ class Codex extends Extendable implements Arrayable
         $cache = app('cache')->driver('file');
         $clm   = (int)$cache->get($key . '.lastModified', 0);
         $plm   = (int)$lastModified;
-        if ( $clm !== $plm )
-        {
+        if ( $clm !== $plm ) {
             $cache->forever($key, $create());
             $cache->forever($key . '.lastModified', $plm);
         }
@@ -321,8 +359,7 @@ class Codex extends Extendable implements Arrayable
 
     public function __get($name)
     {
-        if ( in_array($name, [ 'addons', 'dev' ], true) )
-        {
+        if ( in_array($name, [ 'addons', 'dev' ], true) ) {
             return $this->container->make('codex.' . $name);
         }
         return parent::__get($name);
@@ -336,8 +373,7 @@ class Codex extends Extendable implements Arrayable
 
     public function config($key = null, $default = null)
     {
-        if ( $key === null )
-        {
+        if ( $key === null ) {
             return new Collection($this->app[ 'config' ][ 'codex' ]);
         }
         return $this->app[ 'config' ]->get("codex.{$key}", $default);

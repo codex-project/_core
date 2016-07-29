@@ -36,7 +36,7 @@ class Factory implements Arrayable
     use Macroable;
 
     const HOOK = 'hook';
-    const THEME = 'theme';
+    const PLUGIN = 'plugin';
     const PROCESSOR = 'processor';
 
     /** @var Factory */
@@ -166,6 +166,10 @@ class Factory implements Arrayable
             elseif ( $annotation instanceof Annotations\Hook )
             {
                 $this->hooks->add($file, $annotation);
+            }
+            elseif ( $annotation instanceof Annotations\Plugin )
+            {
+                $this->plugins->add($file, $annotation);
             }
         }
         foreach ( $file->getMethodAnnotations(true) as $method => $annotations )

@@ -12,6 +12,7 @@ use Codex\Documents\Document;
 use Codex\Http\Controllers\CodexController;
 use Codex\Log\Writer;
 use Codex\Projects\Project;
+use Codex\Projects\Ref;
 use Codex\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Filesystem\FilesystemAdapter;
@@ -61,6 +62,7 @@ class CodexServiceProvider extends ServiceProvider
         'codex.menu'              => Menus\Menu::class,
         'codex.project'           => Projects\Project::class,
         'codex.project.generator' => Projects\ProjectGenerator::class,
+        'codex.project.ref'       => Projects\Ref::class,
     ];
 
     protected $singletons = [
@@ -138,10 +140,18 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerCodex()
     {
-        Codex::extend('projects', Projects\Projects::class);
+
         Codex::extend('menus', Menus\Menus::class);
         Codex::extend('theme', Helpers\ThemeHelper::class);
         Codex::extend('cache', Helpers\CacheHelper::class);
+
+        // codex()->projects->get('projectName')->refs->get('master')->documents->get('index')->render()
+        // codex()->get('projectName/ref::path/to.document')
+        Codex::extend('projects', Projects\Projects::class);
+        Project::extend('refs', Projects\Refs::class);
+        Ref::extend('documents', Documents\Documents::class);
+
+        // @todo remove
         Project::extend('documents', Documents\Documents::class);
     }
 

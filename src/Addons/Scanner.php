@@ -26,6 +26,7 @@ class Scanner
     protected $annotations = [
         Annotations\Hook::class,
         Annotations\Processor::class,
+        Annotations\Plugin::class,
     ];
 
     protected $addons;

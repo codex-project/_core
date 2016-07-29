@@ -50,7 +50,7 @@
         @show
 
         @section('menu-sidebar')
-            {!! $codex->projects->renderSidebar() !!}
+
         @show
 
         @section('breadcrumb')

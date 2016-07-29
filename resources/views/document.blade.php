@@ -12,6 +12,10 @@
 @include('codex::partials.versions')
 @endpush
 
+@section('menu-sidebar')
+    {!! $project->renderSidebarMenu() !!}
+@stop
+
 @section('content')
     {!! $content !!}
 @stop

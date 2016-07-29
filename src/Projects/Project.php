@@ -29,6 +29,7 @@ use vierbergenlars\SemVer\version;
  *
  * @property \Codex\Documents\Documents        $documents Get documents
  * @property \Codex\Addon\Phpdoc\PhpdocProject $phpdoc
+ * @property \Codex\Projects\Refs              $refs
  * @property \Codex\Documents\Documents        $documents2
  *
  * @method boolean hasEnabledAuth()
@@ -102,7 +103,7 @@ class Project extends Extendable implements Arrayable
      * Project constructor. Should be slim, as it gets instanciated for each project.
      *
      * @param \Codex\Projects\Projects                      $projects
-     * @param \Codex\Codex           $codex
+     * @param \Codex\Codex                                  $codex
      * @param \Illuminate\Filesystem\FilesystemManager      $fsm
      * @param \Illuminate\Contracts\Config\Repository       $repository
      * @param \Illuminate\Contracts\Container\Container     $container
@@ -168,8 +169,7 @@ class Project extends Extendable implements Arrayable
     public function getDiskConfig()
     {
         $default = [ ];
-        if ( $this->getDiskName() === $this->getDefaultDiskName() )
-        {
+        if ( $this->getDiskName() === $this->getDefaultDiskName() ) {
             $default = [
                 'driver' => 'codex-local',
                 'root'   => $this->codex->getDocsPath() . DIRECTORY_SEPARATOR . $this->getName(),
@@ -186,18 +186,15 @@ class Project extends Extendable implements Arrayable
         $branches    = [ ];
         $this->refs  = [ ];
 
-        $this->versions = array_filter(array_map(function ($dirPath) use (&$branches)
-        {
+        $this->versions = array_filter(array_map(function ($dirPath) use (&$branches) {
             $version      = Str::create(Str::ensureLeft($dirPath, '/'))->removeLeft(DIRECTORY_SEPARATOR);
             $version      = (string)$version->removeLeft($this->name . '/');
             $this->refs[] = $version;
 
-            try
-            {
+            try {
                 return new version($version);
             }
-            catch (\RuntimeException $e)
-            {
+            catch (\RuntimeException $e) {
                 $branches[] = $version;
             }
         }, $directories), 'is_object');
@@ -207,11 +204,9 @@ class Project extends Extendable implements Arrayable
         // check which version/branch to show by default
         $defaultRef = count($this->versions) > 0 ? head($this->versions) : head($branches);
 
-        switch ( $this->config[ 'default' ] )
-        {
+        switch ( $this->config[ 'default' ] ) {
             case static::SHOW_LAST_VERSION:
-                usort($this->versions, function (version $v1, version $v2)
-                {
+                usort($this->versions, function (version $v1, version $v2) {
 
 
                     return version::gt($v1, $v2) ? -1 : 1;
@@ -220,10 +215,8 @@ class Project extends Extendable implements Arrayable
                 $defaultRef = head($this->versions);
                 break;
             case static::SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH:
-                if ( count($this->versions) > 0 )
-                {
-                    usort($this->versions, function (version $v1, version $v2)
-                    {
+                if ( count($this->versions) > 0 ) {
+                    usort($this->versions, function (version $v1, version $v2) {
 
 
                         return version::gt($v1, $v2) ? -1 : 1;
@@ -256,7 +249,7 @@ class Project extends Extendable implements Arrayable
         $menu = $this->codex->menus->add('sidebar');
         $menu->setView($this->codex->view('menus.sidebar'));
 
-        if(!is_array($items)){
+        if ( !is_array($items) ) {
             throw CodexException::invalidMenuConfiguration(": menu.yml in [{$this}]");
         }
 
@@ -285,6 +278,21 @@ class Project extends Extendable implements Arrayable
             }
         }
         $this->hookPoint('project:sidebar:resolved', [ $menu ]);
+    }
+
+    /**
+     * Returns the menu for this project
+     *
+     * @return \Codex\Menus\Menu
+     */
+    public function getSidebarMenu()
+    {
+        return $this->getCodex()->menus->get('sidebar');
+    }
+
+    public function renderSidebarMenu()
+    {
+        return $this->getSidebarMenu()->render();
     }
 
     public function getDisk()
@@ -339,17 +347,7 @@ class Project extends Extendable implements Arrayable
 
     public function hasEnabledExtension($extension)
     {
-        return in_array($extension, $this->config('extensions', []), true);
-    }
-
-    /**
-     * Returns the menu for this project
-     *
-     * @return \Codex\Menus\Menu
-     */
-    public function getSidebarMenu()
-    {
-        return $this->getCodex()->menus->get('sidebar');
+        return in_array($extension, $this->config('extensions', [ ]), true);
     }
 
     public function refPath($path = null)
@@ -419,15 +417,13 @@ class Project extends Extendable implements Arrayable
         $versions = $this->versions;
 
 
-        usort($versions, function (version $v1, version $v2)
-        {
+        usort($versions, function (version $v1, version $v2) {
 
 
             return version::gt($v1, $v2) ? -1 : 1;
         });
 
-        $versions = array_map(function (version $v)
-        {
+        $versions = array_map(function (version $v) {
 
 
             return $v->getVersion();

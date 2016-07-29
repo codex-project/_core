@@ -12,6 +12,9 @@ namespace Codex\Addons\Annotations;
 
 use Doctrine\Common\Annotations\Annotation\Required;
 
+/**
+ * @Annotation
+ */
 final class Plugin
 {
     /**

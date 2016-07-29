@@ -86,15 +86,15 @@ class ClassFileInfo extends SplFileInfo
     public function getMethodAnnotations($filterEmpty = false, $filterAnnotations = null)
     {
         return $this->filter($this->classInspector->getMethodAnnotations(), $filterEmpty, $filterAnnotations);
-        $a = $this->classInspector->getMethodAnnotations();
-        return $filter === false ? $a : array_filter($a, create_function('$b', 'return ! empty($b);'));
+        #$a = $this->classInspector->getMethodAnnotations();
+        #return $filter === false ? $a : array_filter($a, create_function('$b', 'return ! empty($b);'));
     }
 
     public function getPropertyAnnotations($filterEmpty = false, $filterAnnotations = null)
     {
         return $this->filter($this->classInspector->getPropertyAnnotations(), $filterEmpty, $filterAnnotations);
-        $a = $this->classInspector->getPropertyAnnotations();
-        return $filter === false ? $a : array_filter($a, create_function('$b', 'return ! empty($b);'));
+        #$a = $this->classInspector->getPropertyAnnotations();
+        #return $filter === false ? $a : array_filter($a, create_function('$b', 'return ! empty($b);'));
     }
 
     public function getPath()

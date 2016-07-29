@@ -36,6 +36,9 @@ class Document extends Extendable implements Arrayable
     const CACHE_ENABLED = 'enabled';
     const CACHE_DISABLED = 'disabled';
 
+    /** @var string */
+    protected $originalContent;
+
     /**
      * @var string
      */
@@ -379,6 +382,14 @@ class Document extends Extendable implements Arrayable
             $this->content = $this->getFiles()->get($this->getPath());
         }
         return $this->content;
+    }
+
+    public function getOriginalContent()
+    {
+        if ( false === isset($this->originalContent) ) {
+            $this->originalContent = $this->getFiles()->get($this->getPath());
+        }
+        return $this->originalContent;
     }
 
     /**
