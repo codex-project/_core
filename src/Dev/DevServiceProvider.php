@@ -52,8 +52,8 @@ class DevServiceProvider extends ServiceProvider
 
     protected function registerMetas()
     {
-        if ( class_exists('Sebwite\IdeaMeta\IdeaMetaServiceProvider') && $this->app->bound('idea-meta') === false ) {
-            $this->app->register('Sebwite\IdeaMeta\IdeaMetaServiceProvider');
+        if ( class_exists('Laradic\\Phpstorm\\Autocomplete\\AutocompleteServiceProvider') && $this->app->bound('idea-meta') === false ) {
+            $this->app->register('Laradic\\Phpstorm\\Autocomplete\\AutocompleteServiceProvider');
         }
     }
 

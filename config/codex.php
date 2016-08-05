@@ -30,6 +30,7 @@ return [
 
     'dev' => [
         'enabled'    => env('CODEX_DEV_ENABLED', false),
+        'metas'      => true,
         'debugbar'   => true,
         'benchmark'  => true,
         'hookpoints' => true,

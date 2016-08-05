@@ -13,12 +13,13 @@ use Codex\Codex;
 use Codex\Contracts;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
-use Codex\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory as View;
 use Illuminate\Routing\Router;
+use Codex\Traits;
+
 
 class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
 {
@@ -53,7 +54,7 @@ class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
     /**
      * Menus constructor.
      *
-     * @param \Codex\Codex        $parent
+     * @param \Codex\Codex                               $parent
      * @param \Illuminate\Routing\Router                 $router
      * @param \Illuminate\Contracts\Routing\UrlGenerator $url
      * @param \Illuminate\Contracts\View\View            $view
@@ -82,12 +83,13 @@ class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
      * @return \Codex\Menus\Menu
      * @throws \Codex\Exception\CodexException
      */
-    public function add($id, array $attributes = [])
+    public function add($id, array $attributes = [ ])
     {
         if ( $this->has($id) ) {
             return $this->get($id);
         }
 
+        /** @var Menu $menu */
         $menu = $this->getCodex()->getContainer()->make('codex.menu', [
             'menus' => $this,
             'id'    => $id,
@@ -134,7 +136,7 @@ class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
     public function forget($id)
     {
         $this->hookPoint('menus:forget', [ $this, $id ]);
-        unset($this->items[$id]);
+        unset($this->items[ $id ]);
         return $this;
     }
 
@@ -153,7 +155,7 @@ class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
      *
      * @param  \Illuminate\Cache\CacheManager $cache
      *
-     * @return Factory
+     * @return static
      */
     public function setCache($cache)
     {
@@ -170,5 +172,21 @@ class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
     public function toArray()
     {
         return $this->items->toArray();
+    }
+
+    /**
+     * @param      $id,...
+     *
+     * @return string
+     */
+    public function render($id)
+    {
+        $params = func_get_args();
+        $id     = array_shift($params);
+
+        if ( !$this->has($id) ) {
+            return '';
+        }
+        return call_user_func_array([$this->get($id), 'render'], $params);
     }
 }

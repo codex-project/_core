@@ -8,12 +8,25 @@
     @parent
 @stop
 
-@push('nav')
-@include('codex::partials.versions')
-@endpush
+@section('header')
+    @parent
 
-@section('menu-sidebar')
-    {!! $ref->renderSidebarMenu() !!}
+    <div class="responsive-sidebar-nav">
+        <a href="#" class="toggle-slide menu-link btn">&#9776;</a>
+    </div>
+
+    @include('codex::partials.versions')
+
+    {!! codex()->menus->render('projects') !!}
+
+
+@stop
+
+@section('wrapper')
+    <a class="sidebar-toggle" data-action='sidebar-toggle' title='Toggle sidebar'><i class="fa fa-list"></i></a>
+    {!! codex()->menus->render('sidebar', $ref) !!}
+    @include('codex::partials.breadcrumb')
+    @parent
 @stop
 
 @section('content')

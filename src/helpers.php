@@ -23,12 +23,19 @@ if (!function_exists('version')) {
 }
 
 if (!function_exists('codex')) {
+    /**
+     * @param null $ext
+     *
+     * @return mixed|\Codex\Codex
+     * @throws \Codex\Exception\CodexException
+     */
     function codex($ext = null)
     {
         if(!app()->bound('codex') || !app()->hasBeenBootstrapped()){
             throw \Codex\Exception\CodexException::because('Codex is not bound yet');
         }
-        /** @var \Codex\Codex $codex */
+
+        /** @var mixed $codex */
         $codex = app('codex');
 
         if($ext === null){

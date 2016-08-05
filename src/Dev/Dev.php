@@ -108,7 +108,7 @@ class Dev extends Extendable
             {
                 $this->app->booted(function ($app) use ($cb)
                 {
-                    call_user_func($cb, $app->make('debugbar'));
+                    $this->hasDebugbar() && call_user_func($cb, $app->make('debugbar'));
                 });
             }
         }

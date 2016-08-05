@@ -17,6 +17,7 @@ use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Arr;
 use Sebwite\Filesystem\Filesystem;
 use Tree\Visitor\PostOrderVisitor;
 use Tree\Visitor\PreOrderVisitor;
@@ -43,7 +44,7 @@ class Menu extends Extendable implements Arrayable
     protected $path;
 
     /**
-     * @var \Illuminate\Support\Collection
+     * @var \Illuminate\Support\Collection|Node[]
      */
     protected $items;
 
@@ -78,9 +79,15 @@ class Menu extends Extendable implements Arrayable
     /** @var null|Visitor */
     protected $sorter;
 
+    protected $resolver;
+
+    protected $resolved = false;
+
+    protected $rendered;
+
 
     /**
-     * @param \Codex\Contracts\Menus\MenuFactory|\Codex\Menus\Menus                   $menus
+     * @param \Codex\Contracts\Menus\Menus|\Codex\Menus\Menus                   $menus
      * @param \Illuminate\Contracts\Filesystem\Filesystem|\Sebwite\Support\Filesystem $files
      * @param \Illuminate\Contracts\Cache\Repository                                  $cache
      * @param \Illuminate\Routing\Router                                              $router
@@ -111,6 +118,15 @@ class Menu extends Extendable implements Arrayable
     }
 
     /**
+     * getRootNode method
+     * @return Node
+     */
+    public function getRootNode()
+    {
+        return $this->items->get('root');
+    }
+
+    /**
      * @return mixed
      */
     public function getSorter()
@@ -126,41 +142,42 @@ class Menu extends Extendable implements Arrayable
     public function setSorter($sorter)
     {
         $this->sorter = $sorter;
+        $this->render('sdf', 'sadf');
     }
 
     /**
      * Renders the menu using the defined view
      *
+     * @param mixed $_
+     *
      * @return string
+     * @throws \Codex\Exception\CodexException
      */
-    public function render($sorter = null)
+    public function render()
     {
-        /** @var Node $root */
-        $root   = $this->get('root');
-        $sorter = $sorter ?: $this->sorter;
+        $params = func_get_args();
+        if ( $this->rendered === null ) {
+            $this->resolve($params);
+            $this->hookPoint('menu:render');
 
-        $this->hookPoint('menu:render', [ $root, $sorter ]);
+            $root = $this->getRootNode();
+            if ( $this->sorter ) {
+                $items = $root->accept(new $this->sorter);
+            } else {
+                $items = $root->getChildren();
+            }
 
-        if ( $sorter )
-        {
-            $items = $root->accept(new $sorter);
+            $vars = [
+                'menu'  => $this,
+                'items' => $items,
+            ];
+
+
+            $this->rendered = $this->viewFactory->make($this->view)->with($vars)->render();
+
+            $this->hookPoint('menu:rendered', [ $items, $this->rendered ]);
         }
-        else
-        {
-            $items = $root->getChildren();
-        }
-
-        $vars = [
-            'menu'  => $this,
-            'items' => $items,
-        ];
-
-
-        $rendered = $this->viewFactory->make($this->view)->with($vars)->render();
-
-        $this->hookPoint('menu:rendered', [ $items, $sorter, $rendered ]);
-
-        return $rendered;
+        return $this->rendered;
     }
 
     /**
@@ -180,8 +197,7 @@ class Menu extends Extendable implements Arrayable
         $node->setMeta($meta);
         $node->setAttribute($attributes);
 
-        if ( ! is_null($parent) and $this->items->has($parent) )
-        {
+        if ( $this->items->has($parent) ) {
             $parentNode = $this->items->get($parent);
             $parentNode->addChild($node);
             $node->setParent($parentNode);
@@ -256,7 +272,7 @@ class Menu extends Extendable implements Arrayable
     /**
      * Get breadcrumbs to the given Node
      *
-     * @param \Codex\Components\Menu\Node $item
+     * @param \Codex\Menus\Node $item
      *
      * @return array
      */
@@ -275,12 +291,9 @@ class Menu extends Extendable implements Arrayable
     public function getBreadcrumbToHref($href)
     {
         $item = $this->findItemByHref($href);
-        if ( $item )
-        {
+        if ( $item ) {
             return $this->getBreadcrumbTo($item);
-        }
-        else
-        {
+        } else {
             return [ ];
         }
     }
@@ -290,26 +303,22 @@ class Menu extends Extendable implements Arrayable
      *
      * @param $href
      *
-     * @return \Codex\Components\Menu\Node|null
+     * @return \Codex\Menus\Node|null
      */
     public function findItemByHref($href)
     {
-
-        $found = $this->items->filter(function (Node $item) use ($href)
-        {
-            if ( $item->hasAttribute('href') && $item->attribute('href') === $href )
-            {
+        /** @var Collection $found */
+        $found = $this->items->filter(function (Node $item) use ($href) {
+            if ( $item->hasAttribute('href') && $item->attribute('href') === $href ) {
                 return true;
             }
         });
-        if ( $found->isEmpty() )
-        {
+
+        if ( $found->isEmpty() ) {
             return null;
         }
-        /** @var Node $node */
-        $node = $found->first();
 
-        return $node;
+        return $found->first();
     }
 
     /**
@@ -338,6 +347,10 @@ class Menu extends Extendable implements Arrayable
      */
     public function toArray()
     {
+        //codex('auth')->getUser()
+//        codex('auth')->getUser();
+//        codex('auth')->getUser('s');
+//        codex('')
         return [
             'attributes' => $this->attributes,
             'items'      => $this->items->toArray(),
@@ -345,4 +358,52 @@ class Menu extends Extendable implements Arrayable
             'view'       => $this->view,
         ];
     }
+
+    /**
+     * hasResolver method
+     * @return bool
+     */
+    public function hasResolver()
+    {
+        return null !== $this->resolver;
+    }
+
+    /**
+     * resolve method
+     *
+     * @param array $params
+     *
+     * @return $this
+     * @throws \Codex\Exception\CodexException
+     */
+    protected function resolve(array $params = [ ])
+    {
+        if ( null === $this->resolver || true === $this->resolved ) {
+            return $this;
+        }
+
+        /** @var Contracts\Menus\MenuResolver $resolver */
+        $resolver = $this->getContainer()->make($this->resolver);
+        $this->hookPoint('menu:resolve', [ $resolver ]);
+        $this->getContainer()->call([$resolver, 'handle'], array_merge([ $this ], $params));
+        $this->hookPoint('menu:resolved');
+
+        return $this;
+    }
+
+    /**
+     * Set the resolver value
+     *
+     * @param mixed $resolver
+     *
+     * @return Menu
+     */
+    public function setResolver($resolver)
+    {
+        $this->resolver = $resolver;
+
+        return $this;
+    }
+
+
 }

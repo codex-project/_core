@@ -32,7 +32,7 @@ trait ContainerTrait
     public function getContainer()
     {
         if ( !isset($this->container) ) {
-            $this->container = \Illuminate\Container\Container::getInstance();
+            $this->app = $this->container = \Illuminate\Container\Container::getInstance();
         }
         return $this->container;
     }

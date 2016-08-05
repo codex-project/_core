@@ -11,6 +11,7 @@ namespace Codex;
 use Codex\Documents\Document;
 use Codex\Http\Controllers\CodexController;
 use Codex\Log\Writer;
+use Codex\Menus\SidebarMenuResolver;
 use Codex\Projects\Project;
 use Codex\Projects\Ref;
 use Codex\Traits\CodexProviderTrait;
@@ -106,6 +107,8 @@ class CodexServiceProvider extends ServiceProvider
         $this->registerCodex();
 
         $this->registerAddons();
+
+        $this->registerMenus();
 
         $this->registerTheme();
 
@@ -219,6 +222,7 @@ class CodexServiceProvider extends ServiceProvider
             $theme->set('theme', $theme->toArray());
             $theme->set('apiUrl', url('api'));
             $theme->set('debug', config('app.debug', false));
+
         });
     }
 
@@ -236,6 +240,13 @@ class CodexServiceProvider extends ServiceProvider
         // This way we get the document attributes filled and disable, enable or configure other processors.
         $this->codexHook('document:constructed', function (Document $document) {
             $document->runProcessor('attributes');
+        });
+    }
+
+    protected function registerMenus()
+    {
+        $this->codexHook('constructed', function (Codex $codex) {
+            $codex->menus->add('sidebar')->setResolver(SidebarMenuResolver::class);
         });
     }
 
