@@ -162,6 +162,9 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
      */
     public function toArray()
     {
+        return $this->items->transform(function($item){
+            return $item->getName();
+        })->values()->toArray();
         return $this->items->toArray();
     }
 

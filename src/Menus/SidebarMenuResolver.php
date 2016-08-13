@@ -27,19 +27,35 @@ class SidebarMenuResolver implements MenuResolver
     /** @var Codex */
     protected $codex;
 
-    public function handle(Menu $menu, Ref $ref, Codex $codex)
+    /**
+     * SidebarMenuResolver constructor.
+     *
+     * @param \Codex\Codex $codex
+     */
+    public function __construct(\Codex\Codex $codex)
     {
-        $this->ref   = $ref;
         $this->codex = $codex;
+    }
 
-        $codex->menus->has('sidebar') && $codex->menus->forget('sidebar');
-        $this->menu = $codex->menus->add('sidebar');
-        $this->menu->setView($codex->view('menus.sidebar'));
+
+    public function handle(Menu $menu, Ref $ref)
+    {
+        $this->menu = $menu;
+        $this->ref   = $ref;
+
+
+//        $menus = $this->codex->menus;
+//        $menus->has('sidebar') && $menus->forget('sidebar');
+//        $this->menu = $menus->add('sidebar');
+
+        $menu->setView($this->codex->view('menus.sidebar'));
         $items = $ref->config('menu', [ ]);
 
         if ( ! is_array($items) ) {
             throw CodexException::invalidMenuConfiguration(": menu.yml in [{$this}]");
         }
+
+        $this->recurse($items);
     }
 
     /**

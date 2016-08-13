@@ -15,10 +15,11 @@ use Codex\Contracts;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
 use Codex\Traits;
+use Illuminate\Contracts\Support\Arrayable;
 use vierbergenlars\SemVer\version;
 
 
-class Refs extends Extendable
+class Refs extends Extendable implements Arrayable
 {
     use Traits\FilesTrait;
 
@@ -245,4 +246,18 @@ class Refs extends Extendable
         return array_merge($this->getSortedBranches(), $this->getSortedVersions());
     }
 
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'default' => $this->default,
+            'refs' => $this->items->transform(function(Ref $ref){
+                return ['name' => $ref->getName(), 'isBranch' => $ref->isBranch() ];
+            })->toArray()
+        ];
+    }
 }

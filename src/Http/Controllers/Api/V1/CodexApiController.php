@@ -8,100 +8,80 @@ use Codex\Projects\Project;
 
 class CodexApiController extends ApiController
 {
-    public function getProject()
-    {
-        $project = request('project');
-        if ( false === $this->codex->projects->has($project) ) {
-            return $this->error("Project [{$project}] does not exist");
-        }
-        return $this->response($this->codex->projects->get($project)->toArray());
-    }
-
     public function getProjects()
     {
-        return $this->response($this->codex->projects->query()->transform(function (Project $project) {
-            return $project->getName();
-//            [
-//                'name'         => $project->getName(),
-//                'display_name' => $project->getDisplayName(),
-//                'refs'         => $project->getRefs(),
-//                'default_ref'  => $project->getDefaultRef(),
-//            ];
-        })->toArray());
-    }
-
-    public function getDocument()
-    {
-        $projectSlug      = request('project');
-        $documentPathName = request('document');
-        $ref              = request('ref', '');
-        $render           = request('render', false);
-        $original         = request('original', false);
-        // project
-
         try {
-            $document = $this->codex->query("{$projectSlug}/{$ref}::{$documentPathName}");
+            $data = $this->codex->get('*')->toArray();
         } catch(CodexException $e){
             return $this->error($e->getMessage());
         }
 
-        // rendered and orignal content
-        $responseData = $document->toArray();
-        if ( $render ) {
-            $responseData[ 'rendered' ] = $document->render();
-        }
-        if ( $original ) {
-            $responseData[ 'original' ] = $document->getOriginalContent();
-        }
-
-        return $this->response($responseData);
+        return $this->response($data);
     }
 
-    public function getDocuments()
+    public function getProject($project)
     {
-        // project
-        $projectSlug = request('project');
-        if ( false === $this->codex->projects->has($projectSlug) ) {
-            return $this->error("Project [{$projectSlug}] does not exist");
+        try {
+            $data = $this->codex->get("{$project}")->toArray();
+        } catch(CodexException $e){
+            return $this->error($e->getMessage());
         }
-        $project = $this->codex->projects->get($projectSlug);
 
-        // ref
-        $ref = request('ref', $dref = $project->getDefaultRef());
-        if ( $ref === '' ) {
-            $ref = $dref;
-        }
-        if ( false === $project->hasRef($ref) ) {
-            return $this->error("Ref [{$ref}] for project [{$project}] does not exist");
-        }
-        $project->setRef($ref);
-
-        // documents
-        $documents = $project->documents->all();
-        return $this->response(
-            collect($documents)->values()->transform(function (Document $document) {
-                return [
-                    'lastModified' => $document->getLastModified(),
-                    'path'         => $document->getPath(),
-                    'pathName'     => $document->getPathName(),
-                ];
-            })->toArray()
-        );
+        return $this->response($data);
     }
 
-    public function getMenu()
+    public function getRefs($project)
     {
-        $id = request('id');
-        if ( false === $this->codex->menus->has($id) ) {
-            return $this->error("Menu [{$id}] does not exist");
+        try {
+            $data = $this->codex->get("{$project}/*")->toArray();
+        } catch(CodexException $e){
+            return $this->error($e->getMessage());
         }
-        return $this->response($this->codex->menus->get($id)->toArray());
+
+        return $this->response($data);
     }
 
-    public function getMenus()
+    public function getRef($project, $ref)
     {
-        return $this->response($this->codex->menus->getItems()->keys()->toArray());
+        try {
+            $data = $this->codex->get("{$project}/{$ref}")->toArray();
+        } catch(CodexException $e){
+            return $this->error($e->getMessage());
+        }
+
+        return $this->response($data);
     }
+
+    public function getDocuments($project, $ref)
+    {
+        try {
+            $data = $this->codex->get("{$project}/{$ref}::*")->toArray();
+        } catch(CodexException $e){
+            return $this->error($e->getMessage());
+        }
+
+        return $this->response($data);
+    }
+
+    public function getDocument($project, $ref, $document)
+    {
+        try {
+            $doc = $this->codex->get("{$project}/{$ref}::{$document}");
+            $data = $doc->toArray();
+        } catch(CodexException $e){
+            return $this->error($e->getMessage());
+        }
+
+        if(request('render', false)) {
+            $data[ 'rendered' ] = $doc->render();
+        }
+        if(request('original', false)) {
+            $data[ 'original' ] = $doc->getOriginalContent();
+        }
+        return $this->response($data);
+    }
+
+
 
     /**
      * Render the documentation page for the given project and version.

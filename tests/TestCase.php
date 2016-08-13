@@ -2,7 +2,7 @@
 namespace Codex\Tests;
 
 use Codex\CodexServiceProvider;
-use Sebwite\Testing\Laravel\AbstractTestCase;
+use Laradic\Testing\Laravel\AbstractTestCase;
 
 class TestCase extends AbstractTestCase
 {

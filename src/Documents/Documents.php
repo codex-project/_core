@@ -17,9 +17,10 @@ use Codex\Projects\Project;
 use Codex\Projects\Ref;
 use Codex\Support\Extendable;
 use Codex\Traits;
+use Illuminate\Contracts\Support\Arrayable;
 use Sebwite\Support\Str;
 
-class Documents extends Extendable implements Contracts\Documents\Documents
+class Documents extends Extendable implements Contracts\Documents\Documents, Arrayable
 {
     /**
      * @var \Illuminate\Support\Collection
@@ -173,4 +174,20 @@ class Documents extends Extendable implements Contracts\Documents\Documents
     }
 
 
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->items->transform(function(Document $document){
+            return [
+                'name' => $document->getName(),
+                'url' => $document->url(),
+                'breadcrumb' => $document->getBreadcrumb(),
+                'processed' => $document->getProcessed()->toArray()
+            ];
+        })->toArray();
+    }
 }

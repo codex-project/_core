@@ -11,13 +11,14 @@ namespace Codex\Menus;
 use Codex\Contracts;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
-use Codex\Traits;
+use Codex\Traits\AttributesTrait;
+use Codex\Traits\ConfigTrait;
+use Codex\Traits\FilesTrait;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Routing\Router;
-use Illuminate\Support\Arr;
 use Sebwite\Filesystem\Filesystem;
 use Tree\Visitor\PostOrderVisitor;
 use Tree\Visitor\PreOrderVisitor;
@@ -25,9 +26,9 @@ use Tree\Visitor\Visitor;
 
 class Menu extends Extendable implements Arrayable
 {
-    use Traits\FilesTrait,
-        Traits\ConfigTrait,
-        Traits\AttributesTrait;
+    use FilesTrait,
+        ConfigTrait,
+        AttributesTrait;
 
     const SORTER_PREORDER = PreOrderVisitor::class;
 
@@ -44,7 +45,7 @@ class Menu extends Extendable implements Arrayable
     protected $path;
 
     /**
-     * @var \Illuminate\Support\Collection|Node[]
+     * @var \Codex\Support\Collection|Node[]
      */
     protected $items;
 
@@ -87,8 +88,8 @@ class Menu extends Extendable implements Arrayable
 
 
     /**
-     * @param \Codex\Contracts\Menus\Menus|\Codex\Menus\Menus                   $menus
-     * @param \Illuminate\Contracts\Filesystem\Filesystem|\Sebwite\Support\Filesystem $files
+     * @param \Codex\Contracts\Menus\Menus|\Codex\Menus\Menus                         $menus
+     * @param \Illuminate\Contracts\Filesystem\Filesystem                             $files
      * @param \Illuminate\Contracts\Cache\Repository                                  $cache
      * @param \Illuminate\Routing\Router                                              $router
      * @param \Illuminate\Contracts\Routing\UrlGenerator                              $url
@@ -115,69 +116,6 @@ class Menu extends Extendable implements Arrayable
         $this->items->put('root', new Node('root', $this, 'root'));
 
         $this->hookPoint('menu:constructed', [ $id ]);
-    }
-
-    /**
-     * getRootNode method
-     * @return Node
-     */
-    public function getRootNode()
-    {
-        return $this->items->get('root');
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSorter()
-    {
-        return $this->sorter;
-    }
-
-    /**
-     * Set the sorter value
-     *
-     * @param mixed $sorter
-     */
-    public function setSorter($sorter)
-    {
-        $this->sorter = $sorter;
-        $this->render('sdf', 'sadf');
-    }
-
-    /**
-     * Renders the menu using the defined view
-     *
-     * @param mixed $_
-     *
-     * @return string
-     * @throws \Codex\Exception\CodexException
-     */
-    public function render()
-    {
-        $params = func_get_args();
-        if ( $this->rendered === null ) {
-            $this->resolve($params);
-            $this->hookPoint('menu:render');
-
-            $root = $this->getRootNode();
-            if ( $this->sorter ) {
-                $items = $root->accept(new $this->sorter);
-            } else {
-                $items = $root->getChildren();
-            }
-
-            $vars = [
-                'menu'  => $this,
-                'items' => $items,
-            ];
-
-
-            $this->rendered = $this->viewFactory->make($this->view)->with($vars)->render();
-
-            $this->hookPoint('menu:rendered', [ $items, $this->rendered ]);
-        }
-        return $this->rendered;
     }
 
     /**
@@ -245,29 +183,22 @@ class Menu extends Extendable implements Arrayable
     }
 
     /**
-     * get view value
+     * Clears the menu, removes all the items and children
      *
-     * @return mixed
+     * @param bool $root =false If true, it will remove the rood node from the menu as well. False by default
+     *
+     * @return $this
      */
-    public function getView()
+    public function clear($root = false)
     {
-        return $this->view;
-    }
-
-    /**
-     * Set the view value
-     *
-     * @param mixed $view
-     *
-     * @return Menu
-     */
-    public function setView($view)
-    {
-        $this->view = $view;
-
+        $rootNode = $this->getRootNode();
+        $rootNode->removeAllChildren();
+        $this->items->clear();
+        if ( false === $root ) {
+            $this->items->put('root', $rootNode);
+        }
         return $this;
     }
-
 
     /**
      * Get breadcrumbs to the given Node
@@ -322,45 +253,8 @@ class Menu extends Extendable implements Arrayable
     }
 
     /**
-     * @return string
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set the id value
-     *
-     * @param string $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-
-    /**
-     * Get the instance as an array.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        //codex('auth')->getUser()
-//        codex('auth')->getUser();
-//        codex('auth')->getUser('s');
-//        codex('')
-        return [
-            'attributes' => $this->attributes,
-            'items'      => $this->items->toArray(),
-            'id'         => $this->id,
-            'view'       => $this->view,
-        ];
-    }
-
-    /**
      * hasResolver method
+     *
      * @return bool
      */
     public function hasResolver()
@@ -385,10 +279,45 @@ class Menu extends Extendable implements Arrayable
         /** @var Contracts\Menus\MenuResolver $resolver */
         $resolver = $this->getContainer()->make($this->resolver);
         $this->hookPoint('menu:resolve', [ $resolver ]);
-        $this->getContainer()->call([$resolver, 'handle'], array_merge([ $this ], $params));
+        call_user_func_array([ $resolver, 'handle' ], array_merge([ $this ], $params));
         $this->hookPoint('menu:resolved');
 
         return $this;
+    }
+
+    /**
+     * Renders the menu using the defined view
+     *
+     * @param mixed $_
+     *
+     * @return string
+     * @throws \Codex\Exception\CodexException
+     */
+    public function render()
+    {
+        $params = func_get_args();
+        if ( $this->rendered === null ) {
+            $this->resolve($params);
+            $this->hookPoint('menu:render');
+
+            $root = $this->getRootNode();
+            if ( $this->sorter ) {
+                $items = $root->accept(new $this->sorter);
+            } else {
+                $items = $root->getChildren();
+            }
+
+            $vars = [
+                'menu'  => $this,
+                'items' => $items,
+            ];
+
+
+            $this->rendered = $this->viewFactory->make($this->view)->with($vars)->render();
+
+            $this->hookPoint('menu:rendered', [ $items, $this->rendered ]);
+        }
+        return $this->rendered;
     }
 
     /**
@@ -403,6 +332,92 @@ class Menu extends Extendable implements Arrayable
         $this->resolver = $resolver;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the id value
+     *
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * get view value
+     *
+     * @return mixed
+     */
+    public function getView()
+    {
+        return $this->view;
+    }
+
+    /**
+     * Set the view value
+     *
+     * @param mixed $view
+     *
+     * @return Menu
+     */
+    public function setView($view)
+    {
+        $this->view = $view;
+
+        return $this;
+    }
+
+    /**
+     * getRootNode method
+     *
+     * @return Node
+     */
+    public function getRootNode()
+    {
+        return $this->items->get('root');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSorter()
+    {
+        return $this->sorter;
+    }
+
+    /**
+     * Set the sorter value
+     *
+     * @param mixed $sorter
+     */
+    public function setSorter($sorter)
+    {
+        $this->sorter = $sorter;
+        $this->render('sdf', 'sadf');
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'attributes' => $this->attributes,
+            'items'      => $this->items->toArray(),
+            'id'         => $this->id,
+            'view'       => $this->view,
+        ];
     }
 
 

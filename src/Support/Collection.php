@@ -16,8 +16,7 @@ class Collection extends \Illuminate\Support\Collection
     public function get($key, $default = null)
     {
         $item = data_get($this->items, $key, $default);
-        if ( is_array($item) )
-        {
+        if ( is_array($item) ) {
             return static::make($item);
         }
         return $item;
@@ -39,8 +38,7 @@ class Collection extends \Illuminate\Support\Collection
 
     public function whereHas($key, $value)
     {
-        return $this->filter(function ($item) use ($key, $value)
-        {
+        return $this->filter(function ($item) use ($key, $value) {
             return in_array($value, data_get($item, $key, [ ]), true);
         });
     }
@@ -54,16 +52,13 @@ class Collection extends \Illuminate\Support\Collection
     public function forget($keys)
     {
         $keys = (array)$keys;
-        foreach ( $keys as $key )
-        {
+        foreach ( $keys as $key ) {
             $segments = explode('.', $key);
-            while ( count($segments) )
-            {
+            while ( count($segments) ) {
                 $segment = array_shift($segments);
                 $last    = count($segments) === 0;
                 $item    = &$this->items[ $segment ];
-                if ( $last )
-                {
+                if ( $last ) {
                     unset($item);
                 }
             }
@@ -82,12 +77,9 @@ class Collection extends \Illuminate\Support\Collection
      */
     public function customMerge(array $items, array $key = null, $method = 'array_replace_recursive')
     {
-        if ( $key )
-        {
+        if ( $key ) {
             $this->set($key, call_user_func($method, $this->get($key, [ ]), $items));
-        }
-        else
-        {
+        } else {
             $this->items = call_user_func($method, $this->items, $items);
         }
         return $this;
@@ -104,5 +96,16 @@ class Collection extends \Illuminate\Support\Collection
     public function offsetGet($key)
     {
         return data_get($this->items, $key);
+    }
+
+    /**
+     * Removes all items in this collection
+     *
+     * @return $this
+     */
+    public function clear()
+    {
+        $this->items = [ ];
+        return $this;
     }
 }

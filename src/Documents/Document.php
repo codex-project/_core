@@ -147,7 +147,7 @@ class Document extends Extendable implements Arrayable
      */
     public function url()
     {
-        return $this->codex->url($this->project, $this->project->getRef(), $this->pathName);
+        return $this->codex->url($this->project, $this->ref, $this->pathName);
     }
 
     /**
@@ -251,8 +251,7 @@ class Document extends Extendable implements Arrayable
             'cacheMode'         => $this->mode,
             'lastModified'      => $this->lastModified,
             'attributes'        => $this->attr(),
-            'enabledProcessors' => $this->getEnabledProcessors(),
-            'processed'         => $this->processed->pluck('name')->toArray(),
+            'enabledProcessors' => $this->getEnabledProcessors()
         ];
     }
 

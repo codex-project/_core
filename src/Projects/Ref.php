@@ -12,10 +12,11 @@ namespace Codex\Projects;
 
 
 use Codex\Codex;
-use Codex\Contracts;
 use Codex\Exception\CodexException;
 use Codex\Support\Extendable;
-use Codex\Traits;
+use Codex\Traits\ConfigTrait;
+use Codex\Traits\FilesTrait;
+use Illuminate\Contracts\Support\Arrayable;
 use Sebwite\Support\Str;
 use Symfony\Component\Yaml\Yaml;
 use vierbergenlars\SemVer\SemVerException;
@@ -33,10 +34,10 @@ use vierbergenlars\SemVer\version;
  *
  *
  */
-class Ref extends Extendable
+class Ref extends Extendable implements Arrayable
 {
-    use Traits\FilesTrait,
-        Traits\ConfigTrait;
+    use FilesTrait,
+        ConfigTrait;
 
     /** @var string */
     protected $name;
@@ -90,6 +91,7 @@ class Ref extends Extendable
 
     /**
      * Checks if this ref is a version. Versions are refs that are named using semver specification (as in 1.0.0, 2.3.4-beta)
+     *
      * @return bool
      */
     public function isVersion()
@@ -116,6 +118,7 @@ class Ref extends Extendable
 
     /**
      * Checks if this ref is a branch. Branches are refs that are not named using semver specification. (as in master, develop, hi-this-is-version-1-lol)
+     *
      * @return bool
      */
     public function isBranch()
@@ -159,7 +162,6 @@ class Ref extends Extendable
     }
 
 
-
     /**
      * resolveSidebarMenu method
      *
@@ -173,7 +175,7 @@ class Ref extends Extendable
         #if($this->config('menu'))
         $this->hookPoint('project:sidebar:resolving', [ $items, $parentId ]);
         if ( $items === null ) {
-            $items = $this->config('menu', []);
+            $items = $this->config('menu', [ ]);
             $this->codex->menus->forget('sidebar');
         }
 
@@ -213,6 +215,7 @@ class Ref extends Extendable
 
     /**
      * Returns the menu for this project
+     *
      * @deprecated
      * @return \Codex\Menus\Menu
      */
@@ -231,4 +234,17 @@ class Ref extends Extendable
     }
 
 
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'name'     => $this->name,
+            'config'   => $this->config,
+            'isBranch' => $this->isBranch(),
+        ];
+    }
 }
