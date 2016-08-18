@@ -6,7 +6,7 @@
  * Time: 7:53 AM
  */
 
-namespace Codex\Traits;
+namespace Codex\Support\Traits;
 
 
 trait ArrayableAccess

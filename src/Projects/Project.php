@@ -8,16 +8,13 @@ namespace Codex\Projects;
 
 
 use Codex\Codex;
-use Codex\Contracts;
-use Codex\Exception\CodexException;
 use Codex\Support\Extendable;
-use Codex\Traits;
+use Codex\Support\Traits\ConfigTrait;
+use Codex\Support\Traits\FilesTrait;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Filesystem\FilesystemManager;
-use Laradic\Support\Str;
-use Symfony\Component\Yaml\Yaml;
 use vierbergenlars\SemVer\version;
 
 /**
@@ -39,8 +36,8 @@ use vierbergenlars\SemVer\version;
  */
 class Project extends Extendable implements Arrayable
 {
-    use Traits\FilesTrait,
-        Traits\ConfigTrait;
+    use FilesTrait,
+        ConfigTrait;
 
 
     /**

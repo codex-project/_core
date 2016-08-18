@@ -4,7 +4,7 @@
  *
  * License and copyright information bundled with this package in the LICENSE file
  */
-namespace Codex\Traits;
+namespace Codex\Support\Traits;
 
 /**
  * The FilesTrait provides get/set methods for a Filesystem instance.

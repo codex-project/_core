@@ -16,7 +16,7 @@ use Codex\Exception\CodexException;
 use Codex\Projects\Project;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
-use Codex\Traits;
+use Codex\Support\Traits;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;

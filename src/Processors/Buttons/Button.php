@@ -11,9 +11,9 @@ namespace Codex\Processors\Buttons;
 
 use ArrayAccess;
 use Codex\Support\Extendable;
-use Codex\Traits\ArrayableAccess;
-use Codex\Traits\AttributesTrait;
-use Codex\Traits\CreateDomElementTrait;
+use Codex\Support\Traits\ArrayableAccess;
+use Codex\Support\Traits\AttributesTrait;
+use Codex\Support\Traits\CreateDomElementTrait;
 use Illuminate\Contracts\Support\Arrayable;
 
 class Button extends Extendable implements Arrayable, ArrayAccess

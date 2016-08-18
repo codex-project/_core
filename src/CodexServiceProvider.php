@@ -14,7 +14,7 @@ use Codex\Log\Writer;
 use Codex\Menus\SidebarMenuResolver;
 use Codex\Projects\Project;
 use Codex\Projects\Ref;
-use Codex\Traits\CodexProviderTrait;
+use Codex\Support\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Laradic\ServiceProvider\ServiceProvider;

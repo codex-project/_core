@@ -1,11 +1,10 @@
 <?php
 namespace Codex\Dev;
 
-use Codex\Codex;
 use Codex\Dev\Debugbar\CodexSimpleCollector;
 use Codex\Documents\Document;
 use Codex\Http\Controllers\CodexController;
-use Codex\Traits\CodexProviderTrait;
+use Codex\Support\Traits\CodexProviderTrait;
 use Laradic\ServiceProvider\ServiceProvider;
 
 class DevServiceProvider extends ServiceProvider

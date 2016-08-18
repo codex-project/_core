@@ -16,7 +16,6 @@ use Codex\Exception\CodexException;
 use Codex\Projects\Project;
 use Codex\Projects\Ref;
 use Codex\Support\Extendable;
-use Codex\Traits;
 use Illuminate\Contracts\Support\Arrayable;
 use Laradic\Support\Str;
 

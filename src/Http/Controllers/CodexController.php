@@ -4,7 +4,7 @@ namespace Codex\Http\Controllers;
 use Codex\Codex;
 use Codex\Documents\Document;
 use Codex\Exception\CodexException;
-use Codex\Traits\HookableTrait;
+use Codex\Support\Traits\HookableTrait;
 use Illuminate\Contracts\View\Factory as View;
 
 /**

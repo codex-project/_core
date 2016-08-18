@@ -12,13 +12,13 @@ namespace Codex\Menus;
 use Codex\Codex;
 use Codex\Contracts;
 use Codex\Support\Collection;
+use Codex\Support\Traits;
 use Codex\Support\Extendable;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory as View;
 use Illuminate\Routing\Router;
-use Codex\Traits;
 
 
 class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable

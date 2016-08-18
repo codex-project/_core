@@ -10,18 +10,16 @@
  */
 namespace Codex\Projects;
 
-use Codex\Codex;
-use Codex\Contracts;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
-use Codex\Traits;
+use Codex\Support\Traits\FilesTrait;
 use Illuminate\Contracts\Support\Arrayable;
 use vierbergenlars\SemVer\version;
 
 
 class Refs extends Extendable implements Arrayable
 {
-    use Traits\FilesTrait;
+    use FilesTrait;
 
     /** Automaticly picks a ref based on priority. LAST_VERSION (otherwise)> MASTER (otherwise)> FIRST_DIRECTORY  */
     const DEFAULT_AUTO = 'auto';

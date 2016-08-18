@@ -6,7 +6,7 @@
  */
 
 
-namespace Codex\Traits;
+namespace Codex\Support\Traits;
 
 
 /**

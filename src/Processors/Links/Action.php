@@ -12,7 +12,7 @@ namespace Codex\Processors\Links;
 
 
 use Codex\Processors\LinksProcessor;
-use Codex\Traits\ConfigTrait;
+use Codex\Support\Traits\ConfigTrait;
 use FluentDOM\Element;
 use League\Uri\Schemes\Http;
 use PHPHtmlParser\Dom\HtmlNode;

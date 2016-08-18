@@ -15,7 +15,7 @@ use Codex\Documents\Document;
 use Codex\Exception\CodexException;
 use Codex\Support\Collection;
 use Codex\Support\Sorter;
-use Codex\Traits\HookableTrait;
+use Codex\Support\Traits\HookableTrait;
 use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
 
 /**

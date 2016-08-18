@@ -4,12 +4,12 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
+ * @author Robin Radic
  * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @license http://codex-project.ninja/license The MIT License
  */
 
-namespace Codex\Traits;
+namespace Codex\Support\Traits;
 
 
 trait CreateDomElementTrait

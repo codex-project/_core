@@ -8,9 +8,7 @@
  * @copyright Copyright 2016 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
-namespace Codex\Traits;
-
-use Laradic\ServiceProvider\ServiceProvider;
+namespace Codex\Support\Traits;
 
 /**
  * This is the class CodexProviderTrait.

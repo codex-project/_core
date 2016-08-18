@@ -9,16 +9,14 @@
 namespace Codex\Projects;
 
 use Codex\Codex;
-use Codex\Contracts;
 use Codex\Exception\CodexException;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
-use Codex\Traits;
+use Codex\Support\Traits\FilesTrait;
 use Laradic\Filesystem\Filesystem;
 use Laradic\Support\Path;
 use Laradic\Support\Str;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class Projects
@@ -27,7 +25,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
 {
-    use Traits\FilesTrait;
+    use FilesTrait;
 
     /** @var \Codex\Support\Collection */
     protected $items;

@@ -11,7 +11,6 @@
 namespace Codex\Http\Controllers;
 
 use Codex\Codex;
-use Codex\Traits\HookableTrait;
 use Illuminate\Contracts\View\Factory as View;
 
 /**
