@@ -18,7 +18,7 @@ use Codex\Projects\Project;
 use Codex\Support\Collection;
 use FluentDOM\Element;
 use Illuminate\Support\Traits\Macroable;
-use Sebwite\Support\Str;
+use Laradic\Support\Str;
 
 /**
  * This is the class PrismJsProcessor.

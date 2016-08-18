@@ -15,7 +15,7 @@ class TestCase extends AbstractTestCase
     /**
      * getServiceProviderClass
      *
-     * @return \Sebwite\Support\ServiceProvider
+     * @return \Laradic\ServiceProvider\ServiceProvider
      */
     protected function getServiceProviderClass()
     {

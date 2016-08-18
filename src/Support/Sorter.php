@@ -12,7 +12,7 @@ use Codex\Contracts\Support\Sortable;
 /**
  * This is the Sorter.
  *
- * @package        Sebwite\Support
+ * @package        Laradic\Support
  * @author         Sebwite Dev Team
  * @copyright      Copyright (c) 2015, Sebwite
  * @license        https://tldrlegal.com/license/mit-license MIT License

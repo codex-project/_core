@@ -72,16 +72,29 @@ class CodexApiController extends ApiController
             return $this->error($e->getMessage());
         }
 
-        if(request('render', false)) {
+        if(request('render', false) == true) {
             $data[ 'rendered' ] = $doc->render();
         }
-        if(request('original', false)) {
+        if(request('original', false) == true) {
             $data[ 'original' ] = $doc->getOriginalContent();
         }
         return $this->response($data);
     }
 
+    public function getMenus(){
+        $data = $this->codex->menus->toArray();
+        return $this->response($data);
+    }
 
+    public function getMenu($menu){
+        $menu = $this->codex->menus->get($menu);
+        $menu->resolve(request('params', []));
+        if($menu->hasResolver()){
+            $menu->resolve(request('params', []));
+        }
+        $data = $menu->toArray();
+        return $this->response($data);
+    }
 
     /**
      * Render the documentation page for the given project and version.

@@ -11,12 +11,12 @@
 namespace Codex\Addons\Collections;
 
 use Codex\Addons\Annotations\Processor;
-use Codex\Addons\Scanner\ClassFileInfo;
 use Codex\Documents\Document;
 use Codex\Exception\CodexException;
 use Codex\Support\Collection;
 use Codex\Support\Sorter;
 use Codex\Traits\HookableTrait;
+use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
 
 /**
  * This is the class FilterAddons.

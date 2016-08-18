@@ -11,7 +11,7 @@ use FluentDOM\Element;
 use InvalidArgumentException;
 use League\Uri\Modifiers\Normalize;
 use League\Uri\Schemes\Http as Uri;
-use Sebwite\Support\Str;
+use Laradic\Support\Str;
 
 /**
  * This is the class LinkerFilter.

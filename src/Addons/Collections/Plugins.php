@@ -11,7 +11,7 @@
 namespace Codex\Addons\Collections;
 
 use Codex\Addons\Annotations\Plugin;
-use Codex\Addons\Scanner\ClassFileInfo;
+use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
 
 class Plugins extends BaseCollection
 {

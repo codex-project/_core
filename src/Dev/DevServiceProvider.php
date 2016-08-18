@@ -6,7 +6,7 @@ use Codex\Dev\Debugbar\CodexSimpleCollector;
 use Codex\Documents\Document;
 use Codex\Http\Controllers\CodexController;
 use Codex\Traits\CodexProviderTrait;
-use Sebwite\Support\ServiceProvider;
+use Laradic\ServiceProvider\ServiceProvider;
 
 class DevServiceProvider extends ServiceProvider
 {

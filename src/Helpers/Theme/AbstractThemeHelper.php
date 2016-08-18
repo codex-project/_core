@@ -24,7 +24,7 @@ use Codex\Support\Collection;
 use Codex\Support\Extendable;
 use Codex\Support\Sorter;
 use Illuminate\Contracts\Support\Arrayable;
-use Sebwite\Support\Arr;
+use Laradic\Support\Arr;
 
 abstract class AbstractThemeHelper extends Extendable implements Arrayable, ArrayAccess
 {

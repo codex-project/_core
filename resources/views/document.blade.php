@@ -24,7 +24,7 @@
 
 @section('wrapper')
     <a class="sidebar-toggle" data-action='sidebar-toggle' title='Toggle sidebar'><i class="fa fa-list"></i></a>
-    {!! codex()->menus->render('sidebar', $ref) !!}
+    {!! codex()->menus->render('sidebar', $project, $ref) !!}
     @include('codex::partials.breadcrumb')
     @parent
 @stop

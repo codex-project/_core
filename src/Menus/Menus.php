@@ -171,7 +171,7 @@ class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
 
     public function toArray()
     {
-        return $this->items->toArray();
+        return $this->items->keys()->toArray();
     }
 
     /**

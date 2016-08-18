@@ -14,9 +14,9 @@ use Codex\Exception\CodexException;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
 use Codex\Traits;
-use Sebwite\Filesystem\Filesystem;
-use Sebwite\Support\Path;
-use Sebwite\Support\Str;
+use Laradic\Filesystem\Filesystem;
+use Laradic\Support\Path;
+use Laradic\Support\Str;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
@@ -39,7 +39,7 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
      * Projects constructor.
      *
      * @param \Codex\Codex $parent
-     * @param \Sebwite\Support\Filesystem         $files
+     * @param \Laradic\Support\Filesystem         $files
      */
     public function __construct(Codex $parent, Filesystem $files)
     {

@@ -16,7 +16,7 @@ use Codex\Contracts\Traits\Hookable;
 use Codex\Exception\CodexException;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
-use Sebwite\Support\Arr;
+use Laradic\Support\Arr;
 
 abstract class BaseCollection extends \Illuminate\Support\Collection implements Hookable
 {

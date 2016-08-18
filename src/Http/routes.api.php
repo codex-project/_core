@@ -13,6 +13,7 @@
 
 
 
+Route::get('/', ['as' => 'index', 'uses' => 'CodexApiController@getIndex']);
 
 Route::get('projects', [ 'as' => 'projects', 'uses' => 'CodexApiController@getProjects']);
 Route::get('projects/{project}', [ 'as' => 'project', 'uses' => 'CodexApiController@getProject']);

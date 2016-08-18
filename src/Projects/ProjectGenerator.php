@@ -10,7 +10,7 @@ namespace Codex\Projects;
 use Codex\Codex;
 use Codex\Support\Extendable;
 use Illuminate\Contracts\View\Factory;
-use Sebwite\Filesystem\Filesystem;
+use Laradic\Filesystem\Filesystem;
 
 /**
  * Class Generator
@@ -25,7 +25,7 @@ class ProjectGenerator extends Extendable
     /** @var \Illuminate\Contracts\View\Factory */
     protected $view;
 
-    /** @var \Sebwite\Filesystem\Filesystem */
+    /** @var \Laradic\Filesystem\Filesystem */
     protected $fs;
 
     protected $vars = [
@@ -46,7 +46,7 @@ class ProjectGenerator extends Extendable
      *
      * @param \Codex\Codex                                                $codex
      * @param \Illuminate\Contracts\View\Factory|\Illuminate\View\Factory $view
-     * @param \Sebwite\Filesystem\Filesystem                              $fs
+     * @param \Laradic\Filesystem\Filesystem                              $fs
      */
     public function __construct(Codex $codex, Factory $view, Filesystem $fs)
     {

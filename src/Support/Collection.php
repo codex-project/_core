@@ -9,7 +9,7 @@
 namespace Codex\Support;
 
 
-use Sebwite\Support\Arr;
+use Laradic\Support\Arr;
 
 class Collection extends \Illuminate\Support\Collection
 {

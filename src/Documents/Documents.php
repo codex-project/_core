@@ -18,7 +18,7 @@ use Codex\Projects\Ref;
 use Codex\Support\Extendable;
 use Codex\Traits;
 use Illuminate\Contracts\Support\Arrayable;
-use Sebwite\Support\Str;
+use Laradic\Support\Str;
 
 class Documents extends Extendable implements Contracts\Documents\Documents, Arrayable
 {

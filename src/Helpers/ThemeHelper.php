@@ -16,7 +16,7 @@ use Codex\Support\Collection;
 use Codex\Support\Extendable;
 use Codex\Support\Sorter;
 use Illuminate\Contracts\Support\Arrayable;
-use Sebwite\Support\Str;
+use Laradic\Support\Str;
 
 class ThemeHelper extends Extendable implements Arrayable
 {

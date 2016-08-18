@@ -10,7 +10,7 @@ namespace Codex\Traits;
 
 
 use Codex\Exception\CodexException;
-use Sebwite\Support\Arr;
+use Laradic\Support\Arr;
 
 trait HookableTrait
 {

@@ -3,14 +3,14 @@ namespace Codex\Addons;
 
 use BadMethodCallException;
 use Codex\Addons\Annotations;
-use Codex\Addons\Scanner\ClassFileInfo;
-use Codex\Addons\Scanner\ClassInspector;
 use Codex\Dev\Dev;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Traits\Macroable;
-use Sebwite\Filesystem\Filesystem;
+use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
+use Laradic\AnnotationScanner\Scanner\ClassInspector;
+use Laradic\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -52,14 +52,14 @@ class Factory implements Arrayable
     /** @var \Codex\Support\Collection */
     protected $defaults;
 
-    /** @var \Sebwite\Filesystem\Filesystem */
+    /** @var \Laradic\Filesystem\Filesystem */
     protected $fs;
 
     protected $paths;
 
     protected $registered = [ ];
 
-    /** @var \Codex\Addons\Scanner */
+    /** @var \Laradic\AnnotationScanner\Factory */
     protected $scanner;
 
     /** @var \Illuminate\Foundation\Application */
@@ -85,17 +85,26 @@ class Factory implements Arrayable
         $this->views      = new Collections\Views([ ], $this);
         $this->plugins    = new Collections\Plugins([ ], $this);
 
+
         $this->reader   = new AnnotationReader();
         $this->fs       = new Filesystem();
         $this->manifest = Manifest::make()->load();
-        $this->scanner  = new Scanner($this, $this->manifest, $this->reader, $this->fs);
+        $this->scanner  = new \Laradic\AnnotationScanner\Factory($this->reader, $this->fs);
+        foreach ( $this->fs->globule(__DIR__ . '/Annotations/*.php') as $filePath ) {
+            $this->scanner->registerAnnotation($filePath);
+        }
+        $this->scanner->addAnnotation([
+            Annotations\Plugin::class,
+            Annotations\Hook::class,
+            Annotations\Processor::class,
+        ]);
+        #$this->scanner  = new Scanner($this, $this->manifest, $this->reader, $this->fs);
     }
 
     public static function __callStatic($method, array $parameters = [ ])
     {
         $instance = static::getInstance();
-        if ( method_exists($instance, $method) )
-        {
+        if ( method_exists($instance, $method) ) {
             return call_user_func_array([ $instance, $method ], $parameters);
         }
         throw new BadMethodCallException("Method $method does not exist in class " . static::class);
@@ -103,8 +112,7 @@ class Factory implements Arrayable
 
     public static function getInstance()
     {
-        if ( static::$instance === null )
-        {
+        if ( static::$instance === null ) {
             static::$instance = new static;
         }
         return static::$instance;
@@ -112,8 +120,7 @@ class Factory implements Arrayable
 
     public function view($name, $view = null)
     {
-        if ( $view === null )
-        {
+        if ( $view === null ) {
             return $this->views->get($name);
         }
         $this->views->set($name, $view);
@@ -139,7 +146,7 @@ class Factory implements Arrayable
 
     protected function getClassFileInfo($file, $class)
     {
-        $fileInfo      = new SplFileInfo($file, $file, $file);
+        $fileInfo = new SplFileInfo($file, $file, $file);
         return new ClassFileInfo($fileInfo, new ClassInspector($class, $this->reader));
     }
 
@@ -152,40 +159,28 @@ class Factory implements Arrayable
     public function resolveAndRegister(ClassFileInfo $file)
     {
         $class = $file->getClassName();
-        if ( array_key_exists($class, $this->registered) )
-        {
+        if ( array_key_exists($class, $this->registered) ) {
             return;
         }
         $this->registered[ $class ] = $file;
-        foreach ( $file->getClassAnnotations() as $annotation )
-        {
-            if ( $annotation instanceof Annotations\Processor )
-            {
+        foreach ( $file->getClassAnnotations() as $annotation ) {
+            if ( $annotation instanceof Annotations\Processor ) {
                 $this->processors->add($file, $annotation);
-            }
-            elseif ( $annotation instanceof Annotations\Hook )
-            {
+            } elseif ( $annotation instanceof Annotations\Hook ) {
                 $this->hooks->add($file, $annotation);
-            }
-            elseif ( $annotation instanceof Annotations\Plugin )
-            {
+            } elseif ( $annotation instanceof Annotations\Plugin ) {
                 $this->plugins->add($file, $annotation);
             }
         }
-        foreach ( $file->getMethodAnnotations(true) as $method => $annotations )
-        {
-            foreach ( $annotations as $annotation )
-            {
-                if ( $annotation instanceof Annotations\Hook )
-                {
+        foreach ( $file->getMethodAnnotations(true) as $method => $annotations ) {
+            foreach ( $annotations as $annotation ) {
+                if ( $annotation instanceof Annotations\Hook ) {
                     $this->hooks->add($file, $annotation, $method);
                 }
             }
         }
-        foreach ( $file->getPropertyAnnotations(true) as $property => $annotations )
-        {
-            foreach ( $annotations as $annotation )
-            {
+        foreach ( $file->getPropertyAnnotations(true) as $property => $annotations ) {
+            foreach ( $annotations as $annotation ) {
             }
         }
     }
@@ -200,8 +195,7 @@ class Factory implements Arrayable
     public function scanAndResolveFile($filePath)
     {
         $file = $this->scanner->scanFile($filePath);
-        if ( $file instanceof ClassFileInfo )
-        {
+        if ( $file instanceof ClassFileInfo ) {
             $this->resolveAndRegister($file);
             return true;
         }
@@ -211,28 +205,35 @@ class Factory implements Arrayable
     public function scanAndResolveDirectory($path)
     {
         $registered = 0;
-        foreach ( $this->scanner->scanDirectory($path) as $info )
-        {
+        foreach ( $this->scanner->scanDirectory($path) as $info ) {
             $this->resolveAndRegister($info);
             $registered++;
         }
         return $registered;
     }
 
+    public function getAddonPaths()
+    {
+        if ( $this->getManifest()->isEmpty() ) {
+            $this->getManifest()->load();
+        }
+        return $this->getManifest()->get('addons.*.autoloads.*.path', [ ]);
+    }
+
     public function scanAndResolveAddonPackages()
     {
         Dev::getInstance()->benchmark('Codex Addon Factory findAndRegisterAll');
-        $files = $this->scanner->findAll();
-        foreach ( $files as $file )
-        {
-            $this->resolveAndRegister($file);
+        if ( $this->manifest->isEmpty() ) {
+            $this->manifest->load();
+        }
+        foreach ( $this->getManifest()->get('addons.*.autoloads.*.path', [ ]) as $file ) {
+            $this->scanAndResolveDirectory($file);
         }
         Dev::getInstance()->addMessage(array_keys($this->registered));
 
         Dev::getInstance()->benchmark('-');
         #codex()->dev->stopMeasure('Codex\Addons\Factory::findAndRegisterAll');
     }
-
 
 
     public function mergeDefaultProjectConfig($config, $method = 'array_replace_recursive')
@@ -243,8 +244,7 @@ class Factory implements Arrayable
     protected function mergeDefaults($key, $config, $method)
     {
         $config = is_array($config) ? $config : config($config);
-        $this->app->booted(function ($app) use ($key, $config, $method)
-        {
+        $this->app->booted(function ($app) use ($key, $config, $method) {
             $app[ 'codex' ]->setConfig($key, call_user_func_array($method, [ $app[ 'codex' ]->config($key), $config ]));
         });
     }
@@ -253,7 +253,6 @@ class Factory implements Arrayable
     {
         $this->mergeDefaults('default_document_attributes', $config, $method);
     }
-
 
 
     public function toArray()
@@ -325,8 +324,7 @@ class Factory implements Arrayable
      */
     public function getManifest()
     {
-        if ( isset($this->manifest) === false )
-        {
+        if ( isset($this->manifest) === false ) {
             $this->loadManifest();
         }
         return $this->manifest;
@@ -334,16 +332,12 @@ class Factory implements Arrayable
 
     public function __call($method, array $parameters = [ ])
     {
-        if ( in_array($method, $this->collections, true) )
-        {
+        if ( in_array($method, $this->collections, true) ) {
             $collection = $this->{$method};
             $args       = count($parameters);
-            if ( $args === 0 )
-            {
+            if ( $args === 0 ) {
                 return $collection;
-            }
-            else
-            {
+            } else {
                 $method = array_shift($parameters);
                 return call_user_func_array([ $collection, $method ], $parameters);
             }
@@ -353,8 +347,7 @@ class Factory implements Arrayable
 
     public function __get($name)
     {
-        if ( in_array($name, $this->collections, true) )
-        {
+        if ( in_array($name, $this->collections, true) ) {
             return $this->{$name};
         }
         throw new \RuntimeException("property $name not found");

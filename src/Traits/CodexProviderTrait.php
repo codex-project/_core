@@ -1,7 +1,7 @@
 <?php
 namespace Codex\Traits;
 
-use Sebwite\Support\ServiceProvider;
+use Laradic\ServiceProvider\ServiceProvider;
 
 /**
  * This is the class CodexProviderTrait.

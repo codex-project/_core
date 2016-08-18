@@ -1,22 +1,22 @@
 <?php
 namespace Codex\Addons;
 
-use Sebwite\Filesystem\Filesystem;
-use Sebwite\Support\Arr;
+use Laradic\Filesystem\Filesystem;
+use Laradic\Support\Arr;
 
 class Manifest extends \Illuminate\Support\Collection
 {
     /** @var string */
     protected $manifestPath;
 
-    /** @var \Sebwite\Filesystem\Filesystem */
+    /** @var \Laradic\Filesystem\Filesystem */
     protected $fs;
 
     /**
      * Manifest constructor.
      *
      * @param string                         $manifestPath
-     * @param \Sebwite\Filesystem\Filesystem $fs
+     * @param \Laradic\Filesystem\Filesystem $fs
      */
     public function __construct(Filesystem $fs)
     {

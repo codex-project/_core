@@ -13,13 +13,16 @@ namespace Codex\Menus;
 use Codex\Codex;
 use Codex\Contracts\Menus\MenuResolver;
 use Codex\Exception\CodexException;
+use Codex\Projects\Project;
 use Codex\Projects\Ref;
-use Sebwite\Support\Str;
+use Laradic\Support\Str;
 
 class SidebarMenuResolver implements MenuResolver
 {
     /** @var Menu */
     protected $menu;
+
+    protected $project;
 
     /** @var Ref */
     protected $ref;
@@ -38,10 +41,16 @@ class SidebarMenuResolver implements MenuResolver
     }
 
 
-    public function handle(Menu $menu, Ref $ref)
+    public function handle(Menu $menu, $project, $ref)
     {
-        $this->menu = $menu;
-        $this->ref   = $ref;
+        $project= $project instanceof Project ? $project : $this->codex->projects->get($project);
+        $ref = $ref instanceof Ref ? $ref : $project->refs->get($ref);
+
+        $this->menu    = $menu;
+        $this->project = $project;
+        $this->ref     = $ref;
+
+
 
 
 //        $menus = $this->codex->menus;
@@ -51,7 +60,7 @@ class SidebarMenuResolver implements MenuResolver
         $menu->setView($this->codex->view('menus.sidebar'));
         $items = $ref->config('menu', [ ]);
 
-        if ( ! is_array($items) ) {
+        if ( !is_array($items) ) {
             throw CodexException::invalidMenuConfiguration(": menu.yml in [{$this}]");
         }
 
@@ -64,7 +73,7 @@ class SidebarMenuResolver implements MenuResolver
      * @param array  $items
      * @param string $parentId
      */
-    protected function recurse($items = [], $parentId = 'root')
+    protected function recurse($items = [ ], $parentId = 'root')
     {
 
         foreach ( $items as $item ) {

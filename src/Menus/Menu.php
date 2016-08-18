@@ -19,7 +19,7 @@ use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Routing\Router;
-use Sebwite\Filesystem\Filesystem;
+use Laradic\Filesystem\Filesystem;
 use Tree\Visitor\PostOrderVisitor;
 use Tree\Visitor\PreOrderVisitor;
 use Tree\Visitor\Visitor;
@@ -270,7 +270,7 @@ class Menu extends Extendable implements Arrayable
      * @return $this
      * @throws \Codex\Exception\CodexException
      */
-    protected function resolve(array $params = [ ])
+    public function resolve(array $params = [ ])
     {
         if ( null === $this->resolver || true === $this->resolved ) {
             return $this;
@@ -413,12 +413,38 @@ class Menu extends Extendable implements Arrayable
     public function toArray()
     {
         return [
-            'attributes' => $this->attributes,
-            'items'      => $this->items->toArray(),
             'id'         => $this->id,
             'view'       => $this->view,
+            'attributes' => $this->attributes,
+            'tree' => $this->toArrayTree(),
+            'items'      => $this->items->values()->toArray(),
         ];
     }
 
+    public function toArrayTree()
+    {
+        return $this->recurseTree();
+    }
+
+    protected function recurseTree(Node $node = null)
+    {
+
+        if ( $node === null ) {
+            $node = $this->getRootNode();
+        }
+        $tree = $node->toArray();
+        if ( $node->hasChildren() ) {
+            $tree[ 'children' ] = [ ];
+            foreach ( $node->getChildren() as $childNode ) {
+                $treeChild = $childNode->toArray();
+                if ( $childNode->hasChildren() ) {
+                    $treeChild[ 'children' ][] = $this->recurseTree($childNode);
+                }
+                $tree[ 'children' ][] = $treeChild;
+            }
+        }
+
+        return $tree;
+    }
 
 }

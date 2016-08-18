@@ -58,7 +58,7 @@ class Refs extends Extendable implements Arrayable
      * Projects constructor.
      *
      * @param \Codex\Codex                $parent
-     * @param \Sebwite\Support\Filesystem $files
+     * @param \Laradic\Support\Filesystem $files
      */
     public function __construct(Project $parent)
     {

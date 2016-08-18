@@ -12,9 +12,9 @@ namespace Codex\Addons\Collections;
 
 use Closure;
 use Codex\Addons\Annotations\Hook;
-use Codex\Addons\Scanner\ClassFileInfo;
-use Codex\Addons\Scanner\ClassInspector;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
+use Laradic\AnnotationScanner\Scanner\ClassInspector;
 use Symfony\Component\Finder\SplFileInfo;
 
 class Hooks extends BaseCollection

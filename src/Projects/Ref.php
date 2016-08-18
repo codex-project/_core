@@ -17,7 +17,7 @@ use Codex\Support\Extendable;
 use Codex\Traits\ConfigTrait;
 use Codex\Traits\FilesTrait;
 use Illuminate\Contracts\Support\Arrayable;
-use Sebwite\Support\Str;
+use Laradic\Support\Str;
 use Symfony\Component\Yaml\Yaml;
 use vierbergenlars\SemVer\SemVerException;
 use vierbergenlars\SemVer\version;

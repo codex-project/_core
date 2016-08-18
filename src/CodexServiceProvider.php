@@ -17,9 +17,9 @@ use Codex\Projects\Ref;
 use Codex\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Laradic\ServiceProvider\ServiceProvider;
 use League\Flysystem\Filesystem as Flysystem;
 use Monolog\Logger as Monolog;
-use Sebwite\Support\ServiceProvider;
 
 /**
  * This is the class CodexServiceProvider.
@@ -51,17 +51,14 @@ class CodexServiceProvider extends ServiceProvider
         \Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
     ];
 
-    protected $commands = [
-        Console\ListCommand::class,
-        Console\CreateCommand::class,
-        Console\IconsCommand::class,
-    ];
+    protected $findCommands = [ 'Console' ];
 
     protected $bindings = [
-        'fs'                      => \Sebwite\Filesystem\Filesystem::class,
+        'fs'                      => \Laradic\Filesystem\Filesystem::class,
         'codex.document'          => Documents\Document::class,
         'codex.menu'              => Menus\Menu::class,
         'codex.project'           => Projects\Project::class,
+        'codex.documents'         => Documents\Documents::class,
         'codex.project.generator' => Projects\ProjectGenerator::class,
         'codex.project.ref'       => Projects\Ref::class,
     ];
@@ -72,7 +69,12 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $shared = [
-        'codex' => Codex::class,
+        'codex'               => Codex::class,
+//        'codex.menus'         => Menus\Menus::class,
+//        'codex.projects'      => Projects\Projects::class,
+//        'codex.helpers.theme' => Helpers\ThemeHelper::class,
+//        'codex.helpers.cache' => Helpers\CacheHelper::class,
+
     ];
 
     protected $aliases = [
@@ -160,6 +162,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerDefaultFilesystem()
     {
+
         $this->app->make('filesystem')->extend('codex-local', function (LaravelApplication $app, array $config = [ ]) {
             $flysystemAdapter    = new Filesystem\Local($config[ 'root' ]);
             $flysystemFilesystem = new Flysystem($flysystemAdapter);
@@ -222,7 +225,6 @@ class CodexServiceProvider extends ServiceProvider
             $theme->set('theme', $theme->toArray());
             $theme->set('apiUrl', url('api'));
             $theme->set('debug', config('app.debug', false));
-
         });
     }
 

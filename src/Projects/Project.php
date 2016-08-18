@@ -16,7 +16,7 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Filesystem\FilesystemManager;
-use Sebwite\Support\Str;
+use Laradic\Support\Str;
 use Symfony\Component\Yaml\Yaml;
 use vierbergenlars\SemVer\version;
 
