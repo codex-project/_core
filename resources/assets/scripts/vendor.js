@@ -26956,7 +26956,7 @@ module.exports = function(str, substr) {
   substr = makeString(substr);
 
   if (str.length === 0 || substr.length === 0) return 0;
-  
+
   return str.split(substr).length - 1;
 };
 
@@ -26981,7 +26981,7 @@ var makeString = _dereq_('./helper/makeString');
 function getIndent(str) {
   var matches = str.match(/^[\s\\t]*/gm);
   var indent = matches[0].length;
-  
+
   for (var i = 1; i < matches.length; i++) {
     indent = Math.min(matches[i].length, indent);
   }
@@ -27342,7 +27342,7 @@ module.exports = function levenshtein(str1, str2) {
   str1 = makeString(str1);
   str2 = makeString(str2);
 
-  // Short cut cases  
+  // Short cut cases
   if (str1 === str2) return 0;
   if (!str1 || !str2) return Math.max(str1.length, str2.length);
 
@@ -27974,7 +27974,7 @@ module.exports = function wrap(str, options){
 		current_column = 0;
 
 		while(words.length > 0){
-			
+
 			// if adding a space and the next word would cause this line to be longer than width...
 			if(1 + words[0].length + current_column > width){
 				//start a new line if this line is not already empty
@@ -27989,7 +27989,7 @@ module.exports = function wrap(str, options){
 						while(current_column < width){
 							result += ' ';
 							current_column++;
-						}						
+						}
 					}
 					//start new line
 					result += seperator;
@@ -28015,7 +28015,7 @@ module.exports = function wrap(str, options){
 			while(current_column < width){
 				result += ' ';
 				current_column++;
-			}						
+			}
 		}
 
 		return result;
@@ -28041,9 +28041,9 @@ module.exports = function wrap(str, options){
 			while(index % width > 0){
 				result += ' ';
 				index++;
-			}						
+			}
 		}
-		
+
 		return result;
 	}
 };
@@ -38394,7 +38394,7 @@ if (typeof jQuery === 'undefined') {
 	 *		"id1" : [{ "text" : "Child of ID1", "id" : "c1" }, { "text" : "Another child of ID1", "id" : "c2" }],
 	 *		"id2" : [{ "text" : "Child of ID2", "id" : "c3" }]
 	 *	}
-	 * 
+	 *
 	 * @name $.jstree.defaults.massload
 	 * @plugin massload
 	 */
@@ -38471,10 +38471,10 @@ if (typeof jQuery === 'undefined') {
 	 */
 	$.jstree.defaults.search = {
 		/**
-		 * a jQuery-like AJAX config, which jstree uses if a server should be queried for results. 
-		 * 
+		 * a jQuery-like AJAX config, which jstree uses if a server should be queried for results.
+		 *
 		 * A `str` (which is the search string) parameter will be added with the request, an optional `inside` parameter will be added if the search is limited to a node id. The expected result is a JSON array with nodes that need to be opened so that matching nodes will be revealed.
-		 * Leave this setting as `false` to not query the server. You can also set this to a function, which will be invoked in the instance's scope and receive 3 parameters - the search string, the callback to call with the array of nodes to load, and the optional node ID to limit the search to 
+		 * Leave this setting as `false` to not query the server. You can also set this to a function, which will be invoked in the instance's scope and receive 3 parameters - the search string, the callback to call with the array of nodes to load, and the optional node ID to limit the search to
 		 * @name $.jstree.defaults.search.ajax
 		 * @plugin search
 		 */
@@ -38492,7 +38492,7 @@ if (typeof jQuery === 'undefined') {
 		 */
 		case_sensitive : false,
 		/**
-		 * Indicates if the tree should be filtered (by default) to show only matching nodes (keep in mind this can be a heavy on large trees in old browsers). 
+		 * Indicates if the tree should be filtered (by default) to show only matching nodes (keep in mind this can be a heavy on large trees in old browsers).
 		 * This setting can be changed at runtime when calling the search method. Default is `false`.
 		 * @name $.jstree.defaults.search.show_only_matches
 		 * @plugin search

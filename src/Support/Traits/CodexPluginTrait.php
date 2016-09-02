@@ -70,11 +70,4 @@ trait CodexPluginTrait
     {
         return $this->addons()->view($key, $value);
     }
-
-    public function __get($name)
-    {
-        if($name === 'app'){
-            return app();
-        }
-    }
 }

@@ -42,6 +42,9 @@ class LinksProcessor
 
     public function handle(Document $document)
     {
+        if(false === $this->hasContent()){
+            return; // prevents ErrorException in Html.php line 42: DOMDocument::loadHTMLFile(): Empty string supplied as input
+        }
         $d = $document->getDom();
         $d->find('//a')->each(function (Element $element)
         {
@@ -106,6 +109,11 @@ class LinksProcessor
         $extensions = config('codex.document.extensions', [ ]);
 
         return array_key_exists($this->getExtension($url), $extensions);
+    }
+
+    public function hasContent()
+    {
+        return strlen(trim($this->document->getContent())) > 0;
     }
 
     public function getExtension($url)

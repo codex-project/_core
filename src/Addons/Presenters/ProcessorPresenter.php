@@ -1,33 +1,37 @@
 <?php
 /**
- * Part of the $author$ PHP packages.
+ * Part of the Codex Project packages.
  *
- * License and copyright information bundled with this package in the LICENSE file
+ * License and copyright information bundled with this package in the LICENSE file.
+ *
+ * @author Robin Radic
+ * @copyright Copyright 2016 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
+namespace Codex\Addons\Presenters;
 
-
-namespace Codex\Addons\Annotations;
-
-use Doctrine\Common\Annotations\Annotation\Required;
-use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
- * @Annotation
- * @Target("CLASS")
+ * This is the class ProcessorPresenter.
+ *
+ * @package        Codex\Addons
+ * @author         Radic
+ * @copyright      Copyright (c) 2015, Radic. All rights reserved
+ *
  */
-class Processor
+class ProcessorPresenter extends Presenter
 {
+    /** @var \Codex\Addons\Annotations\Processor */
+    public $annotation;
+
+    public $instance;
+
+
     /**
      * @Required
      * @var string
      */
     public $name;
-
-    /**
-     * @deprecated
-     * @var int
-     */
-    public $priority = 10;
 
     /**
      * (optional) The property name of the default configuration this filter has. During runtime, this will be replaced with the actual, processed config Collection
@@ -64,5 +68,4 @@ class Processor
      * @var array
      */
     public $depends = [];
-
 }

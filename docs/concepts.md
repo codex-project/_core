@@ -2,6 +2,8 @@
 title: Concepts
 -->
 
+[:TOC:]
+
 # Concepts
 
 Overview of Codex concepts
@@ -64,3 +66,17 @@ Each project has a disk.
 ### Dev
 
 ### Config
+
+
+```php
+codex()->getMenus()->get('codex');
+codex()->getProjects()->where('git.enabled', true);
+$document = codex()
+    ->getProjects()->get('codex')
+    ->getRefs()->get('master')
+    ->getDocuments()->get('index')
+    ->render();
+    
+codex()->getProject('codex')->getR 
+
+```

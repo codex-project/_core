@@ -8,9 +8,20 @@
  * @copyright Copyright 2016 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
-namespace Codex\Addons\Plugin;
+namespace Codex\Addons\Presenters;
 
-interface PluginInterface
+class HookPresenter extends Presenter
 {
-    public function enable();
+
+    /**
+     * @Required()
+     * @var string
+     */
+    public $name;
+
+    /**
+     * @var string|bool
+     */
+    public $replace = false;
+
 }

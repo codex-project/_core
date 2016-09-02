@@ -35,7 +35,7 @@ class SidebarMenuResolver implements MenuResolver
      *
      * @param \Codex\Codex $codex
      */
-    public function __construct(\Codex\Codex $codex)
+    public function __construct(Codex $codex)
     {
         $this->codex = $codex;
     }

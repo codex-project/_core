@@ -11,6 +11,7 @@
 namespace Codex\Addons\Collections;
 
 use Codex\Addons\Annotations\Processor;
+use Codex\Addons\Presenters\ProcessorPresenter;
 use Codex\Documents\Document;
 use Codex\Exception\CodexException;
 use Codex\Support\Collection;
@@ -42,8 +43,10 @@ class Processors extends BaseCollection
         $class    = $file->getClassName();
         $instance = null; //$this->app->make($class);
         $data     = array_merge(compact('file', 'annotation', 'class', 'instance'), (array)$annotation);
+        $processor = $this->app->build(ProcessorPresenter::class);
+        $processor->hydrate($data);
 
-        $this->set($annotation->name, $data);
+        $this->set($annotation->name, $processor);
     }
 
     public function run($name, Document $document)
@@ -137,7 +140,7 @@ class Processors extends BaseCollection
         return true;
     }
 
-//# GETTERS & SETTERS
+    //# GETTERS & SETTERS
     public function getSorted($names)
     {
         $all = $this->whereIn('name', $names)->sortBy('priority')->replaceProcessors();

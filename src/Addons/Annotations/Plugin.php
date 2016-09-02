@@ -29,14 +29,14 @@ final class Plugin
      * Other plugins this plugin is dependent on
      * @var array
      */
-    public $require = [];
+    public $requires = [];
 
     /**
      * The plugins that this plugin will replace. Prevents the other plugins from enabling while plugins that require those prevented plugins will still enable.
      *
-     * @var array
+     * @var string
      */
-    public $replace = [];
+    public $replace;
 
 
 

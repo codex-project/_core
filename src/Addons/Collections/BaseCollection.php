@@ -11,20 +11,20 @@
 namespace Codex\Addons\Collections;
 
 use Codex\Addons\Factory;
-use Codex\Addons\Scanner\ClassFileInfo;
 use Codex\Contracts\Traits\Hookable;
-use Codex\Exception\CodexException;
+use Composer\Util\Bitbucket;
 use Illuminate\Container\Container;
-use Illuminate\Contracts\Foundation\Application;
+
 use Laradic\Support\Arr;
 
 abstract class BaseCollection extends \Illuminate\Support\Collection implements Hookable
 {
+    const BITB = Bitbucket::class;
 
     /** @var Factory */
     protected $addons;
 
-    /** @var Application */
+    /** @var \Illuminate\Contracts\Foundation\Application */
     protected $app;
 
     public function __construct($items = [ ], $addons = null)
@@ -58,8 +58,7 @@ abstract class BaseCollection extends \Illuminate\Support\Collection implements 
 
     public function whereHas($key, $value)
     {
-        return $this->filter(function ($item) use ($key, $value)
-        {
+        return $this->filter(function ($item) use ($key, $value) {
             return in_array($value, data_get($item, $key, [ ]), true);
         });
     }
