@@ -22,17 +22,6 @@ class HttpServiceProvider extends ServiceProvider
      */
     protected $namespace = 'Codex\Http\Controllers';
 
-    /**
-     * Boot Codex's route service provider.
-     *
-     * @param Illuminate\Routing\Router $router
-     *
-     * @return void
-     */
-    public function boot(Router $router)
-    {
-        parent::boot($router);
-    }
 
     /**
      * Set the root controller namespace for the application.
