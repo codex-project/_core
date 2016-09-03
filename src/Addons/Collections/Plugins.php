@@ -14,7 +14,6 @@ use Codex\Addons\Annotations\Plugin;
 use Codex\Addons\Presenters\PluginPresenter;
 use Codex\Exception\CodexException;
 use Codex\Support\Sorter;
-use Illuminate\Config\Repository;
 use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
 
 /**
@@ -52,36 +51,89 @@ class Plugins extends BaseCollection
 
     public function run()
     {
-        foreach($this->getSorted() as $plugin){
-            $this->app->booted(function($app) use ($plugin) {
-                $plugin->instance->booted();
-            });
+        // replace plugins, we sort out what plugin replaces which and do so.
+        // filter plugins, we only want the ones enabled in the global codex config
+        // sort plugins, if a plugin requires another plugin, it would get sorted as such.
+        // ensure required plugins are installed and enabled, otherwise we throw an exception
+        // with the resulting array of plugins, we will run each of them
+
+        $replace = [];
+        foreach ( $this->all() as $plugin ) {
+            if ( $plugin->replace !== null ) {
+                $replace[ $plugin->replace ] = $plugin->name;
+            }
         }
+
+
+        $plugins = $this->only(config('codex.plugins', []))->sorted();
+
+        $plugins = $plugins->transform(function (PluginPresenter $plugin) use ($replace) {
+            if ( array_key_exists($plugin->name, $replace) ) {
+                return $this->get($replace[ $plugin->name ]);
+            }
+            return $plugin;
+        });
+
+        foreach ( $plugins as $plugin ) {
+            $this->runPlugin($plugin);
+        }
+    }
+
+    public function pluginRequirementsFulfilled(PluginPresenter $plugin)
+    {
+        foreach ( $plugin->requires as $name ) {
+            if ( !$this->has($name) || !in_array($name, config('codex.plugins', []), true) ) {
+                throw CodexException::because('Project dependency does not exist');
+            }
+        }
+    }
+
+    protected function runPlugin(PluginPresenter $presenter)
+    {
+        $this->app->register($plugin = $presenter->getInstance());
+
     }
 
     /**
      * getSorted method
      *
-     * @return \Codex\Addons\Presenters\PluginPresenter[]
+     * @return Plugins
      * @throws \Codex\Exception\CodexException
      */
-    public function getSorted()
+    public function sorted()
     {
         $sorter = new Sorter();
-        foreach(config('codex.plugins', []) as $name){
-            /** @var PluginPresenter $plugin */
-            $plugin = $this->get($name);
-            if($plugin === null){
-                throw CodexException::because('[Plugin Not Found] ' . $name);
-            }
-            $sorter->add($plugin->name, $plugin->requires);
+        foreach ( $this->all() as $plugin ) {
+            $sorter->addItem($plugin->name, $plugin->requires);
         }
-        return $sorter->sort();
+
+        return (new static($sorter->sort()))->transform(function ($name) {
+            return $this->get($name);
+        });
     }
 
+    /**
+     * get method
+     *
+     * @param mixed $name
+     * @param null  $default
+     *
+     * @return PluginPresenter
+     */
     public function get($name, $default = null)
     {
         return parent::get($name, $default);
     }
+
+    /**
+     * all method
+     *
+     * @return PluginPresenter[]
+     */
+    public function all()
+    {
+        return parent::all();
+    }
+
 
 }

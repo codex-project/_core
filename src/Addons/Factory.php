@@ -243,7 +243,7 @@ class Factory implements Arrayable
 
     protected function mergeDefaults($key, $config, $method)
     {
-        $config = is_array($config) ? $config : config($config);
+        $config = is_array($config) ? $config : config($config, []);
         $this->app->booted(function ($app) use ($key, $config, $method) {
             $app[ 'codex' ]->setConfig($key, call_user_func_array($method, [ $app[ 'codex' ]->config($key), $config ]));
         });

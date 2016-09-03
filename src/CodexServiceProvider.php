@@ -120,6 +120,10 @@ class CodexServiceProvider extends ServiceProvider
             $this->registerRouting();
         }
 
+        // After all providers are registered, we also run the plugins
+        $app->booting(function($app){
+            $this->addons->plugins->run();
+        });
 
         return $app;
     }

@@ -6,6 +6,8 @@ return [
 
     'display_name' => env('CODEX_DISPLAY_NAME', 'Codex (BETA)'),
 
+    'theme' => null,
+
     'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
 
     'paths' => [
@@ -73,6 +75,9 @@ return [
             'phpdoc'  => 'Codex\Addon\Phpdoc\PhpdocLink@handle',
         ],
     ],
+
+    'plugins' => ['phpdoc', 'auth', 'git', 'jira'],
+
 
     'default_project_config' => [
         'description' => '',

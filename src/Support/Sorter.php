@@ -404,4 +404,14 @@ class Sorter implements Sortable
 
         return $this->hits;
     }
+
+    /**
+     * @return array
+     */
+    public function getSorted()
+    {
+        return $this->sorted;
+    }
+
+
 }

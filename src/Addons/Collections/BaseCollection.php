@@ -24,7 +24,7 @@ abstract class BaseCollection extends \Illuminate\Support\Collection implements 
     /** @var Factory */
     protected $addons;
 
-    /** @var \Illuminate\Contracts\Foundation\Application */
+    /** @var \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application */
     protected $app;
 
     public function __construct($items = [ ], $addons = null)
