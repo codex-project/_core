@@ -27,4 +27,11 @@ final class Hook
      */
     public $replace = false;
 
+    /**
+     * plugin method
+     *
+     * @var string|bool
+     */
+    public $plugin = false;
+
 }

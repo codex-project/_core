@@ -65,4 +65,10 @@ class Processor
      */
     public $depends = [];
 
+    /**
+     * plugin method
+     *
+     * @var string|bool
+     */
+    public $plugin = false;
 }

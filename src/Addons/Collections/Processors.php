@@ -56,6 +56,9 @@ class Processors extends BaseCollection
         $project               = $document->getProject();
         $processor             = $this->get($name);
 
+        if($processor->plugin && false === $this->addons->plugins->canRunPlugin($processor->plugin)){
+            throw CodexException::because("Cannot run processor [{$name}] belonging to plugin [{$processor->plugin}] because the plugin can not run. Ensure the plugin is installed and enabled");
+        }
         // hook point before can prevent the processor from running
         if ( false === $this->hookPoint('addons:processor:before', [ $name ]) )
         {

@@ -116,8 +116,8 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerJavascriptData();
 
-        if ( $this->app[ 'config' ][ 'codex.http.enabled' ] === true ) {
-            $this->registerRouting();
+        if ( $this->app[ 'config' ]->get( 'codex.http.enabled', false) ) {
+            $this->registerHttp();
         }
 
         // After all providers are registered, we also run the plugins
@@ -179,7 +179,7 @@ class CodexServiceProvider extends ServiceProvider
         $this->app->register(Dev\DevServiceProvider::class);
     }
 
-    protected function registerRouting()
+    protected function registerHttp()
     {
         $this->app->register(Http\HttpServiceProvider::class);
     }

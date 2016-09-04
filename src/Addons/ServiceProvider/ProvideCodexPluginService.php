@@ -64,7 +64,7 @@ trait ProvideCodexPluginService
 //        'phpdoc',
     ];
 
-    protected $middlewarePluginPriority = 30;
+    protected $codexPluginPriority = 150;
 
     /**
      * startMiddlewarePlugin method
@@ -73,7 +73,7 @@ trait ProvideCodexPluginService
      */
     protected function startProvideCodexPluginServicePlugin($app)
     {
-        $this->onRegister('codex-sp', function ($app) {
+        $this->onRegister('codex', function ($app) {
             $this->projectConfig($this->project);
             $this->documentAttributes($this->document);
             foreach ( $this->views as $k => $v ) {

@@ -74,24 +74,50 @@ class Plugins extends BaseCollection
             return $plugin;
         });
 
+        $plugins = $plugins->filter(function($plugin){
+            return $this->canRunPlugin($plugin);
+        });
+
         foreach ( $plugins as $plugin ) {
             $this->runPlugin($plugin);
         }
     }
 
-    public function pluginRequirementsFulfilled(PluginPresenter $plugin)
+    /**
+     * canRunPlugin method
+     *
+     * @param string|PluginPresenter $plugin
+     *
+     * @return bool
+     * @throws \Codex\Exception\CodexException
+     */
+    public function canRunPlugin($plugin)
     {
+        if ( is_string($plugin) ) {
+            // Check if exists
+            if ( false === $this->has($plugin) ) {
+                return false;
+            }
+            $plugin = $this->get($plugin);
+        }
+        // check global config if its enabled
+        if ( false === in_array($plugin->name, config('codex.plugins', []), true) ) {
+            return false;
+        }
+
+        // check if dependencies exists and are enabled
         foreach ( $plugin->requires as $name ) {
             if ( !$this->has($name) || !in_array($name, config('codex.plugins', []), true) ) {
-                throw CodexException::because('Project dependency does not exist');
+                //throw CodexException::because("Plugin [{$plugin->name}] dependency [{$name}] does not exist or is not enabled");
+                return false;
             }
         }
+        return true;
     }
 
     protected function runPlugin(PluginPresenter $presenter)
     {
         $this->app->register($plugin = $presenter->getInstance());
-
     }
 
     /**

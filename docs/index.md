@@ -17,6 +17,7 @@ buttons:
           target: _blank
 -->
 
+
 # Codex Documentation
 
 <!--*codex:general:hide*-->
@@ -54,19 +55,19 @@ Most of it's features are provided by addons. Codex is extenable, themeable, hac
 
 ## How it works
 
-**Codex** > **Projects** > **Versions** > **Documents** > **Processors**
+**Codex** > **Projects** > **Refs (versions)** > **Documents** > **Processors**
 
-- _Codex_ can provide documentation for multiple _projects_. 
-- Each _project_ has one or more versions containing your _documents_. 
-- _Documents_ are passed trough _processors_, modifying it's content before displaying.
+- _Codex_ can provide documentation for multiple _Projects_. 
+- Each _Project_ has one or more _Refs (versions)_ containing your _Documents_. 
+- _Documents_ are passed trough _Processors_, modifying it's content before displaying.
 
-To give you an understanding of filters, lets take the ToC filter as example. It takes all headings in a document and generates a table of content at the start ([example](../index.md#)).
 
 ### Addons
 The `addon-*` packages are a collection of _Plugins_, _Hooks_ and _Processors_.
 
 #### Plugins
 Plugins are used to alter Codex. They are capable of doing something very minor or completely alter the way Codex works. 
+
 
 - Adding routes/controllers
 - Define custom document types
