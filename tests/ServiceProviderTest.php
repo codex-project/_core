@@ -14,8 +14,6 @@ class ServiceProviderTest extends TestCase
 
     public function test_path_resolving_is_correct()
     {
-        $provider = $this->registerServiceProvider();
-
         $a = 'a';
     }
 }

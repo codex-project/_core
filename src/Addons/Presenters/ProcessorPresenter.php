@@ -68,4 +68,11 @@ class ProcessorPresenter extends Presenter
      * @var array
      */
     public $depends = [];
+
+    /**
+     * plugin method
+     *
+     * @var string|bool
+     */
+    public $plugin = false;
 }

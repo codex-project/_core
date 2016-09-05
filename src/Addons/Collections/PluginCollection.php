@@ -35,7 +35,7 @@ use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
  * @copyright      Copyright (c) 2015, Radic. All rights reserved
  *
  */
-class Plugins extends BaseCollection
+class PluginCollection extends BaseCollection
 {
     public function add(ClassFileInfo $file, Plugin $annotation)
     {
@@ -123,7 +123,7 @@ class Plugins extends BaseCollection
     /**
      * getSorted method
      *
-     * @return Plugins
+     * @return PluginCollection
      * @throws \Codex\Exception\CodexException
      */
     public function sorted()

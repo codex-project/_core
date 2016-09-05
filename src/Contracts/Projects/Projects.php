@@ -37,14 +37,6 @@ interface Projects
      */
     public function setFiles($files);
 
-
-
-    /**
-     * Renders the project picker menu
-     * @return string
-     */
-    public function renderMenu();
-
     /**
      * Gets a project by name
      *

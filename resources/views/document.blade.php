@@ -15,9 +15,9 @@
         <a href="#" class="toggle-slide menu-link btn">&#9776;</a>
     </div>
 
-    @include('codex::partials.versions')
+    {{--@include('codex::partials.versions')--}}
 
-    {!! codex()->menus->render('projects') !!}
+    {{--{!! codex()->menus->render('projects', $project) !!}--}}
 
 
 @stop

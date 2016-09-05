@@ -8,18 +8,19 @@
 
 namespace Codex;
 
+
 use Codex\Documents\Document;
 use Codex\Http\Controllers\CodexController;
 use Codex\Log\Writer;
+use Codex\Menus\ProjectsMenuResolver;
 use Codex\Menus\SidebarMenuResolver;
-use Codex\Projects\Project;
-use Codex\Projects\Ref;
 use Codex\Support\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Laradic\ServiceProvider\ServiceProvider;
 use League\Flysystem\Filesystem as Flysystem;
 use Monolog\Logger as Monolog;
+
 
 /**
  * This is the class CodexServiceProvider.
@@ -54,32 +55,32 @@ class CodexServiceProvider extends ServiceProvider
     protected $findCommands = [ 'Console' ];
 
     protected $bindings = [
-        'fs'                      => \Laradic\Filesystem\Filesystem::class,
-        'codex.document'          => Documents\Document::class,
-        'codex.menu'              => Menus\Menu::class,
-        'codex.project'           => Projects\Project::class,
-        'codex.documents'         => Documents\Documents::class,
+        'fs'          => \Laradic\Filesystem\Filesystem::class,
+        'codex.menus' => Menus\Menus::class,
+        'codex.menu'  => Menus\Menu::class,
+
+        'codex.projects'  => Projects\Projects::class,
+        'codex.project'   => Projects\Project::class,
+        'codex.refs'      => Projects\Refs::class,
+        'codex.ref'       => Projects\Ref::class,
+        'codex.documents' => Documents\Documents::class,
+        'codex.document'  => Documents\Document::class,
+
         'codex.project.generator' => Projects\ProjectGenerator::class,
-        'codex.project.ref'       => Projects\Ref::class,
+        'codex.helpers.theme'     => Helpers\ThemeHelper::class,
+        'codex.helpers.cache'     => Helpers\CacheHelper::class,
     ];
 
     protected $singletons = [
-        # 'codex'        => Codex::class,
         'codex.addons' => Addons\Factory::class,
     ];
 
     protected $shared = [
-        'codex'               => Codex::class,
-//        'codex.menus'         => Menus\Menus::class,
-//        'codex.projects'      => Projects\Projects::class,
-//        'codex.helpers.theme' => Helpers\ThemeHelper::class,
-//        'codex.helpers.cache' => Helpers\CacheHelper::class,
-
+        'codex' => Codex::class,
     ];
 
     protected $aliases = [
         'codex.log' => Contracts\Log\Log::class,
-        #'codex'     => Contracts\Codex::class,
     ];
 
     /** @var Addons\Factory */
@@ -88,8 +89,6 @@ class CodexServiceProvider extends ServiceProvider
     public function boot()
     {
         $app = parent::boot();
-
-        #$this->bootAttributesProcessor();
 
         $this->bootBladeDirectives();
 
@@ -116,12 +115,12 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerJavascriptData();
 
-        if ( $this->app[ 'config' ]->get( 'codex.http.enabled', false) ) {
+        if ( $this->app[ 'config' ]->get('codex.http.enabled', false) ) {
             $this->registerHttp();
         }
 
-        // After all providers are registered, we also run the plugins
-        $app->booting(function($app){
+        // After all providers are registered, we also run the plugins, so they are also registered before booting providers.
+        $app->booting(function ($app) {
             $this->addons->plugins->run();
         });
 
@@ -149,25 +148,25 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerCodex()
     {
+        $this->app->resolving('codex', function(){
+            $a = func_get_args();
 
-        Codex::extend('menus', Menus\Menus::class);
-        Codex::extend('theme', Helpers\ThemeHelper::class);
-        Codex::extend('cache', Helpers\CacheHelper::class);
+            $as = 'a';
+        });
+        #Codex::extend('codex', 'menus', 'codex.menus');
+        Codex::extend('menus', 'codex.menus');
+        Codex::extend('theme', 'codex.helpers.theme');
+        Codex::extend('cache', 'codex.helpers.cache');
+        Codex::extend('projects', 'codex.projects');
 
-        // codex()->projects->get('projectName')->refs->get('master')->documents->get('index')->render()
-        // codex()->get('projectName/ref::path/to.document')
-        Codex::extend('projects', Projects\Projects::class);
-        Project::extend('refs', Projects\Refs::class);
-        Ref::extend('documents', Documents\Documents::class);
+        Projects\Project::extend('refs', 'codex.refs');
 
-        // @todo remove
-        Project::extend('documents', Documents\Documents::class);
+        Projects\Ref::extend('documents', 'codex.documents');
     }
 
     protected function registerDefaultFilesystem()
     {
-
-        $this->app->make('filesystem')->extend('codex-local', function (LaravelApplication $app, array $config = [ ]) {
+        $this->app->make('filesystem')->extend('codex-local', function (LaravelApplication $app, array $config = []) {
             $flysystemAdapter    = new Filesystem\Local($config[ 'root' ]);
             $flysystemFilesystem = new Flysystem($flysystemAdapter);
             return new FilesystemAdapter($flysystemFilesystem);
@@ -188,7 +187,7 @@ class CodexServiceProvider extends ServiceProvider
     {
         $this->codexHook('constructed', function (Codex $codex) {
             /** @var \Codex\Codex $codex */
-            $codex->theme->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [ ], true);
+            $codex->theme->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [], true);
             $codex->theme->addStylesheet('theme', 'vendor/codex/styles/stylesheet', [ 'vendor' ]);
             $codex->theme->addStylesheet('prism', 'vendor/codex/styles/prism', [ 'theme' ]);
             $codex->theme
@@ -217,7 +216,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerJavascriptData()
     {
-        $this->codexHook('controller:view', function (CodexController $controller, $view, Codex $codex, Project $project, Documents\Document $document) {
+        $this->codexHook('controller:view', function (CodexController $controller, $view, Codex $codex, Projects\Project $project, Documents\Document $document) {
             /** @var Codex $codex */
             $theme = $codex->theme;
             $theme->set('codex', $c = $codex->config()->only('display_name', 'macros', 'links', 'document', 'default_project')->toArray());
@@ -240,19 +239,19 @@ class CodexServiceProvider extends ServiceProvider
         $this->addons->scanAndResolveAddonPackages();
     }
 
-    protected function bootAttributesProcessor()
-    {
-        // Individually run the attributes processor first.
-        // This way we get the document attributes filled and disable, enable or configure other processors.
-        $this->codexHook('document:constructed', function (Document $document) {
-            $document->runProcessor('attributes');
-        });
-    }
-
     protected function registerMenus()
     {
+
+
         $this->codexHook('constructed', function (Codex $codex) {
             $codex->menus->add('sidebar')->setResolver(SidebarMenuResolver::class);
+        });
+
+        $this->codexHook('controller:view', function () {
+            $projectsMenu = $this->codex()->menus->add('projects')->setResolver(ProjectsMenuResolver::class);
+            $this->codex()->theme->pushContentToStack('nav', $this->codexView('layout'), function ($view) use ($projectsMenu) {
+                return $projectsMenu->render();
+            });
         });
     }
 

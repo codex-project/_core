@@ -1,0 +1,33 @@
+{
+    "modified": 1472898633,
+    "addons": {
+        "codex/addon-git": {
+            "name": "codex/addon-git",
+            "names": ["codex/addon-git"],
+            "description": "The Git addon provides Codex the means to fetch documentation from Github/Bitbucket repositories.",
+            "path": "{vendor_dir}/codex/addon-git",
+            "autoloads": [{"namespace": "Codex\\Addon\\Git\\", "directory": "src", "path": "{vendor_dir}/codex/addon-git/src"}]
+        },
+        "codex/addon-phpdoc": {
+            "name": "codex/addon-phpdoc",
+            "names": ["codex/addon-phpdoc"],
+            "description": "The Phpdoc addon provides Codex the means to parse the phpdoc generated xml file and integrate documenation in a user-friendly way.",
+            "path": "{vendor_dir}/codex/addon-phpdoc",
+            "autoloads": [{"namespace": "Codex\\Addon\\Phpdoc\\", "directory": "src", "path": "{vendor_dir}/codex/addon-phpdoc/src"}]
+        },
+        "codex/addon-auth": {
+            "name": "codex/addon-auth",
+            "names": ["codex/addon-auth"],
+            "description": "Authentication / Access control addon for Codex. Works with github/bitbucket login. Define groups that can access the docs.",
+            "path": "{vendor_dir}/codex/addon-auth",
+            "autoloads": [{"namespace": "Codex\\Addon\\Auth\\", "directory": "src/", "path": "{vendor_dir}/codex/addon-auth/src"}]
+        },
+        "codex/addon-jira": {
+            "name": "codex/addon-jira",
+            "names": ["codex/addon-jira"],
+            "description": "The Jira Addon",
+            "path": "{vendor_dir}/codex/addon-jira",
+            "autoloads": [{"namespace": "Codex\\Addon\\Jira\\", "directory": "src", "path": "{vendor_dir}/codex/addon-jira/src"}]
+        }
+    }
+}

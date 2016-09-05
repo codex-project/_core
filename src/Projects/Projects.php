@@ -50,7 +50,6 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
         $this->hookPoint('projects:construct', [ $this ]);
 
         $this->findAndRegisterAll();
-        $this->resolveMenu();
 
         $this->hookPoint('projects:constructed', [ $this ]);
     }
@@ -164,69 +163,6 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
             return $item->getName();
         })->values()->toArray();
         return $this->items->toArray();
-    }
-
-
-    /**
-     * Renders the project picker menu
-     * @return string
-     */
-    public function renderMenu()
-    {
-        return $this->getMenu()->render();
-    }
-
-    /**
-     * getProjectsMenu method
-     * @return \Codex\Menus\Menu
-     */
-    public function getMenu()
-    {
-        if(false === $this->codex->menus->has('projects')){
-            $this->resolveMenu();
-        }
-        return $this->codex->menus->get('projects');
-    }
-
-    protected function resolveMenu()
-    {
-        /** @var \Codex\Menus\Menu $menu */
-        $menu = $this->codex->menus->add('projects');
-        $menu->setAttribute('title', 'Pick...');
-        $menu->setAttribute('subtitle', 'project');
-
-        foreach($this->items->all() as $project){
-            /** @var Project $project */
-
-            # Add to menu
-            $name  = (string)$project->config('display_name');
-            $names = [ ];
-            if ( strpos($name, ' :: ') !== false ) {
-                $names = explode(' :: ', $name);
-                $name  = array_shift($names);
-            }
-
-            $href  = $project->url();
-            $metas = compact('project');
-            $id    = Str::slugify($name, '_');
-            if ( ! $menu->has($id) ) {
-                $node = $menu->add($id, $name, 'root', count($names) === 0 ? $metas : [ ], count($names) === 0 ? compact('href') : [ ]);
-            }
-
-            $parentId = $id;
-            while ( count($names) > 0 ) {
-                $name = array_shift($names);
-                $id .= '::' . $name;
-                $id = Str::slugify($id, '_');
-                if ( ! $menu->has($id) ) {
-                    $node = $menu->add($id, $name, $parentId, $metas, count($names) === 0 ? compact('href') : [ ]);
-                }
-                $parentId = $id;
-            }
-            if ( isset($node) ) {
-                $this->hookPoint('projects:resolved:node', [ $project, $node ]);
-            }
-        }
     }
 
 

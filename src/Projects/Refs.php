@@ -95,7 +95,7 @@ class Refs extends Extendable implements Arrayable
      */
     public function has($name)
     {
-        return $this->items->get($name);
+        return $this->items->has($name);
     }
 
     /**
@@ -113,7 +113,7 @@ class Refs extends Extendable implements Arrayable
         $directories = $this->getFiles()->directories();
         foreach ( $directories as $directory ) {
             /** @var Ref $ref */
-            $ref = $this->app->make('codex.project.ref', [
+            $ref = $this->app->make('codex.ref', [
                 'name'    => $directory,
                 'project' => $this->project,
                 'refs'    => $this,

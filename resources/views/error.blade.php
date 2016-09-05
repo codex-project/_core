@@ -29,7 +29,7 @@
             @stack('nav')
 
         @section('menu-projects')
-            {!! codex()->projects->renderMenu() !!}
+            {!! codex()->menus->render('projects') !!}
         @show
         @show
 

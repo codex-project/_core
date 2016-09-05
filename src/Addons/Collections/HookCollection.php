@@ -17,7 +17,7 @@ use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
 use Laradic\AnnotationScanner\Scanner\ClassInspector;
 use Symfony\Component\Finder\SplFileInfo;
 
-class Hooks extends BaseCollection
+class HookCollection extends BaseCollection
 {
 
 

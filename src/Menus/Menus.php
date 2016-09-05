@@ -179,7 +179,7 @@ class Menus extends Extendable implements Contracts\Menus\Menus, Arrayable
      *
      * @return string
      */
-    public function render($id)
+    public function render()
     {
         $params = func_get_args();
         $id     = array_shift($params);

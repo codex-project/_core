@@ -20,15 +20,17 @@ use Symfony\Component\Finder\SplFileInfo;
  * @author         CLI
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  *
- * @method Collections\Hooks hooks(...$params)
- * @method Collections\Processors processors(...$params)
- * @method Collections\Views views(...$params)
- * @method Collections\Plugins plugins(...$params)
+ * @method Collections\HookCollection hooks(...$params)
+ * @method Collections\ProcessorCollection processors(...$params)
+ * @method Collections\ViewCollection views(...$params)
+ * @method Collections\PluginCollection plugins(...$params)
+ * @method Collections\ExtensionCollection extensions(...$params)
  *
- * @property Collections\Processors $processors
- * @property Collections\Hooks      $hooks
- * @property Collections\Views      $views
- * @property Collections\Plugins    $plugins
+ * @property Collections\ProcessorCollection $processors
+ * @property Collections\HookCollection      $hooks
+ * @property Collections\ViewCollection      $views
+ * @property Collections\PluginCollection    $plugins
+ * @property Collections\ExtensionCollection $extensions
  *
  */
 class Factory implements Arrayable
@@ -57,7 +59,7 @@ class Factory implements Arrayable
 
     protected $paths;
 
-    protected $registered = [ ];
+    protected $registered = [];
 
     /** @var \Laradic\AnnotationScanner\Factory */
     protected $scanner;
@@ -65,7 +67,7 @@ class Factory implements Arrayable
     /** @var \Illuminate\Foundation\Application */
     protected $app;
 
-    protected $collections = [ 'processors', 'plugins', 'hooks', 'views' ];
+    protected $collections = [ 'processors', 'plugins', 'hooks', 'views', 'extensions' ];
 
     /** @var string */
     protected $manifestPath;
@@ -80,10 +82,11 @@ class Factory implements Arrayable
     {
         $this->app = Container::getInstance();
 
-        $this->processors = new Collections\Processors([ ], $this);
-        $this->hooks      = new Collections\Hooks([ ], $this);
-        $this->views      = new Collections\Views([ ], $this);
-        $this->plugins    = new Collections\Plugins([ ], $this);
+        $this->processors = new Collections\ProcessorCollection([], $this);
+        $this->hooks      = new Collections\HookCollection([], $this);
+        $this->views      = new Collections\ViewCollection([], $this);
+        $this->plugins    = new Collections\PluginCollection([], $this);
+        $this->extensions = new Collections\ExtensionCollection([], $this);
 
 
         $this->reader   = new AnnotationReader();
@@ -101,7 +104,7 @@ class Factory implements Arrayable
         #$this->scanner  = new Scanner($this, $this->manifest, $this->reader, $this->fs);
     }
 
-    public static function __callStatic($method, array $parameters = [ ])
+    public static function __callStatic($method, array $parameters = [])
     {
         $instance = static::getInstance();
         if ( method_exists($instance, $method) ) {
@@ -144,12 +147,16 @@ class Factory implements Arrayable
         $this->hooks->add($this->getClassFileInfo($file, $class), $hook, $listener);
     }
 
+    public function extend($class, $name, $extension)
+    {
+        $this->extensions->add($class, $name, $extension);
+    }
+
     protected function getClassFileInfo($file, $class)
     {
         $fileInfo = new SplFileInfo($file, $file, $file);
         return new ClassFileInfo($fileInfo, new ClassInspector($class, $this->reader));
     }
-
 
     /**
      * Search file for matching addon annotations and automaticly resolve and add them into their collections
@@ -217,7 +224,7 @@ class Factory implements Arrayable
         if ( $this->getManifest()->isEmpty() ) {
             $this->getManifest()->load();
         }
-        return $this->getManifest()->get('addons.*.autoloads.*.path', [ ]);
+        return $this->getManifest()->get('addons.*.autoloads.*.path', []);
     }
 
     public function scanAndResolveAddonPackages()
@@ -226,7 +233,7 @@ class Factory implements Arrayable
         if ( $this->manifest->isEmpty() ) {
             $this->manifest->load();
         }
-        foreach ( $this->getManifest()->get('addons.*.autoloads.*.path', [ ]) as $file ) {
+        foreach ( $this->getManifest()->get('addons.*.autoloads.*.path', []) as $file ) {
             $this->scanAndResolveDirectory($file);
         }
         Dev::getInstance()->addMessage(array_keys($this->registered));
@@ -330,7 +337,7 @@ class Factory implements Arrayable
         return $this->manifest;
     }
 
-    public function __call($method, array $parameters = [ ])
+    public function __call($method, array $parameters = [])
     {
         if ( in_array($method, $this->collections, true) ) {
             $collection = $this->{$method};

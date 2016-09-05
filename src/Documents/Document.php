@@ -452,7 +452,7 @@ class Document extends Extendable implements Arrayable
 
     /**
      * getProcessors method
-     * @return \Codex\Addons\Collections\Processors
+     * @return \Codex\Addons\Collections\ProcessorCollection
      */
     protected function getProcessors()
     {

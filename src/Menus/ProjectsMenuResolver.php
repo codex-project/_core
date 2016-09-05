@@ -10,6 +10,7 @@
  */
 namespace Codex\Menus;
 
+use Codex\Codex;
 use Codex\Contracts\Menus\MenuResolver;
 use Codex\Projects\Project;
 use Laradic\Support\Str;
@@ -22,6 +23,16 @@ class ProjectsMenuResolver implements MenuResolver
      * @var \Codex\Codex
      */
     protected $codex;
+
+    /**
+     * SidebarMenuResolver constructor.
+     *
+     * @param \Codex\Codex $codex
+     */
+    public function __construct(Codex $codex)
+    {
+        $this->codex = $codex;
+    }
 
     /**
      * handle method

@@ -132,15 +132,17 @@ trait ExtendableTrait
     protected function getExtensionClassInstance($name)
     {
         $extension = static::getExtenableProperty('extensions')[ $name ];
+        if(is_string($extension)) {
+            if ( class_exists($extension) || $this->app->bound($extension) ) {
+                if ( !array_key_exists($name, $this->extensionInstances) ) {
+                    $this->extensionInstances[ $name ] = $this->getContainer()->make($extension, [
+                        'parent' => $this,
+                    ]);
+                }
 
-        if ( is_string($extension) && class_exists($extension) ) {
-            if ( !array_key_exists($name, $this->extensionInstances) ) {
-                $this->extensionInstances[ $name ] = $this->getContainer()->make($extension, [
-                    'parent' => $this,
-                ]);
+                return $this->extensionInstances[ $name ];
             }
 
-            return $this->extensionInstances[ $name ];
         }
     }
 

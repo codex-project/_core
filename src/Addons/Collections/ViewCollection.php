@@ -10,7 +10,7 @@
  */
 namespace Codex\Addons\Collections;
 
-class Views extends BaseCollection
+class ViewCollection extends BaseCollection
 {
     public function __construct(array $items, $addons)
     {

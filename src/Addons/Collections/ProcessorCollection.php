@@ -27,7 +27,7 @@ use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  *
  */
-class Processors extends BaseCollection
+class ProcessorCollection extends BaseCollection
 {
     use HookableTrait;
 
