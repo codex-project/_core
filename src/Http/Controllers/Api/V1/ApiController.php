@@ -4,6 +4,7 @@ namespace Codex\Http\Controllers\Api\V1;
 use Codex\Codex;
 use Codex\Http\Controllers\Controller;
 use Codex\Projects\Project;
+use Codex\Projects\Ref;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use JsonSerializable;
@@ -26,6 +27,9 @@ abstract class ApiController extends Controller
     /** @var Project */
     protected $project;
 
+    /** @var  Ref */
+    protected $ref;
+
     /**
      * ApiController constructor.
      *
@@ -41,19 +45,16 @@ abstract class ApiController extends Controller
         $this->menus    = $this->codex->menus;
     }
 
-    protected function resolveProject($projectSlug, $ref = null)
+    protected function resolveRef($projectSlug, $ref = null)
     {
         if ( !$this->projects->has($projectSlug) ) {
             return $this->error('Project does not exist', Response::HTTP_BAD_REQUEST);
         }
-        $project = $this->projects->get($projectSlug);
+        $this->project = $this->projects->get($projectSlug);
 
-        if ( is_null($ref) ) {
-            $ref = $project->getDefaultRef();
-        }
-        $project->setRef($ref);
+        $this->ref = $this->project->refs->get($ref);
 
-        return $this->project = $project;
+        return $this->ref;
     }
 
     protected function response($data = [ ])

@@ -28,7 +28,7 @@ class Refs extends Extendable implements Arrayable
     const DEFAULT_FIRST_DIRECTORY = 'first';
     const DEFAULT_CUSTOM = 'custom';
 
-    /** @var \Codex\Support\Collection */
+    /** @var \Codex\Support\Collection|Ref[] */
     protected $items;
 
     /** @var Project|null */
@@ -81,9 +81,9 @@ class Refs extends Extendable implements Arrayable
      *
      * @return Ref
      */
-    public function get($name)
+    public function get($name = null)
     {
-        return $this->items->get($name);
+        return $this->items->get($name ? $name : $this->default);
     }
 
     /**

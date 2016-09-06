@@ -16,11 +16,14 @@ use Codex\Exception\CodexException;
 use Codex\Projects\Project;
 use Codex\Projects\Ref;
 use Codex\Support\Extendable;
+use Codex\Support\Traits\FilesTrait;
 use Illuminate\Contracts\Support\Arrayable;
 use Laradic\Support\Str;
 
 class Documents extends Extendable implements Contracts\Documents\Documents, Arrayable
 {
+    use FilesTrait;
+
     /**
      * @var \Illuminate\Support\Collection
      */
@@ -41,6 +44,7 @@ class Documents extends Extendable implements Contracts\Documents\Documents, Arr
         $this->ref     = $parent;
         $this->project = $parent->getProject();
         $this->setCodex($codex);
+        $this->setFiles($parent->getFiles());
 
         $this->hookPoint('documents:constructing');
         $this->resolveAll();
@@ -49,7 +53,7 @@ class Documents extends Extendable implements Contracts\Documents\Documents, Arr
 
     public function resolveAll()
     {
-        $fs    = $this->project->getFiles();
+        $fs    = $this->getFiles();
         $files = $fs->files($this->ref->path(), true);
         foreach ( $files as $file ) {
             $file = Str::removeLeft($file, $this->ref->getName() . DIRECTORY_SEPARATOR);
