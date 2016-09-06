@@ -83,8 +83,24 @@ class Codex extends Extendable implements Arrayable
      */
     protected $docsPath;
 
-    //protected $log;
+    /** @var Collection */
+    protected static $resolved;
 
+    public static function registerExtension($class, $name, $extension)
+    {
+        if ( null === static::$resolved ) {
+            static::$resolved = new Collection();
+        }
+        \Illuminate\Container\Container::getInstance()->resolving($class, function ($instance) use ($name, $extension) {
+            $className  = get_class($instance);
+            $isExtended = static::$resolved->where('className', $className)->where('name', $name)->count() > 0;
+            if ( $isExtended ) {
+                return;
+            }
+            static::$resolved->push(compact('className', 'name'));
+            forward_static_call_array($className . '::extend', [ $name, $extension ]);
+        });
+    }
 
     /**
      * Codex constructor.
@@ -205,26 +221,26 @@ class Codex extends Extendable implements Arrayable
 
         #
         # Refs / Ref
-        if($projectRef === false){
-            if($documentPathName === false){
+        if ( $projectRef === false ) {
+            if ( $documentPathName === false ) {
                 // get('codex')
                 return $project;
             }
             $projectRef = '!'; // make it so that the default ref will be chosen when using get('codex::path/to/document')
         }
-        if($projectRef === '*'){
+        if ( $projectRef === '*' ) {
             // get('codex/*')
             return $project->refs;
         }
-        if($projectRef === '!'){
+        if ( $projectRef === '!' ) {
             $ref = $project->refs->getDefault();
         } else {
-            if(false === $project->refs->has($projectRef)){
+            if ( false === $project->refs->has($projectRef) ) {
                 throw CodexException::refNotFound($projectRef);
             }
             $ref = $project->refs->get($projectRef);
         }
-        if($documentPathName === false){
+        if ( $documentPathName === false ) {
             // get('codex/!')
             // get('codex/ref')
             return $ref;
@@ -234,7 +250,7 @@ class Codex extends Extendable implements Arrayable
         # Documents / Document
         if ( $documentPathName === '*' ) {
             return $ref->documents;
-        } elseif($documentPathName === '!'){
+        } elseif ( $documentPathName === '!' ) {
             $documentPathName = $project->config('index');
         } elseif ( false === $ref->documents->has($documentPathName) ) {
             throw CodexException::documentNotFound($documentPathName);
@@ -259,6 +275,7 @@ class Codex extends Extendable implements Arrayable
      * Push a view to a stack
      *
      * @deprecated
+     *
      * @param string     $stackName The name of the stack
      * @param string     $viewName  The namespaced name of the view
      * @param array|null $data      (optional) The view data array
@@ -311,7 +328,7 @@ class Codex extends Extendable implements Arrayable
      *
      * @return static
      */
-    public function log($level, $message, $context = [ ])
+    public function log($level, $message, $context = [])
     {
         $this->log->log($level, $message, $context);
         return $this;

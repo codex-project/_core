@@ -58,7 +58,7 @@ class DevServiceProvider extends ServiceProvider
 
     protected function registerDebugbar()
     {
-        if ( class_exists('Barryvdh\Debugbar\ServiceProvider') && $this->app->bound('idea-meta') === false ) {
+        if ( class_exists('Barryvdh\Debugbar\ServiceProvider') && $this->app->bound('debugbar') === false ) {
             $this->app->register('Barryvdh\Debugbar\ServiceProvider');
         }
     }

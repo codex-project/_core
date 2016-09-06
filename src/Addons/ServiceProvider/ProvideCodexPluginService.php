@@ -10,6 +10,8 @@
  */
 namespace Codex\Addons\ServiceProvider;
 
+use Codex\Codex;
+
 /**
  * This is the class ProvideCodexPluginService.
  *
@@ -82,6 +84,12 @@ trait ProvideCodexPluginService
             // todo ex tend
             foreach ( $this->routeExclusions as $exclusion ) {
                 $this->excludeRoute($exclusion);
+            }
+
+            foreach($this->extend as $target => $extensions){
+                foreach($extensions as $name => $extension){
+                    Codex::registerExtension($target, $name, $extension);
+                }
             }
         });
     }

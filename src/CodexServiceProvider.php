@@ -91,6 +91,20 @@ class CodexServiceProvider extends ServiceProvider
         $app = parent::boot();
 
         $this->bootBladeDirectives();
+        $codex = $this->codex();
+        $codex->menus->add('sidebar')->setResolver(SidebarMenuResolver::class);
+
+        /** @var \Codex\Codex $codex */
+        $codex->theme->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [], true);
+        $codex->theme->addStylesheet('theme', 'vendor/codex/styles/stylesheet', [ 'vendor' ]);
+        $codex->theme->addStylesheet('prism', 'vendor/codex/styles/prism', [ 'theme' ]);
+        $codex->theme
+            ->addJavascript('vendor', 'vendor/codex/scripts/vendor')
+            ->addJavascript('codex', 'vendor/codex/scripts/codex', [ 'vendor' ])
+            ->addJavascript('theme', 'vendor/codex/scripts/theme', [ 'codex' ]);
+        $codex->theme->addBodyClass('docs language-php');
+        $codex->theme->addScript('codex', 'codex.init();');
+        $codex->theme->addScript('theme', 'codex.theme.init();', [ 'codex' ]);
 
         return $app;
     }
@@ -111,7 +125,7 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerMenus();
 
-        $this->registerTheme();
+       # $this->registerTheme();
 
         $this->registerJavascriptData();
 
@@ -148,20 +162,12 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerCodex()
     {
-        $this->app->resolving('codex', function(){
-            $a = func_get_args();
-
-            $as = 'a';
-        });
-        #Codex::extend('codex', 'menus', 'codex.menus');
-        Codex::extend('menus', 'codex.menus');
-        Codex::extend('theme', 'codex.helpers.theme');
-        Codex::extend('cache', 'codex.helpers.cache');
-        Codex::extend('projects', 'codex.projects');
-
-        Projects\Project::extend('refs', 'codex.refs');
-
-        Projects\Ref::extend('documents', 'codex.documents');
+        Codex::registerExtension('codex', 'menus', 'codex.menus');
+        Codex::registerExtension('codex', 'theme', 'codex.helpers.theme');
+        Codex::registerExtension('codex', 'cache', 'codex.helpers.cache');
+        Codex::registerExtension('codex', 'projects', 'codex.projects');
+        Codex::registerExtension('codex.project', 'refs', 'codex.refs');
+        Codex::registerExtension('codex.ref', 'documents', 'codex.documents');
     }
 
     protected function registerDefaultFilesystem()
@@ -241,10 +247,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerMenus()
     {
-
-
         $this->codexHook('constructed', function (Codex $codex) {
-            $codex->menus->add('sidebar')->setResolver(SidebarMenuResolver::class);
         });
 
         $this->codexHook('controller:view', function () {

@@ -15,5 +15,4 @@ use Laradic\ServiceProvider\ServiceProvider as BaseServiceProvider;
 abstract class BasePlugin extends BaseServiceProvider
 {
     use ServiceProvider\ProvideCodexPluginService;
-
 }

@@ -24,13 +24,13 @@ abstract class BaseCollection extends \Illuminate\Support\Collection implements 
     /** @var Factory */
     protected $addons;
 
-    /** @var \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application */
+    /** @var \Illuminate\Foundation\Application */
     protected $app;
 
     public function __construct($items = [ ], $addons = null)
     {
         parent::__construct($items);
-        $this->app    = Container::getInstance();
+        $this->app    = \Illuminate\Foundation\Application::getInstance();
         $this->addons = $addons ?: $this->app->make('codex.addons');
     }
 

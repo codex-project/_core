@@ -24,13 +24,11 @@ use Symfony\Component\Finder\SplFileInfo;
  * @method Collections\ProcessorCollection processors(...$params)
  * @method Collections\ViewCollection views(...$params)
  * @method Collections\PluginCollection plugins(...$params)
- * @method Collections\ExtensionCollection extensions(...$params)
  *
  * @property Collections\ProcessorCollection $processors
  * @property Collections\HookCollection      $hooks
  * @property Collections\ViewCollection      $views
  * @property Collections\PluginCollection    $plugins
- * @property Collections\ExtensionCollection $extensions
  *
  */
 class Factory implements Arrayable
@@ -86,8 +84,6 @@ class Factory implements Arrayable
         $this->hooks      = new Collections\HookCollection([], $this);
         $this->views      = new Collections\ViewCollection([], $this);
         $this->plugins    = new Collections\PluginCollection([], $this);
-        $this->extensions = new Collections\ExtensionCollection([], $this);
-
 
         $this->reader   = new AnnotationReader();
         $this->fs       = new Filesystem();
@@ -147,10 +143,6 @@ class Factory implements Arrayable
         $this->hooks->add($this->getClassFileInfo($file, $class), $hook, $listener);
     }
 
-    public function extend($class, $name, $extension)
-    {
-        $this->extensions->add($class, $name, $extension);
-    }
 
     protected function getClassFileInfo($file, $class)
     {
