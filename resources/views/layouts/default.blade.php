@@ -1,63 +1,110 @@
-@extends(codex()->view('layouts.base'))
-
-{{-- Meta --}}
-@push('meta')
-<meta name="description" content="{{ config('codex.display_name') }}.">
-<meta name="keywords" content="laravel, php, framework, web, artisans, taylor otwell">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-@endpush
-
-{{-- Stylesheets --}}
-@section('stylesheets')
-    @parent
-    <link rel="apple-touch-icon" href="{{ asset('vendor/codex/images/apple-touch-icon.png') }}">
-    <link rel="icon" href="{{ asset('vendor/codex/images/favicon.png') }}">
+@section('opener')
+<!DOCTYPE html><!--[if IE 8]>
+<html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="en"><!--<![endif]-->
 @show
+<head>
+    <title>
+        @section('title')
+            {{ config('codex.display_name') }}
+        @show
+    </title>
 
-{{-- Body --}}
+    @stack('meta')
+
+    @section('data')
+        {!! codex()->theme->renderData() !!}
+    @show
+
+    @section('stylesheets')
+        {!! codex()->theme->renderStylesheets() !!}
+    @show
+
+    @section('styles')
+        {!! codex()->theme->renderStyles(); !!}
+    @show
+
+    @stack('head')
+
+</head>
+
+<body class="{{ codex()->theme->renderBodyClass() }}">
+
+{{--
+Instead of overiding/appending all "sub-sections", one could also create their own "sub-sections" by using
+ a custom body section.
+--}}
 @section('body')
-    <nav class="main" data-layout="nav">
-        @section('header')
-            <a href="/" class="brand">
-                {{--<img src="{{ $assetPath }}/img/laravel-logo.png" height="30" alt="Laravel logo">--}}
-                {{ config('codex.display_name') }}
-            </a>
 
+    @section('header')
+        <header>
+            @stack('header')
+            <h1>{{ config('codex.display_name') }}</h1>
             @stack('nav')
+        </header>
+    @show
 
+    @stack('wrapin')
+
+        <a class="sidebar-toggle" data-action='sidebar-toggle' title='Toggle sidebar'><i class="fa fa-list"></i></a>
+
+        @section('sidebar-menu')
+            <aside>
+                {!! codex()->menus->render('sidebar', $project, $ref) !!}
+            </aside>
         @show
-    </nav>
 
-    <!-- CONTENT -->
-    <div class="docs-wrapper" data-layout="wrapper">
 
-        @section('wrapper')
-
-            @section('article')
-                <article class="content @yield('articleClass', '')" data-layout="article">
-                    @yield('content', '')
-                </article>
-            @show
-
-            @stack('content')
-
+        @section('breadcrumb')
+            <nav>
+                <ul data-layout="breadcrumbs">
+                    <li><a href="{{ route('codex.index') }}">Home</a><i class="fa fa-arrow-right"></i></li>
+                </ul>
+            </nav>
         @show
-    </div>
-    <!-- CONTENT:END -->
 
-    @stack('footer')
 
-@stop
+        @section('errors')
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{!! $error  !!} </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        @show
 
-{{-- Footer --}}
-@push('footer')
-@section('scroll-to-top')
-    <a href="#" class="scrollToTop"></a>
+        @section('article')
+            <article class="content @yield('articleClass', '')" data-layout="article">
+                 @yield('content', '')
+            </article>
+        @show
+
+        @stack('outro')
+
+    @stack('wrapout')
+
+    @section('footer')
+        <footer>
+
+        </footer>
+    @show
+
 @show
-@section('footer')
-    <footer class="main" data-layout="footer">
-        <p>Copyright &copy; {{ config('codex.display_name') }}.</p>
-    </footer>
-@show
-@endpush
 
+@section('javascripts')
+    {!! codex()->theme->renderJavascripts() !!}
+@show
+
+@section('scripts')
+    {!! codex()->theme->renderScripts() !!}
+@show
+
+
+</body>
+</html>

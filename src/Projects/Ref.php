@@ -79,6 +79,7 @@ class Ref extends Extendable implements Arrayable
 
     protected function resolve()
     {
+        // @TODO change to codex.yml only
         $fs = $this->getFiles();
         if ( $fs->exists($this->path('codex.yml')) ) {
             $yaml = $fs->get($this->path('codex.yml'));
@@ -160,6 +161,16 @@ class Ref extends Extendable implements Arrayable
     {
         return $this->path;
     }
+
+    /**
+     * @return \Codex\Projects\Refs
+     */
+    public function getRefs()
+    {
+        return $this->refs;
+    }
+
+
 
     /**
      * Get the instance as an array.

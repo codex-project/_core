@@ -76,16 +76,16 @@ class ThemeHelper extends Extendable implements Arrayable
     /**
      * Push a view to a stack
      *
-     * @param string     $stackName The name of the stack
-     * @param string     $viewName  The namespaced name of the view
-     * @param array|null $data      (optional) The view data array
-     * @param string     $appendTo  (optional) The view to attach this to
+     * @param string     $stackName   The name of the stack
+     * @param string     $viewName    The namespaced name of the view
+     * @param array|null $data        (optional) The view data array
+     * @param string     $targetViews (optional) The view to attach this to
      *
      * @return Codex
      */
-    public function pushToStack($stackName, $viewName, $data = null, $appendTo = 'codex::layouts.default')
+    public function pushViewToStack($stackName, $viewName, $data = null, $targetViews = 'codex::layouts.default')
     {
-        $this->pushContentToStack($stackName, $appendTo, function($view) use ($viewName, $data){
+        $this->pushContentToStack($stackName, $targetViews, function($view) use ($viewName, $data){
             /** @var \Illuminate\View\View $view */
             if ( $data instanceof \Closure )
             {
@@ -107,13 +107,14 @@ class ThemeHelper extends Extendable implements Arrayable
         return $this;
     }
 
-    public function pushContentToStack($stackName, $appendTo, $content)
+    public function pushContentToStack($stackName, $targetViews, $content)
     {
-        $this->codex->getContainer()->make('events')->listen('composing: ' . $appendTo, function ($view) use ($stackName, $content)
-        {
-
-            $view->getFactory()->startPush($stackName, $content instanceof Closure ? $content($view) : $content);
-        });
+        $targetViews = is_array($targetViews) ? $targetViews : [$targetViews];
+        foreach( $targetViews as $targetView) {
+            $this->codex->getContainer()->make('events')->listen('composing: ' . $targetView, function ($view) use ($stackName, $content) {
+                $view->getFactory()->startPush($stackName, $content instanceof Closure ? $content($view) : $content);
+            });
+        }
 
         return $this;
 

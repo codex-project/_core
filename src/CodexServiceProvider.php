@@ -13,9 +13,11 @@ use Codex\Documents\Document;
 use Codex\Http\Controllers\CodexController;
 use Codex\Log\Writer;
 use Codex\Menus\ProjectsMenuResolver;
+use Codex\Menus\RefsMenuResolver;
 use Codex\Menus\SidebarMenuResolver;
 use Codex\Support\Traits\CodexProviderTrait;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
+use Illuminate\Contracts\View\View;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Laradic\ServiceProvider\ServiceProvider;
 use League\Flysystem\Filesystem as Flysystem;
@@ -91,10 +93,42 @@ class CodexServiceProvider extends ServiceProvider
         $app = parent::boot();
 
         $this->bootBladeDirectives();
-        $codex = $this->codex();
-        $codex->menus->add('sidebar')->setResolver(SidebarMenuResolver::class);
+        return $app;
+    }
 
-        /** @var \Codex\Codex $codex */
+    public function booting()
+    {
+        $codex = $this->codex();
+
+        # Plugins
+        $this->addons->plugins->run();
+
+        # Menus
+        $codex->menus->add('sidebar')->setResolver(SidebarMenuResolver::class);
+        $projectsMenu = $this->codex()->menus->add('projects')->setResolver(ProjectsMenuResolver::class);
+        $refsMenu = $this->codex()->menus->add('refs')->setResolver(RefsMenuResolver::class);
+
+        $this->codex()->theme->pushContentToStack('nav', $this->codexView('layouts.default'), function (View $view) use ($projectsMenu) {
+            return $projectsMenu->render(array_get($view->getData(), 'project', null));
+        });
+
+        $this->codex()->theme->pushContentToStack('nav', $this->codexView('document'), function (View $view) use ($refsMenu) {
+            return $refsMenu->render(array_get($view->getData(), 'ref', null));
+        });
+
+        $themeAddons = $this->addons->getThemeAddons();
+
+        # Assets
+        $this->applyTheme();
+    }
+
+    protected function applyTheme()
+    {
+        if($this->app['config']->get('codex.apply_theme', false) !== true){
+            return;
+        }
+
+        $codex = $this->codex();
         $codex->theme->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [], true);
         $codex->theme->addStylesheet('theme', 'vendor/codex/styles/stylesheet', [ 'vendor' ]);
         $codex->theme->addStylesheet('prism', 'vendor/codex/styles/prism', [ 'theme' ]);
@@ -105,8 +139,6 @@ class CodexServiceProvider extends ServiceProvider
         $codex->theme->addBodyClass('docs language-php');
         $codex->theme->addScript('codex', 'codex.init();');
         $codex->theme->addScript('theme', 'codex.theme.init();', [ 'codex' ]);
-
-        return $app;
     }
 
     public function register()
@@ -123,7 +155,7 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerAddons();
 
-        $this->registerMenus();
+
 
        # $this->registerTheme();
 
@@ -135,7 +167,6 @@ class CodexServiceProvider extends ServiceProvider
 
         // After all providers are registered, we also run the plugins, so they are also registered before booting providers.
         $app->booting(function ($app) {
-            $this->addons->plugins->run();
         });
 
         return $app;
@@ -245,17 +276,5 @@ class CodexServiceProvider extends ServiceProvider
         $this->addons->scanAndResolveAddonPackages();
     }
 
-    protected function registerMenus()
-    {
-        $this->codexHook('constructed', function (Codex $codex) {
-        });
-
-        $this->codexHook('controller:view', function () {
-            $projectsMenu = $this->codex()->menus->add('projects')->setResolver(ProjectsMenuResolver::class);
-            $this->codex()->theme->pushContentToStack('nav', $this->codexView('layout'), function ($view) use ($projectsMenu) {
-                return $projectsMenu->render();
-            });
-        });
-    }
 
 }

@@ -18,10 +18,10 @@ class Manifest extends \Illuminate\Support\Collection
      * @param string                         $manifestPath
      * @param \Laradic\Filesystem\Filesystem $fs
      */
-    public function __construct(Filesystem $fs)
+    public function __construct($items = [])
     {
-        parent::__construct();
-        $this->fs = $fs;
+        parent::__construct($items);
+        $this->fs = Filesystem::create();
     }
 
     /**
@@ -32,7 +32,7 @@ class Manifest extends \Illuminate\Support\Collection
      */
     public static function make($items = [ ])
     {
-        return app(static::class);
+        return parent::make($items);
     }
 
     public function value()

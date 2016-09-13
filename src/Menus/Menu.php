@@ -24,7 +24,7 @@ use Tree\Visitor\PostOrderVisitor;
 use Tree\Visitor\PreOrderVisitor;
 use Tree\Visitor\Visitor;
 
-class Menu extends Extendable implements Arrayable
+class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
 {
     use FilesTrait,
         ConfigTrait,
@@ -129,7 +129,7 @@ class Menu extends Extendable implements Arrayable
      *
      * @return \Codex\Menus\Node
      */
-    public function add($id, $value, $parent = 'root', array $meta = [ ], array $attributes = [ ])
+    public function add($id, $value, $parent = 'root', array $meta = [], array $attributes = [])
     {
         $node = new Node($id, $this, $value);
         $node->setMeta($meta);
@@ -225,7 +225,7 @@ class Menu extends Extendable implements Arrayable
         if ( $item ) {
             return $this->getBreadcrumbTo($item);
         } else {
-            return [ ];
+            return [];
         }
     }
 
@@ -270,7 +270,7 @@ class Menu extends Extendable implements Arrayable
      * @return $this
      * @throws \Codex\Exception\CodexException
      */
-    public function resolve(array $params = [ ])
+    public function resolve(array $params = [])
     {
         if ( null === $this->resolver || true === $this->resolved ) {
             return $this;
@@ -416,7 +416,7 @@ class Menu extends Extendable implements Arrayable
             'id'         => $this->id,
             'view'       => $this->view,
             'attributes' => $this->attributes,
-            'tree' => $this->toArrayTree(),
+            'tree'       => $this->toArrayTree(),
             'items'      => $this->items->values()->toArray(),
         ];
     }
@@ -434,7 +434,7 @@ class Menu extends Extendable implements Arrayable
         }
         $tree = $node->toArray();
         if ( $node->hasChildren() ) {
-            $tree[ 'children' ] = [ ];
+            $tree[ 'children' ] = [];
             foreach ( $node->getChildren() as $childNode ) {
                 $treeChild = $childNode->toArray();
                 if ( $childNode->hasChildren() ) {

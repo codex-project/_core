@@ -76,7 +76,10 @@ return [
         ],
     ],
 
-    'plugins' => ['phpdoc', 'auth', 'git', 'jira'],
+    'apply_theme' => true,
+
+    'plugins' => ['phpdoc', 'auth', 'git', 'jira' ],
+//    'plugins' => ['phpdoc', 'auth', 'git', 'jira' , 'theme-default'],
 
 
     'default_project_config' => [

@@ -285,7 +285,7 @@ class Codex extends Extendable implements Arrayable
      */
     public function pushToStack($stackName, $viewName, $data = null, $appendTo = 'codex::layouts.default')
     {
-        $this->theme->pushToStack($stackName, $viewName, $data, $appendTo);
+        $this->theme->pushViewToStack($stackName, $viewName, $data, $appendTo);
         return $this;
     }
 

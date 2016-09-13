@@ -15,17 +15,13 @@ class ViewCollection extends BaseCollection
     public function __construct(array $items, $addons)
     {
         parent::__construct([
-
             'layouts'    => [
-                'base'    => 'codex::layouts.base',
                 'default' => 'codex::layouts.default',
             ],
-            'layout'     => 'codex::layouts.default',
-            'document'   => 'codex::document',
-            'error'      => 'codex::error',
             'menus'      => [
                 'default'  => 'codex::menus.header-dropdown',
                 'sidebar'  => 'codex::menus.sidebar',
+                'sidebar-child'  => 'codex::menus.sidebar-child',
                 'projects' => 'codex::menus.header-dropdown',
                 'versions' => 'codex::menus.header-dropdown',
             ],
@@ -34,7 +30,19 @@ class ViewCollection extends BaseCollection
                 'toc'     => 'codex::processors.toc',
                 'buttons' => 'codex::processors.buttons',
             ],
+
+            'document'   => 'codex::document',
+            'error'      => 'codex::error',
         ], $addons);
     }
+
+    public function merge($items)
+    {
+        foreach ( array_dot($items) as $key => $value ) {
+            $this->set($key, $value);
+        }
+        return $this;
+    }
+
 
 }

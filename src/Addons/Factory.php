@@ -213,18 +213,28 @@ class Factory implements Arrayable
 
     public function getAddonPaths()
     {
-        if ( $this->getManifest()->isEmpty() ) {
-            $this->getManifest()->load();
-        }
+//        if ( $this->getManifest()->isEmpty() ) {
+//            $this->getManifest()->load();
+//        }
         return $this->getManifest()->get('addons.*.autoloads.*.path', []);
+    }
+
+    /**
+     * getThemeAddons method
+     *
+     * @return array
+     */
+    public function getThemeAddons()
+    {
+        return $this->getManifest()->where('addons.*.theme', true)->toArray();
     }
 
     public function scanAndResolveAddonPackages()
     {
         Dev::getInstance()->benchmark('Codex Addon Factory findAndRegisterAll');
-        if ( $this->manifest->isEmpty() ) {
-            $this->manifest->load();
-        }
+//        if ( $this->manifest->isEmpty() ) {
+//            $this->manifest->load();
+//        }
         foreach ( $this->getManifest()->get('addons.*.autoloads.*.path', []) as $file ) {
             $this->scanAndResolveDirectory($file);
         }
@@ -273,20 +283,15 @@ class Factory implements Arrayable
     }
 
     /**
-     * @return \Codex\Addons\Scanner
+     * getScanner method
+     *
+     * @return \Laradic\AnnotationScanner\Factory
      */
     public function getScanner()
     {
         return $this->scanner;
     }
 
-    /**
-     * @return array
-     */
-    public function getViews()
-    {
-        return $this->views;
-    }
 
     /**
      * @return array
@@ -323,7 +328,7 @@ class Factory implements Arrayable
      */
     public function getManifest()
     {
-        if ( isset($this->manifest) === false ) {
+        if ( null === $this->manifest || $this->manifest->isEmpty() ) {
             $this->loadManifest();
         }
         return $this->manifest;

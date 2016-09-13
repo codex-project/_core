@@ -45,6 +45,7 @@ abstract class BaseCollection extends \Illuminate\Support\Collection implements 
         return $this;
     }
 
+
     public function has($key)
     {
         return Arr::has($this->items, $key);

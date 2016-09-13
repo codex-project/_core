@@ -50,13 +50,6 @@ class SidebarMenuResolver implements MenuResolver
         $this->project = $project;
         $this->ref     = $ref;
 
-
-
-
-//        $menus = $this->codex->menus;
-//        $menus->has('sidebar') && $menus->forget('sidebar');
-//        $this->menu = $menus->add('sidebar');
-
         $menu->setView($this->codex->view('menus.sidebar'));
         $items = $ref->config('menu', [ ]);
 

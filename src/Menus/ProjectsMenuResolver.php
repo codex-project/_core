@@ -37,7 +37,7 @@ class ProjectsMenuResolver implements MenuResolver
     /**
      * handle method
      *
-     * @param \Codex\Contracts\Menu|\Codex\Menus\Menu $menu
+     * @param \Codex\Contracts\Menus\Menu|\Codex\Menus\Menu $menu
      */
     public function handle(Menu $menu, Project $project = null)
     {
