@@ -48,7 +48,7 @@ class HttpServiceProvider extends ServiceProvider
         // web
         $router->group([
             'as'         => 'codex.',
-            'prefix'     => config('codex.base_route'),
+            'prefix'     => config('codex.http.base_route'),
             'namespace'  => $this->namespace,
             'middleware' => $useMiddleware ? [ 'web' ] : [ ],
         ], function () {
@@ -67,7 +67,7 @@ class HttpServiceProvider extends ServiceProvider
         // api v1
         $router->group([
             'as'         => 'codex.api.v1.',
-            'prefix'     => 'api/v1',
+            'prefix'     => config('codex.http.base_route') . '/api/v1',
             'namespace'  => $this->namespace . '\Api\V1',
             'middleware' => $useMiddleware ? [ 'api' ] : [ ],
         ], function () {

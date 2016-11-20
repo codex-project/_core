@@ -73,5 +73,5 @@ interface Projects
      *
      * @return \Codex\Support\Collection|\Codex\Projects\Project[]
      */
-    public function query();
+    public function getItems();
 }

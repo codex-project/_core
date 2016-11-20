@@ -93,7 +93,7 @@ class Document extends Extendable implements Arrayable
      */
     protected $mode = self::CACHE_AUTO;
 
-    /** @var \Codex\Projects\Ref  */
+    /** @var \Codex\Projects\Ref */
     protected $ref;
 
     /**
@@ -112,7 +112,7 @@ class Document extends Extendable implements Arrayable
     {
         $this->setCodex($codex);
         $this->setFiles($project->getFiles());
-        $this->ref = $ref;
+        $this->ref       = $ref;
         $this->project   = $project;
         $this->path      = $path;
         $this->pathName  = $pathName;
@@ -244,13 +244,14 @@ class Document extends Extendable implements Arrayable
     public function toArray()
     {
         return [
-            'path'              => $this->path,
+            'name'              => $this->getName(),
             'pathName'          => $this->pathName,
             'extension'         => $this->extension,
             'cacheMode'         => $this->mode,
             'lastModified'      => $this->lastModified,
-            'attributes'        => $this->attr(),
-            'enabledProcessors' => $this->getEnabledProcessors()
+            'content'           => $this->render(),
+            'enabledProcessors' => $this->getEnabledProcessors(),
+            'attributes'        => $this->getAttributes(),
         ];
     }
 
@@ -261,9 +262,9 @@ class Document extends Extendable implements Arrayable
      */
     public function getEnabledProcessors()
     {
-        $enabled  = $this->project->config('processors.enabled', [ ]);
-        $enabled2 = $this->attr('processors.enabled', [ ]);
-        $disabled = $this->attr('processors.disabled', [ ]);
+        $enabled  = $this->project->config('processors.enabled', []);
+        $enabled2 = $this->attr('processors.enabled', []);
+        $disabled = $this->attr('processors.disabled', []);
         return array_diff(array_unique(array_merge($enabled, $enabled2)), $disabled);
     }
 

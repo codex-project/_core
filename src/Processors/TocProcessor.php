@@ -142,6 +142,9 @@ class TocProcessor
     protected function addScript()
     {
         $this->codex->theme->addScript('toc', <<<JS
+        Vue.component('toc', {
+        
+        })
     $(function(){
       $('.docs-wrapper').find('a[name]').each(function () {
         var self = $(this);

@@ -179,10 +179,12 @@ class Ref extends Extendable implements Arrayable
      */
     public function toArray()
     {
+
         return [
-            'name'     => $this->name,
-            'config'   => $this->config,
-            'isBranch' => $this->isBranch(),
+            'name'      => $this->getName(),
+            'config'    => $this->getConfig(),
+            'isBranch'  => $this->isBranch(),
+            'isVersion' => $this->isVersion(),
         ];
     }
 }

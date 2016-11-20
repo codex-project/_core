@@ -12,6 +12,7 @@ use Codex\Codex;
 use Codex\Exception\CodexException;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
+use Codex\Support\ExtendableCollection;
 use Codex\Support\Traits\FilesTrait;
 use Laradic\Filesystem\Filesystem;
 use Laradic\Support\Path;
@@ -23,12 +24,9 @@ use Symfony\Component\Finder\Finder;
  * @package Codex\Projects
  * @method Project[]|Collection getPhpdocProjects() getPhpdocProjects()
  */
-class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
+class Projects extends ExtendableCollection implements \Codex\Contracts\Projects\Projects
 {
     use FilesTrait;
-
-    /** @var \Codex\Support\Collection */
-    protected $items;
 
     /** @var Project|null */
     protected $activeProject;
@@ -41,11 +39,10 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
      */
     public function __construct(Codex $parent, Filesystem $files)
     {
+        parent::__construct();
         $this->setCodex($parent);
         $this->setContainer($parent->getContainer());
         $this->setFiles($files);
-
-        $this->items = new Collection;
 
         $this->hookPoint('projects:construct', [ $this ]);
 
@@ -115,7 +112,7 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
             throw CodexException::projectNotFound((string)$name);
         }
 
-        return $this->items->get($name);
+        return parent::get($name);
     }
 
     /**
@@ -148,9 +145,18 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
      *
      * @return \Codex\Support\Collection|\Codex\Projects\Project[]
      */
-    public function query()
+    public function getItems()
     {
         return $this->items;
+    }
+
+    /**
+     * isEmpty method
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return $this->items->isEmpty();
     }
 
     /**
@@ -159,10 +165,9 @@ class Projects extends Extendable implements \Codex\Contracts\Projects\Projects
      */
     public function toArray()
     {
-        return $this->items->transform(function($item){
-            return $item->getName();
-        })->values()->toArray();
-        return $this->items->toArray();
+        return $this->getItems()->map(function (\Codex\Projects\Project $project) {
+            return [ 'name' => $project->getName(), 'displayName' => $project->getDisplayName() ];
+        })->toArray();
     }
 
 

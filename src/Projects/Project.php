@@ -243,9 +243,9 @@ class Project extends Extendable implements Arrayable
     public function toArray()
     {
         return [
-            'name'     => $this->getName(),
-            'config'   => $this->getConfig(),
-            'versions' => $this->refs,
+            'name'        => $this->getName(),
+            'displayName' => $this->getDisplayName(),
+            'description' => $this->config('description', '')
         ];
     }
 

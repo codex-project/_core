@@ -5,7 +5,6 @@
  * License and copyright information bundled with this package in the LICENSE file
  */
 
-
 if (!function_exists('version')) {
     /**
      * version method

@@ -27,9 +27,9 @@ use Illuminate\Filesystem\Filesystem;
  * This is the main Codex factory. It gives access to several sub-components and helper functions.
  *
  * @package        Codex\Core
- * @author         Sebwite
+ * @author         Robin Radic
  *
- * @ property-read \Codex\Addons\Factory       $addons       The addons instance
+ * @property-read \Codex\Addons\Factory       $addons       The addons instance
  * @property-read \Codex\Dev\Dev              $dev          The dev instance
  * @property-read \Codex\Projects\Projects    $projects     The projects instance
  * @property-read \Codex\Menus\Menus          $menus        The menus instance
@@ -165,7 +165,6 @@ class Codex extends Extendable implements Arrayable
      * <?php
      * $projects    = codex()->get('*'); # Codex\Projects\Projects
      * $project     = codex()->get('codex'); # Codex\Projects\Project
-     * $project     = codex()->get('codex/master'); # Codex\Projects\Project
      * $refs        = codex()->get('codex/*'); # Codex\Projects\Refs
      * $ref         = codex()->get('codex/!'); # Codex\Projects\Ref (default ref)
      * $ref         = codex()->get('codex/master'); # Codex\Projects\Ref
@@ -177,6 +176,15 @@ class Codex extends Extendable implements Arrayable
      * $document    = codex()->get('codex/master::develop/hooks'); # Codex\Documents\Document
      * </code>
      *
+     * <strong>Syntax:</strong>
+     * {project?}/{$ref?}::{documentPath?}
+     *
+     * <strong>Special modifiers:</strong>
+     * * = The collection (projects, refs or documents)
+     * ! = The default of the collection (project, def or document)
+     *
+     * <strong>Syntax examples:</strong>
+     * codex/master::getting-started/installation
      *
      * @param $query
      *
@@ -186,7 +194,6 @@ class Codex extends Extendable implements Arrayable
      * <?php
      * $projects    = codex()->get('*'); # Codex\Projects\Projects
      * $project     = codex()->get('codex'); # Codex\Projects\Project
-     * $project     = codex()->get('codex/master'); # Codex\Projects\Project
      * $refs        = codex()->get('codex/*'); # Codex\Projects\Refs
      * $ref         = codex()->get('codex/!'); # Codex\Projects\Ref (default ref)
      * $ref         = codex()->get('codex/master'); # Codex\Projects\Ref
@@ -214,7 +221,11 @@ class Codex extends Extendable implements Arrayable
         if ( $projectName === '*' ) {
             // get('*')
             return $this->projects;
-        } elseif ( false === $this->projects->has($projectName) ) {
+        } elseif ( $projectName === '!' ) {
+            $projectName = config('codex.default_project');
+        }
+
+        if ( false === $this->projects->has($projectName) ) {
             throw CodexException::projectNotFound($projectName);
         }
         $project = $this->projects->get($projectName);
@@ -415,10 +426,15 @@ class Codex extends Extendable implements Arrayable
 
     public function toArray()
     {
+        $projects = $this->projects->getItems();
+        if($this->projects->isEmpty()){
+
+        }
         return [
-            'config'   => $this->config,
-            'projects' => $this->projects->toArray(),
-            'addons'   => $this->addons->toArray(),
+            'defaultProject' => $this->config('default_project', $projects->first()->getName()),
+            'projects' => $this->projects->getItems()->map(function (\Codex\Projects\Project $project) {
+                return array_add($project->toArray(), 'refs', $project->refs->toArray());
+            })->toArray(),
             'menus'    => $this->menus->toArray(),
         ];
     }

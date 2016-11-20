@@ -12,12 +12,13 @@ namespace Codex\Projects;
 
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
+use Codex\Support\ExtendableCollection;
 use Codex\Support\Traits\FilesTrait;
 use Illuminate\Contracts\Support\Arrayable;
 use vierbergenlars\SemVer\version;
 
 
-class Refs extends Extendable implements Arrayable
+class Refs extends ExtendableCollection implements Arrayable
 {
     use FilesTrait;
 
@@ -38,13 +39,13 @@ class Refs extends Extendable implements Arrayable
      * Versions are refs that are named using semver specification (as in 1.0.0, 2.3.4-beta)
      * @var array
      */
-    protected $versions = [ ];
+    protected $versions = [];
 
     /**
      * Branches are refs that are not named using semver specification. (as in master, develop, hi-this-is-version-1-lol)
      * @var array
      */
-    protected $branches = [ ];
+    protected $branches = [];
 
     /**
      * The default ref name
@@ -60,51 +61,18 @@ class Refs extends Extendable implements Arrayable
      */
     public function __construct(Project $parent)
     {
+        parent::__construct();
         $this->setCodex($parent->getCodex());
         $this->setContainer($parent->getContainer());
         $this->setFiles($parent->getFiles());
 
         $this->project = $parent;
-        $this->items   = new Collection;
 
         $this->hookPoint('refs:construct', [ $this ]);
 
         $this->resolveRefs();
 
         $this->hookPoint('refs:constructed', [ $this ]);
-    }
-
-    /**
-     * get method
-     *
-     * @param string $name
-     *
-     * @return Ref
-     */
-    public function get($name = null)
-    {
-        return $this->items->get($name ? $name : $this->default);
-    }
-
-    /**
-     * has method
-     *
-     * @param $name
-     *
-     * @return boolean
-     */
-    public function has($name)
-    {
-        return $this->items->has($name);
-    }
-
-    /**
-     * all method
-     * @return Ref[]
-     */
-    public function all()
-    {
-        return $this->items->all();
     }
 
     protected function resolveRefs()
@@ -251,11 +219,12 @@ class Refs extends Extendable implements Arrayable
      */
     public function toArray()
     {
+
         return [
-            'default' => $this->default,
-            'refs' => $this->items->transform(function(Ref $ref){
-                return ['name' => $ref->getName(), 'isBranch' => $ref->isBranch() ];
-            })->toArray()
+            'default' => $this->getDefaultName(),
+            'items'   => $this->getItems()->map(function (\Codex\Projects\Ref $ref) {
+                return $ref->getName();
+            })->values()->toArray(),
         ];
     }
 }

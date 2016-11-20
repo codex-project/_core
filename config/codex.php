@@ -19,7 +19,7 @@ return [
 
     'http' => [
         'enabled'              => true,
-        'base_route'           => env('CODEX_BASE_ROUTE', 'codex'),
+        'base_route'           => env('CODEX_BASE_ROUTE', null),
         'ignore_project_names' => [ '_debugbar', ],
         'api'                  => [
             'enabled'    => true,
