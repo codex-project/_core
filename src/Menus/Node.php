@@ -9,11 +9,16 @@
 namespace Codex\Menus;
 
 
-use Codex\Support\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Arrayable;
 
-class Node extends \Tree\Node\Node implements Arrayable
+class Node implements Arrayable, NodeInterface
 {
+    use NodeTrait {
+        getParent as _getParent;
+        __construct as _con;
+    }
+
     /**
      * @var mixed|null
      */
@@ -40,13 +45,13 @@ class Node extends \Tree\Node\Node implements Arrayable
      * @param null        $value
      * @param array       $children
      */
-    public function __construct($id, Menu $menu, $value = null, array $children = [ ])
+    public function __construct($id, Menu $menu, $value = null, array $children = [])
     {
-        parent::__construct($value, $children);
+        $this->_con($value, $children);
 
-        $this->id = $id;
-        $this->menu = $menu;
-        $this->meta = [ ];
+        $this->id         = $id;
+        $this->menu       = $menu;
+        $this->meta       = [];
         $this->attributes = [ 'href' => '#' ];
     }
 
@@ -96,12 +101,9 @@ class Node extends \Tree\Node\Node implements Arrayable
      */
     public function setAttribute($key, $value = null)
     {
-        if ( is_array($key) && is_null($value) )
-        {
+        if ( is_array($key) && is_null($value) ) {
             $this->attributes = $key;
-        }
-        else
-        {
+        } else {
             array_set($this->attributes, $key, $value);
         }
 
@@ -118,12 +120,9 @@ class Node extends \Tree\Node\Node implements Arrayable
      */
     public function setMeta($key, $value = null)
     {
-        if ( is_array($key) && is_null($value) )
-        {
+        if ( is_array($key) && is_null($value) ) {
             $this->meta = $key;
-        }
-        else
-        {
+        } else {
             array_set($this->meta, $key, $value);
         }
 
@@ -170,8 +169,7 @@ class Node extends \Tree\Node\Node implements Arrayable
     public function parseAttributes()
     {
         $parsed = '';
-        foreach ( $this->attributes as $key => $val )
-        {
+        foreach ( $this->attributes as $key => $val ) {
             $parsed .= " {$key}=\"{$val}\"";
         }
 
@@ -221,7 +219,7 @@ class Node extends \Tree\Node\Node implements Arrayable
      */
     public function getParent()
     {
-        return parent::getParent();
+        return $this->_getParent();
     }
 
     public function hasParent()
@@ -234,7 +232,7 @@ class Node extends \Tree\Node\Node implements Arrayable
      *
      * @param bool $self
      *
-     * @return \Codex\Support\Collection|Node[]
+     * @return \Illuminate\Support\Collection|Node[]
      */
     public function neighbors($self = false)
     {
@@ -243,7 +241,7 @@ class Node extends \Tree\Node\Node implements Arrayable
 
     /**
      * children method
-     * @return \Codex\Support\Collection|Node[]
+     * @return \Illuminate\Support\Collection|Node[]
      */
     public function children()
     {
@@ -253,13 +251,16 @@ class Node extends \Tree\Node\Node implements Arrayable
 
     public function toArray()
     {
+        $children = $this->children();
         return [
-            'id'         => $this->id,
-            'value'      => $this->getValue(),
-            'meta'       => $this->meta,
-            'attributes' => $this->attributes,
-            'menu'       => $this->menu->getId(),
-            'parent'     => $this->hasParent() ? $this->getParent()->getId() : null,
+            'id'          => $this->id,
+            'value'       => $this->getValue(),
+            'meta'        => $this->meta,
+            'attributes'  => $this->attributes,
+            'menu'        => $this->menu->getId(),
+            'parent'      => $this->hasParent() ? $this->getParent()->getId() : null,
+            'children'    => $children->toArray(),
+            'hasChildren' => $children->isEmpty() === false,
         ];
     }
 }

@@ -53,16 +53,30 @@ class CodexApiController extends ApiController
         return $this->response($data);
     }
 
+    protected function query($query)
+    {
+        try {
+            $data = $this->codex->get($query);
+        } catch(Exception $e){
+            throw $e;
+        }
+
+        if ( $data === null ) {
+            throw CodexException::because("Query '{$query}' has no valid result");
+        }
+        return $data;
+    }
+
     public function getQuery($query)
     {
         try {
-            if($query === '@'){
+            if ( $query === '@' ) {
                 return $this->getCodex();
             }
-            $data = $this->codex->get($query)->toArray();
+            $data = $this->query($query)->toArray();
         }
         catch (CodexException $e) {
-            return $this->error($e->getMessage());
+            return $this->error($e);
         }
         return $this->response($data);
     }
@@ -71,7 +85,8 @@ class CodexApiController extends ApiController
     {
         try {
             $data = $this->codex->toArray();
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             return $this->error($e->getMessage());
         }
 

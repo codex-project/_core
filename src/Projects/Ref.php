@@ -171,7 +171,6 @@ class Ref extends Extendable implements Arrayable
     }
 
 
-
     /**
      * Get the instance as an array.
      *
@@ -180,11 +179,16 @@ class Ref extends Extendable implements Arrayable
     public function toArray()
     {
 
+        $menu = $this->getCodex()->menus->get('sidebar');
+        $menu->resolve([ $this->project, $this ]);
+
         return [
             'name'      => $this->getName(),
             'config'    => $this->getConfig(),
             'isBranch'  => $this->isBranch(),
             'isVersion' => $this->isVersion(),
+            'menu'      => $menu->toArray(),
+//            'renderedMenu' => $menu->render($this->project, $this)
         ];
     }
 }

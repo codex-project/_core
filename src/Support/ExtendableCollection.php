@@ -20,7 +20,7 @@ class ExtendableCollection extends Extendable
      */
     public function __construct()
     {
-        $this->items = new Collection();
+        $this->items = new \Illuminate\Support\Collection();
     }
 
     /**

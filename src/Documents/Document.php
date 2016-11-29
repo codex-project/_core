@@ -252,6 +252,7 @@ class Document extends Extendable implements Arrayable
             'content'           => $this->render(),
             'enabledProcessors' => $this->getEnabledProcessors(),
             'attributes'        => $this->getAttributes(),
+            'breadcrumbs'       => $this->getBreadcrumb(),
         ];
     }
 
@@ -275,7 +276,8 @@ class Document extends Extendable implements Arrayable
      */
     public function getBreadcrumb()
     {
-        return []; //$this->ref->getSidebarMenu()->getBreadcrumbToHref($this->url());
+        return $this->getCodex()->menus->get('sidebar')->getBreadcrumbToHref($this->url());
+//        return []; //$this->ref->getSidebarMenu()->getBreadcrumbToHref($this->url());
     }
 
     /**

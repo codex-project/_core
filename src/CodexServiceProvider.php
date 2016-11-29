@@ -106,7 +106,7 @@ class CodexServiceProvider extends ServiceProvider
         # Menus
         $codex->menus->add('sidebar')->setResolver(SidebarMenuResolver::class);
         $projectsMenu = $this->codex()->menus->add('projects')->setResolver(ProjectsMenuResolver::class);
-        $refsMenu = $this->codex()->menus->add('refs')->setResolver(RefsMenuResolver::class);
+        $refsMenu     = $this->codex()->menus->add('refs')->setResolver(RefsMenuResolver::class);
 
         $this->codex()->theme->pushContentToStack('nav', $this->codexView('layouts.default'), function (View $view) use ($projectsMenu) {
             return $projectsMenu->render(array_get($view->getData(), 'project', null));
@@ -124,21 +124,21 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function applyTheme()
     {
-        if($this->app['config']->get('codex.apply_theme', false) !== true){
+        if ( $this->app[ 'config' ]->get('codex.apply_theme', false) !== true ) {
             return;
         }
 
         $codex = $this->codex();
-        $codex->theme->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [], true);
-        $codex->theme->addStylesheet('theme', 'vendor/codex/styles/stylesheet', [ 'vendor' ]);
-        $codex->theme->addStylesheet('prism', 'vendor/codex/styles/prism', [ 'theme' ]);
         $codex->theme
+            ->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [], true)
+            ->addStylesheet('theme', 'vendor/codex/styles/stylesheet', [ 'vendor' ])
+            ->addStylesheet('prism', 'vendor/codex/styles/prism', [ 'theme' ])
             ->addJavascript('vendor', 'vendor/codex/scripts/vendor')
             ->addJavascript('codex', 'vendor/codex/scripts/codex', [ 'vendor' ])
-            ->addJavascript('theme', 'vendor/codex/scripts/theme', [ 'codex' ]);
-        $codex->theme->addBodyClass('docs language-php');
-        $codex->theme->addScript('codex', 'codex.init();');
-        $codex->theme->addScript('theme', 'codex.theme.init();', [ 'codex' ]);
+            ->addJavascript('theme', 'vendor/codex/scripts/theme', [ 'codex' ])
+            ->addScript('codex', 'codex.init();')
+            ->addScript('theme', 'codex.theme.init();', [ 'codex' ])
+            ->addBodyClass('docs language-php');
     }
 
     public function register()
@@ -156,8 +156,7 @@ class CodexServiceProvider extends ServiceProvider
         $this->registerAddons();
 
 
-
-       # $this->registerTheme();
+        # $this->registerTheme();
 
         $this->registerJavascriptData();
 

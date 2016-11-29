@@ -2,6 +2,7 @@
 namespace Codex\Http\Controllers\Api\V1;
 
 use Codex\Codex;
+use Codex\Exception\CodexException;
 use Codex\Http\Controllers\Controller;
 use Codex\Projects\Project;
 use Codex\Projects\Ref;
@@ -57,7 +58,7 @@ abstract class ApiController extends Controller
         return $this->ref;
     }
 
-    protected function response($data = [ ])
+    protected function response($data = [])
     {
         if ( $data instanceof Arrayable && !$data instanceof JsonSerializable ) {
             $data = $data->toArray();
@@ -65,9 +66,25 @@ abstract class ApiController extends Controller
         return response()->json([ 'success' => true, 'message' => '', 'data' => $data ]);
     }
 
-    protected function error($message, $code = 500)
+    /**
+     * error method
+     *
+     * @param      string|CodexException $message
+     * @param int   $code
+     * @param array $data
+     *
+     * @return mixed
+     */
+    protected function error($message, $code = 500, $data = [])
     {
-        return response()->json([ 'success' => false, 'message' => $message, 'data' => [ ] ], $code);
+        if ( $message instanceof CodexException ) {
+            $ex      = $message;
+            $message = $ex->getMessage();
+            if ( config('app.debug') ) {
+                $data = $ex->getTrace();
+            }
+        }
+        return response()->json([ 'success' => false, 'message' => $message, 'data' => $data ], $code);
     }
 
 }

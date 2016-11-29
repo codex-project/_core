@@ -43,15 +43,16 @@ class SidebarMenuResolver implements MenuResolver
 
     public function handle(Menu $menu, $project, $ref)
     {
-        $project= $project instanceof Project ? $project : $this->codex->projects->get($project);
-        $ref = $ref instanceof Ref ? $ref : $project->refs->get($ref);
+        $project = $project instanceof Project ? $project : $this->codex->projects->get($project);
+        $ref     = $ref instanceof Ref ? $ref : $project->refs->get($ref);
 
         $this->menu    = $menu;
         $this->project = $project;
         $this->ref     = $ref;
 
         $menu->setView($this->codex->view('menus.sidebar'));
-        $items = $ref->config('menu', [ ]);
+        $this->menu->clear();
+        $items = $ref->config('menu', []);
 
         if ( !is_array($items) ) {
             throw CodexException::invalidMenuConfiguration(": menu.yml in [{$this}]");
@@ -66,16 +67,19 @@ class SidebarMenuResolver implements MenuResolver
      * @param array  $items
      * @param string $parentId
      */
-    protected function recurse($items = [ ], $parentId = 'root')
+    protected function recurse($items = [], $parentId = 'root')
     {
 
         foreach ( $items as $item ) {
             $link = '#';
+            $type = null;
             if ( array_key_exists('document', $item) ) {
+                $type = 'document';
                 // remove .md extension if present
                 $path = ends_with($item[ 'document' ], [ '.md' ]) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
                 $link = $this->codex->url($this->ref->getProject(), $this->ref->getName(), $path);
             } elseif ( array_key_exists('href', $item) ) {
+                $type = 'href';
                 $link = $item[ 'href' ];
             }
 
@@ -85,13 +89,24 @@ class SidebarMenuResolver implements MenuResolver
             $node->setAttribute('href', $link);
             $node->setAttribute('id', $id);
 
+
+            if ( isset($path) ) {
+                $node->setMeta('path', $path);
+            }
             if ( isset($item[ 'icon' ]) ) {
                 $node->setMeta('icon', $item[ 'icon' ]);
             }
 
             if ( isset($item[ 'children' ]) ) {
+                $type = 'parent';
+            }
+
+            $node->setMeta('type', $type);
+
+            if ( isset($item[ 'children' ]) ) {
                 $this->recurse($item[ 'children' ], $id);
             }
+
         }
     }
 }

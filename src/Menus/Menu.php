@@ -9,7 +9,7 @@
 namespace Codex\Menus;
 
 use Codex\Contracts;
-use Codex\Support\Collection;
+use Illuminate\Support\Collection;
 use Codex\Support\Extendable;
 use Codex\Support\Traits\AttributesTrait;
 use Codex\Support\Traits\ConfigTrait;
@@ -45,7 +45,7 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
     protected $path;
 
     /**
-     * @var \Codex\Support\Collection|Node[]
+     * @var \Illuminate\Support\Collection|Node[]
      */
     protected $items;
 
@@ -138,7 +138,7 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
         if ( $this->items->has($parent) ) {
             $parentNode = $this->items->get($parent);
             $parentNode->addChild($node);
-            $node->setParent($parentNode);
+//            $node->setParent($parentNode);
             $node->setMeta('data-parent', $parent);
         }
 
@@ -193,7 +193,7 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
     {
         $rootNode = $this->getRootNode();
         $rootNode->removeAllChildren();
-        $this->items->clear();
+        $this->items = new Collection();
         if ( false === $root ) {
             $this->items->put('root', $rootNode);
         }
@@ -279,8 +279,10 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
         /** @var Contracts\Menus\MenuResolver $resolver */
         $resolver = $this->getContainer()->make($this->resolver);
         $this->hookPoint('menu:resolve', [ $resolver ]);
+        $this->resolved = true;
         call_user_func_array([ $resolver, 'handle' ], array_merge([ $this ], $params));
         $this->hookPoint('menu:resolved');
+
 
         return $this;
     }
@@ -423,28 +425,9 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
 
     public function toArrayTree()
     {
-        return $this->recurseTree();
+        return $this->getRootNode()->toArray();
     }
 
-    protected function recurseTree(Node $node = null)
-    {
 
-        if ( $node === null ) {
-            $node = $this->getRootNode();
-        }
-        $tree = $node->toArray();
-        if ( $node->hasChildren() ) {
-            $tree[ 'children' ] = [];
-            foreach ( $node->getChildren() as $childNode ) {
-                $treeChild = $childNode->toArray();
-                if ( $childNode->hasChildren() ) {
-                    $treeChild[ 'children' ][] = $this->recurseTree($childNode);
-                }
-                $tree[ 'children' ][] = $treeChild;
-            }
-        }
-
-        return $tree;
-    }
 
 }
