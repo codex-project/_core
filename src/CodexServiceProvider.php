@@ -211,7 +211,7 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerDev()
     {
-        $this->app->register(Dev\DevServiceProvider::class);
+        $this->app->register(Codex\Addon\Misc\Dev\DevServiceProvider::class);
     }
 
     protected function registerHttp()

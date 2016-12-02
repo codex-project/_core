@@ -30,7 +30,7 @@ use Illuminate\Filesystem\Filesystem;
  * @author         Robin Radic
  *
  * @property-read \Codex\Addons\Addons        $addons       The addons instance
- * @property-read \Codex\Dev\Dev              $dev          The dev instance
+ * @property-read \Addon\Misc\Dev\Dev         $dev          The dev instance
  * @property-read \Codex\Projects\Projects    $projects     The projects instance
  * @property-read \Codex\Menus\Menus          $menus        The menus instance
  * @property-read \Codex\Addon\Auth\CodexAuth $auth         The auth addon instance

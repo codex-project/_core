@@ -3,7 +3,7 @@ namespace Codex\Addons;
 
 use BadMethodCallException;
 use Codex\Addons\Annotations;
-use Codex\Dev\Dev;
+use Codex\Addon\Misc\Dev\Dev;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
