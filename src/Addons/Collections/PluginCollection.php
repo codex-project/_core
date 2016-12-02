@@ -11,7 +11,7 @@
 namespace Codex\Addons\Collections;
 
 use Codex\Addons\Annotations\Plugin;
-use Codex\Addons\Presenters\PluginPresenter;
+use Codex\Addons\Hydrators\PluginHydrator;
 use Codex\Exception\CodexException;
 use Codex\Support\Sorter;
 use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
@@ -43,7 +43,7 @@ class PluginCollection extends BaseCollection
         $instance = null; //$this->app->make($class);
         $data     = array_merge(compact('file', 'annotation', 'class', 'instance'), (array)$annotation);
 
-        $presenter = $this->app->build(PluginPresenter::class);
+        $presenter = $this->app->build(PluginHydrator::class);
         $presenter->hydrate($data);
         $this->set($annotation->name, $presenter);
         $a = 'a';
@@ -67,7 +67,7 @@ class PluginCollection extends BaseCollection
 
         $plugins = $this->only(config('codex.plugins', []))->sorted();
 
-        $plugins = $plugins->transform(function (PluginPresenter $plugin) use ($replace) {
+        $plugins = $plugins->transform(function (PluginHydrator $plugin) use ($replace) {
             if ( array_key_exists($plugin->name, $replace) ) {
                 return $this->get($replace[ $plugin->name ]);
             }
@@ -86,7 +86,7 @@ class PluginCollection extends BaseCollection
     /**
      * canRunPlugin method
      *
-     * @param string|PluginPresenter $plugin
+     * @param string|PluginHydrator $plugin
      *
      * @return bool
      * @throws \Codex\Exception\CodexException
@@ -115,7 +115,7 @@ class PluginCollection extends BaseCollection
         return true;
     }
 
-    protected function runPlugin(PluginPresenter $presenter)
+    protected function runPlugin(PluginHydrator $presenter)
     {
         $this->app->register($plugin = $presenter->getInstance());
     }
@@ -144,7 +144,7 @@ class PluginCollection extends BaseCollection
      * @param mixed $name
      * @param null  $default
      *
-     * @return PluginPresenter
+     * @return PluginHydrator
      */
     public function get($name, $default = null)
     {
@@ -154,7 +154,7 @@ class PluginCollection extends BaseCollection
     /**
      * all method
      *
-     * @return PluginPresenter[]
+     * @return PluginHydrator[]
      */
     public function all()
     {

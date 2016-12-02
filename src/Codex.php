@@ -29,7 +29,7 @@ use Illuminate\Filesystem\Filesystem;
  * @package        Codex\Core
  * @author         Robin Radic
  *
- * @property-read \Codex\Addons\Factory       $addons       The addons instance
+ * @property-read \Codex\Addons\Addons        $addons       The addons instance
  * @property-read \Codex\Dev\Dev              $dev          The dev instance
  * @property-read \Codex\Projects\Projects    $projects     The projects instance
  * @property-read \Codex\Menus\Menus          $menus        The menus instance
@@ -132,30 +132,6 @@ class Codex extends Extendable implements Arrayable
         $this->hookPoint('constructed', [ $this ]);
     }
 
-    public function getVersion()
-    {
-        return '2.0.0-beta';
-    }
-
-    /**
-     * Creates a error response. To be used in controllers/middleware
-     *
-     * @param string   $title  The error title
-     * @param string   $text   The error text
-     * @param int      $code   The HTTP code. 500 Internal Server Error by default
-     * @param bool|int $goBack If set to false, it will not display the go back link. If set to a integer value, it will use the integer value as history.back parameter.
-     *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
-     * @throws \Throwable
-     * @example
-     * <?php
-     * codex()->projects->get('codex')->documents->get('index')->render();
-     */
-    public function error($title, $text, $code = 500, $goBack = true)
-    {
-        return response(view($this->view('error'), compact('title', 'text', 'goBack'))->render(), $code);
-    }
 
     /**
      * Shorthand helper method for getting projects, refs or documents
@@ -279,25 +255,7 @@ class Codex extends Extendable implements Arrayable
      */
     public function view($name)
     {
-        return $this->addons->view($name);
-    }
-
-    /**
-     * Push a view to a stack
-     *
-     * @deprecated
-     *
-     * @param string     $stackName The name of the stack
-     * @param string     $viewName  The namespaced name of the view
-     * @param array|null $data      (optional) The view data array
-     * @param string     $appendTo  (optional) The view to attach this to
-     *
-     * @return Codex
-     */
-    public function pushToStack($stackName, $viewName, $data = null, $appendTo = 'codex::layouts.default')
-    {
-        $this->theme->pushViewToStack($stackName, $viewName, $data, $appendTo);
-        return $this;
+        return $this->addons->views->get($name);
     }
 
     /**
@@ -368,10 +326,6 @@ class Codex extends Extendable implements Arrayable
         return $cache->get($key);
     }
 
-    public function isDev()
-    {
-        return $this->config('codex.dev', false) !== false;
-    }
 
     public function setConfig($key, $value = null)
     {
@@ -427,15 +381,14 @@ class Codex extends Extendable implements Arrayable
     public function toArray()
     {
         $projects = $this->projects->getItems();
-        if($this->projects->isEmpty()){
-
+        if ( $this->projects->isEmpty() ) {
         }
         return [
             'defaultProject' => $this->config('default_project', $projects->first()->getName()),
-            'projects' => $this->projects->getItems()->map(function (\Codex\Projects\Project $project) {
+            'projects'       => $this->projects->getItems()->map(function (\Codex\Projects\Project $project) {
                 return array_add($project->toArray(), 'refs', $project->refs->toArray());
             })->toArray(),
-            'menus'    => $this->menus->toArray(),
+            'menus'          => $this->menus->toArray(),
         ];
     }
 
@@ -445,6 +398,67 @@ class Codex extends Extendable implements Arrayable
             return $this->container->make('codex.' . $name);
         }
         return parent::__get($name);
+    }
+
+
+    /**
+     * Push a view to a stack
+     *
+     * @deprecated
+     *
+     * @param string     $stackName The name of the stack
+     * @param string     $viewName  The namespaced name of the view
+     * @param array|null $data      (optional) The view data array
+     * @param string     $appendTo  (optional) The view to attach this to
+     *
+     * @return Codex
+     */
+    public function pushToStack($stackName, $viewName, $data = null, $appendTo = 'codex::layouts.default')
+    {
+        $this->theme->pushViewToStack($stackName, $viewName, $data, $appendTo);
+        return $this;
+    }
+
+    /**
+     * getVersion method
+     * @deprecated
+     * @return string
+     */
+    public function getVersion()
+    {
+        return '2.0.0-beta';
+    }
+
+    /**
+     * Creates a error response. To be used in controllers/middleware
+     *
+     * @deprecated
+     *
+     * @param string   $title  The error title
+     * @param string   $text   The error text
+     * @param int      $code   The HTTP code. 500 Internal Server Error by default
+     * @param bool|int $goBack If set to false, it will not display the go back link. If set to a integer value, it will use the integer value as history.back parameter.
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     * @throws \Throwable
+     * @example
+     * <?php
+     * codex()->projects->get('codex')->documents->get('index')->render();
+     */
+    public function error($title, $text, $code = 500, $goBack = true)
+    {
+        return response(view($this->view('error'), compact('title', 'text', 'goBack'))->render(), $code);
+    }
+
+    /**
+     * isDev method
+     * @deprecated
+     * @return bool
+     */
+    public function isDev()
+    {
+        return $this->config('codex.dev', false) !== false;
     }
 
 

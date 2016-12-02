@@ -74,7 +74,7 @@ class CodexServiceProvider extends ServiceProvider
     ];
 
     protected $singletons = [
-        'codex.addons' => Addons\Factory::class,
+        'codex.addons' => Addons\Addons::class,
     ];
 
     protected $shared = [
@@ -85,7 +85,7 @@ class CodexServiceProvider extends ServiceProvider
         'codex.log' => Contracts\Log\Log::class,
     ];
 
-    /** @var Addons\Factory */
+    /** @var Addons\Addons */
     protected $addons;
 
     public function boot()
@@ -93,33 +93,12 @@ class CodexServiceProvider extends ServiceProvider
         $app = parent::boot();
 
         $this->bootBladeDirectives();
+
         return $app;
     }
 
     public function booting()
     {
-        $codex = $this->codex();
-
-        # Plugins
-        $this->addons->plugins->run();
-
-        # Menus
-        $codex->menus->add('sidebar')->setResolver(SidebarMenuResolver::class);
-        $projectsMenu = $this->codex()->menus->add('projects')->setResolver(ProjectsMenuResolver::class);
-        $refsMenu     = $this->codex()->menus->add('refs')->setResolver(RefsMenuResolver::class);
-
-        $this->codex()->theme->pushContentToStack('nav', $this->codexView('layouts.default'), function (View $view) use ($projectsMenu) {
-            return $projectsMenu->render(array_get($view->getData(), 'project', null));
-        });
-
-        $this->codex()->theme->pushContentToStack('nav', $this->codexView('document'), function (View $view) use ($refsMenu) {
-            return $refsMenu->render(array_get($view->getData(), 'ref', null));
-        });
-
-        $themeAddons = $this->addons->getThemeAddons();
-
-        # Assets
-        $this->applyTheme();
     }
 
     protected function applyTheme()
@@ -145,7 +124,7 @@ class CodexServiceProvider extends ServiceProvider
     {
         $app = parent::register();
 
-        $this->registerDev();
+//        $this->registerDev();
 
         $this->registerLogger();
 
@@ -166,6 +145,27 @@ class CodexServiceProvider extends ServiceProvider
 
         // After all providers are registered, we also run the plugins, so they are also registered before booting providers.
         $app->booting(function ($app) {
+
+            $codex = $this->codex();
+
+            # Menus
+            $codex->menus->add('sidebar')->setResolver(SidebarMenuResolver::class);
+            $projectsMenu = $this->codex()->menus->add('projects')->setResolver(ProjectsMenuResolver::class);
+            $refsMenu     = $this->codex()->menus->add('refs')->setResolver(RefsMenuResolver::class);
+
+            $this->codex()->theme->pushContentToStack('nav', $this->codexView('layouts.default'), function (View $view) use ($projectsMenu) {
+                return $projectsMenu->render(array_get($view->getData(), 'project', null));
+            });
+
+            $this->codex()->theme->pushContentToStack('nav', $this->codexView('document'), function (View $view) use ($refsMenu) {
+                return $refsMenu->render(array_get($view->getData(), 'ref', null));
+            });
+
+            # Assets
+            $this->applyTheme();
+
+            # Plugins
+            $this->addons->plugins->run();
         });
 
         return $app;
@@ -269,10 +269,10 @@ class CodexServiceProvider extends ServiceProvider
 
     protected function registerAddons()
     {
-        $this->app->instance('codex.addons', $this->addons = Addons\Factory::getInstance());
+        $this->app->instance('codex.addons', $this->addons = Addons\Addons::getInstance());
         $this->addons->setManifestPath($this->app[ 'config' ][ 'codex.paths.manifest' ]);
-        $this->addons->scanAndResolveDirectory(__DIR__ . '/Processors');
-        $this->addons->scanAndResolveAddonPackages();
+        $this->addons->resolveAndRegisterDirectory(__DIR__ . '/Processors');
+        $this->addons->resolveAndRegisterAddons();
     }
 
 

@@ -27,11 +27,11 @@ trait CodexPluginTrait
 
     /**
      * addons method
-     * @return \Codex\Addons\Factory
+     * @return \Codex\Addons\Addons
      */
     protected function addons()
     {
-        return \Codex\Addons\Factory::getInstance();
+        return \Codex\Addons\Addons::getInstance();
     }
 
     protected function documentAttributes($config, $method = 'array_replace_recursive')

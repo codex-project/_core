@@ -4,21 +4,14 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
+ * @author Robin Radic
  * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @license http://codex-project.ninja/license The MIT License
  */
-namespace Codex\Addons\Annotations;
+namespace Codex\Addons\Hydrators;
 
-use Doctrine\Common\Annotations\Annotation\Required;
-
-
-/**
- * @Annotation
- */
-final class Plugin extends AbstractAnnotation
+class HookHydrator extends Hydrator
 {
-
 
     /**
      * @Required()
@@ -30,10 +23,11 @@ final class Plugin extends AbstractAnnotation
      * @var string|bool
      */
     public $replace = false;
-    /**
-     * Other plugins this plugin is dependent on
-     * @var array
-     */
-    public $requires = [];
 
+    /**
+     * plugin method
+     *
+     * @var string|bool
+     */
+    public $plugin = false;
 }

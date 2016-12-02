@@ -8,7 +8,7 @@
  * @copyright Copyright 2016 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
-namespace Codex\Addons\Presenters;
+namespace Codex\Addons\Hydrators;
 
 
 use ArrayAccess;
@@ -16,7 +16,7 @@ use Codex\Support\Traits\ArrayableAccess;
 use Illuminate\Contracts\Support\Arrayable;
 use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
 
-abstract class Presenter implements Arrayable, ArrayAccess
+abstract class Hydrator implements Arrayable, ArrayAccess
 {
     use ArrayableAccess;
 

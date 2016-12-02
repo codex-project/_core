@@ -29,11 +29,11 @@ trait CodexProviderTrait
 
     /**
      * addons method
-     * @return \Codex\Addons\Factory
+     * @return \Codex\Addons\Addons
      */
     protected function codexAddons()
     {
-        return \Codex\Addons\Factory::getInstance();
+        return \Codex\Addons\Addons::getInstance();
     }
 
     protected function codexDocumentAttributes($config, $method = 'array_replace_recursive')
@@ -48,7 +48,7 @@ trait CodexProviderTrait
 
     protected function codexHook($point, $listener)
     {
-        return $this->codexAddons()->hook($point, $listener);
+        return $this->codexAddons()->hooks->hook($point, $listener);
     }
 
     /**
@@ -70,6 +70,7 @@ trait CodexProviderTrait
      */
     protected function codexView($key, $value = null)
     {
-        return $this->codexAddons()->view($key, $value);
+        $views = $this->codexAddons()->views;
+        return $value === null ? $views->get($key) : $views->set($key, $value);
     }
 }

@@ -10,18 +10,14 @@
  */
 namespace Codex\Addons\Collections;
 
-use Codex\Addons\Factory;
+use Codex\Addons\Addons;
 use Codex\Contracts\Traits\Hookable;
-use Composer\Util\Bitbucket;
-use Illuminate\Container\Container;
-
 use Laradic\Support\Arr;
 
 abstract class BaseCollection extends \Illuminate\Support\Collection implements Hookable
 {
-    const BITB = Bitbucket::class;
 
-    /** @var Factory */
+    /** @var Addons */
     protected $addons;
 
     /** @var \Illuminate\Foundation\Application */

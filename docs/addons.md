@@ -6,11 +6,11 @@ A addon is one or more
 
 You can access addons with
 ```php
-/** @var \Codex\Addons\Factory $addons */
+/** @var \Codex\Addons\Addons $addons */
 $addons = codex()->addons;
 $addons->getViews();
 # or
-$addons = \Codex\Addons\Factory::getInstance();
+$addons = \Codex\Addons\Addons::getInstance();
 $addons->getViews();
 ```
 

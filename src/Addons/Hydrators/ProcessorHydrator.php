@@ -8,7 +8,7 @@
  * @copyright Copyright 2016 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
-namespace Codex\Addons\Presenters;
+namespace Codex\Addons\Hydrators;
 
 
 /**
@@ -19,7 +19,7 @@ namespace Codex\Addons\Presenters;
  * @copyright      Copyright (c) 2015, Radic. All rights reserved
  *
  */
-class ProcessorPresenter extends Presenter
+class ProcessorHydrator extends Hydrator
 {
     /** @var \Codex\Addons\Annotations\Processor */
     public $annotation;

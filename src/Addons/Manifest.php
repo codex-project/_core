@@ -1,16 +1,12 @@
 <?php
 namespace Codex\Addons;
 
-use Laradic\Filesystem\Filesystem;
 use Laradic\Support\Arr;
 
 class Manifest extends \Illuminate\Support\Collection
 {
     /** @var string */
     protected $manifestPath;
-
-    /** @var \Laradic\Filesystem\Filesystem */
-    protected $fs;
 
     /**
      * Manifest constructor.
@@ -21,7 +17,6 @@ class Manifest extends \Illuminate\Support\Collection
     public function __construct($items = [])
     {
         parent::__construct($items);
-        $this->fs = Filesystem::create();
     }
 
     /**
@@ -50,7 +45,7 @@ class Manifest extends \Illuminate\Support\Collection
     /** @return static */
     public function load()
     {
-        $manifest    = $this->fs->get($this->getManifestPath());
+        $manifest    = file_get_contents($this->getManifestPath());
         $this->items = json_decode($manifest, true);
         return $this;
     }
@@ -63,7 +58,7 @@ class Manifest extends \Illuminate\Support\Collection
     public function save($options = JSON_UNESCAPED_SLASHES)
     {
         $manifest = json_encode($this->items, $options);
-        $this->fs->put($this->getManifestPath(), $manifest);
+        file_put_contents($this->getManifestPath(), $manifest);
         return $this;
     }
 

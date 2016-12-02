@@ -11,7 +11,7 @@
 namespace Codex\Addons\Collections;
 
 use Codex\Addons\Annotations\Processor;
-use Codex\Addons\Presenters\ProcessorPresenter;
+use Codex\Addons\Hydrators\ProcessorHydrator;
 use Codex\Documents\Document;
 use Codex\Exception\CodexException;
 use Codex\Support\Collection;
@@ -43,7 +43,7 @@ class ProcessorCollection extends BaseCollection
         $class    = $file->getClassName();
         $instance = null; //$this->app->make($class);
         $data     = array_merge(compact('file', 'annotation', 'class', 'instance'), (array)$annotation);
-        $processor = $this->app->build(ProcessorPresenter::class);
+        $processor = $this->app->build(ProcessorHydrator::class);
         $processor->hydrate($data);
 
         $this->set($annotation->name, $processor);

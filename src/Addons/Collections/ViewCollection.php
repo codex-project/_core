@@ -19,11 +19,11 @@ class ViewCollection extends BaseCollection
                 'default' => 'codex::layouts.default',
             ],
             'menus'      => [
-                'default'  => 'codex::menus.header-dropdown',
-                'sidebar'  => 'codex::menus.sidebar',
-                'sidebar-child'  => 'codex::menus.sidebar-child',
-                'projects' => 'codex::menus.header-dropdown',
-                'versions' => 'codex::menus.header-dropdown',
+                'default'       => 'codex::menus.header-dropdown',
+                'sidebar'       => 'codex::menus.sidebar',
+                'sidebar-child' => 'codex::menus.sidebar-child',
+                'projects'      => 'codex::menus.header-dropdown',
+                'versions'      => 'codex::menus.header-dropdown',
             ],
             'processors' => [
                 'header'  => 'codex::processors.header',
@@ -31,8 +31,8 @@ class ViewCollection extends BaseCollection
                 'buttons' => 'codex::processors.buttons',
             ],
 
-            'document'   => 'codex::document',
-            'error'      => 'codex::error',
+            'document' => 'codex::document',
+            'error'    => 'codex::error',
         ], $addons);
     }
 

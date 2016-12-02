@@ -23,8 +23,8 @@ return [
         'ignore_project_names' => [ '_debugbar', ],
         'api'                  => [
             'enabled'    => true,
-            'middleware' => [ ],
-            'tokens'     => [ ],
+            'middleware' => [],
+            'tokens'     => [],
         ],
     ],
 
@@ -78,8 +78,7 @@ return [
 
     'apply_theme' => true,
 
-    'plugins' => ['phpdoc', 'auth', 'git', 'jira' ],
-//    'plugins' => ['phpdoc', 'auth', 'git', 'jira' , 'theme-default'],
+    'plugins' => [ 'phpdoc', 'auth', 'git', 'jira', 'theme-default' ],
 
 
     'default_project_config' => [
@@ -90,7 +89,7 @@ return [
         'index'       => 'index',
         'extensions'  => [ 'md', 'markdown', 'html' ],
         'processors'  => [
-            'enabled' => [ ],
+            'enabled' => [],
         ],
     ],
 
@@ -101,8 +100,8 @@ return [
         'view'       => null,
         'cache'      => true,
         'processors' => [
-            'enabled'  => [ ],
-            'disabled' => [ ],
+            'enabled'  => [],
+            'disabled' => [],
         ],
     ],
 

@@ -8,7 +8,7 @@
  * @copyright Copyright 2016 (c) Codex Project
  * @license   http://codex-project.ninja/license The MIT License
  */
-namespace Codex\Addons\Presenters;
+namespace Codex\Addons\Hydrators;
 
 use Codex\Addons\Annotations\Plugin;
 
@@ -20,7 +20,7 @@ use Codex\Addons\Annotations\Plugin;
  * @copyright      Copyright (c) 2015, Radic. All rights reserved
  * @mixin Plugin
  */
-class PluginPresenter extends Presenter
+class PluginHydrator extends Hydrator
 {
     /** @var Plugin */
     public $annotation;
@@ -60,5 +60,6 @@ class PluginPresenter extends Presenter
         }
         return $this->instance;
     }
+
 
 }

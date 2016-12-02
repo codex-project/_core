@@ -15,13 +15,19 @@ use Doctrine\Common\Annotations\Annotation\Target;
  * @Annotation
  * @Target("CLASS")
  */
-class Processor
+class Processor extends AbstractAnnotation
 {
+
     /**
-     * @Required
+     * @Required()
      * @var string
      */
     public $name;
+
+    /**
+     * @var string|bool
+     */
+    public $replace = false;
 
     /**
      * @deprecated
@@ -34,12 +40,6 @@ class Processor
      * @var string
      */
     public $config;
-
-    /**
-     * If this filter replaces another (like extending), note its name here
-     * @var string
-     */
-    public $replace ;
 
     /**
      * The method that will be called when running the filter.

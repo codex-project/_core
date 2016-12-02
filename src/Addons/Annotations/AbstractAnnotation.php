@@ -4,13 +4,15 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author Robin Radic
+ * @author    Robin Radic
  * @copyright Copyright 2016 (c) Codex Project
- * @license http://codex-project.ninja/license The MIT License
+ * @license   http://codex-project.ninja/license The MIT License
  */
-namespace Codex\Addons\Presenters;
+namespace Codex\Addons\Annotations;
 
-class HookPresenter extends Presenter
+use Doctrine\Common\Annotations\Annotation\Required;
+
+class AbstractAnnotation
 {
 
     /**
@@ -23,11 +25,4 @@ class HookPresenter extends Presenter
      * @var string|bool
      */
     public $replace = false;
-
-    /**
-     * plugin method
-     *
-     * @var string|bool
-     */
-    public $plugin = false;
 }

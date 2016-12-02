@@ -97,11 +97,11 @@ trait ProvideCodexPluginService
     /**
      * addons method
      *
-     * @return \Codex\Addons\Factory
+     * @return \Codex\Addons\Addons
      */
     protected function addons()
     {
-        return \Codex\Addons\Factory::getInstance();
+        return \Codex\Addons\Addons::getInstance();
     }
 
     protected function projectConfig($config, $method = 'array_replace_recursive')
@@ -121,7 +121,7 @@ trait ProvideCodexPluginService
 
     protected function hook($point, $listener)
     {
-        return $this->addons()->hook($point, $listener);
+        return $this->addons()->hooks->hook($point, $listener);
     }
 
     /**
@@ -144,6 +144,7 @@ trait ProvideCodexPluginService
      */
     protected function view($key, $value = null)
     {
-        return $this->addons()->view($key, $value);
+        $views = $this->addons()->views;
+        return $value === null ? $views->get($key) : $views->set($key, $value);
     }
 }

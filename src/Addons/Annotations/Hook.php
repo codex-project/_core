@@ -13,7 +13,7 @@ use Doctrine\Common\Annotations\Annotation\Target;
  * @Annotation
  * @Target({"CLASS", "METHOD"})
  */
-final class Hook
+final class Hook extends AbstractAnnotation
 {
 
     /**
