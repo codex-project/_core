@@ -27,9 +27,9 @@ final class Plugin extends AbstractAnnotation
     public $name;
 
     /**
-     * @var string|bool
+     * @var string
      */
-    public $replace = false;
+    public $replace;
     /**
      * Other plugins this plugin is dependent on
      * @var array

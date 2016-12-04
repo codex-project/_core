@@ -30,14 +30,13 @@ use Illuminate\Filesystem\Filesystem;
  * @author         Robin Radic
  *
  * @property-read \Codex\Addons\Addons        $addons       The addons instance
- * @property-read \Addon\Misc\Dev\Dev         $dev          The dev instance
  * @property-read \Codex\Projects\Projects    $projects     The projects instance
  * @property-read \Codex\Menus\Menus          $menus        The menus instance
  * @property-read \Codex\Addon\Auth\CodexAuth $auth         The auth addon instance
  * @property-read \Codex\Addon\Git\CodexGit   $git          The theme instance
  * @property-read \Codex\Addon\Phpdoc\Phpdoc  $phpdoc       The phpdoc instance
  * @property-read \Codex\Helpers\CacheHelper  $cache        The cache instance
- * @property-read \Codex\Helpers\ThemeHelper  $theme        The theme instance
+ * @property-read \Codex\Theme                $theme        The theme instance
  *
  *
  *
@@ -253,9 +252,9 @@ class Codex extends Extendable implements Arrayable
      *
      * @return string The namespaced view name
      */
-    public function view($name)
+    public function view($name, $view = null)
     {
-        return $this->addons->views->get($name);
+        return $view ? $this->addons->views->set($name, $view) : $this->addons->views->get($name);
     }
 
     /**
@@ -269,23 +268,7 @@ class Codex extends Extendable implements Arrayable
      */
     public function url($project = null, $ref = null, $doc = null)
     {
-        $uri = $this->config('base_route');
-
-        if ( !is_null($project) ) {
-
-            if ( !$project instanceof Project ) {
-                $project = $this->projects->get($project);
-            }
-
-
-            $uri = "{$uri}/{$project->getName()}";
-
-            $ref = $ref === null ? $project->refs->getDefaultName() : $ref;
-            $doc = $doc === null ? '' : "/{$doc}";
-            $uri = "{$uri}/{$ref}{$doc}";
-        }
-
-        return url($uri);
+        return route('codex.document', [ 'projectSlug' => $project, 'ref' => $ref, 'document' => $doc ]);
     }
 
     /**

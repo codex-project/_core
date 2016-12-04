@@ -57,20 +57,17 @@ class CodexServiceProvider extends ServiceProvider
     protected $findCommands = [ 'Console' ];
 
     protected $bindings = [
-        'fs'          => \Laradic\Filesystem\Filesystem::class,
-        'codex.menus' => Menus\Menus::class,
-        'codex.menu'  => Menus\Menu::class,
-
-        'codex.projects'  => Projects\Projects::class,
-        'codex.project'   => Projects\Project::class,
-        'codex.refs'      => Projects\Refs::class,
-        'codex.ref'       => Projects\Ref::class,
-        'codex.documents' => Documents\Documents::class,
-        'codex.document'  => Documents\Document::class,
-
+        'fs'                      => \Laradic\Filesystem\Filesystem::class,
+        'codex.menus'             => Menus\Menus::class,
+        'codex.menu'              => Menus\Menu::class,
+        'codex.projects'          => Projects\Projects::class,
+        'codex.project'           => Projects\Project::class,
+        'codex.refs'              => Projects\Refs::class,
+        'codex.ref'               => Projects\Ref::class,
+        'codex.documents'         => Documents\Documents::class,
+        'codex.document'          => Documents\Document::class,
         'codex.project.generator' => Projects\ProjectGenerator::class,
-        'codex.helpers.theme'     => Helpers\ThemeHelper::class,
-        'codex.helpers.cache'     => Helpers\CacheHelper::class,
+        'codex.theme'             => Theme::class,
     ];
 
     protected $singletons = [
@@ -99,34 +96,27 @@ class CodexServiceProvider extends ServiceProvider
 
     public function booting()
     {
-    }
-
-    protected function applyTheme()
-    {
-        if ( $this->app[ 'config' ]->get('codex.apply_theme', false) !== true ) {
-            return;
-        }
-
         $codex = $this->codex();
-        $codex->theme
-            ->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [], true)
-            ->addStylesheet('theme', 'vendor/codex/styles/stylesheet', [ 'vendor' ])
-            ->addStylesheet('prism', 'vendor/codex/styles/prism', [ 'theme' ])
-            ->addJavascript('vendor', 'vendor/codex/scripts/vendor')
-            ->addJavascript('codex', 'vendor/codex/scripts/codex', [ 'vendor' ])
-            ->addJavascript('theme', 'vendor/codex/scripts/theme', [ 'codex' ])
-            ->addScript('codex', 'codex.init();')
-            ->addScript('theme', 'codex.theme.init();', [ 'codex' ])
-            ->addBodyClass('docs language-php');
+
+        # Menus
+        $codex->menus->add('sidebar')->setResolver(SidebarMenuResolver::class);
+        $codex->menus->add('projects')->setResolver(ProjectsMenuResolver::class);
+        $codex->menus->add('refs')->setResolver(RefsMenuResolver::class);
+
+        # Plugins
+        $this->addons->plugins->run();
     }
+
 
     public function register()
     {
         $app = parent::register();
 
-//        $this->registerDev();
+        $config = $this->app->make('config');
 
-        $this->registerLogger();
+        if ( $config->get('codex.log', false) ) {
+            $this->registerLogger();
+        }
 
         $this->registerDefaultFilesystem();
 
@@ -134,39 +124,11 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerAddons();
 
-
-        # $this->registerTheme();
-
         $this->registerJavascriptData();
 
-        if ( $this->app[ 'config' ]->get('codex.http.enabled', false) ) {
+        if ( $config->get('codex.http.enabled', false) ) {
             $this->registerHttp();
         }
-
-        // After all providers are registered, we also run the plugins, so they are also registered before booting providers.
-        $app->booting(function ($app) {
-
-            $codex = $this->codex();
-
-            # Menus
-            $codex->menus->add('sidebar')->setResolver(SidebarMenuResolver::class);
-            $projectsMenu = $this->codex()->menus->add('projects')->setResolver(ProjectsMenuResolver::class);
-            $refsMenu     = $this->codex()->menus->add('refs')->setResolver(RefsMenuResolver::class);
-
-            $this->codex()->theme->pushContentToStack('nav', $this->codexView('layouts.default'), function (View $view) use ($projectsMenu) {
-                return $projectsMenu->render(array_get($view->getData(), 'project', null));
-            });
-
-            $this->codex()->theme->pushContentToStack('nav', $this->codexView('document'), function (View $view) use ($refsMenu) {
-                return $refsMenu->render(array_get($view->getData(), 'ref', null));
-            });
-
-            # Assets
-            $this->applyTheme();
-
-            # Plugins
-            $this->addons->plugins->run();
-        });
 
         return $app;
     }
@@ -193,8 +155,7 @@ class CodexServiceProvider extends ServiceProvider
     protected function registerCodex()
     {
         Codex::registerExtension('codex', 'menus', 'codex.menus');
-        Codex::registerExtension('codex', 'theme', 'codex.helpers.theme');
-        Codex::registerExtension('codex', 'cache', 'codex.helpers.cache');
+        Codex::registerExtension('codex', 'theme', 'codex.theme');
         Codex::registerExtension('codex', 'projects', 'codex.projects');
         Codex::registerExtension('codex.project', 'refs', 'codex.refs');
         Codex::registerExtension('codex.ref', 'documents', 'codex.documents');
@@ -209,31 +170,9 @@ class CodexServiceProvider extends ServiceProvider
         });
     }
 
-    protected function registerDev()
-    {
-        $this->app->register(Codex\Addon\Misc\Dev\DevServiceProvider::class);
-    }
-
     protected function registerHttp()
     {
         $this->app->register(Http\HttpServiceProvider::class);
-    }
-
-    protected function registerTheme()
-    {
-        $this->codexHook('constructed', function (Codex $codex) {
-            /** @var \Codex\Codex $codex */
-            $codex->theme->addStylesheet('vendor', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', [], true);
-            $codex->theme->addStylesheet('theme', 'vendor/codex/styles/stylesheet', [ 'vendor' ]);
-            $codex->theme->addStylesheet('prism', 'vendor/codex/styles/prism', [ 'theme' ]);
-            $codex->theme
-                ->addJavascript('vendor', 'vendor/codex/scripts/vendor')
-                ->addJavascript('codex', 'vendor/codex/scripts/codex', [ 'vendor' ])
-                ->addJavascript('theme', 'vendor/codex/scripts/theme', [ 'codex' ]);
-            $codex->theme->addBodyClass('docs language-php');
-            $codex->theme->addScript('codex', 'codex.init();');
-            $codex->theme->addScript('theme', 'codex.theme.init();', [ 'codex' ]);
-        });
     }
 
     protected function bootBladeDirectives()

@@ -30,9 +30,9 @@ class ViewCollection extends BaseCollection
                 'toc'     => 'codex::processors.toc',
                 'buttons' => 'codex::processors.buttons',
             ],
-
-            'document' => 'codex::document',
-            'error'    => 'codex::error',
+            'welcome'    => 'codex::welcome',
+            'document'   => 'codex::document',
+            'error'      => 'codex::error',
         ], $addons);
     }
 

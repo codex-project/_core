@@ -1,8 +1,11 @@
 <?php
 
-$index = Route::get('/', [ 'as' => 'index', 'uses' => 'CodexController@index' ]);
 
-$document = Route::get('{projectSlug}/{ref?}/{document?}', [ 'as' => 'document', 'uses' => 'CodexController@document' ]);
+$indexMethod = config('codex.http.use_welcome_page', false) ? 'welcome' : 'index';
+Route::get('/', [ 'as' => 'index', 'uses' => 'CodexController@' . $indexMethod  ]);
+
+$documentPrefix = str_ensure_right(config('codex.http.document_prefix', ''), '/');
+$document = Route::get("{$documentPrefix}{projectSlug?}/{ref?}/{document?}", [ 'as' => 'document', 'uses' => 'CodexController@document' ]);
 $document->where('document', '(.*)');
 
 //if ( count(Extender::getExcludedProjectNames()) > 0 ) {

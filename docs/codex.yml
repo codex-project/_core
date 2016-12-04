@@ -60,7 +60,6 @@ menu:
         document: configuration/document
 
       - name: Processors
-        document: configuration/processors/attributes
         children:
           - name: Attributes
             document: configuration/processors/attributes

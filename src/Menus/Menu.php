@@ -272,14 +272,9 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
      */
     public function resolve(array $params = [])
     {
-        if ( null === $this->resolver || true === $this->resolved ) {
-            return $this;
-        }
-
         /** @var Contracts\Menus\MenuResolver $resolver */
-        $resolver = $this->getContainer()->make($this->resolver);
+        $resolver = $this->getContainer()->build($this->resolver);
         $this->hookPoint('menu:resolve', [ $resolver ]);
-        $this->resolved = true;
         call_user_func_array([ $resolver, 'handle' ], array_merge([ $this ], $params));
         $this->hookPoint('menu:resolved');
 
@@ -298,27 +293,26 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
     public function render()
     {
         $params = func_get_args();
-        if ( $this->rendered === null ) {
-            $this->resolve($params);
-            $this->hookPoint('menu:render');
+        $this->resolve($params);
+        $this->hookPoint('menu:render');
 
-            $root = $this->getRootNode();
-            if ( $this->sorter ) {
-                $items = $root->accept(new $this->sorter);
-            } else {
-                $items = $root->getChildren();
-            }
-
-            $vars = [
-                'menu'  => $this,
-                'items' => $items,
-            ];
-
-
-            $this->rendered = $this->viewFactory->make($this->view)->with($vars)->render();
-
-            $this->hookPoint('menu:rendered', [ $items, $this->rendered ]);
+        $root = $this->getRootNode();
+        if ( $this->sorter ) {
+            $items = $root->accept(new $this->sorter);
+        } else {
+            $items = $root->getChildren();
         }
+
+        $vars = [
+            'menu'  => $this,
+            'items' => $items,
+        ];
+
+
+        $this->rendered = $this->viewFactory->make($this->view)->with($vars)->render();
+
+        $this->hookPoint('menu:rendered', [ $items, $this->rendered ]);
+
         return $this->rendered;
     }
 
@@ -427,7 +421,6 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
     {
         return $this->getRootNode()->toArray();
     }
-
 
 
 }

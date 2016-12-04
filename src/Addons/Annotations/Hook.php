@@ -23,9 +23,9 @@ final class Hook extends AbstractAnnotation
     public $name;
 
     /**
-     * @var string|bool
+     * @var string
      */
-    public $replace = false;
+    public $replace;
 
     /**
      * plugin method

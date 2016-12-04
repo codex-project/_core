@@ -162,7 +162,7 @@ class Project extends Extendable implements Arrayable
      *
      * @return string
      */
-    public function url($doc = 'index', $ref = null)
+    public function url($doc = null, $ref = null)
     {
         return $this->codex->url($this, $ref, $doc);
     }

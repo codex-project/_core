@@ -12,7 +12,7 @@
 
     <title>
         @section('title')
-            {{ config('codex.display_name') }}
+            {{ codex()->theme->getTitle() }}
         @show
     </title>
 

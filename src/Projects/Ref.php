@@ -70,11 +70,11 @@ class Ref extends Extendable implements Arrayable
         $this->refs    = $refs;
         $this->path    = $project->path($name);
 
-        $this->hookPoint('refs:construct', [ $this ]);
+        $this->hookPoint('ref:construct', [ $this ]);
 
         $this->resolve();
 
-        $this->hookPoint('refs:constructed', [ $this ]);
+        $this->hookPoint('ref:constructed', [ $this ]);
     }
 
     protected function resolve()
@@ -170,6 +170,16 @@ class Ref extends Extendable implements Arrayable
         return $this->refs;
     }
 
+    /**
+     * getSidebarMenu method
+     * @return \Codex\Menus\Menu
+     */
+    public function getSidebarMenu()
+    {
+        $menu = $this->getCodex()->menus->get('sidebar');
+        $menu->resolve([ $this->project, $this ]);
+        return $menu;
+    }
 
     /**
      * Get the instance as an array.
@@ -178,16 +188,12 @@ class Ref extends Extendable implements Arrayable
      */
     public function toArray()
     {
-
-        $menu = $this->getCodex()->menus->get('sidebar');
-        $menu->resolve([ $this->project, $this ]);
-
         return [
             'name'      => $this->getName(),
             'config'    => $this->getConfig(),
             'isBranch'  => $this->isBranch(),
             'isVersion' => $this->isVersion(),
-            'menu'      => $menu->toArray(),
+            'menu'      => $this->getSidebarMenu()->toArray(),
 //            'renderedMenu' => $menu->render($this->project, $this)
         ];
     }

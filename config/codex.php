@@ -2,13 +2,11 @@
 
 // Documentation: http://codex-project.dev/codex/master/getting-started/configuration/global
 return [
-
-
     'display_name' => env('CODEX_DISPLAY_NAME', 'Codex (BETA)'),
 
-    'theme' => null,
-
     'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
+
+    'plugins' => [ 'phpdoc', 'auth', 'git', 'jira', 'theme-default', 'misc77777777777777777' ],
 
     'paths' => [
         'docs'     => env('CODEX_ROOT_DIR', base_path('resources/docs')),
@@ -20,6 +18,8 @@ return [
     'http' => [
         'enabled'              => true,
         'base_route'           => env('CODEX_BASE_ROUTE', null),
+        'use_welcome_page'     => true,
+        'document_prefix'           => 'documentation',
         'ignore_project_names' => [ '_debugbar', ],
         'api'                  => [
             'enabled'    => true,
@@ -29,14 +29,6 @@ return [
     ],
 
     'log' => true,
-
-    'dev' => [
-        'enabled'    => env('CODEX_DEV_ENABLED', false),
-        'metas'      => true,
-        'debugbar'   => true,
-        'benchmark'  => true,
-        'hookpoints' => true,
-    ],
 
     'document' => [
         'cache'      => [
@@ -76,9 +68,7 @@ return [
         ],
     ],
 
-    'apply_theme' => true,
 
-    'plugins' => [ 'phpdoc', 'auth', 'git', 'jira', 'theme-default' ],
 
 
     'default_project_config' => [

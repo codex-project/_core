@@ -50,6 +50,13 @@ class CodexController extends Controller
         ]));
     }
 
+    public function welcome()
+    {
+        $this->hookPoint('controller:welcome');
+
+        return $this->view->make($this->codex->view('welcome'));
+    }
+
     /**
      * Render the documentation page for the given project and version.
      *
@@ -59,8 +66,11 @@ class CodexController extends Controller
      *
      * @return $this
      */
-    public function document($projectSlug, $ref = null, $path = '')
+    public function document($projectSlug = null, $ref = null, $path = '')
     {
+        if($projectSlug === null){
+            $projectSlug = $this->codex->config('default_project');
+        }
         /** @var Codex $codex */
         $codex = $this->codex;
 
@@ -91,7 +101,7 @@ class CodexController extends Controller
         #
         # prepare view
         #
-        $view = $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb', 'ref'));
+        $view = $this->view->make($document->attr('view'), compact('document', 'content', 'breadcrumb'));
 
         $res = $this->hookPoint('controller:view', [ $view, $codex, $project, $document, $ref ]);
         if ( $res ) {

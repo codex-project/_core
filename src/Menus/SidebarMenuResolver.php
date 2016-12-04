@@ -71,7 +71,7 @@ class SidebarMenuResolver implements MenuResolver
     {
 
         foreach ( $items as $item ) {
-            $link = '#';
+            $link = 'javascript:;';
             $type = null;
             if ( array_key_exists('document', $item) ) {
                 $type = 'document';
