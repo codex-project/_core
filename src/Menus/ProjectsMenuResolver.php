@@ -41,8 +41,8 @@ class ProjectsMenuResolver implements MenuResolver
      */
     public function handle(Menu $menu, Project $project = null)
     {
-        $menu->setAttribute('title', $project === null ? 'Pick...' : $project->getDisplayName());
-        $menu->setAttribute('subtitle', 'project');
+        $menu->setAttribute('label', $project === null ? 'Pick...' : $project->getDisplayName());
+        $menu->setAttribute('title', 'Project');
 
         foreach($this->codex->projects->all() as $project){
             # Add to menu

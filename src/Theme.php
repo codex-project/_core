@@ -68,9 +68,9 @@ class Theme extends Extendable implements Arrayable
      *
      * @return static
      */
-    public function set($key, $value)
+    public function set($key, $value = null)
     {
-        $this->data->put($key, $value);
+        $this->data->set($key, $value );
 
         return $this;
     }

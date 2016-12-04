@@ -17,8 +17,8 @@ class RefsMenuResolver implements MenuResolver
         $refs = $currentRef->getRefs();
         $project = $currentRef->getProject();
 
-        $menu->setAttribute('title', $currentRef->getName());
-        $menu->setAttribute('subtitle', 'version');
+        $menu->setAttribute('label', $currentRef->getName());
+        $menu->setAttribute('title', 'Version');
 
         foreach( $refs->all() as $ref){
             $menu

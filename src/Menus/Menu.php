@@ -201,6 +201,21 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
     }
 
     /**
+     * parseAttributes
+     *
+     * @return string
+     */
+    public function parseAttributes()
+    {
+        $parsed = '';
+        foreach ( $this->attributes as $key => $val ) {
+            $parsed .= " {$key}=\"{$val}\"";
+        }
+
+        return $parsed;
+    }
+
+    /**
      * Get breadcrumbs to the given Node
      *
      * @param \Codex\Menus\Node $item
@@ -342,10 +357,13 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
      * Set the id value
      *
      * @param string $id
+     *
+     * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
     }
 
     /**

@@ -99,12 +99,30 @@ class CodexServiceProvider extends ServiceProvider
         $codex = $this->codex();
 
         # Menus
-        $codex->menus->add('sidebar')->setResolver(SidebarMenuResolver::class);
-        $codex->menus->add('projects')->setResolver(ProjectsMenuResolver::class);
-        $codex->menus->add('refs')->setResolver(RefsMenuResolver::class);
 
         # Plugins
         $this->addons->plugins->run();
+
+        $codex->menus->add('sidebar')
+            ->setResolver(SidebarMenuResolver::class)
+            ->setView($codex->view('menus.sidebar'));
+
+        $codex->menus->add('projects')
+            ->setResolver(ProjectsMenuResolver::class)
+            ->setView($codex->view('menus.header'));
+
+        $codex->menus->add('refs')
+            ->setResolver(RefsMenuResolver::class)
+            ->setView($codex->view('menus.header'));
+
+        $this->codexHook('controller:document', function ($controller, Document $document, Codex $codex, $project, $ref) {
+            $codex->theme->pushContentToStack('nav', $codex->view('document'), function ($view) use ($codex, $document) {
+                return $codex->menus->get('refs')->render($document->getRef());
+            });
+            $codex->theme->pushContentToStack('nav', $codex->view('document'), function ($view) use ($codex, $document) {
+                return $codex->menus->get('projects')->render($document->getProject());
+            });
+        });
     }
 
 
