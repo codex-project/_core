@@ -85,7 +85,7 @@ class Theme extends Extendable implements Arrayable
      *
      * @return static
      */
-    public function pushViewToStack($stackName, $viewName, $data = null, $targetViews = 'codex::layouts.default')
+    public function pushViewToStack($stackName, $targetViews, $viewName, $data = null)
     {
         $this->pushContentToStack($stackName, $targetViews, function($view) use ($viewName, $data){
             /** @var \Illuminate\View\View $view */
@@ -150,7 +150,7 @@ class Theme extends Extendable implements Arrayable
      * @param array $depends
      * @param bool  $external
      *
-     * @return static
+     * @return Theme
      */
     public function addStylesheet($name, $src, array $depends = [ ], $external = false)
     {

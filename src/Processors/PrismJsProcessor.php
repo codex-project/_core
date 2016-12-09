@@ -13,9 +13,9 @@ namespace Codex\Processors;
 use Codex\Addons\Annotations\Processor;
 use Codex\Codex;
 use Codex\Documents\Document;
-use Codex\Helpers\ThemeHelper;
 use Codex\Projects\Project;
 use Codex\Support\Collection;
+use Codex\Theme;
 use FluentDOM\Element;
 use Illuminate\Support\Traits\Macroable;
 use Laradic\Support\Str;
@@ -128,18 +128,19 @@ class PrismJsProcessor
     /** @var Document */
     public $document;
 
-    /** @var ThemeHelper */
+    /** @var Theme */
     protected $theme;
 
     public function handle(Document $document)
     {
         $this->theme = $this->codex->theme;
-        $this->addBaseAssets();
-        foreach ( $this->config['plugins'] as $plugin )
-        {
-            $this->addPlugin($plugin);
-        }
+//        $this->addBaseAssets();
+//        foreach ( $this->config['plugins'] as $plugin )
+//        {
+//            $this->addPlugin($plugin);
+//        }
 
+        $document->setContent(str_replace('language-', 'line-numbers language-', $document->getContent()));
         return;
         $dom = $document->getDom();
         $dom->find('//pre/code')->each(function (Element $el)

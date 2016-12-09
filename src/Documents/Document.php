@@ -120,7 +120,7 @@ class Document extends Extendable implements Arrayable
         $this->extension = path_get_extension($path);
         $this->processed = new Collection();
 
-        $this->hookPoint('document:construct', [ $this ]);
+        $this->hookPoint('document:construct');
 
         #$this->codex->projects->hasActive() === false && $project->setActive();
 
@@ -136,7 +136,7 @@ class Document extends Extendable implements Arrayable
         $this->attr('view', null) === null && $this->setAttribute('view', $codex->view('document'));
 
 
-        $this->hookPoint('document:constructed', [ $this ]);
+        $this->hookPoint('document:constructed');
     }
 
     /**
@@ -273,7 +273,7 @@ class Document extends Extendable implements Arrayable
      */
     public function getBreadcrumb()
     {
-        return $this->getCodex()->menus->get('sidebar')->getBreadcrumbToHref($this->url());
+        return $this->getCodex()->menus->get('sidebar')->resolve([$this->project, $this->ref])->getBreadcrumbToHref($this->url());
 //        return []; //$this->ref->getSidebarMenu()->getBreadcrumbToHref($this->url());
     }
 

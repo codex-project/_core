@@ -33,3 +33,20 @@ namespace Codex {
     {
     }
 }
+
+namespace Codex\Projects {
+
+    /**
+     * This is the class Project.
+     *
+     * @package        Codex\Projects
+     * @author         CLI
+     * @copyright      Copyright (c) 2015, CLI. All rights reserved
+     *
+     * @property-read \Codex\Addon\Git\GitProject   $git          The git project instance
+     *
+     */
+    class Project {
+
+    }
+}

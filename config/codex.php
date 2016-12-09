@@ -6,7 +6,7 @@ return [
 
     'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
 
-    'plugins' => [ 'phpdoc', 'auth', 'git', 'jira', 'theme-default', 'misc77777777777777777' ],
+    'plugins' => [ 'phpdoc', 'auth', 'git', 'jira', 'theme-default', 'misc' ],
 
     'paths' => [
         'docs'     => env('CODEX_ROOT_DIR', base_path('resources/docs')),

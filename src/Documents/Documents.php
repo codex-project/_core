@@ -47,7 +47,7 @@ class Documents extends ExtendableCollection implements Contracts\Documents\Docu
         $this->setCodex($codex);
         $this->setFiles($parent->getFiles());
 
-        $this->hookPoint('documents:constructing');
+        $this->hookPoint('documents:construct');
         $this->resolveAll();
         $this->hookPoint('documents:constructed');
     }
