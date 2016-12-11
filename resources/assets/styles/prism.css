@@ -1,12 +1,3 @@
-/*
- * Part of the Codex Project packages.
- *
- * License and copyright information bundled with this package in the LICENSE file.
- *
- * @author Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license http://codex-project.ninja/license The MIT License
- */
 /**
  * Retrieves a color value from the $material-colors Sass map
  * Inspired by https://github.com/nilskaspersson/Google-Material-UI-Color-Palette/
@@ -18,32 +9,14 @@
  *                                          '200', 'a100')
  */
 /*! sassyjson - v1.1.8 - 2015-09-24 */
-/* http://prismjs.com/download.html?themes=prism&languages=markup+css+clike+javascript+php+php-extras+bash+sql+http */
 /**
  * prism.js default theme for JavaScript, CSS and HTML
  * Based on dabblet (http://dabblet.com)
  * @author Lea Verou
  */
-.docs article code[class*="language-"],
-.docs article pre[class*="language-"] {
-  font-size: 12px;
-  line-height: 2;
-  vertical-align: middle;
-  font-family: "Source Code Pro", Monaco, monospace;
-}
-
-code[class*="language-"],
-pre[class*="language-"] {
-  color: black;
-  text-shadow: 0 1px white;
-  font-family: Consolas, Monaco, 'Andale Mono', monospace;
-  direction: ltr;
-  text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
-  line-height: 1.7;
-  font-size: 11.5px;
+/* Code blocks */
+/* Inline code */
+code[class*="language-"], pre[class*="language-"] {
   -moz-tab-size: 4;
   -o-tab-size: 4;
   tab-size: 4;
@@ -51,112 +24,177 @@ pre[class*="language-"] {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-break: break-all;
+  word-wrap: break-word;
+  font-family: "Source Code Pro", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 90%;
+  line-height: 1.5;
+  color: #bd4147;
+  text-shadow: none;
+  background: none;
+  text-align: left;
+  word-spacing: normal;
+  overflow: auto;
+  background: #f5f2f0;
 }
 
-pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
-code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+code[class*="language-"]::-moz-selection, pre[class*="language-"]::-moz-selection {
   text-shadow: none;
+  text-shadow: none;
+  background: #b3d4fc;
   background: #b3d4fc;
 }
 
-pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
-code[class*="language-"]::selection, code[class*="language-"] ::selection {
+code[class*="language-"]::selection, pre[class*="language-"]::selection {
   text-shadow: none;
+  text-shadow: none;
+  background: #b3d4fc;
   background: #b3d4fc;
 }
 
-@media print {
-  code[class*="language-"],
-  pre[class*="language-"] {
-    text-shadow: none;
-  }
-}
-
-/* Code blocks */
 pre[class*="language-"] {
   padding: 1em;
-  margin: 10px 0 20px;
-  overflow: auto;
+  margin: .5em 0;
 }
 
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
-  background: rgba(238, 238, 238, 0.35);
-  border-radius: 3px;
-  padding: 10px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
-}
-
-/* Inline code */
 :not(pre) > code[class*="language-"] {
-  background: #f0f2f1;
-  color: #f4645f;
-  padding: 1px 5px;
-  border-radius: 3px;
+  background: #f5f2f0;
+  padding: .1em;
+  white-space: normal;
 }
 
-.token.comment,
-.token.prolog,
-.token.doctype,
+.token.comment {
+  color: slategray;
+}
+
+.token.prolog {
+  color: slategray;
+}
+
+.token.doctype {
+  color: slategray;
+}
+
 .token.cdata {
-  color: #999;
+  color: slategray;
 }
 
 .token.punctuation {
-  color: #999;
+  color: #999999;
 }
 
 .namespace {
   opacity: .7;
 }
 
-.token.property,
-.token.tag,
-.token.boolean,
-.token.number,
-.token.constant,
-.token.symbol,
+.token.property {
+  color: #990055;
+}
+
+.token.tag {
+  color: slategray;
+}
+
+.token.boolean {
+  color: #990055;
+}
+
+.token.number {
+  color: #990055;
+}
+
+.token.constant {
+  color: #990055;
+}
+
+.token.symbol {
+  color: #990055;
+}
+
 .token.deleted {
-  color: #DA564A;
+  color: #990055;
 }
 
-.token.scope, .token.attr-name {
-  color: #DA564A;
+.token.selector {
+  color: #669900;
 }
 
-.token.selector,
-.token.string,
-.token.char,
-.token.builtin,
+.token.attr-name {
+  color: #669900;
+}
+
+.token.string {
+  color: #669900;
+}
+
+.token.char {
+  color: #669900;
+}
+
+.token.builtin {
+  color: #669900;
+}
+
 .token.inserted {
-  color: #2E7D32;
+  color: #669900;
 }
 
-.token.operator,
-.token.entity,
-.token.url,
-.language-css .token.string,
+.token.operator {
+  color: #a67f59;
+}
+
+.token.entity {
+  color: #a67f59;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: help;
+}
+
+.token.url {
+  color: #a67f59;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.language-css .token.string {
+  color: #a67f59;
+  background: rgba(255, 255, 255, 0.5);
+}
+
 .style .token.string {
-  color: #555;
+  color: #a67f59;
+  background: rgba(255, 255, 255, 0.5);
 }
 
-.token.atrule,
-.token.attr-value,
+.token.atrule {
+  color: #0077aa;
+}
+
+.token.attr-value {
+  color: #0077aa;
+}
+
 .token.keyword {
-  color: #07a;
+  color: #0077aa;
 }
 
 .token.function {
-  color: #555;
+  color: #dd4a68;
 }
 
-.token.regex,
-.token.important,
+.token.regex {
+  color: #ee9900;
+}
+
+.token.important {
+  color: #ee9900;
+  font-weight: bold;
+}
+
 .token.variable {
-  color: #4EA1DF;
+  color: #ee9900;
 }
 
-.token.important,
 .token.bold {
   font-weight: bold;
 }
@@ -165,16 +203,22 @@ pre[class*="language-"] {
   font-style: italic;
 }
 
-.token.entity {
-  cursor: help;
+@media print {
+  code[class*="language-"] {
+    text-shadow: none;
+  }
+  pre[class*="language-"] {
+    text-shadow: none;
+  }
+}
+
+.token a {
+  color: inherit;
 }
 
 pre.line-numbers {
   position: relative;
   padding-left: 3.8em;
-  padding-top: 0px;
-  margin-top: -1px;
-  border-radius: 0;
   counter-reset: linenumber;
 }
 
@@ -185,14 +229,13 @@ pre.line-numbers > code {
 .line-numbers .line-numbers-rows {
   position: absolute;
   pointer-events: none;
-  top: -4px;
-  padding-top: 0px;
+  top: 0;
   font-size: 100%;
   left: -3.8em;
   width: 3em;
   /* works for line-numbers below 1000 lines */
   letter-spacing: -1px;
-  background: #f0f2f1;
+  border-right: 1px solid #999;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -213,129 +256,42 @@ pre.line-numbers > code {
   text-align: right;
 }
 
-.dark-code {
-  /* Code blocks */
-  /* Inline code */
+div.prism-show-language {
+  position: relative;
 }
 
-.dark-code code[class*="language-"],
-.dark-code pre[class*="language-"] {
-  color: #f8f8f2;
-  text-shadow: 0 1px rgba(0, 0, 0, 0.3);
-  font-family: Consolas, Monaco, 'Andale Mono', monospace;
-  direction: ltr;
-  text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
-  line-height: 1.5;
-  -moz-tab-size: 4;
-  -o-tab-size: 4;
-  tab-size: 4;
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
-  hyphens: none;
-}
-
-.dark-code pre[class*="language-"] {
-  padding: 1em;
-  margin: .5em 0;
-  overflow: auto;
-  border-radius: 0.3em;
-}
-
-.dark-code :not(pre) > code[class*="language-"],
-.dark-code pre[class*="language-"] {
-  background: #272822;
-}
-
-.dark-code :not(pre) > code[class*="language-"] {
-  padding: .1em;
-  border-radius: .3em;
-}
-
-.dark-code .token.comment,
-.dark-code .token.prolog,
-.dark-code .token.doctype,
-.dark-code .token.cdata {
-  color: slategray;
-}
-
-.dark-code .token.punctuation {
-  color: #f8f8f2;
-}
-
-.dark-code .namespace {
-  opacity: .7;
-}
-
-.dark-code .token.property,
-.dark-code .token.tag,
-.dark-code .token.constant,
-.dark-code .token.symbol,
-.dark-code .token.deleted {
-  color: #f92672;
-}
-
-.dark-code .token.boolean,
-.dark-code .token.number {
-  color: #ae81ff;
-}
-
-.dark-code .token.selector,
-.dark-code .token.attr-name,
-.dark-code .token.string,
-.dark-code .token.char,
-.dark-code .token.builtin,
-.dark-code .token.inserted {
-  color: #a6e22e;
-}
-
-.dark-code .token.operator,
-.dark-code .token.entity,
-.dark-code .token.url,
-.dark-code .language-css .token.string,
-.dark-code .style .token.string,
-.dark-code .token.variable {
-  color: #f8f8f2;
-}
-
-.dark-code .token.atrule,
-.dark-code .token.attr-value {
-  color: #e6db74;
-}
-
-.dark-code .token.keyword {
-  color: #66d9ef;
-}
-
-.dark-code .token.regex,
-.dark-code .token.important {
-  color: #fd971f;
-}
-
-.dark-code .token.important,
-.dark-code .token.bold {
-  font-weight: bold;
-}
-
-.dark-code .token.italic {
-  font-style: italic;
-}
-
-.dark-code .token.entity {
-  cursor: help;
+div.prism-show-language > div.prism-show-language-label {
+  color: black;
+  background-color: #CFCFCF;
+  display: inline-block;
+  position: absolute;
+  bottom: auto;
+  left: auto;
+  top: 0;
+  right: 0;
+  width: auto;
+  height: auto;
+  font-size: 0.9em;
+  border-radius: 0 0 0 5px;
+  padding: 0 0.5em;
+  text-shadow: none;
+  z-index: 1;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  -o-transform: none;
+  transform: none;
 }
 
 .prism-show-language {
   background-color: transparent;
   position: relative;
-  top: 22px;
   text-align: right;
   width: 20%;
   left: 80%;
-  margin-top: -15px;
 }
 
 .prism-show-language-label {

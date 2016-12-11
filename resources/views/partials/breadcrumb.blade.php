@@ -1,17 +1,14 @@
 @if(isset($breadcrumb))
-    <nav class="breadcrumbs">
-        <ul>
-            <li><a href="{{ $project->url('index') }}">{{ $project->getDisplayName() }}</a><i class="fa fa-arrow-right"></i></li>
-            @foreach($breadcrumb as $item)
-                @if($item->getId() !== 'root')
-                    <li>
-                        <a {!! $item->parseAttributes() !!}>{{ $item->getValue() }}</a>
-                        @if($item->hasChildren())
-                            <i class="fa fa-arrow-right"></i>
-                        @endif
-                    </li>
+    <li class="breadcrumb-item"><a href="{{ $document->getProject()->url('index') }}">{{ $document->getProject()->getDisplayName() }}</a></li>
+    @foreach($breadcrumb as $item)
+        @if($item->getId() !== 'root')
+            <li class="breadcrumb-item">
+                @if($item->meta('type') === 'parent')
+                    {{ $item->getValue() }}
+                @else
+                    <a {!! $item->parseAttributes() !!}>{{ $item->getValue() }}</a>
                 @endif
-            @endforeach
-        </ul>
-    </nav>
+            </li>
+        @endif
+    @endforeach
 @endif

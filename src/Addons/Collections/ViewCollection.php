@@ -15,9 +15,6 @@ class ViewCollection extends BaseCollection
     public function __construct(array $items, $addons)
     {
         parent::__construct([
-            'layouts'    => [
-                'default' => 'codex::layouts.default',
-            ],
             'menus'      => [
                 'sidebar' => 'codex::menus.sidebar',
                 'header'  => 'codex::menus.header',
@@ -27,6 +24,7 @@ class ViewCollection extends BaseCollection
                 'toc'     => 'codex::processors.toc',
                 'buttons' => 'codex::processors.buttons',
             ],
+            'layout'     => 'codex::layout',
             'welcome'    => 'codex::welcome',
             'document'   => 'codex::document',
             'error'      => 'codex::error',

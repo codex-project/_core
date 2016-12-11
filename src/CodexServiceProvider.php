@@ -36,8 +36,6 @@ class CodexServiceProvider extends ServiceProvider
 {
     use CodexProviderTrait;
 
-    protected $dir = __DIR__;
-
     protected $configFiles = [ 'codex' ];
 
     protected $viewDirs = [
@@ -122,6 +120,44 @@ class CodexServiceProvider extends ServiceProvider
             $codex->theme->pushContentToStack('nav', $codex->view('document'), function ($view) use ($codex, $document) {
                 return $codex->menus->get('projects')->render($document->getProject());
             });
+        });
+
+
+        $assetPath = asset('vendor/codex');
+        $this->codex()->theme
+            ->reset()
+            ->addStylesheet('fonts', 'https://fonts.googleapis.com/css?family=Open+Sans:300,400|Raleway:300,400,600|Source+Code+Pro')
+            ->addStylesheet('stylesheet', $assetPath . '/styles/codex.css', [ 'fonts' ])
+            ->addStylesheet('theme', $assetPath . '/styles/themes/codex-default.css', [ 'stylesheet' ])
+            ->addStylesheet('prism', $assetPath . '/styles/prism.css', [ 'theme' ]);
+
+        $ext = config('app.debug') ? '.js' : '.min.js';
+        $this->codex()->theme
+            ->addJavascript('jquery', $assetPath . '/vendor/jquery/jquery' . $ext)
+            ->addJavascript('vue', $assetPath . '/vendor/vue/vue' . $ext)
+            ->addJavascript('vuex', $assetPath . '/vendor/vuex/vuex' . $ext, [ 'vue' ])
+            ->addJavascript('wowjs', $assetPath . '/vendor/wowjs/wow' . $ext)
+            ->addJavascript('manifest', $assetPath . '/js/manifest.js')
+            ->addJavascript('vendor', $assetPath . '/js/vendor.js', [ 'vue', 'vuex', 'jquery' ])
+            ->addJavascript('codex', $assetPath . '/js/codex.js', [ 'vendor' ]);
+
+        $this->codexHook('controller:welcome', function ($controller) use ($assetPath) {
+            $this->codex()->theme->addJavascript('welcome', $assetPath . '/js/codex.welcome.js', [ 'codex' ])
+                ->addScript('init', <<<EOT
+var app = new codex.App({
+    el: '#app'
+})
+EOT
+                );
+        });
+        $this->codexHook('controller:document', function ($controller, Document $document) use ($assetPath) {
+            $this->codex()->theme->addJavascript('document', $assetPath . '/js/codex.document.js', [ 'codex' ])
+                ->addScript('init', <<<EOT
+var app = new codex.App({
+    el: '#app'
+})
+EOT
+                );
         });
     }
 

@@ -1,72 +1,39 @@
-@extends(codex()->view('layouts.default'))
-
-{{-- Title --}}
-@section('title')
-    {{ $document->attr('title') }}
-    -
-    {{ $project->config('display_name') }}
-    ::
-    @parent
-@endsection
-
-{{-- Meta --}}
-@push('meta')
-<meta name="description" content="{{ config('codex.display_name') }}.">
-<meta name="keywords" content="laravel, php, framework, web, artisans, taylor otwell">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-@endpush
-
-{{-- Stylesheets --}}
-@section('stylesheets')
-    @parent
-    <link rel="apple-touch-icon" href="{{ asset('vendor/codex/images/apple-touch-icon.png') }}">
-    <link rel="icon" href="{{ asset('vendor/codex/images/favicon.png') }}">
-@endsection
-
-{{-- Header --}}
-@section('header')
-    <nav class="main" data-layout="nav">
-        @stack('header')
-        <a href="/" class="brand">
-            {{ config('codex.display_name') }}
-        </a>
-        @stack('nav')
-    </nav>
-@endsection
+@extends(codex()->view('layout'))
 
 
-{{-- Document --}}
-@push('wrapin')
-<div class="docs-wrapper" data-layout="wrapper">
-    @endpush
+@section('body')
 
-    @section('sidebar-menu')
-        <a class="sidebar-toggle" data-action='sidebar-toggle' title='Toggle sidebar'><i class="fa fa-list"></i></a>
-        {!! codex()->menus->render('sidebar', $project, $ref) !!}
-    @endsection
+    <!--[if lt IE 10]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+<div id="app" class="page-document" v-cloak>
+    <c-theme :class="classes">
+        <c-header ref="header" :show-toggle="true" :logoLink="{ name: 'welcome' }">
+            <div slot="menu">
+                @stack('nav')
+            </div>
+        </c-header>
 
-    @section('breadcrumb')
-        @include('codex::partials.breadcrumb')
-    @endsection
+        <div class="c-page" ref="page" :style="{ 'min-height': minHeights.page + 'px' }">
+            <c-sidebar ref="sidebar" :min-height="minHeights.inner" active="{{ $document->url() }}">
+                <!--<c-sidebar-item v-for="item in menu" :item="item"></c-sidebar-item>-->
+                {!! $ref->getSidebarMenu()->render($document->getProject(), $document->getRef()) !!}
+            </c-sidebar>
 
-    @section('article')
-        <article class="content @yield('articleClass', '')" data-layout="article">
-            {!! $content !!}
-        </article>
-    @endsection
+            <c-content ref="content" :min-height="minHeights.inner" autoloader-languages-path="{{ asset('vendor/codex') }}/vendor/prismjs/components/">
+                <ol slot="breadcrumb" class="breadcrumb">
+                    @include('codex::partials.breadcrumb', ['breadcrumb' => $breadcrumb])
+                </ol>
+                {!! $document->render()  !!}
+            </c-content>
+        </div>
 
-    @stack('outro')
+        <c-scroll-to-top></c-scroll-to-top>
 
-    @push('wrapout')
+        <c-footer ref="footer">
+            <p>footer</p>
+        </c-footer>
+    </c-theme>
 </div>
-@endpush
 
-
-{{-- Footer --}}
-@section('footer')
-    <a href="#" class="scrollToTop"></a>
-    <footer class="main" data-layout="footer">
-        <p>Copyright &copy; {{ config('codex.display_name') }}.</p>
-    </footer>
-@endsection
-
+@stop

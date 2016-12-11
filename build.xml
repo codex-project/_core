@@ -59,9 +59,13 @@
         <delete dir="${project.basedir}/phpdoc"/>
     </target>
 
-    <target name="theme" description="do theme">
+    <target name="theme-install" description="do theme">
         <delete dir="${project.basedir}/resources/assets"/>
-        <exec command="npm install; bower install; grunt dist" dir="${project.basedir}/theme" logoutput="true" passthru="true"/>
+        <exec command="npm install" dir="${project.basedir}" logoutput="true" passthru="true"/>
+    </target>
+    <target name="theme-copy" description="do theme">
+        <delete dir="${project.basedir}/resources/assets"/>
+        <exec command="npm install" dir="${project.basedir}" logoutput="true" passthru="true"/>
     </target>
 
 </project>
