@@ -127,7 +127,8 @@ class CodexServiceProvider extends ServiceProvider
         $this->codex()->theme
             ->reset()
             ->addStylesheet('fonts', 'https://fonts.googleapis.com/css?family=Open+Sans:300,400|Raleway:300,400,600|Source+Code+Pro')
-            ->addStylesheet('stylesheet', $assetPath . '/styles/codex.css', [ 'fonts' ])
+            ->addStylesheet('font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css') //" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+            ->addStylesheet('stylesheet', $assetPath . '/styles/codex.css', [ 'fonts', 'font-awesome' ])
             ->addStylesheet('theme', $assetPath . '/styles/themes/codex-default.css', [ 'stylesheet' ])
             ->addStylesheet('prism', $assetPath . '/styles/prism.css', [ 'theme' ]);
 
@@ -253,8 +254,8 @@ EOT
                 'name'         => $project->getName(),
                 'display_name' => $project->getDisplayName(),
             ]);
-            $theme->set('document', $document->toArray());
-            $theme->set('theme', $theme->toArray());
+//            $theme->set('document', collect($document->toArray())->forget('content'));
+//            $theme->set('theme', $theme->toArray());
             $theme->set('apiUrl', url('api'));
             $theme->set('debug', config('app.debug', false));
         });
