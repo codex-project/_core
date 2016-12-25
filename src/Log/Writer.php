@@ -21,9 +21,12 @@ use Monolog\Handler\FirePHPHandler;
  */
 class Writer extends BaseWriter implements Log
 {
+    protected $enabled;
+
     public function __construct(\Monolog\Logger $monolog, \Illuminate\Contracts\Events\Dispatcher $dispatcher)
     {
         parent::__construct($monolog, $dispatcher);
+        $this->enabled = true;
     }
 
     public function useCodex($path, $level = 'debug')
@@ -54,9 +57,24 @@ class Writer extends BaseWriter implements Log
 
     protected function writeLog($level, $message, $context)
     {
-        if(config('codex.log'))
+        if($this->enabled)
         {
             parent::writeLog($level, $message, $context);
         }
     }
+
+    /**
+     * Set the enabled value
+     *
+     * @param mixed $enabled
+     *
+     * @return Writer
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+        return $this;
+    }
+
+
 }

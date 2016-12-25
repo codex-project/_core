@@ -94,6 +94,88 @@ class CodexServiceProvider extends ServiceProvider
 
     public function booting()
     {
+        $this->bootMenus();
+        $this->bootTheme();
+    }
+
+    public function register()
+    {
+        $app = parent::register();
+
+
+        $this->registerLogger();
+
+        $this->registerDefaultFilesystem();
+
+        $this->registerCodex();
+
+        $this->registerAddons();
+
+        $this->registerJavascriptData();
+
+        if ( $this->config->get('codex.http.enabled', false) ) {
+            $this->registerHttp();
+        }
+
+        return $app;
+    }
+
+    public function bootTheme()
+    {
+
+        $theme = $this->codex()->theme;
+
+        $theme->setTitle($this->config['codex.display_name']);
+
+        $assetPath = asset('vendor/codex');
+        $theme
+            ->reset()
+            ->addStylesheet('fonts', 'https://fonts.googleapis.com/css?family=Open+Sans:300,400|Raleway:300,400,600|Source+Code+Pro')
+            ->addStylesheet('font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')//" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+            ->addStylesheet('codex', $assetPath . '/styles/codex.css', [ 'fonts', 'font-awesome' ])
+            ->addStylesheet('codex.theme', $assetPath . '/styles/themes/codex-default.css', [ 'codex' ]);
+
+        $ext = config('app.debug') ? '.js' : '.min.js';
+        $theme
+            ->addJavascript('jquery', $assetPath . '/vendor/jquery/jquery' . $ext)
+            ->addJavascript('lodash', $assetPath . '/vendor/lodash/lodash' . $ext)
+            ->addJavascript('radic.util', $assetPath . '/vendor/radic.util/radic.util' . $ext)
+            ->addJavascript('vue', $assetPath . '/vendor/vue/vue' . $ext)
+            ->addJavascript('vuex', $assetPath . '/vendor/vuex/vuex' . $ext, [ 'vue' ])
+            ->addJavascript('wowjs', $assetPath . '/vendor/wowjs/wow' . $ext)
+            ->addJavascript('manifest', $assetPath . '/js/manifest.js')
+            ->addJavascript('prismjs', $assetPath . '/vendor/prismjs/prism.js')
+            ->addJavascript('prismjs.autoloader', $assetPath . '/vendor/prismjs/plugins/autoloader/prism-autoloader', [ 'prismjs' ])
+            ->addJavascript('prismjs.autolinker', $assetPath . '/vendor/prismjs/plugins/autolinker/prism-autolinker', [ 'prismjs' ])
+            ->addJavascript('prismjs.linenumbers', $assetPath . '/vendor/prismjs/plugins/line-numbers/prism-line-numbers', [ 'prismjs' ])
+            ->addJavascript('prismjs.removeinitfeed', $assetPath . '/vendor/prismjs/plugins/remove-initial-line-feed/prism-remove-initial-line-feed', [ 'prismjs' ])
+            ->addJavascript('prismjs.showlanguage', $assetPath . '/vendor/prismjs/plugins/show-language/prism-show-language', [ 'prismjs' ])
+            ->addJavascript('vendor', $assetPath . '/js/vendor.js', [ 'vue', 'vuex', 'jquery', 'prismjs', 'radic.util' ])
+            ->addJavascript('codex', $assetPath . '/js/codex.js', [ 'vendor' ]);
+
+        $this->codexHook('controller:welcome', function ($controller) use ($assetPath) {
+            $this->codex()->theme->addJavascript('codex.page.welcome', $assetPath . '/js/codex.page.welcome.js', [ 'codex' ])
+                ->addScript('init', <<<EOT
+var app = new codex.App({
+    el: '#app'
+})
+EOT
+                );
+        });
+        $this->codexHook('controller:document', function ($controller, Document $document) use ($assetPath) {
+            $this->codex()->theme->addJavascript('codex.page.document', $assetPath . '/js/codex.page.document.js', [ 'codex' ])
+                ->addScript('init', <<<EOT
+var app = new codex.App({
+    el: '#app'
+})
+EOT
+                );
+        });
+    }
+
+
+    public function bootMenus()
+    {
         $codex = $this->codex();
 
         # Menus
@@ -121,78 +203,6 @@ class CodexServiceProvider extends ServiceProvider
                 return $codex->menus->get('projects')->render($document->getProject());
             });
         });
-
-
-        $assetPath = asset('vendor/codex');
-        $this->codex()->theme
-            ->reset()
-            ->addStylesheet('fonts', 'https://fonts.googleapis.com/css?family=Open+Sans:300,400|Raleway:300,400,600|Source+Code+Pro')
-            ->addStylesheet('font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css') //" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-            ->addStylesheet('codex', $assetPath . '/styles/codex.css', [ 'fonts', 'font-awesome' ])
-            ->addStylesheet('codex.theme', $assetPath . '/styles/themes/codex-default.css', [ 'codex' ]);
-
-        $ext = config('app.debug') ? '.js' : '.min.js';
-        $this->codex()->theme
-            ->addJavascript('jquery', $assetPath . '/vendor/jquery/jquery' . $ext)
-            ->addJavascript('lodash', $assetPath . '/vendor/lodash/lodash' . $ext)
-            ->addJavascript('radic.util', $assetPath . '/vendor/radic.util/radic.util' . $ext)
-            ->addJavascript('vue', $assetPath . '/vendor/vue/vue' . $ext)
-            ->addJavascript('vuex', $assetPath . '/vendor/vuex/vuex' . $ext, [ 'vue' ])
-            ->addJavascript('wowjs', $assetPath . '/vendor/wowjs/wow' . $ext)
-            ->addJavascript('manifest', $assetPath . '/js/manifest.js')
-            ->addJavascript('prismjs', $assetPath . '/vendor/prismjs/prism.js')
-            ->addJavascript('prismjs.autoloader', $assetPath . '/vendor/prismjs/plugins/autoloader/prism-autoloader', ['prismjs'])
-            ->addJavascript('prismjs.autolinker', $assetPath . '/vendor/prismjs/plugins/autolinker/prism-autolinker', ['prismjs'])
-            ->addJavascript('prismjs.linenumbers', $assetPath . '/vendor/prismjs/plugins/line-numbers/prism-line-numbers', ['prismjs'])
-            ->addJavascript('prismjs.removeinitfeed', $assetPath . '/vendor/prismjs/plugins/remove-initial-line-feed/prism-remove-initial-line-feed', ['prismjs'])
-            ->addJavascript('prismjs.showlanguage', $assetPath . '/vendor/prismjs/plugins/show-language/prism-show-language', ['prismjs'])
-            ->addJavascript('vendor', $assetPath . '/js/vendor.js', [ 'vue', 'vuex', 'jquery', 'prismjs', 'radic.util' ])
-            ->addJavascript('codex', $assetPath . '/js/codex.js', [ 'vendor' ]);
-
-        $this->codexHook('controller:welcome', function ($controller) use ($assetPath) {
-            $this->codex()->theme->addJavascript('codex.page.welcome', $assetPath . '/js/codex.page.welcome.js', [ 'codex' ])
-                ->addScript('init', <<<EOT
-var app = new codex.App({
-    el: '#app'
-})
-EOT
-                );
-        });
-        $this->codexHook('controller:document', function ($controller, Document $document) use ($assetPath) {
-            $this->codex()->theme->addJavascript('codex.page.document', $assetPath . '/js/codex.page.document.js', [ 'codex' ])
-                ->addScript('init', <<<EOT
-var app = new codex.App({
-    el: '#app'
-})
-EOT
-                );
-        });
-    }
-
-
-    public function register()
-    {
-        $app = parent::register();
-
-        $config = $this->app->make('config');
-
-        if ( $config->get('codex.log', false) ) {
-            $this->registerLogger();
-        }
-
-        $this->registerDefaultFilesystem();
-
-        $this->registerCodex();
-
-        $this->registerAddons();
-
-        $this->registerJavascriptData();
-
-        if ( $config->get('codex.http.enabled', false) ) {
-            $this->registerHttp();
-        }
-
-        return $app;
     }
 
     /**
@@ -208,7 +218,8 @@ EOT
             new Monolog($this->app->environment()),
             $this->app[ 'events' ]
         ));
-        $log->useFiles($this->app[ 'config' ][ 'codex.paths.log' ]);
+        $log->setEnabled($this->config[ 'codex.log' ]);
+        $log->useFiles($this->config[ 'codex.paths.log' ]);
         $log->useChromePHP();
         $log->useFirePHP();
         return $log;
