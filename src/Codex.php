@@ -35,7 +35,6 @@ use Illuminate\Filesystem\Filesystem;
  * @property-read \Codex\Addon\Auth\CodexAuth $auth         The auth addon instance
  * @property-read \Codex\Addon\Git\CodexGit   $git          The theme instance
  * @property-read \Codex\Addon\Phpdoc\Phpdoc  $phpdoc       The phpdoc instance
- * @property-read \Codex\Helpers\CacheHelper  $cache        The cache instance
  * @property-read \Codex\Theme                $theme        The theme instance
  *
  *

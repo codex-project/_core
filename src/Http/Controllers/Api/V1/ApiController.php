@@ -3,7 +3,7 @@ namespace Codex\Http\Controllers\Api\V1;
 
 use Codex\Codex;
 use Codex\Exception\CodexException;
-use Codex\Http\Controllers\Controller;
+use Codex\Http\Controllers\CodexController;
 use Codex\Projects\Project;
 use Codex\Projects\Ref;
 use Illuminate\Contracts\Support\Arrayable;
@@ -11,7 +11,7 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 use JsonSerializable;
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class ApiController extends Controller
+abstract class ApiController extends CodexController
 {
     /** @var \Codex\Codex */
     protected $codex;

@@ -25,7 +25,7 @@ Route::get('projects/{project}/refs/{ref}/documents/{document}', [ 'as' => 'docu
 Route::get('menus', [ 'as' => 'menus', 'uses' => 'CodexApiController@getMenus']);
 Route::get('menus/{menu}', [ 'as' => 'menu', 'uses' => 'CodexApiController@getMenu']);
 
-Route::get('phpdoc/projects');
-Route::get('projects/{project}/refs/{ref}/phpdoc');
+//Route::get('phpdoc/projects');
+//Route::get('projects/{project}/refs/{ref}/phpdoc');
 Route::get('query/{query}', ['as' => 'query', 'uses' => 'CodexApiController@getQuery'])->where('query', '(.*)');
 Route::get('config/{key?}', ['as' => 'config', 'uses' => 'CodexApiController@getConfig'])->where('key', '(.*)');

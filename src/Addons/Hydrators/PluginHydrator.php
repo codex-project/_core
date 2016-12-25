@@ -42,6 +42,7 @@ class PluginHydrator extends Hydrator
      */
     public $replace;
 
+    public $description;
 
     public $instance;
 

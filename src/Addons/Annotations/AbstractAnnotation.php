@@ -25,4 +25,9 @@ class AbstractAnnotation
      * @var string|bool
      */
     public $replace = false;
+
+    /**
+     * @var string
+     */
+    public $description;
 }

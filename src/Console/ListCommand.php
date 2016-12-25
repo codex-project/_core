@@ -16,9 +16,11 @@ class ListCommand extends Command
 
     protected $more = false;
 
+    protected $enabled = false;
+
     public function handle()
     {
-        $what = $this->argument('what');
+        $what       = $this->argument('what');
         $this->more = $this->option('more');
 
         call_user_func([ $this, 'list' . studly_case($what) ]);
@@ -35,7 +37,7 @@ class ListCommand extends Command
     protected function listFilters()
     {
         foreach ( codex('addons')->processors->all() as $filter ) {
-            if($this->more) {
+            if ( $this->more ) {
                 $replace = $filter[ 'replace' ] ? "\nReplaces: {$filter['replace']}\n" : '';
 
                 $this->output->write(<<<FILTER

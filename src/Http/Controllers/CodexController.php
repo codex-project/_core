@@ -2,10 +2,9 @@
 namespace Codex\Http\Controllers;
 
 use Codex\Codex;
-use Codex\Documents\Document;
-use Codex\Exception\CodexException;
 use Codex\Support\Traits\HookableTrait;
-use Illuminate\Contracts\View\Factory as View;
+use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Routing\Controller ;
 
 /**
  * This is the CodexController.
@@ -15,108 +14,31 @@ use Illuminate\Contracts\View\Factory as View;
  * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
-class CodexController extends Controller
+abstract class CodexController extends Controller
 {
     use HookableTrait;
 
     /**
-     * CodexController constructor.
-     *
-     * @param \Codex\Codex $codex
-     * @param \Illuminate\Contracts\View\Factory $view
+     * @var \Codex\Codex
      */
-    public function __construct(Codex $codex, View $view)
+    protected $codex;
+
+    /**
+     * @var \Illuminate\View\Factory
+     */
+    protected $view;
+
+    /**
+     * @param \Codex\Codex                         $codex
+     * @param \Illuminate\Contracts\View\Factory|\Illuminate\View\Factory $view
+     */
+    public function __construct(Codex $codex, ViewFactory $view)
     {
         $this->hookPoint('controller:construct', [ $codex, $view ]);
-        parent::__construct($codex, $view);
+        $this->codex = $codex;
+        $this->view  = $view;
+        $view->share('codex', $codex);
         $this->hookPoint('controller:constructed', [ $codex, $view ]);
-    }
-
-
-    /**
-     * Redirect to the default project and version.
-     *
-     * @return Redirect
-     */
-    public function index()
-    {
-        $this->hookPoint('controller:index');
-
-        #codex()->addons->getManifest()->load()->set('asdf.a', 'asdf')->save();
-        codex('addons');
-
-        return redirect(route('codex.document', [
-            'projectSlug' => $this->codex->config('default_project'),
-        ]));
-    }
-
-    public function welcome()
-    {
-        $this->hookPoint('controller:welcome');
-
-        return $this->view->make($this->codex->view('welcome'));
-    }
-
-    /**
-     * Render the documentation page for the given project and version.
-     *
-     * @param string $projectSlug
-     * @param string|null $ref
-     * @param string $path
-     *
-     * @return $this
-     */
-    public function document($projectSlug = null, $ref = null, $path = '')
-    {
-        if($projectSlug === null){
-            $projectSlug = $this->codex->config('default_project');
-        }
-        /** @var Codex $codex */
-        $codex = $this->codex;
-
-        $ref = $ref ?: '!';
-        $path = $path ?: '!';
-
-        try {
-            /** @var Document $document */
-            $document = $codex->get("{$projectSlug}/{$ref}::{$path}");
-        }
-        catch(CodexException $e){
-            return $codex->error('Whoops', $e->getMessage(), 404);
-        }
-
-        // share project in views
-        $project = $document->getProject();
-        $ref = $document->getRef();
-        $this->view->share(compact('project', 'ref'));
-
-        $content = $document->render();
-        $breadcrumb = $document->getBreadcrumb();
-
-        $res = $this->hookPoint('controller:document', [ $document, $codex, $project, $ref ]);
-        if ( $res ) {
-            return $res;
-        }
-
-        #
-        # prepare view
-        #
-        $view = $this->view->make($document->attr('view'), compact('document', 'content', 'breadcrumb'));
-
-        $res = $this->hookPoint('controller:view', [ $view, $codex, $project, $document, $ref ]);
-        if ( $res ) {
-            return $res;
-        }
-
-        return $view;
-    }
-
-    public function markdown()
-    {
-        if ( !request()->has('code') ) {
-            return abort(500, 'You did not provide the [code]');
-        }
-        $code = request()->get('code');
     }
 
 }

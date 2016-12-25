@@ -21,7 +21,7 @@ use Illuminate\Contracts\View\Factory as View;
  * @copyright      Copyright (c) 2015, Codex
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
-class CodexDevController extends Controller
+class CodexDevCodexController extends CodexController
 {
 
     /**
