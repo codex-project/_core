@@ -162,7 +162,17 @@ var app = new codex.App({
 EOT
                 );
         });
-        $this->codexHook('controller:document', function ($controller, Document $document) use ($assetPath) {
+        $this->codexHook('controller:document', function ($controller) use ($assetPath) {
+            $this->codex()->theme->addJavascript('codex.page.document', $assetPath . '/js/codex.page.document.js', [ 'codex' ])
+                ->addScript('init', <<<EOT
+var app = new codex.App({
+    el: '#app'
+})
+EOT
+                );
+        });
+
+        $this->codexHook('controller:error', function ($controller, $what, \Exception $e) use ($assetPath) {
             $this->codex()->theme->addJavascript('codex.page.document', $assetPath . '/js/codex.page.document.js', [ 'codex' ])
                 ->addScript('init', <<<EOT
 var app = new codex.App({

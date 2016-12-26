@@ -4,6 +4,9 @@ namespace Codex\Http\Controllers;
 use Codex\Codex;
 use Codex\Documents\Document;
 use Codex\Exception\CodexException;
+use Codex\Exception\DocumentNotFoundException;
+use Codex\Exception\ProjectNotFoundException;
+use Codex\Exception\RefNotFoundException;
 use Codex\Support\Traits\HookableTrait;
 use Illuminate\Contracts\View\Factory as View;
 
@@ -58,18 +61,29 @@ class CodexDocumentController extends CodexController
             /** @var Document $document */
             $document = $codex->get("{$projectSlug}/{$ref}::{$path}");
         }
-        catch (CodexException $e) {
-            return $codex->error('Whoops', $e->getMessage(), 404);
+        catch (DocumentNotFoundException $e) {
+            $ref = $codex->get("{$projectSlug}/{$ref}");
+            $this->view->share('ref', $ref);
+            $this->view->share('project', $ref->getProject());
+            return $this->notFound('document', $e);
+        }
+        catch (RefNotFoundException $e){
+            $project = $codex->get($projectSlug);
+            $this->view->share('project', $project);
+            return $this->notFound('ref', $e);
+        }
+        catch(ProjectNotFoundException $e){
+            return $this->notFound('project', $e);
         }
 
         // share project in views
         $project = $document->getProject();
         $ref     = $document->getRef();
-        $this->view->share(compact('project', 'ref'));
-
         $content    = $document->render();
         $breadcrumb = $document->getBreadcrumb();
 
+        $this->view->share(compact('project', 'ref', 'document'));
+//        $res = $this->hookPoint('controller:document', [ $document ]);
         $res = $this->hookPoint('controller:document', [ $document, $codex, $project, $ref ]);
         if ( $res ) {
             return $res;
@@ -80,12 +94,16 @@ class CodexDocumentController extends CodexController
         #
         $view = $this->view->make($document->attr('view'), compact('document', 'content', 'breadcrumb'));
 
-        $res = $this->hookPoint('controller:view', [ $view, $codex, $project, $document, $ref ]);
-        if ( $res ) {
-            return $res;
-        }
-
         return $view;
     }
 
+    protected function notFound($what, \Exception $e)
+    {
+        $this->hookPoint('controller:error', [$what,$e]);
+        return $this->codex->error('Oops, couldnt find that ' . $what, $e->getMessage(), 404);
+    }
+    public function getDocumentNotFound()
+    {
+
+    }
 }

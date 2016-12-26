@@ -10,7 +10,10 @@
  */
 namespace Codex\Exception;
 
-class InvalidRefException extends Exception
+class RefNotFoundException extends Exception
 {
-
+    public static function ref($name)
+    {
+        return static::create("Could not find ref [{$name}]");
+    }
 }

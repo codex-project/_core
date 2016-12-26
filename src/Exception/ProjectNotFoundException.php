@@ -10,7 +10,11 @@
  */
 namespace Codex\Exception;
 
-class InvalidDocumentException extends Exception
+class ProjectNotFoundException extends Exception
 {
+    public static function project($name)
+    {
+        return static::create("Could not find project [{$name}]");
+    }
 
 }

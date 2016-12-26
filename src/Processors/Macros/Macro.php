@@ -63,7 +63,7 @@ class Macro
         $this->cleaned = $cleaned;
         if ( preg_match_all('/(?:\/|^)(.*?)(?:\(|$)/', $cleaned, $definition) === 0 )
         {
-            throw CodexException::because('Macro definition could not be extracted');
+            throw CodexException::create('Macro definition could not be extracted');
         }
         $this->definition = $definition[ 1 ][ 0 ];
     }
@@ -187,7 +187,7 @@ class Macro
         }
         else
         {
-            throw CodexException::because("Macro [{$this->cleaned}] cannot call because some properties havent been set. Prevent the Macro from running by using the canRun() method.");
+            throw CodexException::create("Macro [{$this->cleaned}] cannot call because some properties havent been set. Prevent the Macro from running by using the canRun() method.");
         }
     }
 }

@@ -111,7 +111,7 @@ class Ref extends Extendable implements Arrayable
     public function getVersion()
     {
         if ( $this->isVersion() === false ) {
-            throw CodexException::because("Can not getVersion for Ref {$this->project}/{$this}. The Ref is not a semver. Check by using isVersion() first.");
+            throw CodexException::create("Can not getVersion for Ref {$this->project}/{$this}. The Ref is not a semver. Check by using isVersion() first.");
         }
         return $this->version;
     }

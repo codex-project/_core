@@ -57,7 +57,7 @@ class ProcessorCollection extends BaseCollection
         $processor             = $this->get($name);
 
         if($processor->plugin && false === $this->addons->plugins->canRunPlugin($processor->plugin)){
-            throw CodexException::because("Cannot run processor [{$name}] belonging to plugin [{$processor->plugin}] because the plugin can not run. Ensure the plugin is installed and enabled");
+            throw CodexException::create("Cannot run processor [{$name}] belonging to plugin [{$processor->plugin}] because the plugin can not run. Ensure the plugin is installed and enabled");
         }
         // hook point before can prevent the processor from running
         if ( false === $this->hookPoint('addons:processor:before', [ $name ]) )
@@ -73,7 +73,7 @@ class ProcessorCollection extends BaseCollection
             // get default config
             if ( ! property_exists($instance, $annotation->config) )
             {
-                throw CodexException::because('Config not found for ' . $processor[ 'class' ]);
+                throw CodexException::create('Config not found for ' . $processor[ 'class' ]);
             }
             $config                          = $instance->{$annotation->config};
             $config                          = array_replace_recursive(
@@ -177,7 +177,7 @@ class ProcessorCollection extends BaseCollection
             {
                 $dep = array_keys($sorter->getMissing());
                 $dep = implode(', ', $dep);
-                throw CodexException::because("Sorter encountered a missing dependency for {$dep}");
+                throw CodexException::create("Sorter encountered a missing dependency for {$dep}");
             }
         }
         $sorted = array_merge($sorted, array_diff($names, $sorted));

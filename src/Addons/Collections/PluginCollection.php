@@ -108,7 +108,7 @@ class PluginCollection extends BaseCollection
         // check if dependencies exists and are enabled
         foreach ( $plugin->requires as $name ) {
             if ( !$this->has($name) || !in_array($name, config('codex.plugins', []), true) ) {
-                //throw CodexException::because("Plugin [{$plugin->name}] dependency [{$name}] does not exist or is not enabled");
+                //throw CodexException::create("Plugin [{$plugin->name}] dependency [{$name}] does not exist or is not enabled");
                 return false;
             }
         }

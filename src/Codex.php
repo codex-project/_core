@@ -13,6 +13,9 @@ namespace Codex;
 
 use Codex\Contracts;
 use Codex\Exception\CodexException;
+use Codex\Exception\DocumentNotFoundException;
+use Codex\Exception\ProjectNotFoundException;
+use Codex\Exception\RefNotFoundException;
 use Codex\Projects\Project;
 use Codex\Support\Collection;
 use Codex\Support\Extendable;
@@ -200,7 +203,7 @@ class Codex extends Extendable implements Arrayable
         }
 
         if ( false === $this->projects->has($projectName) ) {
-            throw CodexException::projectNotFound($projectName);
+            throw ProjectNotFoundException::project($projectName);
         }
         $project = $this->projects->get($projectName);
 
@@ -221,7 +224,7 @@ class Codex extends Extendable implements Arrayable
             $ref = $project->refs->getDefault();
         } else {
             if ( false === $project->refs->has($projectRef) ) {
-                throw CodexException::refNotFound($projectRef);
+                throw RefNotFoundException::ref($projectRef);
             }
             $ref = $project->refs->get($projectRef);
         }
@@ -238,7 +241,7 @@ class Codex extends Extendable implements Arrayable
         } elseif ( $documentPathName === '!' ) {
             $documentPathName = $project->config('index');
         } elseif ( false === $ref->documents->has($documentPathName) ) {
-            throw CodexException::documentNotFound($documentPathName);
+            throw DocumentNotFoundException::document($documentPathName);
         }
 
         return $ref->documents->get($documentPathName);

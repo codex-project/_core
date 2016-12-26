@@ -10,7 +10,6 @@ namespace Codex\Exception;
 
 
 use Codex\Documents\Document;
-use Exception;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CodexException extends Exception
@@ -27,12 +26,6 @@ class CodexException extends Exception
         return new HttpException(404, $this->getMessage());
     }
 
-    public function setMessage($message)
-    {
-        $this->message = $message;
-        return $this;
-    }
-
     public function setClass($class)
     {
         if ( !is_string($class) ) {
@@ -43,10 +36,7 @@ class CodexException extends Exception
     }
 
 
-    public static function because($reason)
-    {
-        return new static($reason);
-    }
+
 
     public static function in($class)
     {

@@ -53,7 +53,7 @@ trait HookableTrait
         {
             if ( array_key_exists($event, static::$hookPoints) )
             {
-                throw CodexException::because('hook point already exists');
+                throw CodexException::create('hook point already exists');
             }
             Arr::add(static::$hooks, $event, static::getDispatcher()->getListeners($event));
             $caller = $this->hookPointGetCaller(debug_backtrace(), 1);

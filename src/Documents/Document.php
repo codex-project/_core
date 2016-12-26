@@ -336,7 +336,7 @@ class Document extends Extendable implements Arrayable
             $mode = self::CACHE_AUTO;
         }
         if ( !in_array($mode, [ self::CACHE_ENABLED, self::CACHE_DISABLED, self::CACHE_AUTO ], true) ) {
-            throw CodexException::because('Cache mode not supported: ' . (string)$mode);
+            throw CodexException::create('Cache mode not supported: ' . (string)$mode);
         }
         $this->mode = $mode;
     }

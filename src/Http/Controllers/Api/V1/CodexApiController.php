@@ -62,7 +62,7 @@ class CodexApiController extends ApiController
         }
 
         if ( $data === null ) {
-            throw CodexException::because("Query '{$query}' has no valid result");
+            throw CodexException::create("Query '{$query}' has no valid result");
         }
         return $data;
     }
