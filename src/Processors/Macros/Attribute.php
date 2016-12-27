@@ -1,11 +1,12 @@
 <?php
 /**
- * Copyright (c) 2016. Robin Radic.
+ * Part of the Codex Project packages.
  *
- * The license can be found in the package and online at https://radic.mit-license.org.
+ * License and copyright information bundled with this package in the LICENSE file.
  *
- * @copyright Copyright 2016 (c) Robin Radic
- * @license https://radic.mit-license.org The MIT License
+ * @author    Robin Radic
+ * @copyright Copyright 2016 (c) Codex Project
+ * @license   http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Processors\Macros;
 

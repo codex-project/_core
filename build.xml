@@ -1,3 +1,13 @@
+<!--
+  ~ Part of the Codex Project packages.
+  ~
+  ~ License and copyright information bundled with this package in the LICENSE file.
+  ~
+  ~ @author Robin Radic
+  ~ @copyright Copyright 2016 (c) Codex Project
+  ~ @license http://codex-project.ninja/license The MIT License
+  -->
+
 <project name="codex-core" default="pre-commit">
     <property name="buildfile-version" value="1.0.0"/>
     <property name="phpdocfile" value="${project.basedir}/docs/structure.xml"/>

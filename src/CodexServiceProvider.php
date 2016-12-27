@@ -2,7 +2,11 @@
 /**
  * Part of the Codex Project packages.
  *
- * License and copyright information bundled with this package in the LICENSE file
+ * License and copyright information bundled with this package in the LICENSE file.
+ *
+ * @author    Robin Radic
+ * @copyright Copyright 2016 (c) Codex Project
+ * @license   http://codex-project.ninja/license The MIT License
  */
 
 
@@ -130,9 +134,9 @@ class CodexServiceProvider extends ServiceProvider
         $assetPath = asset('vendor/codex');
         $theme
             ->reset()
-            ->addStylesheet('fonts', 'https://fonts.googleapis.com/css?family=Open+Sans:300,400|Raleway:300,400,600|Source+Code+Pro')
-            ->addStylesheet('font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')//" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-            ->addStylesheet('codex', $assetPath . '/styles/codex.css', [ 'fonts', 'font-awesome' ])
+//            ->addStylesheet('fonts', 'https://fonts.googleapis.com/css?family=Open+Sans:300,400|Raleway:300,400,600|Source+Code+Pro')
+//            ->addStylesheet('font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')//" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+            ->addStylesheet('codex', $assetPath . '/styles/codex.css')
             ->addStylesheet('codex.theme', $assetPath . '/styles/themes/codex-default.css', [ 'codex' ]);
 
         $ext = config('app.debug') ? '.js' : '.min.js';
@@ -209,7 +213,7 @@ EOT
             $codex->theme->pushContentToStack('nav', $codex->view('document'), function ($view) use ($codex, $document) {
                 return $codex->menus->get('refs')->render($document->getRef());
             });
-            $codex->theme->pushContentToStack('nav', $codex->view('document'), function ($view) use ($codex, $document) {
+            $codex->theme->pushContentToStack('nav', [ $codex->view('document'), $codex->view('error') ], function ($view) use ($codex, $document) {
                 return $codex->menus->get('projects')->render($document->getProject());
             });
         });
