@@ -32,7 +32,8 @@
 
 </head>
 
-<body>
+
+<body class="@yield('bodyStyles', '')">
 
 @section('body')
 @show
