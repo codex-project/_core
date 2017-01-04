@@ -22,4 +22,23 @@ class CodexTest extends TestCase
     {
         $this->assertTrue(true);
     }
+
+    public function test_extensions()
+    {
+        $this->assertInstanceOf('Codex\Addons\Addons', $this->codex->addons);
+        $this->assertInstanceOf('Illuminate\Events\Dispatcher', $this->app[ 'events' ]);
+    }
+
+    public function test_get_returns()
+    {
+        $this->assertInstanceOf('Codex\Projects\Projects', $this->codex->get('*'));
+        $this->assertInstanceOf('Codex\Projects\Project', $this->codex->get('!'));
+        $this->assertInstanceOf('Codex\Projects\Project', $this->codex->get('codex'));
+        $this->assertInstanceOf('Codex\Projects\Refs', $this->codex->get('!/*'));
+        $this->assertInstanceOf('Codex\Projects\Ref', $this->codex->get('!/!'));
+        $this->assertInstanceOf('Codex\Projects\Ref', $this->codex->get('codex/master'));
+        $this->assertInstanceOf('Codex\Documents\Documents', $docs = $this->codex->get('!/!::*'));
+        $this->assertInstanceOf('Codex\Documents\Document', $this->codex->get('!/!::index'));
+        $this->assertInstanceOf('Codex\Documents\Document', $this->codex->get('codex/master::index'));
+    }
 }

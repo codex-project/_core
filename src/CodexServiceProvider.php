@@ -119,7 +119,8 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerJavascriptData();
 
-        if ($this->config->get('codex.http.enabled', false)) {
+
+        if ( $this->config->get('codex.http.enabled', false) ) {
             $this->registerHttp();
         }
 

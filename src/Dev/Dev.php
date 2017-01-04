@@ -69,7 +69,7 @@ class Dev extends Extendable
 
     public function disable()
     {
-        config([ 'codex.dev' => true ]);
+        config([ 'codex.dev' => false ]);
     }
 
     #
@@ -146,6 +146,13 @@ class Dev extends Extendable
         return $this;
     }
 
+    public function elapsed($id, $id2 = null)
+    {
+        if ( $this->isEnabled() ) {
+            $this->bench->elapsed($id, $id2);
+        }
+    }
+
     public function data(Closure $cb)
     {
         $this->debugbar(function ($debugbar) use ($cb) {
@@ -190,15 +197,6 @@ class Dev extends Extendable
             $this->startedBench = true;
             $this->bench->start();
         }
-    }
-
-    /**
-     * canBenchmark method
-     * @return bool
-     */
-    public function canBenchmark()
-    {
-        return $this->isEnabled();
     }
 
     /**

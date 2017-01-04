@@ -16,6 +16,7 @@ use Codex\Dev\Dev;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Traits\Macroable;
 use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
 use Laradic\AnnotationScanner\Scanner\ClassInspector;
@@ -96,7 +97,7 @@ class Addons implements Arrayable
      */
     protected function __construct()
     {
-        $this->app = Container::getInstance();
+        $this->app = Application::getInstance();
 
         $this->processors = new Collections\ProcessorCollection([], $this);
         $this->hooks      = new Collections\HookCollection([], $this);

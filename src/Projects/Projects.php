@@ -50,7 +50,9 @@ class Projects extends ExtendableCollection implements \Codex\Contracts\Projects
 
         $this->hookPoint('projects:construct', [ $this ]);
 
+        $this->getCodex()->dev->startMeasure('Projects::findAndRegisterAll');
         $this->findAndRegisterAll();
+        $this->getCodex()->dev->stopMeasure('Projects::findAndRegisterAll');
 
         $this->hookPoint('projects:constructed', [ $this ]);
     }

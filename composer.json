@@ -9,7 +9,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.5.9",
-        "laradic/support": "~1.0",
+        "laradic/support": "~1.0.1",
         "laradic/service-provider": "~1.0",
         "laradic/filesystem": "~1.0",
         "laradic/annotation-scanner": "~1.0",
@@ -35,7 +35,7 @@
         "laradic/testing": "1.0.*",
         "erusev/parsedown-extra": "~0.7",
         "michelf/php-markdown": "~1.6",
-        "orchestra/testing": "~3.3",
+        "orchestra/testbench": "~3.2",
         "laradic/icon-generator": "~1.0"
     },
     "autoload": {

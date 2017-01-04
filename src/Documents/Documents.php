@@ -51,7 +51,9 @@ class Documents extends ExtendableCollection implements Contracts\Documents\Docu
         $this->setFiles($parent->getFiles());
 
         $this->hookPoint('documents:construct');
+        $this->getCodex()->dev->startMeasure('documents.resolveAll', 'Documents::resolveAll');
         $this->resolveAll();
+        $this->getCodex()->dev->stopMeasure('documents.resolveAll');
         $this->hookPoint('documents:constructed');
     }
 

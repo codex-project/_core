@@ -105,8 +105,7 @@ class DevServiceProvider extends ServiceProvider
         if ($this->app->bound('debugbar')) {
             $db = $this->app->make('debugbar');
             $db->addCollector($codexCollector = $this->app->make('codex.dev.debugbar.collector'));
-            $db->addCollector($logsCollector = new LogsCollector(storage_path(config('codex.paths.log')), 'codex.logs'));
-            $db->addCollector(new MonologCollector($this->app['codex.log']->getMonolog()));
+            $db->addCollector($logsCollector = new Debugbar\CodexLogsCollector(config('codex.paths.log', ''), 'codexLogs'));
 
             $this->codexHook('controller:document', function (CodexDocumentController $controller, Document $document) use ($db) {
  //, Codex $codex, Project $project

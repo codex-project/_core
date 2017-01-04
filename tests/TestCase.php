@@ -11,11 +11,14 @@
 namespace Codex\Tests;
 
 use Codex\CodexServiceProvider;
+use Illuminate\Events\Dispatcher;
 use Laradic\Support\Util;
 use Laradic\Testing\Laravel\AbstractTestCase;
 
 class TestCase extends AbstractTestCase
 {
+    /** @var \Codex\Codex */
+    protected $codex;
 
     protected $isProject;
 
@@ -40,21 +43,29 @@ class TestCase extends AbstractTestCase
         parent::setUp();
 
         // setup manifest
-        $codexArr  = json_decode(file_get($this->fixturesPath('codex.json')), true);
-        $codexArr  = Util::recursiveArrayStringReplace($codexArr, [ '{vendor_dir}' => $this->basePath('vendor') ]);
+        $codexArr = json_decode(file_get($this->fixturesPath('codex.json')), true);
+        $codexArr = Util::recursiveArrayStringReplace($codexArr, [ '{vendor_dir}' => $this->basePath('vendor') ]);
         file_put(storage_path('codex.json'), json_encode($codexArr));
 
         // setup log
         file_touch(storage_path('codex.log'));
 
+        // copy docs, only 1 time
+        if ( file_isDirectory($this->fixturesPath('docs')) === false ) {
+            file_copyDirectory($this->fixturesPath('docs'), resource_path('docs'));
+        }
+        if ( file_isDirectory(resource_path('docs/codex/master')) === false ) {
+            file_copyDirectory($this->getPackagePath('docs'), resource_path('docs/codex/master'));
+        }
 
         $this->registerServiceProvider();
-        $this->getConfig()->set('codex.plugins', []);
+        $this->app[ 'config' ]->set('codex.plugins', []);
+        $this->codex = $this->app[ 'codex' ];
     }
 
     protected function fixturesPath($path = null)
     {
-        $fixturesPath= path_join(__DIR__, 'fixtures');
+        $fixturesPath = path_join(__DIR__, 'fixtures');
         return $path ? path_join($fixturesPath, $path) : $fixturesPath;
     }
 

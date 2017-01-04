@@ -78,7 +78,9 @@ class Refs extends ExtendableCollection implements Arrayable
 
         $this->hookPoint('refs:construct', [ $this ]);
 
+        $this->getCodex()->dev->startMeasure('Refs::resolveRefs');
         $this->resolveRefs();
+        $this->getCodex()->dev->stopMeasure('Refs::resolveRefs');
 
         $this->hookPoint('refs:constructed', [ $this ]);
     }

@@ -12,21 +12,27 @@ namespace Codex\Addons\Collections;
 
 use Codex\Addons\Addons;
 use Codex\Contracts\Traits\Hookable;
+use Illuminate\Container\Container;
 use Laradic\Support\Arr;
 
+/**
+ * This is the class BaseCollection.
+ *
+ * @package        Codex\Addons
+ * @author         CLI
+ * @copyright      Copyright (c) 2015, CLI. All rights reserved
+ * @property \Illuminate\Foundation\Application $app The application instance
+ *
+ */
 abstract class BaseCollection extends \Illuminate\Support\Collection implements Hookable
 {
 
     /** @var Addons */
     protected $addons;
 
-    /** @var \Illuminate\Foundation\Application */
-    protected $app;
-
-    public function __construct($items = [ ], $addons = null)
+    public function __construct($items = [], $addons = null)
     {
         parent::__construct($items);
-        $this->app    = \Illuminate\Foundation\Application::getInstance();
         $this->addons = $addons ?: $this->app->make('codex.addons');
     }
 
@@ -56,7 +62,7 @@ abstract class BaseCollection extends \Illuminate\Support\Collection implements 
     public function whereHas($key, $value)
     {
         return $this->filter(function ($item) use ($key, $value) {
-            return in_array($value, data_get($item, $key, [ ]), true);
+            return in_array($value, data_get($item, $key, []), true);
         });
     }
 
@@ -78,5 +84,12 @@ abstract class BaseCollection extends \Illuminate\Support\Collection implements 
     public function offsetUnset($key)
     {
         $this->forget($key);
+    }
+
+    public function __get($name)
+    {
+        if ( $name === 'app' ) {
+            return Container::getInstance();
+        }
     }
 }

@@ -47,6 +47,8 @@ class Bench
      */
     protected $stop = null;
 
+    protected $elapses = [];
+
     /**
      * Start timer.
      *
@@ -108,6 +110,15 @@ class Bench
         $mark[ 'since_last_mark' ] = count($this->marks) ? ($mark[ 'microtime' ] - $this->marks[ count($this->marks) - 1 ][ 'microtime' ]) : $mark[ 'since_start' ];
         $this->marks[]             = $mark;
         return $mark[ 'since_last_mark' ];
+    }
+
+    public function elapsed($id, $id2 = null)
+    {
+        if ( $this->getMarkById($id) === false ) {
+            $this->elapses[ $id ] = [];
+            return $this->mark($id);
+        }
+        $this->elapses[ $id ][] = $this->getElapsed($id, $id2);
     }
 
     /**
