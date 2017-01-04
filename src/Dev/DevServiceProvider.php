@@ -17,6 +17,7 @@ use Codex\Documents\Document;
 use Codex\Http\Controllers\CodexDocumentController;
 use Codex\Support\Traits\CodexProviderTrait;
 use DebugBar\Bridge\MonologCollector;
+use Illuminate\Foundation\Application;
 use Laradic\ServiceProvider\ServiceProvider;
 
 class DevServiceProvider extends ServiceProvider

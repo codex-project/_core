@@ -1,9 +1,19 @@
+<!--~
+  ~ Part of the Codex Project packages.
+  ~
+  ~ License and copyright information bundled with this package in the LICENSE file.
+  ~
+  ~ @author Robin Radic
+  ~ @copyright Copyright 2017 (c) Codex Project
+  ~ @license http://codex-project.ninja/license The MIT License
+  -->
+
 <project name="laradic/assets">
 
     <target name="build" depends="phpcbf,phpunit"/>
 
     <target name="phpcbf" description="Fixes coding standard violations using PHP_CodeSniffer Fixer">
-        <exec executable="${tools.dir}phpcbf${tools.ext}" logoutput="true">
+        <exec executable="${tools.dir}phpcbf${tools.ext}" logoutput="true" passthru="true">
             <arg value="--tabWidth=4"/>
             <arg value="--standard=PSR2"/>
             <arg value="--extensions=php"/>
@@ -14,11 +24,9 @@
     </target>
 
     <target name="phpunit" description="Run unit tests with PHPUnit">
-        <exec executable="${tools.dir}phpunit${tools.ext}" logoutput="true">
+        <exec executable="${tools.dir}phpunit${tools.ext}" logoutput="true" passthru="true">
             <arg value="--configuration"/>
             <arg path="${project.basedir}/phpunit.xml"/>
-            <arg value="--bootstrap"/>
-            <arg path="${vendor.dir}/autoload.php"/>
         </exec>
     </target>
 

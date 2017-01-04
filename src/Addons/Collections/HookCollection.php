@@ -47,7 +47,7 @@ class HookCollection extends BaseCollection
         }
 
         $hooks = $this;
-        $this->app->make('events')->listen('codex:' . $annotation->name, function () use ($hooks, $id) {
+        $this->app[ 'events' ]->listen('codex:' . $annotation->name, function () use ($hooks, $id) {
             if ($this->has("{$id}.replaced")) {
                 return;
             }

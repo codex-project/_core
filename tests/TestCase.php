@@ -44,13 +44,12 @@ class TestCase extends AbstractTestCase
         $codexArr  = Util::recursiveArrayStringReplace($codexArr, [ '{vendor_dir}' => $this->basePath('vendor') ]);
         file_put(storage_path('codex.json'), json_encode($codexArr));
 
-        // setup misc
+        // setup log
         file_touch(storage_path('codex.log'));
 
 
         $this->registerServiceProvider();
-
-        $a         = 'a';
+        $this->getConfig()->set('codex.plugins', []);
     }
 
     protected function fixturesPath($path = null)

@@ -5,6 +5,8 @@
     "homepage": "http://codex-project.ninja",
     "authors": [{"name": "Robin Radic", "email": "robin@radic.nl"}],
     "license": "MIT",
+    "prefer-stable": true,
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.5.9",
         "laradic/support": "~1.0",

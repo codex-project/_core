@@ -10,8 +10,6 @@
  */
 namespace Codex\Tests;
 
-use Codex\CodexServiceProvider;
-
 class CodexTest extends TestCase
 {
     public function setUp()
@@ -22,6 +20,6 @@ class CodexTest extends TestCase
 
     public function test_test()
     {
-        static::assertTrue(true);
+        $this->assertTrue(true);
     }
 }
