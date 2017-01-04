@@ -11,10 +11,8 @@
 
 namespace Codex\Support\Traits;
 
-
 use Codex\Support\Collection;
 use Illuminate\Contracts\Support\Arrayable;
-
 
 trait AttributesTrait
 {
@@ -53,7 +51,7 @@ trait AttributesTrait
      */
     public function setAttributes($attributes)
     {
-        if($attributes instanceof Arrayable){
+        if ($attributes instanceof Arrayable) {
             $attributes = $attributes->toArray();
         }
 
@@ -71,7 +69,7 @@ trait AttributesTrait
      */
     public function mergeAttributes($attributes)
     {
-        if($attributes instanceof Arrayable){
+        if ($attributes instanceof Arrayable) {
             $attributes = $attributes->toArray();
         }
         $this->attributes = array_replace_recursive($this->attributes, $attributes);

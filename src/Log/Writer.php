@@ -61,8 +61,7 @@ class Writer extends BaseWriter implements Log
 
     protected function writeLog($level, $message, $context)
     {
-        if($this->enabled)
-        {
+        if ($this->enabled) {
             parent::writeLog($level, $message, $context);
         }
     }
@@ -79,6 +78,4 @@ class Writer extends BaseWriter implements Log
         $this->enabled = $enabled;
         return $this;
     }
-
-
 }

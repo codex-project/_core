@@ -41,11 +41,6 @@ class Theme extends Extendable implements Arrayable
     /** @var \Codex\Support\Collection */
     protected $styles;
 
-    /**
-     * @var string
-     */
-    protected $title;
-
 
     /**
      * Theme constructor.
@@ -57,7 +52,6 @@ class Theme extends Extendable implements Arrayable
         $this->setCodex($parent);
         $this->reset();
         #$this->scripts = new Theme\Scripts;
-
     }
 
     /**
@@ -70,7 +64,7 @@ class Theme extends Extendable implements Arrayable
      */
     public function set($key, $value = null)
     {
-        $this->data->set($key, $value );
+        $this->data->set($key, $value);
 
         return $this;
     }
@@ -87,19 +81,15 @@ class Theme extends Extendable implements Arrayable
      */
     public function pushViewToStack($stackName, $targetViews, $viewName, $data = null)
     {
-        $this->pushContentToStack($stackName, $targetViews, function($view) use ($viewName, $data){
+        $this->pushContentToStack($stackName, $targetViews, function ($view) use ($viewName, $data) {
             /** @var \Illuminate\View\View $view */
-            if ( $data instanceof \Closure )
-            {
+            if ($data instanceof \Closure) {
                 $data = $this->codex->getContainer()->call($data, [ $this ]);
                 $data = is_array($data) ? $data : [ ];
-            }
-            elseif ( $data === null )
-            {
+            } elseif ($data === null) {
                 $data = [ ];
             }
-            if ( !is_array($data) )
-            {
+            if (!is_array($data)) {
                 throw new \InvalidArgumentException("appendSectionsView data is not a array");
             }
 
@@ -112,14 +102,13 @@ class Theme extends Extendable implements Arrayable
     public function pushContentToStack($stackName, $targetViews, $content)
     {
         $targetViews = is_array($targetViews) ? $targetViews : [$targetViews];
-        foreach( $targetViews as $targetView) {
+        foreach ($targetViews as $targetView) {
             $this->codex->getContainer()->make('events')->listen('composing: ' . $targetView, function ($view) use ($stackName, $content) {
                 $view->getFactory()->startPush($stackName, $content instanceof Closure ? $content($view) : $content);
             });
         }
 
         return $this;
-
     }
 
 
@@ -247,40 +236,6 @@ class Theme extends Extendable implements Arrayable
     }
 
     /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Set the title value
-     *
-     * @param string $title
-     *
-     * @return Theme
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-        return $this;
-    }
-
-    /**
-     * appendTitle method
-     *
-     * @param string $string
-     *
-     * @return $this
-     */
-    public function appendTitle($string)
-    {
-        $this->title .= $string;
-        return $this;
-    }
-
-    /**
      * renderJsData method
      *
      * @return string
@@ -298,8 +253,7 @@ class Theme extends Extendable implements Arrayable
     public function renderJavascripts()
     {
         $scripts = [ ];
-        foreach ( $this->javascripts() as $js )
-        {
+        foreach ($this->javascripts() as $js) {
             $scripts[] = "<script src=\"{$js['src']}\"></script>";
         }
 
@@ -314,8 +268,7 @@ class Theme extends Extendable implements Arrayable
     public function renderStylesheets()
     {
         $styles = [ ];
-        foreach ( $this->stylesheets() as $css )
-        {
+        foreach ($this->stylesheets() as $css) {
             $styles[] = "<link type='text/css' rel='stylesheet' href=\"{$css['src']}\"/>";
         }
 
@@ -330,8 +283,7 @@ class Theme extends Extendable implements Arrayable
     public function renderStyles()
     {
         $styles = [ ];
-        foreach ( $this->styles() as $style )
-        {
+        foreach ($this->styles() as $style) {
             $styles[] = "<style type='text/css'>{$style['value']}</style>";
         }
 
@@ -346,8 +298,7 @@ class Theme extends Extendable implements Arrayable
     public function renderScripts()
     {
         $scripts = [ ];
-        foreach ( $this->scripts() as $js )
-        {
+        foreach ($this->scripts() as $js) {
             $scripts[] = "<script>{$js['value']}</script>";
         }
 
@@ -389,13 +340,11 @@ class Theme extends Extendable implements Arrayable
         $all    = $all instanceof Collection ? $all : new Collection($all);
         $sorter = new Sorter;
         $sorted = new Collection;
-        foreach ( $all as $name => $asset )
-        {
+        foreach ($all as $name => $asset) {
             $sorter->addItem($asset[ 'name' ], $asset[ 'depends' ]);
         }
 
-        foreach ( $sorter->sort() as $name )
-        {
+        foreach ($sorter->sort() as $name) {
             $sorted->add($all->where('name', $name)->first());
         }
 
@@ -417,8 +366,7 @@ class Theme extends Extendable implements Arrayable
             'styles',
             'data',
         ];
-        foreach ( $arrayables as $arrayable )
-        {
+        foreach ($arrayables as $arrayable) {
             $data[ $arrayable ] = call_user_func([
                 $this,
                 $arrayable,

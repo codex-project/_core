@@ -49,5 +49,4 @@ abstract class CodexController extends Controller
         $view->share('codex', $codex);
         $this->hookPoint('controller:constructed', [ $codex, $view ]);
     }
-
 }

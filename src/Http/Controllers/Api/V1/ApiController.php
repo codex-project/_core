@@ -57,7 +57,7 @@ abstract class ApiController extends CodexController
 
     protected function resolveRef($projectSlug, $ref = null)
     {
-        if ( !$this->projects->has($projectSlug) ) {
+        if (!$this->projects->has($projectSlug)) {
             return $this->error('Project does not exist', Response::HTTP_BAD_REQUEST);
         }
         $this->project = $this->projects->get($projectSlug);
@@ -69,7 +69,7 @@ abstract class ApiController extends CodexController
 
     protected function response($data = [])
     {
-        if ( $data instanceof Arrayable && !$data instanceof JsonSerializable ) {
+        if ($data instanceof Arrayable && !$data instanceof JsonSerializable) {
             $data = $data->toArray();
         }
         return response()->json([ 'success' => true, 'message' => '', 'data' => $data ]);
@@ -86,14 +86,13 @@ abstract class ApiController extends CodexController
      */
     protected function error($message, $code = 500, $data = [])
     {
-        if ( $message instanceof CodexException ) {
+        if ($message instanceof CodexException) {
             $ex      = $message;
             $message = $ex->getMessage();
-            if ( config('app.debug') ) {
+            if (config('app.debug')) {
                 $data = $ex->getTrace();
             }
         }
         return response()->json([ 'success' => false, 'message' => $message, 'data' => $data ], $code);
     }
-
 }

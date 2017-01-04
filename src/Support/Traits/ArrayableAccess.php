@@ -18,7 +18,6 @@
 
 namespace Codex\Support\Traits;
 
-
 trait ArrayableAccess
 {
 
@@ -73,7 +72,7 @@ trait ArrayableAccess
      */
     public function offsetSet($offset, $value)
     {
-        if ( property_exists($this, $offset) ) {
+        if (property_exists($this, $offset)) {
             $this->{$offset} = $value;
         }
     }

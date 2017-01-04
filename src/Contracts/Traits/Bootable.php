@@ -12,7 +12,6 @@
 
 namespace Codex\Contracts\Traits;
 
-
 interface Bootable
 {
 

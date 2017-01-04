@@ -18,7 +18,6 @@
 
 namespace Codex\Processors\Buttons;
 
-
 use ArrayAccess;
 use Codex\Support\Extendable;
 use Codex\Support\Traits\ArrayableAccess;
@@ -53,8 +52,7 @@ class Button extends Extendable implements Arrayable, ArrayAccess
 
         $this->setAttributes([ ]);
 
-        if ( isset($data[ 'attr' ]) )
-        {
+        if (isset($data[ 'attr' ])) {
             $this->setAttributes($data[ 'attr' ]);
             unset($data[ 'attr' ]);
         }

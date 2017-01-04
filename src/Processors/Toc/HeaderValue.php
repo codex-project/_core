@@ -110,7 +110,4 @@ class HeaderValue
         $this->header = $header;
         return $this;
     }
-
-
-
 }

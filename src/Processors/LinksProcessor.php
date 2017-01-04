@@ -33,12 +33,7 @@ use Laradic\Support\Str;
 class LinksProcessor
 {
     /** @var Collection */
-    public $config = [
-        'needle'  => 'codex',
-        'links' => [
-
-        ],
-    ];
+    public $config = 'codex.processors.links';
 
     /** @var Codex */
     public $codex;
@@ -51,28 +46,21 @@ class LinksProcessor
 
     public function handle(Document $document)
     {
-        if(false === $this->hasContent()){
+        if (false === $this->hasContent()) {
             return; // prevents ErrorException in Html.php line 42: DOMDocument::loadHTMLFile(): Empty string supplied as input
         }
         $d = $document->getDom();
-        $d->find('//a')->each(function (Element $element)
-        {
+        $d->find('//a')->each(function (Element $element) {
             $url = $element->getAttribute('href');
 
-            try
-            {
-                if ( $this->isAction($url) )
-                {
+            try {
+                if ($this->isAction($url)) {
                     $this->callAction($element);
-                }
-                elseif ( $this->isDocument($url) && $this->isRelative($url) )
-                {
-                    // replaces links that reference other documents to the right url
+                } elseif ($this->isDocument($url) && $this->isRelative($url)) {
+                // replaces links that reference other documents to the right url
                     $element->setAttribute('href', $this->getDocumentUrl($url));
                 }
-            }
-            catch (InvalidArgumentException $e)
-            {
+            } catch (InvalidArgumentException $e) {
                 $this->codex->log('debug', static::class . " throws exception: {$e->getMessage()} | file: {$e->getFile()} | line: {$e->getLine()} | trace: {$e->getTraceAsString()}");
             }
         });
@@ -146,12 +134,9 @@ class LinksProcessor
         $actionName = array_shift($params);
         $action->setParameters($params);
         $actions = $this->getLinkActions();
-        if ( array_key_exists($actionName, $actions) )
-        {
-
+        if (array_key_exists($actionName, $actions)) {
             $config = $actions[ $actionName ];
-            if ( is_string($config) )
-            {
+            if (is_string($config)) {
                 $config = [ 'call' => $config ];
             }
             $action->setConfig($config);
@@ -161,10 +146,6 @@ class LinksProcessor
 
     public function getLinkActions()
     {
-        $definitions = $this->codex->config('processors.links', [ ]);
-        $definitions = array_merge($definitions, $this->config[ 'links' ]);
-
-        return array_merge($definitions, $this->document->attr('processors.links', [ ]));
+        return array_merge($this->config[ 'links' ], $this->document->attr('processors.links', [ ]));
     }
-
 }

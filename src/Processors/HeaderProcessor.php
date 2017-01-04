@@ -40,8 +40,7 @@ class HeaderProcessor
 
     public function handle(Document $document)
     {
-        if ( $this->config[ 'remove_from_document' ] )
-        {
+        if ($this->config[ 'remove_from_document' ]) {
             $this->remove($document);
         }
 
@@ -51,10 +50,8 @@ class HeaderProcessor
 
     protected function remove(Document $d)
     {
-        if ( $d->attr('title', false) !== false )
-        {
+        if ($d->attr('title', false) !== false) {
             $d->setContent(preg_replace($this->config[ 'remove_regex' ], '', $d->getContent(), 1));
         }
     }
-
 }

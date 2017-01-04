@@ -10,7 +10,6 @@
  */
 namespace Codex\Projects;
 
-
 use Codex\Codex;
 use Codex\Support\Extendable;
 use Codex\Support\Traits\ConfigTrait;
@@ -119,7 +118,7 @@ class Project extends Extendable implements Arrayable
     public function getDiskConfig()
     {
         $default = [ ];
-        if ( $this->getDiskName() === $this->getDefaultDiskName() ) {
+        if ($this->getDiskName() === $this->getDefaultDiskName()) {
             $default = [
                 'driver' => 'codex-local',
                 'root'   => $this->codex->getDocsPath() . DIRECTORY_SEPARATOR . $this->getName(),
@@ -277,6 +276,4 @@ class Project extends Extendable implements Arrayable
     {
         return $this->getName();
     }
-
-
 }

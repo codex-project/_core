@@ -24,38 +24,37 @@ class Bench
      *
      * @var array
      */
-    protected  $errors = [ ];
+    protected $errors = [ ];
 
     /**
      * Mark arrays.
      *
      * @var array
      */
-    protected  $marks = [ ];
+    protected $marks = [ ];
 
     /**
      * Microtime of when $this->start() was called.
      *
      * @var float
      */
-    protected  $start = null;
+    protected $start = null;
 
     /**
      * Microtime of when $this->stop() was called.
      *
      * @var float
      */
-    protected  $stop = null;
+    protected $stop = null;
 
     /**
      * Start timer.
      *
      * @return void;
      */
-    public  function start()
+    public function start()
     {
-        if ( $this->start !== null )
-        {
+        if ($this->start !== null) {
             $this->logError('Please call ' . __CLASS__ . '::reset() before calling ' . __CLASS__ . '::start() again.');
             return;
         }
@@ -67,10 +66,9 @@ class Bench
      *
      * @return float; -> $this->getElapsed()
      */
-    public  function stop()
+    public function stop()
     {
-        if ( $this->stop !== null )
-        {
+        if ($this->stop !== null) {
             $this->logError('Please call ' . __CLASS__ . '::reset() before calling ' . __CLASS__ . '::stop() again.');
             return;
         }
@@ -83,7 +81,7 @@ class Bench
      *
      * @return void;
      */
-    public  function reset()
+    public function reset()
     {
         $this->marks = [ ];
         $this->start = null;
@@ -97,10 +95,9 @@ class Bench
      *
      * @return mixed; Float, the time in seconds since last mark, or if no marks $this->start) - false, on error.
      */
-    public  function mark($id)
+    public function mark($id)
     {
-        if ( $this->start === null )
-        {
+        if ($this->start === null) {
             $this->logError('Please call ' . __CLASS__ . '::start() before calling ' . __CLASS__ . '::mark("' . $id . '").');
             return false;
         }
@@ -118,7 +115,7 @@ class Bench
      *
      * @return array;
      */
-    public  function getMarks()
+    public function getMarks()
     {
         return $this->marks;
     }
@@ -130,12 +127,10 @@ class Bench
      *
      * @return mixed; array on success, false on failure.
      */
-    public  function getMarkById($id)
+    public function getMarkById($id)
     {
-        foreach ( $this->marks as $mark )
-        {
-            if ( $mark[ 'id' ] == $id )
-            {
+        foreach ($this->marks as $mark) {
+            if ($mark[ 'id' ] == $id) {
                 return $mark;
             }
         }
@@ -147,13 +142,11 @@ class Bench
      *
      * @return mixed; float on success, false on failure.
      */
-    public  function getMarkAverage()
+    public function getMarkAverage()
     {
-        if ( ($mark_count = count($marks = $this->getMarks())) )
-        {
+        if (($mark_count = count($marks = $this->getMarks()))) {
             $sum = 0;
-            foreach ( $marks as $mark )
-            {
+            foreach ($marks as $mark) {
                 $sum += $mark[ 'since_last_mark' ];
             }
             return $sum / $mark_count;
@@ -166,15 +159,12 @@ class Bench
      *
      * @return mixed; array on success, false on failure.
      */
-    public  function getLongestMark()
+    public function getLongestMark()
     {
-        if ( count($marks = $this->getMarks()) )
-        {
+        if (count($marks = $this->getMarks())) {
             $longest_mark = null;
-            foreach ( $marks as $mark )
-            {
-                if ( ($longest_mark == null) || ($mark[ 'since_last_mark' ] > $longest_mark[ 'since_last_mark' ]) )
-                {
+            foreach ($marks as $mark) {
+                if (($longest_mark == null) || ($mark[ 'since_last_mark' ] > $longest_mark[ 'since_last_mark' ])) {
                     $longest_mark = $mark;
                 }
             }
@@ -188,15 +178,12 @@ class Bench
      *
      * @return mixed; array on success, false on failure.
      */
-    public  function getShortestMark()
+    public function getShortestMark()
     {
-        if ( count($marks = $this->getMarks()) )
-        {
+        if (count($marks = $this->getMarks())) {
             $shortest_mark = null;
-            foreach ( $marks as $mark )
-            {
-                if ( ($shortest_mark == null) || ($mark[ 'since_last_mark' ] < $shortest_mark[ 'since_last_mark' ]) )
-                {
+            foreach ($marks as $mark) {
+                if (($shortest_mark == null) || ($mark[ 'since_last_mark' ] < $shortest_mark[ 'since_last_mark' ])) {
                     $shortest_mark = $mark;
                 }
             }
@@ -210,10 +197,9 @@ class Bench
      *
      * @return mixed; array on success, false on failure.
      */
-    public  function getLastMark()
+    public function getLastMark()
     {
-        if ( count($this->marks) )
-        {
+        if (count($this->marks)) {
             return $this->marks[ count($this->marks) - 1 ];
         }
         return false;
@@ -226,10 +212,9 @@ class Bench
      *
      * @return mixed; float, false on failure.
      */
-    public  function getElaspedSinceMark($id)
+    public function getElaspedSinceMark($id)
     {
-        if ( $mark = $this->getMarkById($id) )
-        {
+        if ($mark = $this->getMarkById($id)) {
             return microtime(true) - $mark[ 'microtime' ];
         }
         return false;
@@ -240,10 +225,9 @@ class Bench
      *
      * @return mixed; float, false on error.
      */
-    public  function getElaspedSinceLastMark()
+    public function getElaspedSinceLastMark()
     {
-        if ( $mark = $this->getLastMark() )
-        {
+        if ($mark = $this->getLastMark()) {
             return microtime(true) - $mark[ 'microtime' ];
         }
         return false;
@@ -263,34 +247,25 @@ class Bench
      *
      * @return mixed; float, false on error.
      */
-    public  function getElapsed($from_mark_id = null, $to_mark_id = null)
+    public function getElapsed($from_mark_id = null, $to_mark_id = null)
     {
         $microtime = microtime(true);
         $elapsed   = false;
-        if ( $this->start === null )
-        {
+        if ($this->start === null) {
             $this->logError('Please call ' . __CLASS__ . '::start() before calling ' . __CLASS__ . '::getElapsed()');
             return false;
         }
-        if ( ! $from_mark_id && ! $to_mark_id )
-        {
+        if (! $from_mark_id && ! $to_mark_id) {
             $minuend = ($this->stop !== null) ? $this->stop : $microtime;
             $elapsed = $minuend - $this->start;
-        }
-        else
-        {
-            if ( ($mark_from = $this->getMarkById($from_mark_id)) && ($mark_to = $this->getMarkById($to_mark_id)) )
-            {
+        } else {
+            if (($mark_from = $this->getMarkById($from_mark_id)) && ($mark_to = $this->getMarkById($to_mark_id))) {
                 $elapsed = abs($mark_to[ 'microtime' ] - $mark_from[ 'microtime' ]);
-            }
-            else
-            {
-                if ( ! $mark_from )
-                {
+            } else {
+                if (! $mark_from) {
                     $this->logError(__CLASS__ . '::getElapsed(): A mark with the id of "' . $from_mark_id . '" does not exist.');
                 }
-                if ( ! $mark_to )
-                {
+                if (! $mark_to) {
                     $this->logError(__CLASS__ . '::getElapsed(): A mark with the id of "' . $to_mark_id . '" does not exist.');
                 }
             }
@@ -303,18 +278,16 @@ class Bench
      *
      * @return mixed; array of statistics, false on error.
      */
-    public  function getStats()
+    public function getStats()
     {
-        if ( $this->start === null )
-        {
+        if ($this->start === null) {
             $this->logError('Please call ' . __CLASS__ . '::start() before calling ' . __CLASS__ . '::getStats()');
             return false;
         }
         $elapsed = $this->getElapsed();
         $stats   = [ ];
-        if ( count($this->getMarks()) )
-        {
-            // Average Time (in seconds) Between Marks
+        if (count($this->getMarks())) {
+        // Average Time (in seconds) Between Marks
             $stats[ 'mark_average' ] = $this->getMarkAverage();
             // The Shortest Mark
             $stats[ 'mark_shortest' ] = $this->getShortestMark();
@@ -337,11 +310,10 @@ class Bench
      *
      * @return void;
      */
-    public  function dump($die = true)
+    public function dump($die = true)
     {
         var_dump([ 'STATISTICS' => $this->getStats(), 'MARKS' => $this->getMarks(), 'ERRORS' => $this->getErrors() ]);
-        if ( $die )
-        {
+        if ($die) {
             die();
         }
     }
@@ -351,7 +323,7 @@ class Bench
      *
      * @return bool;
      */
-    public  function hasErrors()
+    public function hasErrors()
     {
         return count($this->errors) ? true : false;
     }
@@ -361,7 +333,7 @@ class Bench
      *
      * @return array;
      */
-    public  function getErrors()
+    public function getErrors()
     {
         return $this->errors;
     }
@@ -373,7 +345,7 @@ class Bench
      *
      * @return void;
      */
-    protected  function logError($error)
+    protected function logError($error)
     {
         $this->errors[] = $error;
         error_log(__CLASS__ . ': ' . $error);

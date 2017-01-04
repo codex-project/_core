@@ -12,7 +12,6 @@
 
 namespace Codex\Menus;
 
-
 use Codex\Codex;
 use Codex\Contracts;
 use Codex\Support\Collection;
@@ -25,8 +24,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory as View;
 use Illuminate\Routing\Router;
 
-
-class Menus extends ExtendableCollection  implements Contracts\Menus\Menus, Arrayable
+class Menus extends ExtendableCollection implements Contracts\Menus\Menus, Arrayable
 {
     use Traits\FilesTrait,
         Traits\ConfigTrait;
@@ -85,7 +83,7 @@ class Menus extends ExtendableCollection  implements Contracts\Menus\Menus, Arra
      */
     public function add($id, array $attributes = [ ])
     {
-        if ( $this->has($id) ) {
+        if ($this->has($id)) {
             return $this->get($id);
         }
 
@@ -153,7 +151,7 @@ class Menus extends ExtendableCollection  implements Contracts\Menus\Menus, Arra
         $params = func_get_args();
         $id     = array_shift($params);
 
-        if ( !$this->has($id) ) {
+        if (!$this->has($id)) {
             return '';
         }
         return call_user_func_array([$this->get($id), 'render'], $params);

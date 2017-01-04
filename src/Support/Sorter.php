@@ -416,6 +416,4 @@ class Sorter implements Sortable
     {
         return $this->sorted;
     }
-
-
 }

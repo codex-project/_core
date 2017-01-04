@@ -49,18 +49,16 @@ class PluginHydrator extends Hydrator
 
     public function runInstanceMethod($name, array $params = [])
     {
-        if(method_exists($this->instance, 'register')){
+        if (method_exists($this->instance, 'register')) {
             call_user_func_array([$this->instance, 'register'], []);
         }
     }
 
     public function getInstance()
     {
-        if(null === $this->instance){
+        if (null === $this->instance) {
             $this->instance = app()->build($this->class);
         }
         return $this->instance;
     }
-
-
 }

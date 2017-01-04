@@ -61,5 +61,4 @@ class CodexMiddleware
 
         return $response;
     }
-
 }

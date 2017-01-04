@@ -35,7 +35,7 @@ trait ContainerTrait
      */
     public function getContainer()
     {
-        if ( !isset($this->container) ) {
+        if (!isset($this->container)) {
             $this->app = $this->container = \Illuminate\Container\Container::getInstance();
         }
         return $this->container;

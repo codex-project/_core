@@ -186,11 +186,7 @@ class Version extends \Herrera\Version\Version
     {
         return $this->isLessThan($version) || $this->isEqualTo($version);
     }
-
 }
 
 
 $v = new Version;
-
-
-

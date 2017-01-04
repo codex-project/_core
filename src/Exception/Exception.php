@@ -68,6 +68,4 @@ class Exception extends \Exception
     {
         return new static($message, $code, $previous);
     }
-
-
 }

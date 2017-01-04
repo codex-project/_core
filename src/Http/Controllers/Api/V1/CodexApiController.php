@@ -40,14 +40,13 @@ class CodexApiController extends ApiController
     {
         try {
             $data = [];
-            if ( $key ) {
+            if ($key) {
                 $data[ $key ] = config($key);
             }
-            foreach ( request('keys', []) as $key ) {
+            foreach (request('keys', []) as $key) {
                 $data[ $key ] = config($key);
             }
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
         return $this->response($data);
@@ -57,11 +56,11 @@ class CodexApiController extends ApiController
     {
         try {
             $data = $this->codex->get($query);
-        } catch(Exception $e){
+        } catch (Exception $e) {
             throw $e;
         }
 
-        if ( $data === null ) {
+        if ($data === null) {
             throw CodexException::create("Query '{$query}' has no valid result");
         }
         return $data;
@@ -70,12 +69,11 @@ class CodexApiController extends ApiController
     public function getQuery($query)
     {
         try {
-            if ( $query === '@' ) {
+            if ($query === '@') {
                 return $this->getCodex();
             }
             $data = $this->query($query)->toArray();
-        }
-        catch (CodexException $e) {
+        } catch (CodexException $e) {
             return $this->error($e);
         }
         return $this->response($data);
@@ -85,8 +83,7 @@ class CodexApiController extends ApiController
     {
         try {
             $data = $this->codex->toArray();
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e->getMessage());
         }
 
@@ -105,8 +102,7 @@ class CodexApiController extends ApiController
     {
         try {
             $data = $this->codex->get('*')->toArray();
-        }
-        catch (CodexException $e) {
+        } catch (CodexException $e) {
             return $this->error($e->getMessage());
         }
 
@@ -117,8 +113,7 @@ class CodexApiController extends ApiController
     {
         try {
             $data = $this->codex->get("{$project}")->toArray();
-        }
-        catch (CodexException $e) {
+        } catch (CodexException $e) {
             return $this->error($e->getMessage());
         }
 
@@ -129,8 +124,7 @@ class CodexApiController extends ApiController
     {
         try {
             $data = $this->codex->get("{$project}/*")->toArray();
-        }
-        catch (CodexException $e) {
+        } catch (CodexException $e) {
             return $this->error($e->getMessage());
         }
 
@@ -141,8 +135,7 @@ class CodexApiController extends ApiController
     {
         try {
             $data = $this->codex->get("{$project}/{$ref}")->toArray();
-        }
-        catch (CodexException $e) {
+        } catch (CodexException $e) {
             return $this->error($e->getMessage());
         }
 
@@ -153,8 +146,7 @@ class CodexApiController extends ApiController
     {
         try {
             $data = $this->codex->get("{$project}/{$ref}::*")->toArray();
-        }
-        catch (CodexException $e) {
+        } catch (CodexException $e) {
             return $this->error($e->getMessage());
         }
 
@@ -166,15 +158,14 @@ class CodexApiController extends ApiController
         try {
             $doc  = $this->codex->get("{$project}/{$ref}::{$document}");
             $data = $doc->toArray();
-        }
-        catch (CodexException $e) {
+        } catch (CodexException $e) {
             return $this->error($e->getMessage());
         }
 
-        if ( request('render', false) == true ) {
+        if (request('render', false) == true) {
             $data[ 'rendered' ] = $doc->render();
         }
-        if ( request('original', false) == true ) {
+        if (request('original', false) == true) {
             $data[ 'original' ] = $doc->getOriginalContent();
         }
         return $this->response($data);
@@ -190,7 +181,7 @@ class CodexApiController extends ApiController
     {
         $menu = $this->codex->menus->get($menu);
         $menu->resolve(request('params', []));
-        if ( $menu->hasResolver() ) {
+        if ($menu->hasResolver()) {
             $menu->resolve(request('params', []));
         }
         $data = $menu->toArray();
@@ -214,17 +205,17 @@ class CodexApiController extends ApiController
         #
         # get project
         #
-        if ( false === $codex->projects->has($projectSlug) ) {
+        if (false === $codex->projects->has($projectSlug)) {
             return $this->error('The project could not be found');
         }
         $project = $codex->projects->get($projectSlug);
         #
         # get ref (version)
         #
-        if ( null === $ref ) {
+        if (null === $ref) {
             $ref = $project->getDefaultRef();
         }
-        if ( false === $project->hasRef($ref) ) {
+        if (false === $project->hasRef($ref)) {
             return $codex->error('Not found', 'The version could not be found', 404);
         }
         $project->setRef($ref);
@@ -233,7 +224,7 @@ class CodexApiController extends ApiController
         #
         # get document
         #
-        if ( false === $project->documents->has($path) ) {
+        if (false === $project->documents->has($path)) {
             return $codex->error('Not found', 'The document could not be found', 404);
         }
         $document   = $project->documents->get($path);
@@ -241,7 +232,7 @@ class CodexApiController extends ApiController
         $breadcrumb = $document->getBreadcrumb();
 
         $res = $this->hookPoint('controller:document', [ $document, $codex, $project ]);
-        if ( $res ) {
+        if ($res) {
             return $res;
         }
 
@@ -251,12 +242,10 @@ class CodexApiController extends ApiController
         $view = $this->view->make($document->attr('view'), compact('project', 'document', 'content', 'breadcrumb'));
 
         $res = $this->hookPoint('controller:view', [ $view, $codex, $project, $document ]);
-        if ( $res ) {
+        if ($res) {
             return $res;
         }
 
         return $view;
     }
-
-
 }

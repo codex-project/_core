@@ -3,7 +3,8 @@ codex:
 
 # overide project config
 project:
-
+  phpdoc:
+    enabled: false
 
 # defines the sidebar menu
 #sidebar:

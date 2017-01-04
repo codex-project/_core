@@ -63,6 +63,15 @@ namespace C {
     class Project implements Contracts\Project
     {
         /**
+         * Get project configuration values (config.php)
+         *
+         * @param      $k
+         * @param null $def
+         */
+        public function config($k, $def = null)
+        {
+        }
+        /**
          * public function getVersions();
          *
          * public function getBranches();
@@ -98,11 +107,11 @@ namespace C {
             // TODO: Implement getDescription() method.
         }
 
-        /** @return string[] */
-        public function getEnabledProcessors()
-        {
-            // TODO: Implement getEnabledProcessors() method.
-        }
+//        /** @return string[] */
+//        public function getEnabledProcessors()
+//        {
+//            // TODO: Implement getEnabledProcessors() method.
+//        }
     }
 
     class Ref implements Contracts\Ref
@@ -176,200 +185,6 @@ namespace C {
     }
 
     class Theme extends \Codex\Theme
-    {
-
-    }
-}
-namespace C\Contracts {
-
-    interface Project
-    {
-        /**
-         * public function getVersions();
-         *
-         * public function getBranches();
-         *
-         * /** @return string[]
-         */
-        public function getRefs();
-
-        /** @return \C\Contracts\Ref */
-        public function getRef($name);
-
-        /** @return string */
-        public function getName();
-
-        /** @return string */
-        public function getDisplayName();
-
-        /** @return string */
-        public function getDescription();
-
-        /** @return string[] */
-        public function getEnabledProcessors();
-    }
-
-    interface Ref
-    {
-        /** @return string[] */
-        public function getDocuments();
-
-        /** @return \C\Contracts\Document */
-        public function getDocument($name);
-
-        /** @return \C\Contracts\Project */
-        public function getProject();
-    }
-
-    interface Document
-    {
-        /** @return \C\Contracts\Project */
-        public function getProject();
-
-        /** @return \C\Contracts\Ref */
-        public function getRef();
-
-        /** @return string */
-        public function render();
-    }
-
-    interface Bootable
-    {
-    }
-
-    interface Extendable
-    {
-    }
-
-    interface Hookable
-    {
-    }
-
-    interface Observable
-    {
-    }
-
-    interface Sortable
-    {
-    }
-
-    interface Dependable
-    {
-    }
-
-    interface ExposesApiData
-    {
-    }
-}
-namespace C\Contracts\Addons {
-
-    use Codex\Addons\Annotations\AbstractAnnotation;
-    use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
-
-    interface AddonManager
-    {
-        /** @return static */
-        public static function getInstance();
-
-        /** @return PluginRepository */
-        public function getPluginRepository();
-
-        /** @return ProcessorRepository */
-        public function getProcessorRepository();
-
-        /** @return HookRepository */
-        public function getHookRepository();
-
-        /** @return \C\Addons\Addon */
-        public function get($name);
-
-        public function add($name, $item = null);
-    }
-
-    interface Repository
-    {
-        public function get($name);
-
-        public function add(ClassFileInfo $file, AbstractAnnotation $annotation);
-    }
-
-    /**
-     * @method \C\Addons\Plugin get($name)
-     */
-    interface PluginRepository extends Repository
-    {
-    }
-
-    /**
-     * @method \C\Addons\Processor get($name)
-     */
-    interface ProcessorRepository extends Repository
-    {
-    }
-
-    /**
-     * @method \C\Addons\Hook get($name)
-     */
-    interface HookRepository extends Repository
-    {
-        public function create($hookPoint, \Closure $handler);
-    }
-}
-namespace C\Contracts\Menus {
-
-    interface Node
-    {
-
-    }
-
-    class Menu extends \Codex\Menus\Node
-    {
-    }
-
-    interface MenuFactory
-    {
-        /** @return Menu */
-        public function get($id);
-    }
-}
-namespace C\Contracts\Support {
-
-    interface Sortable
-    {
-    }
-
-    interface Dependable
-    {
-    }
-}
-namespace C\Support {
-
-    trait HydrateClassPropertiesTrait
-    {
-        public function hydrate(array $vars = [])
-        {
-            foreach ( get_class_vars(get_class($this)) as $var => $val ) {
-                if ( array_key_exists($var, $vars) ) {
-                    $this->{$var} = $vars[ $var ];
-                }
-            }
-        }
-    }
-
-    /** Nested array collection helper for multi-dimensional arrays. Supports dot notation */
-    class MultiDimensionalCollection extends \Codex\Support\Collection
-    {
-    }
-
-    class Sorter implements \C\Contracts\Support\Sortable
-    {
-
-    }
-
-//    class Version extends Version
-
-
-    interface Extendable
     {
 
     }
@@ -508,7 +323,6 @@ namespace C\Addons {
          * @return \Codex\Addons\Annotations\AbstractAnnotation|mixed
          */
         public function getAnnotation();
-
     }
 
     class Manifest extends \C\Support\MultiDimensionalCollection
@@ -555,8 +369,6 @@ namespace C\Addons {
             $this->manifestPath = $manifestPath;
             return $this;
         }
-
-
     }
 
     /**
@@ -574,15 +386,14 @@ namespace C\Addons {
 
         public function __call($name, $params = [])
         {
-            if ( starts_with($name, 'get') ) {
+            if (starts_with($name, 'get')) {
                 $property = strtolower(str_remove_left('get', $name));
-                if ( property_exists($this, $property) ) {
+                if (property_exists($this, $property)) {
                     return $this->{$property};
                 }
             }
             throw new \BadMethodCallException("Method [{$name}] does not exist");
         }
-
     }
 
     /**
@@ -708,6 +519,39 @@ namespace C\Addons\Repositories {
         public function add(ClassFileInfo $file, AbstractAnnotation $annotation);
     }
 }
+namespace C\Support {
+
+    trait HydrateClassPropertiesTrait
+    {
+        public function hydrate(array $vars = [])
+        {
+            foreach (get_class_vars(get_class($this)) as $var => $val) {
+                if (array_key_exists($var, $vars)) {
+                    $this->{$var} = $vars[ $var ];
+                }
+            }
+        }
+    }
+
+    /** Nested array collection helper for multi-dimensional arrays. Supports dot notation */
+    class MultiDimensionalCollection extends \Codex\Support\Collection
+    {
+    }
+
+    class Sorter implements \C\Contracts\Support\Sortable
+    {
+
+    }
+
+//    class Version extends Version
+
+
+    interface Extendable
+    {
+
+    }
+}
+
 
 namespace C\Menus {
 

@@ -70,20 +70,16 @@ class ProjectGenerator extends Extendable
     protected function registerViewExtension()
     {
         $hasExtension = in_array('stub', $this->view->getExtensions(), true);
-        if ( $hasExtension === false )
-        {
+        if ($hasExtension === false) {
             $this->view->addExtension('stub', 'blade');
         }
     }
 
     public function set($key, $value = null)
     {
-        if ( $value === null )
-        {
+        if ($value === null) {
             $this->vars = $key;
-        }
-        else
-        {
+        } else {
             data_set($this->vars, $key, $value);
         }
 

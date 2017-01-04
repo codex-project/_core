@@ -12,7 +12,6 @@
 
 namespace Codex\Support\Traits;
 
-
 /**
  * The ObservableTrait allows the class to be observed using the observer pattern. Requires the EventTrait to be present as well.
  *
@@ -38,8 +37,8 @@ trait ObservableTrait
 
         $className = is_string($class) ? $class : get_class($class);
 
-        foreach ( $instance->getObservableEvents() as $event ) {
-            if ( method_exists($class, $event) ) {
+        foreach ($instance->getObservableEvents() as $event) {
+            if (method_exists($class, $event)) {
                 static::registerEventListener($event, $className . '@' . $event, $priority);
             }
         }
@@ -62,7 +61,7 @@ trait ObservableTrait
     {
         $instance = new static;
 
-        foreach ( $instance->getObservableEvents() as $event ) {
+        foreach ($instance->getObservableEvents() as $event) {
             static::getDispatcher()->forget(static::getEventName($event) . get_called_class());
         }
     }
@@ -89,7 +88,7 @@ trait ObservableTrait
      */
     public function setObservableEvents(array $observables)
     {
-        if ( !property_exists($this, 'observables') ) {
+        if (!property_exists($this, 'observables')) {
             $class = get_class($this);
             throw new \LogicException("The class {$class} should have the property [observables]");
         }
@@ -112,5 +111,4 @@ trait ObservableTrait
 
         $this->setObservableEvents(array_diff($this->getObservableEvents(), $observables));
     }
-
 }

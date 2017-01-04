@@ -29,13 +29,12 @@ class RefsMenuResolver implements MenuResolver
         $menu->setAttribute('label', $currentRef->getName());
         $menu->setAttribute('title', 'Version');
 
-        foreach( $refs->all() as $ref){
+        foreach ($refs->all() as $ref) {
             $menu
                 ->add($ref->getName(), $ref->getName())
                 ->setAttribute([
                     'href' => $project->url('index', $ref->getName())
                 ]);
         }
-
     }
 }

@@ -10,7 +10,6 @@
  */
 namespace Codex\Console;
 
-
 use Codex\Codex;
 use Illuminate\Console\Command;
 use Illuminate\Support\Traits\Macroable;
@@ -37,7 +36,7 @@ class ListCommand extends Command
 
     protected function listProjects()
     {
-        foreach ( codex('projects')->all() as $project ) {
+        foreach (codex('projects')->all() as $project) {
             # $content = $project->documents->get('asdf')->render();
             $this->line(" - {$project->getName()}");
         }
@@ -45,8 +44,8 @@ class ListCommand extends Command
 
     protected function listFilters()
     {
-        foreach ( codex('addons')->processors->all() as $filter ) {
-            if ( $this->more ) {
+        foreach (codex('addons')->processors->all() as $filter) {
+            if ($this->more) {
                 $replace = $filter[ 'replace' ] ? "\nReplaces: {$filter['replace']}\n" : '';
 
                 $this->output->write(<<<FILTER
@@ -61,5 +60,4 @@ FILTER
             }
         }
     }
-
 }

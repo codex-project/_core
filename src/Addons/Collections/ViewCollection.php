@@ -33,11 +33,9 @@ class ViewCollection extends BaseCollection
 
     public function merge($items)
     {
-        foreach ( array_dot($items) as $key => $value ) {
+        foreach (array_dot($items) as $key => $value) {
             $this->set($key, $value);
         }
         return $this;
     }
-
-
 }

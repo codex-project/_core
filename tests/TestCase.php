@@ -64,6 +64,4 @@ class TestCase extends AbstractTestCase
         $basePath = preg_replace('/\/vendor\/orchestra.*/', '', realpath(base_path()));
         return $path ? path_join($basePath, $path) : $basePath;
     }
-
-
 }

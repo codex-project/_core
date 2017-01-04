@@ -57,7 +57,7 @@ class AttributesProcessor
     {
         $open  = [ ];
         $close = [ ];
-        foreach ( $this->config[ 'tags' ] as $tag ) {
+        foreach ($this->config[ 'tags' ] as $tag) {
             $open[]  = $tag[ 'open' ];
             $close[] = $tag[ 'close' ];
         }
@@ -68,26 +68,24 @@ class AttributesProcessor
     {
         $content = $document->getContent();
         $pattern = $this->getTagsPattern();
-        if ( preg_match($pattern, $content, $matches) === 1 ) {
+        if (preg_match($pattern, $content, $matches) === 1) {
             // not really required when using html doc tags. But in case it's frontmatter, it should be removed
-            if ( $this->config[ 'remove_tags' ] === true ) {
+            if ($this->config[ 'remove_tags' ] === true) {
                 $content = preg_replace($pattern, '', $content);
             }
             $data = Yaml::parse($matches[ 1 ]);
-            if ( is_array($data) ) {
+            if (is_array($data)) {
                 $attributes = array_replace_recursive($document->getAttributes(), $data);
 
                 $document->setAttributes($attributes);
             }
         }
-        if ( $this->config[ 'remove_tags' ] === true ) {
+        if ($this->config[ 'remove_tags' ] === true) {
             $document->setContent($content);
         }
 
         return $this;
     }
-
-
 }
 
 #class AttributesFilter

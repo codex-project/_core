@@ -10,7 +10,6 @@
  */
 namespace Codex\Console;
 
-
 class ProjectsCreateCommand extends Command
 {
 

@@ -8,6 +8,6 @@
  * @copyright Copyright 2016 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
-if(codex()->isDev()){
+if (codex()->isDev()) {
     Route::get('logs', ['as' => 'logs', 'uses' => 'CodexDevController@getLogs']);
 }

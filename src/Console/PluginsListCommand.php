@@ -32,7 +32,7 @@ class PluginsListCommand extends Command
 
     protected function list()
     {
-        foreach ( codex()->addons->plugins->all() as $plugin ) {
+        foreach (codex()->addons->plugins->all() as $plugin) {
             $this->line("- {$plugin->name}");
         }
     }
@@ -41,8 +41,7 @@ class PluginsListCommand extends Command
     public function listDetailed()
     {
         $table = collect();
-        foreach ( codex()->addons->plugins->all() as $plugin ) {
-
+        foreach (codex()->addons->plugins->all() as $plugin) {
             $table[] = [
                 'Name'        => $plugin->name,
                 'Description' => $plugin->description,
@@ -55,6 +54,5 @@ class PluginsListCommand extends Command
         $this->table(array_keys($table[ 0 ]), $table->map(function ($data) {
             return array_values($data);
         })->toArray());
-
     }
 }

@@ -12,7 +12,6 @@
 
 namespace Codex\Support\Traits;
 
-
 use Illuminate\Contracts\Events\Dispatcher;
 
 trait EventTrait
@@ -32,8 +31,7 @@ trait EventTrait
      */
     public static function getDispatcher()
     {
-        if ( !isset(static::$dispatcher) ) {
-
+        if (!isset(static::$dispatcher)) {
             static::$dispatcher = function_exists('app') ?
                 app(Dispatcher::class) :
                 forward_static_call_array('Illuminate\Container\Container::make', [ Dispatcher::class ]);
@@ -108,6 +106,4 @@ trait EventTrait
         $name   = static::getEventName($event);
         return static::getDispatcher()->$method($name, $args);
     }
-
-
 }

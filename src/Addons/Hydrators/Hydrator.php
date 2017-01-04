@@ -10,7 +10,6 @@
  */
 namespace Codex\Addons\Hydrators;
 
-
 use ArrayAccess;
 use Codex\Support\Traits\ArrayableAccess;
 use Illuminate\Contracts\Support\Arrayable;
@@ -30,7 +29,7 @@ abstract class Hydrator implements Arrayable, ArrayAccess
     public function toArray()
     {
         $array = [];
-        foreach(get_class_vars(get_class($this)) as $var => $val){
+        foreach (get_class_vars(get_class($this)) as $var => $val) {
             $array[$var] = $this->{$var};
         }
         return $array;
@@ -38,8 +37,8 @@ abstract class Hydrator implements Arrayable, ArrayAccess
 
     public function hydrate(array $vars = [ ])
     {
-        foreach(get_class_vars(get_class($this)) as $var => $val){
-            if(array_key_exists($var, $vars)) {
+        foreach (get_class_vars(get_class($this)) as $var => $val) {
+            if (array_key_exists($var, $vars)) {
                 $this->{$var} = $vars[ $var ];
             }
         }

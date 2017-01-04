@@ -12,7 +12,6 @@
 
 namespace Codex\Documents;
 
-
 use Closure;
 use Codex\Codex;
 use Codex\Contracts;
@@ -78,7 +77,7 @@ class Documents extends ExtendableCollection implements Contracts\Documents\Docu
     {
         $fs    = $this->getFiles();
         $files = $fs->files($this->ref->path(), true);
-        foreach ( $files as $file ) {
+        foreach ($files as $file) {
             $file = Str::removeLeft($file, $this->ref->getName() . DIRECTORY_SEPARATOR);
             $file = Str::removeRight($file, '.' . path_get_extension($file));
             $this->resolvePathName($file) && $this->resolve($file);
@@ -97,12 +96,12 @@ class Documents extends ExtendableCollection implements Contracts\Documents\Docu
         $pathName = $pathName ?: 'index';
         $this->hookPoint('documents:resolve:path', [ $pathName ]);
 
-        if ( array_key_exists($pathName, $this->customDocuments) ) {
+        if (array_key_exists($pathName, $this->customDocuments)) {
             return $this->getCodex()->getContainer()->call($this->customDocuments[ $pathName ], [ 'documents' => $this ]);
         }
-        foreach ( $this->getCodex()->config('document.extensions', []) as $extension => $binding ) {
+        foreach ($this->getCodex()->config('document.extensions', []) as $extension => $binding) {
             $path = $this->ref->path("{$pathName}.{$extension}");
-            if ( $this->project->getFiles()->exists($path) ) {
+            if ($this->project->getFiles()->exists($path)) {
                 return compact('path', 'extension', 'binding');
             }
         }
@@ -115,11 +114,11 @@ class Documents extends ExtendableCollection implements Contracts\Documents\Docu
         $this->hookPoint('documents:resolve', [ $pathName ]);
         $resolved = $this->resolvePathName($pathName);
 
-        if ( $resolved === false ) {
+        if ($resolved === false) {
             throw CodexException::documentNotFound($pathName);
         }
 
-        if ( !$this->items->has($pathName) ) {
+        if (!$this->items->has($pathName)) {
             $document = $this->getCodex()->getContainer()->make($resolved[ 'binding' ], [
                 'codex'    => $this->getCodex(),
                 'project'  => $this->getProject(),
@@ -131,7 +130,7 @@ class Documents extends ExtendableCollection implements Contracts\Documents\Docu
             $this->hookPoint('project:document', [ $this->items->get($pathName) ]);
         }
 
-        if ( !$this->items->has($pathName) ) {
+        if (!$this->items->has($pathName)) {
             throw CodexException::documentNotFound($pathName);
         }
 

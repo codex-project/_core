@@ -12,7 +12,6 @@ namespace Codex\Documents;
 
 use PHPHtmlParser\Dom;
 
-
 /**
  * This is the class ContentDom.
  *

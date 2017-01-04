@@ -224,8 +224,9 @@ trait NodeTrait
     {
         $node = $this;
 
-        while ($parent = $node->getParent())
+        while ($parent = $node->getParent()) {
             $node = $parent;
+        }
 
         return $node;
     }
@@ -290,7 +291,8 @@ trait NodeTrait
 
     private function removeParentFromChildren()
     {
-        foreach ($this->getChildren() as $child)
+        foreach ($this->getChildren() as $child) {
             $child->setParent(null);
+        }
     }
 }

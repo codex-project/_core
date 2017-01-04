@@ -8,32 +8,42 @@
 @show
 <head>
 
+    @stack('head-pre')
+
     @stack('meta')
+
 
     <title>
         @section('title')
-            {{ codex()->theme->getTitle() }}
+            @stack('title')
         @show
     </title>
+
 
     @section('data')
         {!! codex()->theme->renderData() !!}
     @show
 
+
     @section('stylesheets')
         {!! codex()->theme->renderStylesheets() !!}
     @show
+
 
     @section('styles')
         {!! codex()->theme->renderStyles(); !!}
     @show
 
+
     @stack('head')
 
-</head>
+    @stack('head-after')
 
+</head
 
-<body class="@yield('bodyStyles', '')">
+@section('body-tag')
+<body class="@yield('body-tag-styles', '')">
+@show
 
 @section('body')
 @show

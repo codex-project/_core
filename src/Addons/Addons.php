@@ -12,7 +12,7 @@ namespace Codex\Addons;
 
 use BadMethodCallException;
 use Codex\Addons\Annotations;
-use Codex\Addon\Misc\Dev\Dev;
+use Codex\Dev\Dev;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
@@ -119,7 +119,7 @@ class Addons implements Arrayable
     public static function __callStatic($method, array $parameters = [])
     {
         $instance = static::getInstance();
-        if ( method_exists($instance, $method) ) {
+        if (method_exists($instance, $method)) {
             return call_user_func_array([ $instance, $method ], $parameters);
         }
         throw new BadMethodCallException("Method $method does not exist in class " . static::class);
@@ -131,7 +131,7 @@ class Addons implements Arrayable
      */
     public static function getInstance()
     {
-        if ( static::$instance === null ) {
+        if (static::$instance === null) {
             static::$instance = new static;
         }
         return static::$instance;
@@ -179,25 +179,25 @@ class Addons implements Arrayable
      */
     public function resolveAndRegisterAddons()
     {
-        foreach ( $this->manifest->get('addons.*.autoloads.*.path', []) as $path ) {
+        foreach ($this->manifest->get('addons.*.autoloads.*.path', []) as $path) {
             $this->resolveAndRegisterDirectory($path);
         }
     }
 
     public function resolveAndRegisterDirectory($path)
     {
-        foreach ( $this->resolver->scanAndResolveDirectory($path) as $resolved ) {
+        foreach ($this->resolver->scanAndResolveDirectory($path) as $resolved) {
             $this->registerResolved($resolved);
         }
     }
 
     protected function registerResolved(Resolved $resolved)
     {
-        if ( $resolved->is(self::PROCESSOR) ) {
+        if ($resolved->is(self::PROCESSOR)) {
             $this->processors->add($resolved->getClassFileInfo(), $resolved->getAnnotation());
-        } elseif ( $resolved->is(self::PLUGIN) ) {
+        } elseif ($resolved->is(self::PLUGIN)) {
             $this->plugins->add($resolved->getClassFileInfo(), $resolved->getAnnotation());
-        } elseif ( $resolved->is(self::HOOK) ) {
+        } elseif ($resolved->is(self::HOOK)) {
             $this->hooks->add($resolved->getClassFileInfo(), $resolved->getAnnotation(), $resolved->getMethod());
         }
     }
@@ -249,7 +249,7 @@ class Addons implements Arrayable
      */
     public function getManifest()
     {
-        if ( null === $this->manifest || $this->manifest->isEmpty() ) {
+        if (null === $this->manifest || $this->manifest->isEmpty()) {
             $this->loadManifest();
         }
         return $this->manifest;
@@ -274,10 +274,10 @@ class Addons implements Arrayable
      */
     public function __call($method, array $parameters = [])
     {
-        if ( in_array($method, $this->collections, true) ) {
+        if (in_array($method, $this->collections, true)) {
             $collection = $this->{$method};
             $args       = count($parameters);
-            if ( $args === 0 ) {
+            if ($args === 0) {
                 return $collection;
             } else {
                 $method = array_shift($parameters);
@@ -296,7 +296,7 @@ class Addons implements Arrayable
      */
     public function __get($name)
     {
-        if ( in_array($name, $this->collections, true) ) {
+        if (in_array($name, $this->collections, true)) {
             return $this->{$name};
         }
         throw new \RuntimeException("property $name not found");

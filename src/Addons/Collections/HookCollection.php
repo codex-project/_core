@@ -32,43 +32,33 @@ class HookCollection extends BaseCollection
     {
         $class = $file->getClassName();
 
-        if ( $method instanceof Closure )
-        {
+        if ($method instanceof Closure) {
             $id       = $class . '@' . str_random();
             $listener = $method;
-        }
-        else
-        {
+        } else {
             $id       = $method === null ? $class : "{$class}@{$method}";
             $listener = $id;
         }
 
         $this->set($id, array_merge(compact('file', 'annotation', 'class', 'listener'), (array)$annotation));
 
-        if ( $annotation->replace )
-        {
+        if ($annotation->replace) {
             $this->set("{$annotation->replace}.replaced", $id);
         }
 
         $hooks = $this;
-        $this->app->make('events')->listen('codex:' . $annotation->name, function () use ($hooks, $id)
-        {
-            if ( $this->has("{$id}.replaced") )
-            {
+        $this->app->make('events')->listen('codex:' . $annotation->name, function () use ($hooks, $id) {
+            if ($this->has("{$id}.replaced")) {
                 return;
             }
             $listener = $this->get("{$id}.listener");
-            if ( $listener instanceof Closure )
-            {
+            if ($listener instanceof Closure) {
                 return call_user_func_array($listener, func_get_args());
             }
             $method = 'handle';
-            if ( str_contains($listener, '@') )
-            {
+            if (str_contains($listener, '@')) {
                 list($class, $method) = explode('@', $listener);
-            }
-            else
-            {
+            } else {
                 $class = $listener;
             }
             $instance = $this->app->build($class);
@@ -89,5 +79,4 @@ class HookCollection extends BaseCollection
         //$this->app->make('events')->listen("codex:{$name}", $annotation);
         return $this;
     }
-
 }

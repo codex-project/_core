@@ -32,8 +32,7 @@ trait CodexTrait
      */
     public function getCodex()
     {
-        if ( $this->codex === null && app()->bound('codex') )
-        {
+        if ($this->codex === null && app()->bound('codex')) {
             $this->setCodex(app('codex'));
         }
         return $this->codex;
@@ -50,8 +49,7 @@ trait CodexTrait
     {
         $this->codex = $codex;
 
-        if ( method_exists($this, 'setContainer') )
-        {
+        if (method_exists($this, 'setContainer')) {
             $this->setContainer($codex->getContainer());
         }
 

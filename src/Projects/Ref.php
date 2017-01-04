@@ -10,7 +10,6 @@
  */
 namespace Codex\Projects;
 
-
 use Codex\Codex;
 use Codex\Exception\CodexException;
 use Codex\Support\Extendable;
@@ -81,9 +80,9 @@ class Ref extends Extendable implements Arrayable
     {
         // @TODO change to codex.yml only
         $fs = $this->getFiles();
-        if ( $fs->exists($this->path('codex.yml')) ) {
+        if ($fs->exists($this->path('codex.yml'))) {
             $yaml = $fs->get($this->path('codex.yml'));
-        } elseif ( $fs->exists($this->path('menu.yml')) ) {
+        } elseif ($fs->exists($this->path('menu.yml'))) {
             $yaml = $fs->get($this->path('menu.yml'));
         }
 
@@ -97,11 +96,10 @@ class Ref extends Extendable implements Arrayable
      */
     public function isVersion()
     {
-        if ( $this->version === null ) {
+        if ($this->version === null) {
             try {
                 $this->version = new version($this->name);
-            }
-            catch (SemVerException $e) {
+            } catch (SemVerException $e) {
                 $this->version = false;
             }
         }
@@ -110,7 +108,7 @@ class Ref extends Extendable implements Arrayable
 
     public function getVersion()
     {
-        if ( $this->isVersion() === false ) {
+        if ($this->isVersion() === false) {
             throw CodexException::create("Can not getVersion for Ref {$this->project}/{$this}. The Ref is not a semver. Check by using isVersion() first.");
         }
         return $this->version;

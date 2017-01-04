@@ -55,8 +55,7 @@ class Link
     {
         $schema = 'http';
 
-        if ( preg_match_all('/(\w*?):\/\//', $this->href(), $matches) > 0 )
-        {
+        if (preg_match_all('/(\w*?):\/\//', $this->href(), $matches) > 0) {
             $schema = (string)$matches[ 1 ][ 0 ];
         }
         return $schema;
@@ -64,8 +63,7 @@ class Link
 
     public function href($href = null)
     {
-        if ( $href !== null )
-        {
+        if ($href !== null) {
             $this->node->setAttribute('href', $href);
         }
         return $this->node->getAttribute('href');
@@ -92,5 +90,4 @@ class Link
         $needle = $this->processor->config[ 'needle' ];
         return str_contains($this->href(), "#{$needle}:");
     }
-
 }

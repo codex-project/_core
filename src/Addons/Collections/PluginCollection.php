@@ -58,8 +58,8 @@ class PluginCollection extends BaseCollection
         // with the resulting array of plugins, we will run each of them
 
         $replace = [];
-        foreach ( $this->all() as $plugin ) {
-            if ( $plugin->replace !== null ) {
+        foreach ($this->all() as $plugin) {
+            if ($plugin->replace !== null) {
                 $replace[ $plugin->replace ] = $plugin->name;
             }
         }
@@ -68,17 +68,17 @@ class PluginCollection extends BaseCollection
         $plugins = $this->only(config('codex.plugins', []))->sorted();
 
         $plugins = $plugins->transform(function (PluginHydrator $plugin) use ($replace) {
-            if ( array_key_exists($plugin->name, $replace) ) {
+            if (array_key_exists($plugin->name, $replace)) {
                 return $this->get($replace[ $plugin->name ]);
             }
             return $plugin;
         });
 
-        $plugins = $plugins->filter(function($plugin){
+        $plugins = $plugins->filter(function ($plugin) {
             return $this->canRunPlugin($plugin);
         });
 
-        foreach ( $plugins as $plugin ) {
+        foreach ($plugins as $plugin) {
             $this->runPlugin($plugin);
         }
     }
@@ -93,21 +93,21 @@ class PluginCollection extends BaseCollection
      */
     public function canRunPlugin($plugin)
     {
-        if ( is_string($plugin) ) {
+        if (is_string($plugin)) {
             // Check if exists
-            if ( false === $this->has($plugin) ) {
+            if (false === $this->has($plugin)) {
                 return false;
             }
             $plugin = $this->get($plugin);
         }
         // check global config if its enabled
-        if ( false === in_array($plugin->name, config('codex.plugins', []), true) ) {
+        if (false === in_array($plugin->name, config('codex.plugins', []), true)) {
             return false;
         }
 
         // check if dependencies exists and are enabled
-        foreach ( $plugin->requires as $name ) {
-            if ( !$this->has($name) || !in_array($name, config('codex.plugins', []), true) ) {
+        foreach ($plugin->requires as $name) {
+            if (!$this->has($name) || !in_array($name, config('codex.plugins', []), true)) {
                 //throw CodexException::create("Plugin [{$plugin->name}] dependency [{$name}] does not exist or is not enabled");
                 return false;
             }
@@ -129,7 +129,7 @@ class PluginCollection extends BaseCollection
     public function sorted()
     {
         $sorter = new Sorter();
-        foreach ( $this->all() as $plugin ) {
+        foreach ($this->all() as $plugin) {
             $sorter->addItem($plugin->name, $plugin->requires);
         }
 
@@ -160,6 +160,4 @@ class PluginCollection extends BaseCollection
     {
         return parent::all();
     }
-
-
 }

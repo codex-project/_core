@@ -1,10 +1,6 @@
 {
-    "name": "core",
     "private": true,
     "dependencies": {
-        "codex-theme": "^0.0.4"
-    },
-    "config": {
-        "prefix": "resources/node-modules"
+        "codex-theme": "^0.0.6"
     }
 }

@@ -100,12 +100,9 @@ class Manifest extends \Illuminate\Support\Collection
      */
     public function set($key, $value = null)
     {
-        if ( $value === null )
-        {
+        if ($value === null) {
             $this->customMerge($key);
-        }
-        else
-        {
+        } else {
             data_set($this->items, $key, $value);
         }
         return $this;
@@ -124,8 +121,7 @@ class Manifest extends \Illuminate\Support\Collection
 
     public function whereHas($key, $value)
     {
-        return $this->filter(function ($item) use ($key, $value)
-        {
+        return $this->filter(function ($item) use ($key, $value) {
             return in_array($value, data_get($item, $key, [ ]), true);
         });
     }
@@ -139,12 +135,9 @@ class Manifest extends \Illuminate\Support\Collection
      */
     public function customMerge(array $items, array $key = null, $method = 'array_replace_recursive')
     {
-        if ( $key )
-        {
+        if ($key) {
             $this->set($key, call_user_func($method, $this->get($key, [ ]), $items));
-        }
-        else
-        {
+        } else {
             $this->items = call_user_func($method, $this->items, $items);
         }
         return $this;
@@ -199,6 +192,4 @@ class Manifest extends \Illuminate\Support\Collection
     {
         $this->forget($key);
     }
-
-
 }

@@ -12,7 +12,6 @@
 
 namespace Codex\Exception;
 
-
 use Codex\Documents\Document;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -32,7 +31,7 @@ class CodexException extends Exception
 
     public function setClass($class)
     {
-        if ( !is_string($class) ) {
+        if (!is_string($class)) {
             $class = get_class($class);
         }
         $this->class = $class;
@@ -88,7 +87,7 @@ class CodexException extends Exception
     public static function processorNotFound($msg = '', Document $document = null)
     {
         $msg = '[Processor Not Found] ' . $msg;
-        if ( $document ) {
+        if ($document) {
             $msg .= " for project: [{$document->getProject()->getName()}]";
         }
         return new static($msg);

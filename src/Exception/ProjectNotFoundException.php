@@ -16,5 +16,4 @@ class ProjectNotFoundException extends Exception
     {
         return static::create("Could not find project [{$name}]");
     }
-
 }

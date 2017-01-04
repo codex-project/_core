@@ -12,7 +12,6 @@
 
 namespace Codex\Support\Traits;
 
-
 use Codex\Contracts\Traits\Bootable;
 use Codex\Contracts\Traits\Hookable;
 use Codex\Exception\CodexException;
@@ -39,14 +38,14 @@ trait BootableTrait
     {
         $class = get_class($this);
 
-        if ( !class_implements($class, Hookable::class) ) {
+        if (!class_implements($class, Hookable::class)) {
             throw CodexException::implementationMismatch(Hookable::class);
         }
-        if ( !class_implements($class, Bootable::class) ) {
+        if (!class_implements($class, Bootable::class)) {
             throw CodexException::implementationMismatch(Bootable::class);
         }
 
-        if ( !isset(static::$booted[ $class ]) ) {
+        if (!isset(static::$booted[ $class ])) {
             static::$booted[ $class ] = true;
 
             $this->fireEvent('booting', false);
@@ -74,8 +73,8 @@ trait BootableTrait
      */
     protected static function bootTraits()
     {
-        foreach ( class_uses_recursive(get_called_class()) as $trait ) {
-            if ( method_exists(get_called_class(), $method = 'boot' . class_basename($trait)) ) {
+        foreach (class_uses_recursive(get_called_class()) as $trait) {
+            if (method_exists(get_called_class(), $method = 'boot' . class_basename($trait))) {
                 forward_static_call([ get_called_class(), $method ]);
             }
         }

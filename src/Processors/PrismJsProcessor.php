@@ -143,8 +143,7 @@ class PrismJsProcessor
         $document->setContent(str_replace('language-', 'line-numbers language-', $document->getContent()));
         return;
         $dom = $document->getDom();
-        $dom->find('//pre/code')->each(function (Element $el)
-        {
+        $dom->find('//pre/code')->each(function (Element $el) {
             $cls = $el->getAttribute('class');
 
             $a = 'a';
@@ -181,17 +180,14 @@ class PrismJsProcessor
     protected function addPlugin($name)
     {
 
-        if ( $this->isValidPlugin($name) && false === $this->theme->javascripts()->has($key = "prism-{$name}") )
-        {
+        if ($this->isValidPlugin($name) && false === $this->theme->javascripts()->has($key = "prism-{$name}")) {
             $this->theme->addJavascript($key, $this->getPluginPath($name), [ 'prism' ]);
-            if ( file_exists(public_path($this->getPluginPath($name) . '.css')) )
-            {
+            if (file_exists(public_path($this->getPluginPath($name) . '.css'))) {
                 $this->theme->addStylesheet($key, $this->getPluginPath($name), [ 'prism' ]);
             }
 
             $method = Str::camelize("add-{$name}-plugin");
-            if ( static::hasMacro($method) || method_exists($this, $method) )
-            {
+            if (static::hasMacro($method) || method_exists($this, $method)) {
                 $this->{$method}($name);
             }
         }

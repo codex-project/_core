@@ -17,7 +17,15 @@ use Codex\Support\Traits\FilesTrait;
 use Illuminate\Contracts\Support\Arrayable;
 use vierbergenlars\SemVer\version;
 
-
+/**
+ * This is the class Refs.
+ *
+ * @package        Codex\Projects
+ * @author         CLI
+ * @copyright      Copyright (c) 2015, CLI. All rights reserved
+ *
+ * @method Ref get($name)
+ */
 class Refs extends ExtendableCollection implements Arrayable
 {
     use FilesTrait;
@@ -79,7 +87,7 @@ class Refs extends ExtendableCollection implements Arrayable
     {
         // Scan refs (directories) and instaniate / add em to the collection
         $directories = $this->getFiles()->directories();
-        foreach ( $directories as $directory ) {
+        foreach ($directories as $directory) {
             /** @var Ref $ref */
             $ref = $this->app->make('codex.ref', [
                 'name'    => $directory,
@@ -90,9 +98,9 @@ class Refs extends ExtendableCollection implements Arrayable
             $this->items->put($directory, $ref);
 
             // if the ref is a (semver) version, we add it to versions, so we can easily reference it laster (sort etc)
-            if ( $ref->isVersion() ) {
+            if ($ref->isVersion()) {
                 $this->versions[] = $ref;
-            } elseif ( $ref->isBranch() ) {
+            } elseif ($ref->isBranch()) {
                 $this->branches[] = $ref;
             }
         }
@@ -100,7 +108,7 @@ class Refs extends ExtendableCollection implements Arrayable
 
         // Resolve default ref
         $defaultRef = $this->items->first()->getName(); // DEFAULT_FIRST_DIRECTORY
-        switch ( $this->project->config('default') ) {
+        switch ($this->project->config('default')) {
             case static::DEFAULT_AUTO:
                 break;
 

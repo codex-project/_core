@@ -11,7 +11,6 @@
 
 namespace Codex\Support\Traits;
 
-
 trait CreateDomElementTrait
 {
     /**
@@ -25,8 +24,7 @@ trait CreateDomElementTrait
     protected function createElement($name, $attrs = [ ])
     {
         $el = \FluentDOM::create()->element($name);
-        foreach ( $attrs as $k => $v )
-        {
+        foreach ($attrs as $k => $v) {
             $el->setAttribute($k, $v);
         }
         return $el;

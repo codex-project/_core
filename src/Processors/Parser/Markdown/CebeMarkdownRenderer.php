@@ -55,9 +55,8 @@ class CebeMarkdownRenderer implements RendererInterface
 
     public function setConfig($config = [ ])
     {
-        foreach($config as $key => $value) {
-            if(property_exists($this->markdown, $key))
-            {
+        foreach ($config as $key => $value) {
+            if (property_exists($this->markdown, $key)) {
                 $this->markdown->{$key} = $value;
             }
         }

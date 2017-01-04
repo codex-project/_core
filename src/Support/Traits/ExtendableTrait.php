@@ -12,7 +12,6 @@
 
 namespace Codex\Support\Traits;
 
-
 use BadMethodCallException;
 use Closure;
 use Laradic\Support\Str;
@@ -50,9 +49,8 @@ trait ExtendableTrait
         $property = property_exists(static::class, $type) ? $type : "_{$type}";
         $props =& static::$$property;
         $class = get_called_class();
-        if(!array_key_exists($class, $props)){
+        if (!array_key_exists($class, $props)) {
             $props[$class] = [];
-
         }
         return $props[$class];
     }
@@ -65,13 +63,13 @@ trait ExtendableTrait
      */
     public static function extend($name, $extension)
     {
-        if ( is_string($extension) && !Str::contains($extension, '@') ) {
-            if ( array_key_exists($name, static::getExtenableProperty('macros')) ) {
+        if (is_string($extension) && !Str::contains($extension, '@')) {
+            if (array_key_exists($name, static::getExtenableProperty('macros'))) {
                 throw new \InvalidArgumentException("Cannot extend [macro][{$name}] as [extension] because it already exists as [macro]. You can only replace [macro][{$name}] with an [macro]");
             }
             static::getExtenableProperty('extensions')[ $name ] = $extension;
         } else {
-            if ( array_key_exists($name, static::getExtenableProperty('extensions')) ) {
+            if (array_key_exists($name, static::getExtenableProperty('extensions'))) {
                 throw new \InvalidArgumentException("Cannot extend [extension][{$name}] as [macro] because it already exists as [extension]. You can only replace [extension][{$name}] with an [extension]");
             }
             static::getExtenableProperty('macros')[ $name ] = $extension;
@@ -92,9 +90,9 @@ trait ExtendableTrait
     {
         $callback = static::getExtenableProperty('macros')[ $name ];
 
-        if ( $callback instanceof Closure ) {
+        if ($callback instanceof Closure) {
             return call_user_func_array($callback->bindTo($this, get_class($this)), $parameters);
-        } elseif ( is_string($callback) && Str::contains($callback, '@') ) {
+        } elseif (is_string($callback) && Str::contains($callback, '@')) {
             return $this->callClassBasedMacro($callback, $parameters);
         }
     }
@@ -132,9 +130,9 @@ trait ExtendableTrait
     protected function getExtensionClassInstance($name)
     {
         $extension = static::getExtenableProperty('extensions')[ $name ];
-        if(is_string($extension)) {
-            if ( class_exists($extension) || $this->app->bound($extension) ) {
-                if ( !array_key_exists($name, $this->extensionInstances) ) {
+        if (is_string($extension)) {
+            if (class_exists($extension) || $this->app->bound($extension)) {
+                if (!array_key_exists($name, $this->extensionInstances)) {
                     $this->extensionInstances[ $name ] = $this->getContainer()->make($extension, [
                         'parent' => $this,
                     ]);
@@ -142,7 +140,6 @@ trait ExtendableTrait
 
                 return $this->extensionInstances[ $name ];
             }
-
         }
     }
 
@@ -156,7 +153,7 @@ trait ExtendableTrait
      */
     public function __call($name, array $params = [ ])
     {
-        if ( array_key_exists($name, static::getExtenableProperty('macros')) ) {
+        if (array_key_exists($name, static::getExtenableProperty('macros'))) {
             return $this->callMacro($name, $params);
         }
         throw new BadMethodCallException("Method [$name] does not exist.");
@@ -171,9 +168,8 @@ trait ExtendableTrait
      */
     public function __get($name)
     {
-        if ( array_key_exists($name, static::getExtenableProperty('extensions')) ) {
+        if (array_key_exists($name, static::getExtenableProperty('extensions'))) {
             return $this->getExtensionClassInstance($name);
         }
     }
-
 }

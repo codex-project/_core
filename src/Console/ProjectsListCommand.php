@@ -10,7 +10,6 @@
  */
 namespace Codex\Console;
 
-
 class ProjectsListCommand extends Command
 {
 
@@ -25,7 +24,7 @@ class ProjectsListCommand extends Command
 
     protected function list()
     {
-        foreach ( codex('projects')->all() as $project ) {
+        foreach (codex('projects')->all() as $project) {
             $this->line("- {$project->getName()}");
         }
     }
@@ -33,7 +32,7 @@ class ProjectsListCommand extends Command
     public function listDetailed()
     {
         $table = collect();
-        foreach ( codex('projects')->all() as $project ) {
+        foreach (codex('projects')->all() as $project) {
             $project->config('processors.enabled', []);
 
             $table[] = [

@@ -11,7 +11,6 @@
 
 namespace Codex\Filesystem;
 
-
 use FilesystemIterator;
 use League\Flysystem\Adapter\Local as BaseLocal;
 use RecursiveDirectoryIterator;
@@ -49,7 +48,7 @@ class Local extends BaseLocal
     protected function mapFileInfo(SplFileInfo $file)
     {
         $normalized = parent::mapFileInfo($file);
-        if($normalized['type'] === 'link'){
+        if ($normalized['type'] === 'link') {
             $normalized['type'] = 'dir';
         }
         return $normalized;
@@ -58,5 +57,4 @@ class Local extends BaseLocal
     {
         return $this->mapFileInfo($file);
     }
-
 }

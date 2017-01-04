@@ -55,9 +55,9 @@ class CodexDocumentController extends CodexController
      *
      * @return $this
      */
-    public function getDocument($projectSlug = null, $ref = null, $path = '')
+    public function getDocument($projectSlug = null, $ref = null, $path = null)
     {
-        if ( $projectSlug === null ) {
+        if ($projectSlug === null) {
             $projectSlug = $this->codex->config('default_project');
         }
         /** @var Codex $codex */
@@ -66,35 +66,40 @@ class CodexDocumentController extends CodexController
         $ref  = $ref ?: '!';
         $path = $path ?: '!';
 
+
         try {
             /** @var Document $document */
             $document = $codex->get("{$projectSlug}/{$ref}::{$path}");
-        }
-        catch (DocumentNotFoundException $e) {
+        } catch (DocumentNotFoundException $e) {
             $ref = $codex->get("{$projectSlug}/{$ref}");
             $this->view->share('ref', $ref);
             $this->view->share('project', $ref->getProject());
             return $this->notFound('document', $e);
-        }
-        catch (RefNotFoundException $e){
+        } catch (RefNotFoundException $e) {
             $project = $codex->get($projectSlug);
             $this->view->share('project', $project);
             return $this->notFound('ref', $e);
-        }
-        catch(ProjectNotFoundException $e){
+        } catch (ProjectNotFoundException $e) {
             return $this->notFound('project', $e);
+        }
+        if ($ref === '!' || $path === '!') {
+            return redirect(route('codex.document', [
+                'projectSlug' => $projectSlug,
+                'ref'         => $document->getRef(),
+                'path'        => $document->getPathName(),
+            ]));
         }
 
         // share project in views
-        $project = $document->getProject();
-        $ref     = $document->getRef();
+        $project    = $document->getProject();
+        $ref        = $document->getRef();
         $content    = $document->render();
         $breadcrumb = $document->getBreadcrumb();
 
         $this->view->share(compact('project', 'ref', 'document'));
 //        $res = $this->hookPoint('controller:document', [ $document ]);
         $res = $this->hookPoint('controller:document', [ $document, $codex, $project, $ref ]);
-        if ( $res ) {
+        if ($res) {
             return $res;
         }
 
@@ -108,11 +113,11 @@ class CodexDocumentController extends CodexController
 
     protected function notFound($what, \Exception $e)
     {
-        $this->hookPoint('controller:error', [$what,$e]);
+        $this->hookPoint('controller:error', [ $what, $e ]);
         return $this->codex->error('Oops, couldnt find that ' . $what, $e->getMessage(), 404);
     }
+
     public function getDocumentNotFound()
     {
-
     }
 }

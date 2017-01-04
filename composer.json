@@ -33,7 +33,8 @@
         "laradic/testing": "1.0.*",
         "erusev/parsedown-extra": "~0.7",
         "michelf/php-markdown": "~1.6",
-        "orchestra/testing": "~3.3"
+        "orchestra/testing": "~3.3",
+        "laradic/icon-generator": "~1.0"
     },
     "autoload": {
         "files": [

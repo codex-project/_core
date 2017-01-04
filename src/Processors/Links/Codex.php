@@ -19,15 +19,13 @@ class Codex
     public function project(Action $action)
     {
 
-        if ( false === codex('projects')->has($action->param(0)) )
-        {
+        if (false === codex('projects')->has($action->param(0))) {
             return;
         }
         $project = codex('projects')->get($action->param(0));
 
 
-        if ( $action->hasParameter(1) && false === $project->hasRef($action->param(1)) )
-        {
+        if ($action->hasParameter(1) && false === $project->hasRef($action->param(1))) {
             return;
         }
 

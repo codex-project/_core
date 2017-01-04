@@ -10,7 +10,6 @@
  */
 namespace Codex\Console;
 
-
 use Codex\Projects\Project;
 
 class ProjectsShowCommand extends Command
@@ -24,12 +23,12 @@ class ProjectsShowCommand extends Command
     {
         $projects = codex('projects');
         $name     = $this->argument('name');
-        if ( !$name ) {
+        if (!$name) {
             $choices = $projects->getItems()->keys()->toArray();
             $choices = array_combine($choices, $choices);
             $name    = $this->choice('name', $choices);
         }
-        if ( !$projects->has($name) ) {
+        if (!$projects->has($name)) {
             return $this->error('Project does not exist');
         }
         $this->showProject($name);
@@ -37,7 +36,7 @@ class ProjectsShowCommand extends Command
 
     protected function showProject($project)
     {
-        if ( !$project instanceof Project ) {
+        if (!$project instanceof Project) {
             $project = codex('projects')->get($project);
         }
         $description = "<comment>{$project->config('description', '')}</comment>";

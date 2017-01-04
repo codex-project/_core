@@ -10,7 +10,6 @@
  */
 namespace Codex\Addons\Hydrators;
 
-
 /**
  * This is the class ProcessorPresenter.
  *

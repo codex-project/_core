@@ -10,7 +10,6 @@
  */
 namespace Codex;
 
-
 use Codex\Contracts;
 use Codex\Exception\CodexException;
 use Codex\Exception\DocumentNotFoundException;
@@ -25,7 +24,6 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Filesystem\Filesystem;
 
-
 /**
  * This is the main Codex factory. It gives access to several sub-components and helper functions.
  *
@@ -39,6 +37,7 @@ use Illuminate\Filesystem\Filesystem;
  * @property-read \Codex\Addon\Git\CodexGit   $git          The theme instance
  * @property-read \Codex\Addon\Phpdoc\Phpdoc  $phpdoc       The phpdoc instance
  * @property-read \Codex\Theme                $theme        The theme instance
+ * @property-read \Codex\Dev\Dev              $dev          The Dev instance
  *
  *
  *
@@ -89,13 +88,13 @@ class Codex extends Extendable implements Arrayable
 
     public static function registerExtension($class, $name, $extension)
     {
-        if ( null === static::$resolved ) {
+        if (null === static::$resolved) {
             static::$resolved = new Collection();
         }
         \Illuminate\Container\Container::getInstance()->resolving($class, function ($instance) use ($name, $extension) {
             $className  = get_class($instance);
             $isExtended = static::$resolved->where('className', $className)->where('name', $name)->count() > 0;
-            if ( $isExtended ) {
+            if ($isExtended) {
                 return;
             }
             static::$resolved->push(compact('className', 'name'));
@@ -125,7 +124,7 @@ class Codex extends Extendable implements Arrayable
         $this->log   = $log;
 
         $this->docsPath = config('codex.paths.docs');
-        if ( path_is_relative($this->docsPath) ) {
+        if (path_is_relative($this->docsPath)) {
             $this->docsPath = base_path($this->docsPath);
         }
 
@@ -195,40 +194,40 @@ class Codex extends Extendable implements Arrayable
 
         #
         # Projects / Project
-        if ( $projectName === '*' ) {
+        if ($projectName === '*') {
             // get('*')
             return $this->projects;
-        } elseif ( $projectName === '!' ) {
+        } elseif ($projectName === '!') {
             $projectName = config('codex.default_project');
         }
 
-        if ( false === $this->projects->has($projectName) ) {
+        if (false === $this->projects->has($projectName)) {
             throw ProjectNotFoundException::project($projectName);
         }
         $project = $this->projects->get($projectName);
 
         #
         # Refs / Ref
-        if ( $projectRef === false ) {
-            if ( $documentPathName === false ) {
+        if ($projectRef === false) {
+            if ($documentPathName === false) {
                 // get('codex')
                 return $project;
             }
             $projectRef = '!'; // make it so that the default ref will be chosen when using get('codex::path/to/document')
         }
-        if ( $projectRef === '*' ) {
+        if ($projectRef === '*') {
             // get('codex/*')
             return $project->refs;
         }
-        if ( $projectRef === '!' ) {
+        if ($projectRef === '!') {
             $ref = $project->refs->getDefault();
         } else {
-            if ( false === $project->refs->has($projectRef) ) {
+            if (false === $project->refs->has($projectRef)) {
                 throw RefNotFoundException::ref($projectRef);
             }
             $ref = $project->refs->get($projectRef);
         }
-        if ( $documentPathName === false ) {
+        if ($documentPathName === false) {
             // get('codex/!')
             // get('codex/ref')
             return $ref;
@@ -236,11 +235,11 @@ class Codex extends Extendable implements Arrayable
 
         #
         # Documents / Document
-        if ( $documentPathName === '*' ) {
+        if ($documentPathName === '*') {
             return $ref->documents;
-        } elseif ( $documentPathName === '!' ) {
+        } elseif ($documentPathName === '!') {
             $documentPathName = $project->config('index');
-        } elseif ( false === $ref->documents->has($documentPathName) ) {
+        } elseif (false === $ref->documents->has($documentPathName)) {
             throw DocumentNotFoundException::document($documentPathName);
         }
 
@@ -304,7 +303,7 @@ class Codex extends Extendable implements Arrayable
         $cache = app('cache')->driver('file');
         $clm   = (int)$cache->get($key . '.lastModified', 0);
         $plm   = (int)$lastModified;
-        if ( $clm !== $plm ) {
+        if ($clm !== $plm) {
             $cache->forever($key, $create());
             $cache->forever($key . '.lastModified', $plm);
         }
@@ -320,7 +319,7 @@ class Codex extends Extendable implements Arrayable
 
     public function config($key = null, $default = null)
     {
-        if ( $key === null ) {
+        if ($key === null) {
             return new Collection($this->app[ 'config' ][ 'codex' ]);
         }
         return $this->app[ 'config' ]->get("codex.{$key}", $default);
@@ -366,7 +365,7 @@ class Codex extends Extendable implements Arrayable
     public function toArray()
     {
         $projects = $this->projects->getItems();
-        if ( $this->projects->isEmpty() ) {
+        if ($this->projects->isEmpty()) {
         }
         return [
             'defaultProject' => $this->config('default_project', $projects->first()->getName()),
@@ -379,7 +378,7 @@ class Codex extends Extendable implements Arrayable
 
     public function __get($name)
     {
-        if ( in_array($name, [ 'addons', 'dev' ], true) ) {
+        if (in_array($name, [ 'addons', 'dev' ], true)) {
             return $this->container->make('codex.' . $name);
         }
         return parent::__get($name);
@@ -445,6 +444,4 @@ class Codex extends Extendable implements Arrayable
     {
         return $this->config('codex.dev', false) !== false;
     }
-
-
 }

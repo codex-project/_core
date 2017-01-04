@@ -53,19 +53,14 @@ trait ConfigTrait
      */
     public function setConfig($key, $value = null)
     {
-        if ( $value === null )
-        {
-            if ( $key instanceof Arrayable )
-            {
+        if ($value === null) {
+            if ($key instanceof Arrayable) {
                 $key = $key->toArray();
             }
-            if ( is_array($key) )
-            {
+            if (is_array($key)) {
                 $this->config = $key;
             }
-        }
-        else
-        {
+        } else {
             array_set($this->config, $key, $value);
         }
 

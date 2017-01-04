@@ -15,7 +15,7 @@ return [
 
     'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
 
-    'plugins' => [ 'phpdoc', 'auth', 'git', 'jira',  'misc' ],
+    'plugins' => [ 'phpdoc', 'auth', 'git', 'jira', 'misc' ],
 
     'paths' => [
         'docs'     => env('CODEX_ROOT_DIR', base_path('resources/docs')),
@@ -28,7 +28,7 @@ return [
         'enabled'              => true,
         'base_route'           => env('CODEX_BASE_ROUTE', null),
         'use_welcome_page'     => true,
-        'document_prefix'           => 'documentation',
+        'document_prefix'      => 'documentation',
         'ignore_project_names' => [ '_debugbar', ],
         'api'                  => [
             'enabled'    => true,
@@ -39,7 +39,10 @@ return [
 
     'log' => true,
 
-    'document' => [
+    // Enables the codex development helpers. Note that this also requires app.debug to be true
+    'dev' => env('CODEX_DEV_ENABLED', true),
+
+    'document'   => [
         'cache'      => [
             // true     = enabled
             // false    = disabled
@@ -61,23 +64,60 @@ return [
         ],
     ],
 
-    'processors' => [
-        'macros' => [
-            'table:responsive' => 'Codex\Processors\Macros\Table@responsive',
-            'general:hide'     => 'Codex\Processors\Macros\General@hide',
-            'attribute:print'  => 'Codex\Processors\Macros\Attribute@printValue',
-        ],
 
-        'links' => [
-            // #codex:project:blade-extensions
-            // #codex:project:blade-extensions:master
-            // #codex:project:blade-extensions:master:configuration
-            'project' => 'Codex\Processors\Links\Codex@project',
-            'phpdoc'  => 'Codex\Addon\Phpdoc\PhpdocLink@handle',
+    /*
+    |--------------------------------------------------------------------------
+    | Processors
+    |--------------------------------------------------------------------------
+    |
+    | Global configuration for processors. Processors are applied to a
+    | document it's raw content. It modifies the final rendered output.
+    |
+    */
+    'processors' => [
+        'attributes' => [
+            'tags'           => [
+                [ 'open' => '<!--*', 'close' => '--*>' ], // html, markdown
+                [ 'open' => '---', 'close' => '---' ], // markdown (frontmatter)
+            ],
+            'remove_tags'    => true,
+            'add_extra_data' => true,
+        ],
+        'buttons'    => [
+
+        ],
+        'header'     => [
+
+        ],
+        'links'      => [
+            'needle' => 'codex',
+            'links'  => [
+                // #codex:project:blade-extensions
+                // #codex:project:blade-extensions:master
+                // #codex:project:blade-extensions:master:configuration
+                'project' => 'Codex\Processors\Links\Codex@project',
+                'phpdoc'  => 'Codex\Addon\Phpdoc\PhpdocLink@handle',
+
+            ],
+        ],
+        'macro'      => [
+
+            'macros' => [
+                'table:responsive' => 'Codex\Processors\Macros\Table@responsive',
+                'general:hide'     => 'Codex\Processors\Macros\General@hide',
+                'attribute:print'  => 'Codex\Processors\Macros\Attribute@printValue',
+            ],
+        ],
+        'parser'     => [
+
+        ],
+        'prismjs'    => [
+
+        ],
+        'toc'        => [
+
         ],
     ],
-
-
 
 
     'default_project_config' => [

@@ -12,7 +12,6 @@
 
 namespace Codex\Contracts\Menus;
 
-
 interface Menus
 {
 

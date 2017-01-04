@@ -44,11 +44,11 @@ class ProjectsMenuResolver implements MenuResolver
         $menu->setAttribute('label', $project === null ? 'Pick...' : $project->getDisplayName());
         $menu->setAttribute('title', 'Project');
 
-        foreach($this->codex->projects->all() as $project){
+        foreach ($this->codex->projects->all() as $project) {
             # Add to menu
             $name  = (string)$project->config('display_name');
             $names = [ ];
-            if ( strpos($name, ' :: ') !== false ) {
+            if (strpos($name, ' :: ') !== false) {
                 $names = explode(' :: ', $name);
                 $name  = array_shift($names);
             }
@@ -56,22 +56,20 @@ class ProjectsMenuResolver implements MenuResolver
             $href  = $project->url();
             $metas = compact('project');
             $id    = Str::slugify($name, '_');
-            if ( ! $menu->has($id) ) {
+            if (! $menu->has($id)) {
                 $node = $menu->add($id, $name, 'root', count($names) === 0 ? $metas : [ ], count($names) === 0 ? compact('href') : [ ]);
             }
 
             $parentId = $id;
-            while ( count($names) > 0 ) {
+            while (count($names) > 0) {
                 $name = array_shift($names);
                 $id .= '::' . $name;
                 $id = Str::slugify($id, '_');
-                if ( ! $menu->has($id) ) {
+                if (! $menu->has($id)) {
                     $node = $menu->add($id, $name, $parentId, $metas, count($names) === 0 ? compact('href') : [ ]);
                 }
                 $parentId = $id;
             }
-
         }
-
     }
 }

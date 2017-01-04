@@ -24,5 +24,4 @@ class CodexTest extends TestCase
     {
         static::assertTrue(true);
     }
-
 }

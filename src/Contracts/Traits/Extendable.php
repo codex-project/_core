@@ -12,12 +12,10 @@
 
 namespace Codex\Contracts\Traits;
 
-
 interface Extendable
 {
 
     public static function extensions();
 
     public static function extend($name, $extension);
-
 }

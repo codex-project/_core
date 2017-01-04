@@ -45,7 +45,7 @@ class Resolver
         $this->reader   = new AnnotationReader();
         $this->scanner  = new \Laradic\AnnotationScanner\Factory($this->reader, $this->fs);
 
-        foreach ( $this->fs->globule(__DIR__ . '/Annotations/*.php') as $filePath ) {
+        foreach ($this->fs->globule(__DIR__ . '/Annotations/*.php') as $filePath) {
             $this->scanner->registerAnnotation($filePath);
         }
 
@@ -80,24 +80,24 @@ class Resolver
     public function resolveAnnotations(ClassFileInfo $classFileInfo)
     {
         $resolved = [];
-        foreach ( $classFileInfo->getClassAnnotations() as $annotation ) {
-            if ( $annotation instanceof Annotations\Processor ) {
+        foreach ($classFileInfo->getClassAnnotations() as $annotation) {
+            if ($annotation instanceof Annotations\Processor) {
                 $resolved[] = $this->createResolvedAnnotation(Addons::PROCESSOR, $classFileInfo, $annotation);
-            } elseif ( $annotation instanceof Annotations\Hook ) {
+            } elseif ($annotation instanceof Annotations\Hook) {
                 $resolved[] = $this->createResolvedAnnotation(Addons::HOOK, $classFileInfo, $annotation);
-            } elseif ( $annotation instanceof Annotations\Plugin ) {
+            } elseif ($annotation instanceof Annotations\Plugin) {
                 $resolved[] = $this->createResolvedAnnotation(Addons::PLUGIN, $classFileInfo, $annotation);
             }
         }
-        foreach ( $classFileInfo->getMethodAnnotations(true) as $method => $annotations ) {
-            foreach ( $annotations as $annotation ) {
-                if ( $annotation instanceof Annotations\Hook ) {
+        foreach ($classFileInfo->getMethodAnnotations(true) as $method => $annotations) {
+            foreach ($annotations as $annotation) {
+                if ($annotation instanceof Annotations\Hook) {
                     $resolved[] = $this->createResolvedAnnotation(Addons::HOOK, $classFileInfo, $annotation)->setMethod($method);
                 }
             }
         }
-        foreach ( $classFileInfo->getPropertyAnnotations(true) as $property => $annotations ) {
-            foreach ( $annotations as $annotation ) {
+        foreach ($classFileInfo->getPropertyAnnotations(true) as $property => $annotations) {
+            foreach ($annotations as $annotation) {
                 $resolved[] = $this->createResolvedAnnotation(Addons::HOOK, $classFileInfo, $annotation)->setProperty($property);
             }
         }
@@ -114,7 +114,7 @@ class Resolver
     public function scanAndResolveFile($filePath)
     {
         $file = $this->scanner->scanFile($filePath);
-        if ( $file instanceof ClassFileInfo ) {
+        if ($file instanceof ClassFileInfo) {
             return $this->resolveAnnotations($file);
         }
         return [];
@@ -130,7 +130,7 @@ class Resolver
     public function scanAndResolveDirectory($path)
     {
         $resolved = [];
-        foreach ( $this->scanner->scanDirectory($path) as $info ) {
+        foreach ($this->scanner->scanDirectory($path) as $info) {
             $resolved = array_merge($resolved, $this->resolveAnnotations($info));
         }
         return $resolved;
@@ -165,6 +165,4 @@ class Resolver
     {
         return $this->scanner;
     }
-
-
 }

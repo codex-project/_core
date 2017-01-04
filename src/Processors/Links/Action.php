@@ -10,13 +10,11 @@
  */
 namespace Codex\Processors\Links;
 
-
 use Codex\Processors\LinksProcessor;
 use Codex\Support\Traits\ConfigTrait;
 use FluentDOM\Element;
 use League\Uri\Schemes\Http;
 use PHPHtmlParser\Dom\HtmlNode;
-
 
 /**
  * This is the class Action.
@@ -74,7 +72,7 @@ class Action
      */
     public function setParameters($parameters)
     {
-        if ( is_array($parameters) && count($parameters) > 0 ) {
+        if (is_array($parameters) && count($parameters) > 0) {
             $this->parameters = $parameters;
         }
     }
@@ -177,7 +175,4 @@ class Action
     {
         return $this->ref;
     }
-
-
-
 }

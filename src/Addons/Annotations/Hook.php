@@ -37,5 +37,4 @@ final class Hook extends AbstractAnnotation
      * @var string|bool
      */
     public $plugin = false;
-
 }

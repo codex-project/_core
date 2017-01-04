@@ -12,7 +12,7 @@
 
 namespace Codex;
 
-
+use Codex\Dev\Dev;
 use Codex\Documents\Document;
 use Codex\Http\Controllers\CodexDocumentController;
 use Codex\Log\Writer;
@@ -26,7 +26,6 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Laradic\ServiceProvider\ServiceProvider;
 use League\Flysystem\Filesystem as Flysystem;
 use Monolog\Logger as Monolog;
-
 
 /**
  * This is the class CodexServiceProvider.
@@ -98,14 +97,17 @@ class CodexServiceProvider extends ServiceProvider
 
     public function booting()
     {
+        Dev::getInstance()->startMeasure('boot');
         $this->bootMenus();
         $this->bootTheme();
+        Dev::getInstance()->stopMeasure('boot');
     }
 
     public function register()
     {
         $app = parent::register();
 
+        $app->register(\Codex\Dev\DevServiceProvider::class);
 
         $this->registerLogger();
 
@@ -117,7 +119,7 @@ class CodexServiceProvider extends ServiceProvider
 
         $this->registerJavascriptData();
 
-        if ( $this->config->get('codex.http.enabled', false) ) {
+        if ($this->config->get('codex.http.enabled', false)) {
             $this->registerHttp();
         }
 
@@ -128,8 +130,6 @@ class CodexServiceProvider extends ServiceProvider
     {
 
         $theme = $this->codex()->theme;
-
-        $theme->setTitle($this->config['codex.display_name']);
 
         $assetPath = asset('vendor/codex');
         $theme
@@ -300,6 +300,4 @@ EOT
         $this->addons->resolveAndRegisterDirectory(__DIR__ . '/Processors');
         $this->addons->resolveAndRegisterAddons();
     }
-
-
 }

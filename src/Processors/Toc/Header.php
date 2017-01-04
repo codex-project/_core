@@ -47,12 +47,12 @@ class Header extends Node implements Arrayable
             'value'    => $this->getValue()
         ];
         $children = [];
-        foreach ( $this->getChildren() as $child ) {
-            if ( $child instanceof Arrayable ) {
+        foreach ($this->getChildren() as $child) {
+            if ($child instanceof Arrayable) {
                 $children[] = $child->toArray();
             }
         }
-        if(count($children) > 0){
+        if (count($children) > 0) {
             $data['children'] = $children;
         }
         return $data;

@@ -73,31 +73,31 @@ class TocProcessor
         // Generate TOC Tree from HTML
         $prevSize = 0;
         $prevNode = $rootNode = $this->createHeaderNode(0, 'root');
-        for ( $h = 0; $h < $total; $h++ ) {
+        for ($h = 0; $h < $total; $h++) {
             $original = $matches[ 0 ][ $h ];
             $size     = (int)$matches[ 1 ][ $h ];
             $text     = $matches[ 2 ][ $h ];
-            if ( in_array($size, $this->config[ 'disable' ], true) ) {
+            if (in_array($size, $this->config[ 'disable' ], true)) {
                 continue;
             }
             $node = $this->createHeaderNode($size, $text);
-            if ( $size === $prevSize ) {
+            if ($size === $prevSize) {
                 $prevNode->getParent()->addChild($node);
                 $node->setParent($prevNode->getParent());
-            } elseif ( $size < $prevSize ) {
+            } elseif ($size < $prevSize) {
                 $parentNode = $prevNode->getParent();
-                while ( true ) {
-                    if ( $size === $parentNode->getValue()->getSize() ) {
+                while (true) {
+                    if ($size === $parentNode->getValue()->getSize()) {
                         $parentNode->getParent()->addChild($node);
                         $node->setParent($parentNode->getParent());
                         break;
                     }
-                    if ( $parentNode === $rootNode ) {
+                    if ($parentNode === $rootNode) {
                         break;
                     }
                     $parentNode = $parentNode->getParent();
                 }
-            } elseif ( $size > $prevSize ) {
+            } elseif ($size > $prevSize) {
                 $prevNode->addChild($node);
                 $node->setParent($prevNode);
             }
@@ -107,7 +107,7 @@ class TocProcessor
             );
 
             $link = '';
-            if ( $this->config[ 'header_link_show' ] === true ) {
+            if ($this->config[ 'header_link_show' ] === true) {
                 $link = "<p><a name=\"{$slug}\" class=\"{$this->config['header_link_class']}\"></a></p>";
             }
             $replacement = "{$link}<h{$size}>{$text}</h{$size}>";
@@ -124,7 +124,7 @@ class TocProcessor
             ->render();
 
         $this->addScript();
-        if ( count($this->nodes) >= (int)$this->config[ 'minimum_nodes' ] ) {
+        if (count($this->nodes) >= (int)$this->config[ 'minimum_nodes' ]) {
             $document->setContent("<ul class=\"{$this->config['list_class']}\">{$toc}</ul>" . $content);
         }
     }
@@ -142,7 +142,7 @@ class TocProcessor
     protected function makeSlug($text)
     {
         $slug = str_slug($text);
-        if ( in_array($slug, $this->slugs, true) ) {
+        if (in_array($slug, $this->slugs, true)) {
             return $this->makeSlug($text . '_' . str_random(1));
         }
         return $this->slugs[] = $slug;

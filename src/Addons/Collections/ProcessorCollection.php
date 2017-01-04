@@ -40,9 +40,9 @@ class ProcessorCollection extends BaseCollection
 
     public function add(ClassFileInfo $file, Processor $annotation)
     {
-        $class    = $file->getClassName();
-        $instance = null; //$this->app->make($class);
-        $data     = array_merge(compact('file', 'annotation', 'class', 'instance'), (array)$annotation);
+        $class     = $file->getClassName();
+        $instance  = null; //$this->app->make($class);
+        $data      = array_merge(compact('file', 'annotation', 'class', 'instance'), (array)$annotation);
         $processor = $this->app->build(ProcessorHydrator::class);
         $processor->hydrate($data);
 
@@ -56,49 +56,45 @@ class ProcessorCollection extends BaseCollection
         $project               = $document->getProject();
         $processor             = $this->get($name);
 
-        if($processor->plugin && false === $this->addons->plugins->canRunPlugin($processor->plugin)){
+        if ($processor->plugin && false === $this->addons->plugins->canRunPlugin($processor->plugin)) {
             throw CodexException::create("Cannot run processor [{$name}] belonging to plugin [{$processor->plugin}] because the plugin can not run. Ensure the plugin is installed and enabled");
         }
         // hook point before can prevent the processor from running
-        if ( false === $this->hookPoint('addons:processor:before', [ $name ]) )
-        {
+        if (false === $this->hookPoint('addons:processor:before', [ $name ])) {
             return $processor;
         }
 
         $instance   = $this->getInstance($name);
         $annotation = $processor[ 'annotation' ];
 
-        if ( $annotation->config !== false )
-        {
+        if ($annotation->config !== false) {
             // get default config
-            if ( ! property_exists($instance, $annotation->config) )
-            {
+            if (!property_exists($instance, $annotation->config)) {
                 throw CodexException::create('Config not found for ' . $processor[ 'class' ]);
             }
-            $config                          = $instance->{$annotation->config};
+            $config = $instance->{$annotation->config};
+            if (is_string($config)) {
+                $config = config($config);
+            }
             $config                          = array_replace_recursive(
                 $config,
-                $project->config('processors.' . $name, [ ]),
-                $document->attr('processors.' . $name, [ ])
+                $project->config('processors.' . $name, []),
+                $document->attr('processors.' . $name, [])
             );
             $instance->{$annotation->config} = new Collection($config);
         }
-        if ( property_exists($instance, 'codex') )
-        {
+        if (property_exists($instance, 'codex')) {
             $instance->codex = $document->getCodex();
         }
-        if ( property_exists($instance, 'project') )
-        {
+        if (property_exists($instance, 'project')) {
             $instance->project = $document->getProject();
         }
-        if ( property_exists($instance, 'document') )
-        {
+        if (property_exists($instance, 'document')) {
             $instance->document = $document;
         }
 
         // hook point after can prevent the processor from running
-        if ( false === $this->hookPoint('addons:processor:after', [ $name, $annotation, $instance ]) )
-        {
+        if (false === $this->hookPoint('addons:processor:after', [ $name, $annotation, $instance ])) {
             return $processor;
         }
 
@@ -109,8 +105,7 @@ class ProcessorCollection extends BaseCollection
 
     public function get($key, $default = null)
     {
-        if ( false === $this->has($key) )
-        {
+        if (false === $this->has($key)) {
             throw CodexException::processorNotFound(': ' . (string)$key, $this->currentDocument);
         }
         return parent::get($key, $default);
@@ -119,8 +114,7 @@ class ProcessorCollection extends BaseCollection
     protected function getInstance($name)
     {
         $processor = $this->get($name);
-        if ( $processor[ 'instance' ] === null )
-        {
+        if ($processor[ 'instance' ] === null) {
             $processor[ 'instance' ] = $this->app->build($processor[ 'class' ]);
             $this->set($name, $processor);
         }
@@ -129,14 +123,11 @@ class ProcessorCollection extends BaseCollection
 
     public function hasAll($names, $returnHasNot = false)
     {
-        if ( is_string($names) )
-        {
+        if (is_string($names)) {
             $names = func_get_args();
         }
-        foreach ( $names as $name )
-        {
-            if ( false === $this->has($name) )
-            {
+        foreach ($names as $name) {
+            if (false === $this->has($name)) {
                 return $returnHasNot ? $name : false;
             }
         }
@@ -147,34 +138,25 @@ class ProcessorCollection extends BaseCollection
     public function getSorted($names)
     {
         $all = $this->whereIn('name', $names)->sortBy('priority')->replaceProcessors();
-        $all->each(function ($processor) use ($all)
-        {
+        $all->each(function ($processor) use ($all) {
             /** @var Processor $annotation */
             $annotation = $processor[ 'annotation' ];
-            foreach ( $annotation->before as $before )
-            {
+            foreach ($annotation->before as $before) {
                 $otherProcessor = $all->where('name', $before)->first();
-                if ( $otherProcessor !== null && false === in_array($annotation->name, $otherProcessor[ 'after' ], true) )
-                {
-
+                if ($otherProcessor !== null && false === in_array($annotation->name, $otherProcessor[ 'after' ], true)) {
                     $otherProcessor[ 'after' ][] = $annotation->name;
                     $all->set($before, $otherProcessor);
                 }
             }
         });
         $sorter = new Sorter();
-        foreach ( $all as $item )
-        {
+        foreach ($all as $item) {
             $sorter->addItem($item[ 'name' ], $item[ 'after' ]);
         }
         $sorted = $sorter->sort();
-        if ( count($sorter->getMissing()) > 0 )
-        {
-            if ( static::$handleMissing === self::MISSING_IGNORED )
-            {
-            }
-            elseif ( static::$handleMissing === self::MISSING_THROWS_EXECEPTION )
-            {
+        if (count($sorter->getMissing()) > 0) {
+            if (static::$handleMissing === self::MISSING_IGNORED) {
+            } elseif (static::$handleMissing === self::MISSING_THROWS_EXECEPTION) {
                 $dep = array_keys($sorter->getMissing());
                 $dep = implode(', ', $dep);
                 throw CodexException::create("Sorter encountered a missing dependency for {$dep}");
@@ -187,20 +169,17 @@ class ProcessorCollection extends BaseCollection
     public function replaceProcessors()
     {
         $items = $this->items;
-        foreach ( $items as $name => $item )
-        {
-            if ( isset($item[ 'replaces' ]) )
-            {
+        foreach ($items as $name => $item) {
+            if (isset($item[ 'replaces' ])) {
                 $items[ $name ] = $this->replaceProcessor($items, $name);
             }
         }
         return new static($items);
     }
 
-    protected function replaceProcessor($items = [ ], $name)
+    protected function replaceProcessor($items = [], $name)
     {
-        if ( isset($items[ $name ][ 'replaces' ]) )
-        {
+        if (isset($items[ $name ][ 'replaces' ])) {
             $replacement    = $items[ $name ][ 'replaces' ];
             $items[ $name ] = $items[ $replacement ];
             return $this->replaceProcessor($items, $replacement);

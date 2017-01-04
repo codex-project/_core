@@ -11,7 +11,8 @@
 namespace Codex\Console;
 
 use Illuminate\Support\Traits\Macroable;
+
 abstract class Command extends \Illuminate\Console\Command
 {
-use Macroable;
+    use Macroable;
 }

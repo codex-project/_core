@@ -12,7 +12,6 @@
 
 namespace Codex\Support\Traits;
 
-
 use Codex\Exception\CodexException;
 use Laradic\Support\Arr;
 
@@ -49,10 +48,8 @@ trait HookableTrait
      */
     protected function hookPoint($event, array $args = [ ], $halt = true)
     {
-        if ( config('codex.dev.enabled', false) === true )
-        {
-            if ( array_key_exists($event, static::$hookPoints) )
-            {
+        if (config('codex.dev.enabled', false) === true) {
+            if (array_key_exists($event, static::$hookPoints)) {
                 throw CodexException::create('hook point already exists');
             }
             Arr::add(static::$hooks, $event, static::getDispatcher()->getListeners($event));
@@ -65,18 +62,13 @@ trait HookableTrait
 
     protected function hookPointGetCaller(array $trace, $current, $max = 5)
     {
-        if ( $current + 1 > $max )
-        {
+        if ($current + 1 > $max) {
             return null;
         }
-        if ( isset($trace[ $current ]) )
-        {
-            if ( $trace[ $current ][ 'function' ] === 'hookPoint' )
-            {
+        if (isset($trace[ $current ])) {
+            if ($trace[ $current ][ 'function' ] === 'hookPoint') {
                 return $this->hookPointGetCaller($trace, $current + 1);
-            }
-            else
-            {
+            } else {
                 return $trace[ $current ];
             }
         }
@@ -96,6 +88,4 @@ trait HookableTrait
         $name = static::getEventName($event);
         return static::getDispatcher()->fire($name, array_merge([ $this ], $args), $halt);
     }
-
-
 }

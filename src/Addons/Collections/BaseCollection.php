@@ -79,6 +79,4 @@ abstract class BaseCollection extends \Illuminate\Support\Collection implements 
     {
         $this->forget($key);
     }
-
-
 }

@@ -12,7 +12,6 @@
 
 namespace Codex\Menus;
 
-
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Arrayable;
 
@@ -105,7 +104,7 @@ class Node implements Arrayable, NodeInterface
      */
     public function setAttribute($key, $value = null)
     {
-        if ( is_array($key) && is_null($value) ) {
+        if (is_array($key) && is_null($value)) {
             $this->attributes = $key;
         } else {
             array_set($this->attributes, $key, $value);
@@ -124,7 +123,7 @@ class Node implements Arrayable, NodeInterface
      */
     public function setMeta($key, $value = null)
     {
-        if ( is_array($key) && is_null($value) ) {
+        if (is_array($key) && is_null($value)) {
             $this->meta = $key;
         } else {
             array_set($this->meta, $key, $value);
@@ -173,7 +172,7 @@ class Node implements Arrayable, NodeInterface
     public function parseAttributes()
     {
         $parsed = '';
-        foreach ( $this->attributes as $key => $val ) {
+        foreach ($this->attributes as $key => $val) {
             $parsed .= " {$key}=\"{$val}\"";
         }
 

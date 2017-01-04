@@ -139,7 +139,7 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
         $node->setMeta($meta);
         $node->setAttribute($attributes);
 
-        if ( $this->items->has($parent) ) {
+        if ($this->items->has($parent)) {
             $parentNode = $this->items->get($parent);
             $parentNode->addChild($node);
 //            $node->setParent($parentNode);
@@ -198,7 +198,7 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
         $rootNode = $this->getRootNode();
         $rootNode->removeAllChildren();
         $this->items = new Collection();
-        if ( false === $root ) {
+        if (false === $root) {
             $this->items->put('root', $rootNode);
         }
         return $this;
@@ -212,7 +212,7 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
     public function parseAttributes()
     {
         $parsed = '';
-        foreach ( $this->attributes as $key => $val ) {
+        foreach ($this->attributes as $key => $val) {
             $parsed .= " {$key}=\"{$val}\"";
         }
 
@@ -241,7 +241,7 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
     public function getBreadcrumbToHref($href)
     {
         $item = $this->findItemByHref($href);
-        if ( $item ) {
+        if ($item) {
             return $this->getBreadcrumbTo($item);
         } else {
             return [];
@@ -259,12 +259,12 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
     {
         /** @var Collection $found */
         $found = $this->items->filter(function (Node $item) use ($href) {
-            if ( $item->hasAttribute('href') && $item->attribute('href') === $href ) {
+            if ($item->hasAttribute('href') && $item->attribute('href') === $href) {
                 return true;
             }
         });
 
-        if ( $found->isEmpty() ) {
+        if ($found->isEmpty()) {
             return null;
         }
 
@@ -316,7 +316,7 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
         $this->hookPoint('menu:render');
 
         $root = $this->getRootNode();
-        if ( $this->sorter ) {
+        if ($this->sorter) {
             $items = $root->accept(new $this->sorter);
         } else {
             $items = $root->getChildren();
@@ -443,6 +443,4 @@ class Menu extends Extendable implements Arrayable, Contracts\Menus\Menu
     {
         return $this->getRootNode()->toArray();
     }
-
-
 }

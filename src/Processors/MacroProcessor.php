@@ -26,9 +26,7 @@ use Codex\Processors\Macros\Macro;
 class MacroProcessor
 {
     /** @var \Codex\Support\Collection */
-    public $config = [
-
-    ];
+    public $config = 'codex.processors.macro';
 
     /** @var \Codex\Codex */
     public $codex;
@@ -48,10 +46,9 @@ class MacroProcessor
         $definitions = $this->getAllMacroDefinitions();
 
         // foreach found macro
-        foreach ( $matches[ 0 ] as $i => $raw )
-        {
+        foreach ($matches[ 0 ] as $i => $raw) {
             $macro          = $this->createMacro($raw, $matches[1][$i]);
-            if(false === array_key_exists($macro->definition, $definitions)){
+            if (false === array_key_exists($macro->definition, $definitions)) {
                 continue;
             }
             static::$macros[] = $macro;
@@ -81,8 +78,8 @@ class MacroProcessor
      */
     protected function getAllMacroDefinitions()
     {
-        $tags = $this->codex->config('processors.macros', [ ]);
-        $tags = array_merge($tags, $this->project->config('processors.macros', [ ]));
-        return array_merge($tags, $this->document->attr('processors.macros', [ ]));
+        $tags = $this->codex->config('processors.macros', []);
+        $tags = array_merge($tags, $this->project->config('processors.macros', []));
+        return array_merge($tags, $this->document->attr('processors.macros', []));
     }
 }

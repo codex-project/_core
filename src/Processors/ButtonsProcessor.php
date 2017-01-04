@@ -85,18 +85,15 @@ class ButtonsProcessor
 
     protected function handleGroupsType()
     {
-        foreach ( $this->config[ 'groups' ] as $gid => $buttons )
-        {
-            foreach ( $buttons as $bid => $button )
-            {
+        foreach ($this->config[ 'groups' ] as $gid => $buttons) {
+            foreach ($buttons as $bid => $button) {
                 $this->button($bid, $button, $gid);
             }
         }
 
         $groupIds = $this->buttons->pluck('groupId')->unique();
         $groups   = [ ];
-        foreach ( $groupIds as $gid )
-        {
+        foreach ($groupIds as $gid) {
             $groups[ $gid ] = $this->buttons->where('groupId', $gid)->all();
         }
         return $this->render(compact('groups'));
@@ -104,8 +101,7 @@ class ButtonsProcessor
 
     protected function handleButtonsType()
     {
-        foreach ( $this->config[ 'buttons' ] as $bid => $button )
-        {
+        foreach ($this->config[ 'buttons' ] as $bid => $button) {
             $this->button($bid, $button);
         }
 

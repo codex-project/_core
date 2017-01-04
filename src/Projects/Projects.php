@@ -62,7 +62,7 @@ class Projects extends ExtendableCollection implements \Codex\Contracts\Projects
      */
     protected function findAndRegisterAll()
     {
-        if ( ! $this->items->isEmpty() ) {
+        if (! $this->items->isEmpty()) {
             return;
         }
         $this->hookPoint('projects:resolve', [ $this ]);
@@ -75,7 +75,7 @@ class Projects extends ExtendableCollection implements \Codex\Contracts\Projects
             ->depth('<= 1')
             ->followLinks();
 
-        foreach ( $projects as $projectDir ) {
+        foreach ($projects as $projectDir) {
             /** @var \SplFileInfo $projectDir */
             $name   = Path::getDirectoryName($projectDir->getPath());
             $config = $this->getContainer()->make('fs')->getRequire($projectDir->getRealPath());
@@ -91,12 +91,11 @@ class Projects extends ExtendableCollection implements \Codex\Contracts\Projects
 
             // This hook allows us to exclude projects from resolving, or do some other stuff
             $hook = $this->hookPoint('projects:resolving', [ $project ]);
-            if ( $hook === false ) {
+            if ($hook === false) {
                 continue;
             }
 
             $this->items->put($name, $project);
-
         }
         $this->hookPoint('projects:resolved', [ $this ]);
     }
@@ -112,7 +111,7 @@ class Projects extends ExtendableCollection implements \Codex\Contracts\Projects
      */
     public function get($name)
     {
-        if ( ! $this->has($name) ) {
+        if (! $this->has($name)) {
             throw CodexException::projectNotFound((string)$name);
         }
 
@@ -128,7 +127,7 @@ class Projects extends ExtendableCollection implements \Codex\Contracts\Projects
      */
     public function has($name)
     {
-        if($name === null){
+        if ($name === null) {
             return false;
         }
         return $this->items->has($name);
@@ -183,5 +182,4 @@ class Projects extends ExtendableCollection implements \Codex\Contracts\Projects
     {
         return $this->container->make('codex.project.generator');
     }
-
 }

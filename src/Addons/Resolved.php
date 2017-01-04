@@ -148,8 +148,4 @@ class Resolved
     {
         return $this->annotation;
     }
-
-
-
-
 }

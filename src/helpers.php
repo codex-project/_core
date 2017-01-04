@@ -21,7 +21,6 @@ if (!function_exists('version')) {
     function version($str = null, $loose = false)
     {
         return $str === null ? vierbergenlars\SemVer\version::class : new \vierbergenlars\SemVer\version($str, $loose);
-
     }
 }
 
@@ -34,14 +33,14 @@ if (!function_exists('codex')) {
      */
     function codex($ext = null)
     {
-        if(!app()->bound('codex') ) { //|| !app()->hasBeenBootstrapped()){
+        if (!app()->bound('codex')) { //|| !app()->hasBeenBootstrapped()){
             throw \Codex\Exception\CodexException::create('Codex is not bound yet');
         }
 
         /** @var mixed $codex */
         $codex = app('codex');
 
-        if($ext === null){
+        if ($ext === null) {
             return $codex;
         }
 

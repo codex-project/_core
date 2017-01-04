@@ -1,81 +1,37 @@
-<!--
+<!--~
   ~ Part of the Codex Project packages.
   ~
   ~ License and copyright information bundled with this package in the LICENSE file.
   ~
   ~ @author Robin Radic
-  ~ @copyright Copyright 2016 (c) Codex Project
+  ~ @copyright Copyright 2017 (c) Codex Project
   ~ @license http://codex-project.ninja/license The MIT License
   -->
 
-<project name="codex-core" default="pre-commit">
-    <property name="buildfile-version" value="1.0.0"/>
-    <property name="phpdocfile" value="${project.basedir}/docs/structure.xml"/>
+<project name="codex/core" default="start">
+    <property file="build.properties"/>
 
-    <target name="clean" unless="clean.done" description="Cleanup build artifacts">
-        <delete dir="${project.basedir}/vendor"/>
-        <delete file="${project.basedir}/composer.lock"/>
-        <property name="clean.done" value="true"/>
-    </target>
+    <property name="tools.dir" value=""/>
+    <property name="tools.ext" value=""/>
+    <property name="vendor.dir" value="${project.basedir}/vendor"/>
 
-    <target name="pre-commit" unless="pre-commit.done" depends="clean" description="Prepare for build">
-        <phingcall target="lint"/>
-        <phingcall target="phpcs"/>
-        <phingcall target="phpdoc"/>
-        <phingcall target="bower-install"/>
-        <property name="pre-commit.done" value="true"/>
-    </target>
+    <!-- Check if jenkins or local, then take appropriate actions -->
+    <if>
+        <equals arg1="${env}" arg2="local"/>
+        <then>
+            <property name="vendor.dir" override="true" value="${project.basedir}/../../../vendor"/>
+            <echo message="We're not on jenkins. Vendor dir: ${vendor.dir}"/>
+            <import file="local.build.xml" description="Local tasks for in workbench"/>
+        </then>
+        <else>
+            <property name="vendor.dir" override="true" value="${project.basedir}/vendor"/>
+            <echo message="We're on jenkins. Vendor dir: ${vendor.dir}"/>
+            <import file="vendor/laradic/phing/jenkins.xml" description="Jenkins tasks"/>
+        </else>
+    </if>
 
-    <target name="post-commit">
-        <phingcall target="bower-link"/>
-    </target>
-
-    <target name="lint" description="Perform syntax check of sourcecode files">
-        <apply executable="php" failonerror="true">
-            <arg value="-l"/>
-
-            <fileset dir="${project.basedir}/src">
-                <include name="**/*.php"/>
-            </fileset>
-        </apply>
-    </target>
-
-    <target name="phpcbf" description="Fixes coding standard violations using PHP_CodeSniffer Fixer">
-        <exec executable="phpcbf" logoutput="true" passthru="true">
-            <arg value="--tabWidth=4"/>
-            <arg value="--standard=PSR2"/>
-            <arg value="--extensions=php"/>
-            <arg value="--ignore=autoload.php"/>
-            <arg path="${project.basedir}/src"/>
-        </exec>
-    </target>
-
-    <target name="phpcs" depends="phpcbf" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
-        <exec executable="phpcs" logoutput="true" passthru="true">
-            <arg value="--standard=PSR2"/>
-            <arg value="--extensions=php"/>
-            <arg value="--ignore=autoload.php"/>
-            <arg path="${project.basedir}/src"/>
-        </exec>
-    </target>
-
-    <target name="phpdoc" description="Generate phpdoc structure xml and move into docs folder">
-        <exec executable="phpdoc" dir="${project.basedir}" logoutput="true" passthru="true">
-            <arg line="-t phpdoc"/>
-            <arg line="-d src"/>
-            <arg line="--template=xml"/>
-        </exec>
-        <move file="${project.basedir}/phpdoc/structure.xml" tofile="${phpdocfile}"/>
-        <delete dir="${project.basedir}/phpdoc"/>
-    </target>
-
-    <target name="theme-install" description="do theme">
-        <delete dir="${project.basedir}/resources/assets"/>
-        <exec command="npm install" dir="${project.basedir}" logoutput="true" passthru="true"/>
-    </target>
-    <target name="theme-copy" description="do theme">
-        <delete dir="${project.basedir}/resources/assets"/>
-        <exec command="npm install" dir="${project.basedir}" logoutput="true" passthru="true"/>
+    <target name="start">
+        <phingcall target="build" />
     </target>
 
 </project>

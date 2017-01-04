@@ -70,8 +70,7 @@ class Macro
     {
         $this->raw     = $raw;
         $this->cleaned = $cleaned;
-        if ( preg_match_all('/(?:\/|^)(.*?)(?:\(|$)/', $cleaned, $definition) === 0 )
-        {
+        if (preg_match_all('/(?:\/|^)(.*?)(?:\(|$)/', $cleaned, $definition) === 0) {
             throw CodexException::create('Macro definition could not be extracted');
         }
         $this->definition = $definition[ 1 ][ 0 ];
@@ -104,24 +103,15 @@ class Macro
         $arg = trim($arg);
         //https://regex101.com/r/gB9bP9/1
 
-        if ( preg_match_all('/^(\')(.*?)(\')$/', $arg, $matches) > 0 )
-        {
+        if (preg_match_all('/^(\')(.*?)(\')$/', $arg, $matches) > 0) {
             return str_replace('COMMA', ',', $matches[ 2 ][ 0 ]);
-        }
-        elseif ( $arg === 'true' || $arg === 'false' )
-        {
+        } elseif ($arg === 'true' || $arg === 'false') {
             return $arg === 'true';
-        }
-        elseif ( is_numeric($arg) )
-        {
+        } elseif (is_numeric($arg)) {
             return (int)$arg;
-        }
-        elseif ( class_exists((string)$arg) )
-        {
+        } elseif (class_exists((string)$arg)) {
             return app((string)$arg);
-        }
-        else
-        {
+        } else {
             return $arg;
         }
     }
@@ -137,40 +127,32 @@ class Macro
         $this->arguments = [ ];
 
         //https://regex101.com/r/gB9bP9/2
-        if ( preg_match('/\((.*?)\)(?!.*\))/', $this->cleaned, $argumentString) < 1 )
-        {
+        if (preg_match('/\((.*?)\)(?!.*\))/', $this->cleaned, $argumentString) < 1) {
             return;
         }
         $argumentString = last($argumentString);
 
         preg_match_all('/\'(.*?)\'/', $argumentString, $stringArguments);
-        foreach ( $stringArguments[ 0 ] as $sai => $stringArgument )
-        {
+        foreach ($stringArguments[ 0 ] as $sai => $stringArgument) {
             $new            = str_replace(',', 'COMMA', $stringArgument);
             $argumentString = str_replace($stringArgument, $new, $argumentString);
         }
 
-        foreach ( explode(',', $argumentString) as $arg )
-        {
+        foreach (explode(',', $argumentString) as $arg) {
             $this->arguments[] = $this->transformArg($arg);
         }
     }
 
     protected function getCallable()
     {
-        if ( $this->handler instanceof Closure )
-        {
+        if ($this->handler instanceof Closure) {
             return $this->handler;
-        }
-        else
-        {
+        } else {
             // assuming its a @ string
             list($class, $method) = explode('@', (string)$this->handler);
             $instance = app()->make($class);
-            foreach ( [ 'codex', 'document', 'project', 'definition' ] as $property )
-            {
-                if ( property_exists($instance, $property) )
-                {
+            foreach ([ 'codex', 'document', 'project', 'definition' ] as $property) {
+                if (property_exists($instance, $property)) {
                     $instance->{$property} = $this->{$property};
                 }
             }
@@ -185,17 +167,14 @@ class Macro
 
     public function run()
     {
-        if ( $this->canRun() )
-        {
+        if ($this->canRun()) {
             $content = $this->document->getContent();
             $this->parseArguments();
             $arguments = array_merge([ $this->isClosing() ], $this->arguments);
             $result    = call_user_func_array($this->getCallable(), $arguments);
             $content   = preg_replace('/' . preg_quote($this->raw, '/') . '/', $result, $content, 1);
             $this->document->setContent($content);
-        }
-        else
-        {
+        } else {
             throw CodexException::create("Macro [{$this->cleaned}] cannot call because some properties havent been set. Prevent the Macro from running by using the canRun() method.");
         }
     }

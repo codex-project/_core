@@ -16,5 +16,4 @@ class DocumentNotFoundException extends Exception
     {
         return static::create("Could not find document [{$path}]");
     }
-
 }
