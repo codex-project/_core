@@ -34,4 +34,39 @@
         <phingcall target="build" />
     </target>
 
+
+
+    <target name="theme-clean" description="clean the theme files">
+        <delete dir="${project.basedir}/resources/assets"/>
+        <delete dir="${project.basedir}/node_modules"/>
+    </target>
+    <target name="theme-install" description="install the theme node module">
+        <exec command="npm install" dir="${project.basedir}" logoutput="true" passthru="true"/>
+    </target>
+    <target name="theme-copy" description="copy the theme distribution files to assets" >
+        <copy todir="${project.basedir}/resources/assets">
+            <fileset dir="${project.basedir}/node_modules/codex-theme/dist/assets">
+                <include name="**"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="theme">
+        <phingcall target="theme-clean"/>
+        <phingcall target="theme-install"/>
+        <phingcall target="theme-copy"/>
+    </target>
+
+    <target name="theme-link-dist">
+        <delete dir="${project.basedir}/resources/assets"/>
+        <delete file="${project.basedir}/resources/assets"/>
+        <exec command="npm link codex-theme" dir="${project.basedir}"  logoutput="true" passthru="true"/>
+        <symlink target="node_modules/codex-theme/dist/assets" link="resources/assets" />
+    </target>
+    <target name="theme-link-dev">
+        <delete dir="${project.basedir}/resources/assets"/>
+        <delete file="${project.basedir}/resources/assets"/>
+        <exec command="npm link codex-theme" dir="${project.basedir}"  logoutput="true" passthru="true"/>
+        <symlink target="${project.basedir}/node_modules/codex-theme/dev/assets" link="${project.basedir}/resources/assets" />
+    </target>
+
 </project>

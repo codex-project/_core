@@ -5,7 +5,7 @@
  * License and copyright information bundled with this package in the LICENSE file.
  *
  * @author Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
+ * @copyright Copyright 2017 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Dev;
@@ -148,7 +148,7 @@ class Dev extends Extendable
 
     public function elapsed($id, $id2 = null)
     {
-        if ( $this->isEnabled() ) {
+        if ($this->isEnabled()) {
             $this->bench->elapsed($id, $id2);
         }
     }

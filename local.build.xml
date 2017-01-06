@@ -10,7 +10,7 @@
 
 <project name="laradic/assets">
 
-    <target name="build" depends="phpcbf,phpunit"/>
+    <target name="build" depends="phpcbf,phpunit,phpdoc"/>
 
     <target name="phpcbf" description="Fixes coding standard violations using PHP_CodeSniffer Fixer">
         <exec executable="${tools.dir}phpcbf${tools.ext}" logoutput="true" passthru="true">
@@ -27,6 +27,15 @@
         <exec executable="${tools.dir}phpunit${tools.ext}" logoutput="true" passthru="true">
             <arg value="--configuration"/>
             <arg path="${project.basedir}/phpunit.xml"/>
+        </exec>
+    </target>
+
+
+    <target name="phpdoc" description="Generate phpdoc structure xml and move into docs folder">
+        <exec executable="vendor/bin/phpdoc" dir="${project.basedir}" logoutput="true" passthru="true">
+            <arg line="-t phpdoc"/>
+            <arg line="-d src"/>
+            <arg line="--template=xml"/>
         </exec>
     </target>
 

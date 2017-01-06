@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 
 
@@ -120,7 +120,7 @@ class CodexServiceProvider extends ServiceProvider
         $this->registerJavascriptData();
 
 
-        if ( $this->config->get('codex.http.enabled', false) ) {
+        if ($this->config->get('codex.http.enabled', false)) {
             $this->registerHttp();
         }
 

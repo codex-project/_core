@@ -39,7 +39,7 @@
 
     @stack('head-after')
 
-</head
+</head>
 
 @section('body-tag')
 <body class="@yield('body-tag-styles', '')">

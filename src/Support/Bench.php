@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Support;
 
@@ -114,7 +114,7 @@ class Bench
 
     public function elapsed($id, $id2 = null)
     {
-        if ( $this->getMarkById($id) === false ) {
+        if ($this->getMarkById($id) === false) {
             $this->elapses[ $id ] = [];
             return $this->mark($id);
         }

@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Tests;
 
@@ -51,10 +51,10 @@ class TestCase extends AbstractTestCase
         file_touch(storage_path('codex.log'));
 
         // copy docs, only 1 time
-        if ( file_isDirectory($this->fixturesPath('docs')) === false ) {
+        if (file_isDirectory($this->fixturesPath('docs')) === false) {
             file_copyDirectory($this->fixturesPath('docs'), resource_path('docs'));
         }
-        if ( file_isDirectory(resource_path('docs/codex/master')) === false ) {
+        if (file_isDirectory(resource_path('docs/codex/master')) === false) {
             file_copyDirectory($this->getPackagePath('docs'), resource_path('docs/codex/master'));
         }
 

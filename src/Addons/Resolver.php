@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Addons;
 
@@ -45,10 +45,11 @@ class Resolver
         $this->reader   = new AnnotationReader();
         $this->scanner  = new \Laradic\AnnotationScanner\Factory($this->reader, $this->fs);
 
-        foreach ($this->fs->globule(__DIR__ . '/Annotations/*.php') as $filePath) {
-            $this->scanner->registerAnnotation($filePath);
-        }
-
+//        foreach ($this->fs->globule(__DIR__ . '/Annotations/*.php') as $filePath) {
+//            $this->scanner->registerAnnotation($filePath);
+//        }
+        AnnotationRegistry::registerLoader('class_exists');
+        
         $this->scanner->addAnnotation([
             Annotations\Plugin::class,
             Annotations\Hook::class,

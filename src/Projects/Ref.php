@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Projects;
 
@@ -97,13 +97,9 @@ class Ref extends Extendable implements Arrayable
     public function isVersion()
     {
         if ($this->version === null) {
-            try {
-                $this->version = new version($this->name);
-            } catch (SemVerException $e) {
-                $this->version = false;
-            }
+            $this->version = \Codex\Support\Version::create($this->name);
         }
-        return $this->version instanceof version;
+        return $this->version !== false;
     }
 
     public function getVersion()
@@ -166,6 +162,11 @@ class Ref extends Extendable implements Arrayable
     public function getRefs()
     {
         return $this->refs;
+    }
+
+    public function hasSidebarMenu()
+    {
+        return $this->config('sidebar', false) !== false;
     }
 
     /**

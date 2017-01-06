@@ -15,25 +15,8 @@ $sizes = [ 57, 60, 72, 76, 114, 120, 144, 152, 180 ];
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
 
 
-@foreach($metas as $meta)
-    <meta @foreach($meta as $key => $value) {{$key}}="{{$value}}" @endforeach >
-@endforeach
 
-@if(isset($googleVerification))
-    <meta name="google-site-verification" content="{{ $googleVerification }}">
-@endif
-
-<meta name="google-site-verification" content="ZzhVyEFwb7w3e0-uOTltm8Jsck2F5StVihD0exw2fsA">
-
-@if(isset($googleAnalytics))
-    <meta name="google-analytics" content="{{ $googleAnalytics }}">
-@endif
-
-@if(isset($facebookAppId))
-    <meta property="fb:app_id" content="$facebookAppId">
-@endif
-
-<meta property="og:title" content="The Rock"/><z
+<meta property="og:title" content="The Rock"/>
 <meta property="og:type" content="video.movie"/>
 <meta property="og:url" content="http://www.imdb.com/title/tt0117500/"/>
 <meta property="og:image" content="http://ia.media-imdb.com/images/rock.jpg"/>

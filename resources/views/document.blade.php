@@ -1,10 +1,14 @@
 @extends(codex()->view('layout'))
 
-@push('title')
-| {{ $document->getProject()->getDisplayName() }}
-{{ '@' }} {{ $document->getRef()->getName() }}
-| {{ $document->attr('title', $document->getPathName()) }}
-@endpush
+@if(isset($document))
+    @push('title')
+    | {{ $document->getProject()->getDisplayName() }}
+    {{ '@' }} {{ $document->getRef()->getName() }}
+    | {{ $document->attr('title', $document->getPathName()) }}
+    @endpush
+@endif
+
+
 
 @section('body')
     <div id="page-loader">
@@ -13,13 +17,11 @@
     <!--[if lt IE 10]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div id="app" class="@yield('appClass', 'page-document')" v-cloak>
+    <div id="app" class="@yield('appClass', 'page-document' . (isset($ref) && $ref->hasSidebarMenu() === false ? ' sidebar-hidden':''))" v-cloak>
         <c-theme :class="classes">
             @section('header')
                 <c-header ref="header" :show-toggle="true" :logoLink="{ name: 'welcome' }">
-                    {{--<div slot="menu">--}}
                     @stack('nav')
-                    {{--</div>--}}
                 </c-header>
             @show
 
@@ -27,7 +29,7 @@
                 @section('page')
                     <c-sidebar ref="sidebar" :min-height="minHeights.inner" active="{{ isset($document) ? $document->url() : ''}}">
                         @section('sidebar')
-                            @if(isset($ref))
+                            @if(isset($ref) && $ref->hasSidebarMenu())
                                 {!! $ref->getSidebarMenu()->render($project, $ref) !!}
                             @endif
                         @show
@@ -51,9 +53,7 @@
             <c-scroll-to-top></c-scroll-to-top>
 
             @section('footer')
-                <c-footer ref="footer">
-                    <p>footer</p>
-                </c-footer>
+                @include('codex::partials.footer');
             @show
         </c-theme>
     </div>

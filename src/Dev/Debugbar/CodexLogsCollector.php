@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Dev\Debugbar;
 
@@ -24,7 +24,7 @@ class CodexLogsCollector extends LogsCollector
         $pattern = '/\[(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})\] (\w*)\.(\w*): ([\w\.]*)\s(.*)/';
         preg_match_all($pattern, $logFileContent, $matches);
         $log = [];
-        foreach ( $matches[ 0 ] as $i => $match ) {
+        foreach ($matches[ 0 ] as $i => $match) {
             $log[] = [
                 'date'     => $matches[ 1 ][ $i ],
                 'time'     => $matches[ 2 ][ $i ],
@@ -50,14 +50,14 @@ class CodexLogsCollector extends LogsCollector
      */
     public function getStorageLogs($path)
     {
-        if ( !file_exists($path) ) {
+        if (!file_exists($path)) {
             return;
         }
 
         //Load the latest lines, guessing about 15x the number of log entries (for stack traces etc)
         $file = implode("", $this->tailFile($path, $this->lines));
 
-        foreach ( $this->getLogs($file) as $log ) {
+        foreach ($this->getLogs($file) as $log) {
             $data    = var_export($log[ 'data' ], true);
             $message = "[{$log['date']} {$log['time']}] {$log['env']}.{$log['level']} {$log['event']}: \n {$data}";
             $this->addMessage($message, $log[ 'level' ], false);

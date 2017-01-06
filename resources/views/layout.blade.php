@@ -38,7 +38,19 @@
     <link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 1)" href="{{ asset('vendor/codex') }}/img/favicons/apple-touch-startup-image-768x1004.png">
     <link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" href="{{ asset('vendor/codex') }}/img/favicons/apple-touch-startup-image-1496x2048.png">
     <link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" href="{{ asset('vendor/codex') }}/img/favicons/apple-touch-startup-image-1536x2008.png">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    {{--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">--}}
+
+    @if(isset($googleVerification))
+        <meta name="google-site-verification" content="{{ $googleVerification }}">
+    @endif
+
+    @if(isset($googleAnalytics))
+        <meta name="google-analytics" content="{{ $googleAnalytics }}">
+    @endif
+
+    @if(isset($facebookAppId))
+        <meta property="fb:app_id" content="$facebookAppId">
+    @endif
 @endpush
 
 @section('body-tag-styles', 'page-loading')

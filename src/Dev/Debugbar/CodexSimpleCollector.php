@@ -5,7 +5,7 @@
  * License and copyright information bundled with this package in the LICENSE file.
  *
  * @author Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
+ * @copyright Copyright 2017 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Dev\Debugbar;
@@ -21,9 +21,9 @@ use DebugBar\DataCollector\Renderable;
 class CodexSimpleCollector extends DataCollector implements Renderable
 {
     /** @var bool */
-    protected $showVersion = true;
+    protected $showVersion = false;
 
-    protected $showProject = false;
+    protected $showProject = true;
 
     protected $showRef = true;
 
@@ -78,9 +78,9 @@ class CodexSimpleCollector extends DataCollector implements Renderable
             'version'  => '2.0.0-beta2', //$codex->getVersion(),
             'project'  => $this->document ? $this->document->getProject()->getName() : '',
             'ref'      => $this->document ? $this->document->getRef()->getName() : '',
-            'document' => $this->document ? $this->document->getPath() : '',
+            'document' => $this->document ? $this->document->getPathName() : '',
             'data'     => $this->data->transform(function ($item) {
-                if (! is_string($item)) {
+                if ( !is_string($item) ) {
                     $item = $this->getDataFormatter()->formatVar($item);
                 }
                 return $item;
@@ -111,7 +111,7 @@ class CodexSimpleCollector extends DataCollector implements Renderable
             ],
         ];
 
-        if ($this->showDocument && $this->document) {
+        if ( $this->showDocument && $this->document ) {
             $widgets[ 'codex.document' ] = [
                 'icon'    => 'file-text',
                 'tooltip' => 'Document',
@@ -120,25 +120,27 @@ class CodexSimpleCollector extends DataCollector implements Renderable
             ];
         }
 
-        if ($this->showRef) {
+
+        if ( $this->showRef ) {
             $widgets[ 'codex.ref' ] = [
                 'icon'    => 'code-fork',
-                'tooltip' => 'Project Version (ref)',
+                'tooltip' => 'Ref',
                 'map'     => 'codex.ref',
                 'default' => '',
             ];
         }
 
-        if ($this->showProject) {
+        if ( $this->showProject ) {
             $widgets[ 'codex.project' ] = [
-                'icon'    => 'archive',
+                'icon'    => 'book',
                 'tooltip' => 'Project',
                 'map'     => 'codex.project',
                 'default' => '',
             ];
         }
 
-        if ($this->showVersion) {
+
+        if ( $this->showVersion ) {
             $widgets[ 'codex.version' ] = [
                 'icon'    => 'book',
                 'tooltip' => 'Version',
