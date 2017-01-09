@@ -11,42 +11,17 @@ project:
 menu:
   - name: Codex
     icon: fa fa-eye
-    children:
-      - name: Overview
-        document: index
-
-      - name: Preview pages
-        document: preview-pages/index
-
-      - name: Todo
-        document: todo
-
-      - name: Issues
-        document: issues
-
-#        children:
-#          - name: ToC Tree
-#            document: preview-pages/toc-tree
-#          - name: Syntax highlighting
-#            document: preview-pages/syntax-highlight
-#          - name: Markdown
-#            document: preview-pages/markdown
-#          - name: PHPDoc
-#            document: preview-pages/phpdoc
-
+    document: index
 
   - name: Getting started
     icon: fa fa-rocket
     children:
       - name: Installation
         document: getting-started/installation
-
       - name: Configuration
         document: getting-started/configuration
-
       - name: Creating a project
         document: getting-started/creating-a-project
-
 
   - name: Configuration
     icon: fa fa-cog
@@ -79,7 +54,6 @@ menu:
           - name: Prism
             document: configuration/processors/toc
 
-
   - name: Develop
     icon: fa fa-code
     children:
@@ -105,17 +79,24 @@ menu:
       - name: IntelliJ IDEA &amp; PHPStorm
         document: develop/intellij-idea-phpstorm
 
-
-
+  - name: Test pages
+    icon: fa fa-rocket
+    children:
+      - name: Overview
+        document: test-pages/index
+      - name: Empty
+        document: test-pages/empty
+      - name: Jira Todo
+        document: test-pages/jira-todo
+      - name: Jira Issues
+        document: test-pages/jira-issues
 
   - name: Contributing
     icon: fa fa-eye
     children:
       - name: Guidelines
         document: contributing/guidelins
-
       - name: PSR 1 Coding style
         document: contributing/psr-1-coding-style
-
       - name: PSR 2 Coding style
         document: contributing/psr-2-coding-style

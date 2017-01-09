@@ -15,11 +15,9 @@ use Codex\Exception\CodexException;
 use Codex\Support\Extendable;
 use Codex\Support\Traits\ConfigTrait;
 use Codex\Support\Traits\FilesTrait;
+use Codex\Support\Version;
 use Illuminate\Contracts\Support\Arrayable;
-use Laradic\Support\Str;
 use Symfony\Component\Yaml\Yaml;
-use vierbergenlars\SemVer\SemVerException;
-use vierbergenlars\SemVer\version;
 
 /**
  * This is the class Ref.
@@ -97,7 +95,7 @@ class Ref extends Extendable implements Arrayable
     public function isVersion()
     {
         if ($this->version === null) {
-            $this->version = \Codex\Support\Version::create($this->name);
+            $this->version = Version::create($this->name);
         }
         return $this->version !== false;
     }
@@ -166,7 +164,7 @@ class Ref extends Extendable implements Arrayable
 
     public function hasSidebarMenu()
     {
-        return $this->config('sidebar', false) !== false;
+        return $this->config('menu', false) !== false;
     }
 
     /**

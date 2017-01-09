@@ -5,7 +5,7 @@
  * License and copyright information bundled with this package in the LICENSE file.
  *
  * @author Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
+ * @copyright Copyright 2017 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex;
@@ -128,6 +128,7 @@ class Theme extends Extendable implements Arrayable
         $src = $external ? $src : asset($src);
         $this->javascripts->put($name, compact('src', 'depends', 'external', 'name'));
 
+
         return $this;
     }
 
@@ -200,9 +201,9 @@ class Theme extends Extendable implements Arrayable
      *
      * @return \Codex\Support\Collection
      */
-    public function javascripts()
+    public function javascripts($sorted = true)
     {
-        return $this->sorter($this->javascripts);
+        return $sorted ? $this->sorter($this->javascripts) : $this->javascripts;
     }
 
     /**
@@ -210,9 +211,9 @@ class Theme extends Extendable implements Arrayable
      *
      * @return \Codex\Support\Collection
      */
-    public function stylesheets()
+    public function stylesheets($sorted = true)
     {
-        return $this->sorter($this->stylesheets);
+        return $sorted ? $this->sorter($this->stylesheets) : $this->stylesheets;
     }
 
     /**
@@ -220,9 +221,9 @@ class Theme extends Extendable implements Arrayable
      *
      * @return \Codex\Support\Collection
      */
-    public function styles()
+    public function styles($sorted = true)
     {
-        return $this->sorter($this->styles);
+        return $sorted ? $this->sorter($this->styles) : $this->styles;
     }
 
     /**
@@ -230,9 +231,9 @@ class Theme extends Extendable implements Arrayable
      *
      * @return \Codex\Support\Collection
      */
-    public function scripts()
+    public function scripts($sorted = true)
     {
-        return $this->sorter($this->scripts);
+        return $sorted ? $this->sorter($this->scripts) : $this->scripts;
     }
 
     /**

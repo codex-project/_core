@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Http\Controllers;
 
@@ -36,10 +36,7 @@ class CodexDocumentController extends CodexController
      */
     public function getIndex()
     {
-        $this->hookPoint('controller:index');
-
-        #codex()->addons->getManifest()->load()->set('asdf.a', 'asdf')->save();
-        codex('addons');
+        $this->hookPoint('controller:document:index');
 
         return redirect(route('codex.document', [
             'projectSlug' => $this->codex->config('default_project'),
@@ -53,10 +50,15 @@ class CodexDocumentController extends CodexController
      * @param string|null $ref
      * @param string      $path
      *
-     * @return $this
+     * @return mixed
      */
     public function getDocument($projectSlug = null, $ref = null, $path = null)
     {
+        $res = $this->hookPoint('controller:document:get', [ $projectSlug, $ref, $path ]);
+        if ($res) {
+            return $res;
+        }
+
         if ($projectSlug === null) {
             $projectSlug = $this->codex->config('default_project');
         }
@@ -65,7 +67,6 @@ class CodexDocumentController extends CodexController
 
         $ref  = $ref ?: '!';
         $path = $path ?: '!';
-
 
         try {
             /** @var Document $document */
@@ -97,7 +98,6 @@ class CodexDocumentController extends CodexController
         $breadcrumb = $document->getBreadcrumb();
 
         $this->view->share(compact('project', 'ref', 'document'));
-//        $res = $this->hookPoint('controller:document', [ $document ]);
         $res = $this->hookPoint('controller:document', [ $document, $codex, $project, $ref ]);
         if ($res) {
             return $res;
@@ -113,11 +113,8 @@ class CodexDocumentController extends CodexController
 
     protected function notFound($what, \Exception $e)
     {
-        $this->hookPoint('controller:error', [ $what, $e ]);
+        $this->hookPoint('controller:document:error', [ $what, $e ]);
         return $this->codex->error('Oops, couldnt find that ' . $what, $e->getMessage(), 404);
     }
 
-    public function getDocumentNotFound()
-    {
-    }
 }

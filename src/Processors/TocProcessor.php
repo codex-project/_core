@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Processors;
 
@@ -31,16 +31,7 @@ class TocProcessor
     public $codex;
 
     /** @var Collection|array */
-    public $config = [
-        'disable'           => [ 1 ],
-        'regex'             => '/<h(\d)>([\w\W]*?)<\/h\d>/',
-        'list_class'        => 'toc',
-        'header_link_class' => 'toc-header-link',
-        'header_link_show'  => false,
-        'header_link_text'  => '#',
-        'minimum_nodes'     => 2,
-        'view'              => 'processors.toc',
-    ];
+    public $config = 'codex.processors.toc';
 
     /** @var \Illuminate\Contracts\View\Factory */
     protected $view;

@@ -5,7 +5,7 @@
  * License and copyright information bundled with this package in the LICENSE file.
  *
  * @author Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
+ * @copyright Copyright 2017 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Addons\Hydrators;
@@ -74,4 +74,18 @@ class ProcessorHydrator extends Hydrator
      * @var string|bool
      */
     public $plugin = false;
+
+
+
+    /**
+     * Force processing of cached documents.
+     *
+     * Cached documents will not be processed again, their content is already modified properly. Unless you force it with setting this property to true.
+     *
+     * This should only be implemented when the processor also adjusts things outside of the document's content (like adding assets)
+     * The processor should make use of $document->hasCachedContent() method to see if content needs to be modified.
+     *
+     * @var bool
+     */
+    public $forceCached = false;
 }

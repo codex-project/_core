@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Projects;
 
@@ -77,11 +77,7 @@ class Refs extends ExtendableCollection implements Arrayable
         $this->project = $parent;
 
         $this->hookPoint('refs:construct', [ $this ]);
-
-        $this->getCodex()->dev->startMeasure('Refs::resolveRefs');
         $this->resolveRefs();
-        $this->getCodex()->dev->stopMeasure('Refs::resolveRefs');
-
         $this->hookPoint('refs:constructed', [ $this ]);
     }
 

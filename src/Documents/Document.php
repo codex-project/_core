@@ -4,12 +4,13 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Documents;
 
+use Codex\Addons\Hydrators\ProcessorHydrator;
 use Codex\Codex;
 use Codex\Exception\CodexException;
 use Codex\Projects\Project;
@@ -95,6 +96,8 @@ class Document extends Extendable implements Arrayable
     /** @var \Codex\Projects\Ref */
     protected $ref;
 
+    protected $isContentCached = false;
+
     /**
      * Document constructor.
      *
@@ -121,9 +124,7 @@ class Document extends Extendable implements Arrayable
 
         $this->hookPoint('document:construct');
 
-        #$this->codex->projects->hasActive() === false && $project->setActive();
-
-        if (!$this->getFiles()->exists($this->getPath())) {
+        if ( !$this->getFiles()->exists($this->getPath()) ) {
             throw CodexException::documentNotFound("{$this} in [{$project}]");
         }
 
@@ -133,8 +134,6 @@ class Document extends Extendable implements Arrayable
 
         //$this->content = $this->getFiles()->get($this->getPath());
         $this->attr('view', null) === null && $this->setAttribute('view', $codex->view('document'));
-
-
         $this->hookPoint('document:constructed');
     }
 
@@ -149,6 +148,39 @@ class Document extends Extendable implements Arrayable
     }
 
     /**
+     * hasCachedContent method
+     * @return bool
+     */
+    public function hasCachedContent()
+    {
+        if ( $this->isContentCached === null ) {
+            if ( !$this->shouldCache() ) {
+                return $this->isContentCached = false;
+            }
+            $this->cache->get($this->getCacheKey(':last_modified'), 0);
+        }
+        return $this->isContentCached;
+    }
+
+    public function getCachedLastModified()
+    {
+        if ( !$this->shouldCache() ) {
+            return 0;
+        }
+        $minutes = $this->getCodex()->config('document.cache.minutes', null);
+        if ( $minutes === null ) {
+            $lastModified = (int)$this->cache->rememberForever($this->getCacheKey(':last_modified'), function () {
+                return 0;
+            });
+        } else {
+            $lastModified = (int)$this->cache->remember($this->getCacheKey(':last_modified'), $minutes, function () {
+                return 0;
+            });
+        }
+        return $lastModified;
+    }
+
+    /**
      * Render the document.
      *
      * This will run all document:render hooks and then return the
@@ -158,7 +190,7 @@ class Document extends Extendable implements Arrayable
      */
     public function render()
     {
-        if ($this->rendered) {
+        if ( $this->rendered ) {
             return $this->content;
         }
         // todo implement this. if changes are made that influence the attributes (ex, the project config), the cache should drop.
@@ -167,26 +199,35 @@ class Document extends Extendable implements Arrayable
 //            return md5((string)$val);
 //        })->implode('.'));
 
-
         $this->hookPoint('document:render');
-        if ($this->shouldCache()) {
-            $minutes = $this->getCodex()->config('document.cache.minutes', null);
-            if ($minutes === null) {
-                $lastModified = (int)$this->cache->rememberForever($this->getCacheKey(':last_modified'), function () {
-                    return 0;
-                });
+        if ( $this->shouldCache() ) {
+            $minutes      = $this->getCodex()->config('document.cache.minutes', null);
+            $lastModified = $this->getCachedLastModified();
+            if ( $this->lastModified === $lastModified ) {
+                $this->content = $this->cache->get($this->getCacheKey(':content'));
+
+                $forcedProcessors = $this->getProcessors()
+                    ->only($this->getEnabledProcessors())
+                    ->filter(function (ProcessorHydrator $processor) {
+                        return $processor->forceCached === true;
+                    })
+                    ->keys()
+                    ->toArray();
+
+                $this->getCodex()->dev->setData('forcedProcessors', $forcedProcessors);
+                $this->runProcessors($forcedProcessors);
             } else {
-                $lastModified = (int)$this->cache->remember($this->getCacheKey(':last_modified'), $minutes, function () {
-                    return 0;
-                });
-            }
-            if ($this->lastModified !== $lastModified || $this->cache->has($this->getCacheKey()) === false) {
                 $this->runProcessors();
                 $this->cache->put($this->getCacheKey(':last_modified'), $this->lastModified, $minutes);
                 $this->cache->put($this->getCacheKey(':content'), $this->content, $minutes);
-            } else {
-                $this->content = $this->cache->get($this->getCacheKey(':content'));
             }
+//            if ( $this->lastModified !== $lastModified || $this->cache->has($this->getCacheKey()) === false ) {
+//                $this->runProcessors();
+//                $this->cache->put($this->getCacheKey(':last_modified'), $this->lastModified, $minutes);
+//                $this->cache->put($this->getCacheKey(':content'), $this->content, $minutes);
+//            } else {
+//                $this->content = $this->cache->get($this->getCacheKey(':content'));
+//            }
         } else {
             $this->runProcessors();
         }
@@ -203,13 +244,22 @@ class Document extends Extendable implements Arrayable
     /**
      * Run all the content processors that haven't run.
      *
-     * @throws \Codex\Exception\CodexException
+     * @param bool $forcedOnly If true, only the processors that have forceCached=true will be run
      */
-    public function runProcessors()
+    public function runProcessors($forcedOnly = false)
     {
         $this->runProcessor('attributes');
-        $processors = $this->getEnabledProcessors();
-        foreach ($this->getProcessors()->getSorted($processors) as $processor) {
+        $processors = $this->getProcessors()->getSorted($this->getEnabledProcessors());
+        if ( $forcedOnly ) {
+            $processors = $this->getProcessors()
+                ->only($processors)
+                ->filter(function (ProcessorHydrator $processor) {
+                    return $processor->forceCached === true;
+                })
+                ->keys()
+                ->toArray();
+        }
+        foreach ( $processors as $processor ) {
             $this->runProcessor($processor);
         }
     }
@@ -223,7 +273,7 @@ class Document extends Extendable implements Arrayable
      */
     protected function runProcessor($name)
     {
-        if ($this->processed->has($name)) {
+        if ( $this->processed->has($name) ) {
             return;
         }
         $this->processed->set($name, $this->getProcessors()->run($name, $this));
@@ -272,7 +322,7 @@ class Document extends Extendable implements Arrayable
      */
     public function getBreadcrumb()
     {
-        return $this->getCodex()->menus->get('sidebar')->resolve([$this->project, $this->ref])->getBreadcrumbToHref($this->url());
+        return $this->getCodex()->menus->get('sidebar')->resolve([ $this->project, $this->ref ])->getBreadcrumbToHref($this->url());
 //        return []; //$this->ref->getSidebarMenu()->getBreadcrumbToHref($this->url());
     }
 
@@ -285,7 +335,7 @@ class Document extends Extendable implements Arrayable
      */
     public function setContent($content)
     {
-        if ($content instanceof ContentDom) {
+        if ( $content instanceof ContentDom ) {
             $content = (string)$content->root->outerhtml();
         }
         $this->content = $content;
@@ -299,7 +349,7 @@ class Document extends Extendable implements Arrayable
      */
     public function getContentDom()
     {
-        if (null === $this->contentDom) {
+        if ( null === $this->contentDom ) {
             $this->contentDom = new ContentDom($this);
         }
         return $this->contentDom->set($this->getContent());
@@ -322,19 +372,19 @@ class Document extends Extendable implements Arrayable
 
     public function shouldCache()
     {
-        return $this->mode === self::CACHE_ENABLED || ($this->mode === self::CACHE_AUTO && config('app.debug', false) === true);
+        return $this->mode === self::CACHE_ENABLED || ($this->mode === self::CACHE_AUTO && config('app.debug') === false);
     }
 
     public function setCacheMode($mode)
     {
-        if ($mode === true) {
+        if ( $mode === true ) {
             $mode = self::CACHE_ENABLED;
-        } elseif ($mode === false) {
+        } elseif ( $mode === false ) {
             $mode = self::CACHE_DISABLED;
-        } elseif ($mode === null) {
+        } elseif ( $mode === null ) {
             $mode = self::CACHE_AUTO;
         }
-        if (!in_array($mode, [ self::CACHE_ENABLED, self::CACHE_DISABLED, self::CACHE_AUTO ], true)) {
+        if ( !in_array($mode, [ self::CACHE_ENABLED, self::CACHE_DISABLED, self::CACHE_AUTO ], true) ) {
             throw CodexException::create('Cache mode not supported: ' . (string)$mode);
         }
         $this->mode = $mode;
@@ -386,15 +436,23 @@ class Document extends Extendable implements Arrayable
      */
     public function getContent()
     {
-        if (false === isset($this->content)) {
+        if ( false === isset($this->content) ) {
             $this->content = $this->getFiles()->get($this->getPath());
         }
+
+        // @todo: find a better way to fix this
+        // create a space if the document is empty.
+        // This way the  FluentDOM::Query('', 'text/html') does not generate a exception
+        if ( $this->content === '' ) {
+            $this->content = ' ';
+        }
+
         return $this->content;
     }
 
     public function getOriginalContent()
     {
-        if (false === isset($this->originalContent)) {
+        if ( false === isset($this->originalContent) ) {
             $this->originalContent = $this->getFiles()->get($this->getPath());
         }
         return $this->originalContent;

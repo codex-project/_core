@@ -3,7 +3,7 @@ title: Api
 subtitle: Develop
 -->
 
-You can access the API by either using the binding, contract or facade.
+You can access the API by either using the binding, contract or facade...
 
 Check out the [Processors & Hooks](filters-hooks) documentaiton.
 
@@ -15,6 +15,7 @@ public function __construct(Codex $codex){
     $dir = $codex->getRootDir();
 }
 ```
+
 
 ###### Facade 
 ```php

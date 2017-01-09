@@ -97,10 +97,8 @@ class CodexServiceProvider extends ServiceProvider
 
     public function booting()
     {
-        Dev::getInstance()->startMeasure('boot');
         $this->bootMenus();
         $this->bootTheme();
-        Dev::getInstance()->stopMeasure('boot');
     }
 
     public function register()
@@ -147,19 +145,22 @@ class CodexServiceProvider extends ServiceProvider
             ->addJavascript('radic.util', $assetPath . '/vendor/radic.util/radic.util' . $ext)
             ->addJavascript('vue', $assetPath . '/vendor/vue/vue' . $ext)
             ->addJavascript('vuex', $assetPath . '/vendor/vuex/vuex' . $ext, [ 'vue' ])
-            ->addJavascript('wowjs', $assetPath . '/vendor/wowjs/wow' . $ext)
+
             ->addJavascript('manifest', $assetPath . '/js/manifest.js')
-            ->addJavascript('prismjs', $assetPath . '/vendor/prismjs/prism.js')
-            ->addJavascript('prismjs.autoloader', $assetPath . '/vendor/prismjs/plugins/autoloader/prism-autoloader', [ 'prismjs' ])
-            ->addJavascript('prismjs.autolinker', $assetPath . '/vendor/prismjs/plugins/autolinker/prism-autolinker', [ 'prismjs' ])
-            ->addJavascript('prismjs.linenumbers', $assetPath . '/vendor/prismjs/plugins/line-numbers/prism-line-numbers', [ 'prismjs' ])
-            ->addJavascript('prismjs.removeinitfeed', $assetPath . '/vendor/prismjs/plugins/remove-initial-line-feed/prism-remove-initial-line-feed', [ 'prismjs' ])
-            ->addJavascript('prismjs.showlanguage', $assetPath . '/vendor/prismjs/plugins/show-language/prism-show-language', [ 'prismjs' ])
-            ->addJavascript('vendor', $assetPath . '/js/vendor.js', [ 'vue', 'vuex', 'jquery', 'prismjs', 'radic.util' ])
+//            ->addJavascript('prismjs', $assetPath . '/vendor/prismjs/prism.js')
+//            ->addJavascript('prismjs.autoloader', $assetPath . '/vendor/prismjs/plugins/autoloader/prism-autoloader', [ 'prismjs' ])
+//            ->addJavascript('prismjs.autolinker', $assetPath . '/vendor/prismjs/plugins/autolinker/prism-autolinker', [ 'prismjs' ])
+//            ->addJavascript('prismjs.linenumbers', $assetPath . '/vendor/prismjs/plugins/line-numbers/prism-line-numbers', [ 'prismjs' ])
+//            ->addJavascript('prismjs.removeinitfeed', $assetPath . '/vendor/prismjs/plugins/remove-initial-line-feed/prism-remove-initial-line-feed', [ 'prismjs' ])
+//            ->addJavascript('prismjs.showlanguage', $assetPath . '/vendor/prismjs/plugins/show-language/prism-show-language', [ 'prismjs' ])~
+            ->addJavascript('vendor', $assetPath . '/js/vendor.js', [ 'vue', 'vuex', 'jquery', 'radic.util' ])
             ->addJavascript('codex', $assetPath . '/js/codex.js', [ 'vendor' ]);
 
-        $this->codexHook('controller:welcome', function ($controller) use ($assetPath) {
-            $this->codex()->theme->addJavascript('codex.page.welcome', $assetPath . '/js/codex.page.welcome.js', [ 'codex' ])
+        $this->codexHook('controller:welcome', function ($controller) use ($assetPath, $ext) {
+            $this->codex()->theme
+                ->addStylesheet('codex.page.welcome', $assetPath . '/styles/codex.page.welcome.css', [ 'codex' ])
+                ->addJavascript('wowjs', $assetPath . '/vendor/wowjs/wow' . $ext)
+                ->addJavascript('codex.page.welcome', $assetPath . '/js/codex.page.welcome.js', [ 'codex', 'wowjs' ])
                 ->addScript('init', <<<EOT
 var app = new codex.App({
     el: '#app'

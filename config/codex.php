@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 
 // Documentation: http://codex-project.dev/codex/master/getting-started/configuration/global
@@ -47,7 +47,7 @@ return [
             // true     = enabled
             // false    = disabled
             // null     = disabled when app.debug is true
-            'mode'    => null,
+            'mode'    => true,
 
 
             // Whenever a document's last modified time changes, the document's cache is refreshed.
@@ -70,8 +70,11 @@ return [
     | Processors
     |--------------------------------------------------------------------------
     |
-    | Global configuration for processors. Processors are applied to a
-    | document it's raw content. It modifies the final rendered output.
+    | Global/default configuration for processors. Processors are applied
+    | to a document it's raw content. It modifies the final rendered output.
+    |
+    | This configuration can be overridden on project level, and is the
+    |  preferred way.
     |
     */
     'processors' => [
@@ -112,10 +115,73 @@ return [
 
         ],
         'prismjs'    => [
+            'js_path'     => '/vendor/codex/vendor/prismjs/prism.js',
+            'css_path'    => '/vendor/codex/styles/prismjs.css', // 'vendor/codex/vendor/prismjs/themes/prism.css',
+            'plugin_path' => '/vendor/codex/vendor/prismjs/plugins',
+            'plugins'     => [
+                'enabled' => [
+                    'autolinker',
+                    'autoloader',
+                    'command-line',
+                    'copy-to-clipboard',
+                    'toolbar',
+                    'line-highlight',
+                    'line-numbers',
+                    'show-language',
+                    'wpd',
+                ],
+                'config'  => [
+                    'autolinker'               => [],
+                    'autoloader'               => [
+                        'javascript' => [
+                            'languages_path' => '/vendor/codex/vendor/prismjs/components/',
+                            'use_minified'   => true,
+                        ],
+                    ],
+                    'command-line'             => [
+                        'data-user'   => false,
+                        'data-host'   => false,
+                        'data-prompt' => 'admin@local $',
+                        'data-output' => false,
+                    ],
+                    'copy-to-clipboard'        => [],
+                    'custom-class'             => [],
+                    'data-uri-highlight'       => [],
+                    'file-highlight'           => [],
+                    'highlight-keywords'       => [],
+                    'ie8'                      => [],
+                    'jsonp-highlight'          => [],
+                    'keep-markup'              => [],
+                    'line-highlight'           => [],
+                    'line-numbers'             => [],
+                    'normalize-whitespace'     => [],
+                    'previewer-angle'          => [],
+                    'previewer-base'           => [],
+                    'previewer-color'          => [],
+                    'previewer-easing'         => [],
+                    'previewer-gradient'       => [],
+                    'previewer-time'           => [],
+                    'remove-initial-line-feed' => [],
+                    'show-invisibles'          => [],
+                    'show-language'            => [],
+                    'toolbar'                  => [],
+                    'unescaped-markup'         => [],
+                    'wpd'                      => [],
+
+
+                ],
+            ],
 
         ],
         'toc'        => [
-
+            'disable'           => [ 1 ],
+            'regex'             => '/<h(\d)>([\w\W]*?)<\/h\d>/',
+            'list_class'        => 'toc',
+            'header_link_class' => 'toc-header-link',
+            'header_link_show'  => false,
+            'header_link_text'  => '#',
+            'minimum_nodes'     => 2,
+            'view'              => 'processors.toc',
         ],
     ],
 

@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Dev;
 
@@ -43,7 +43,7 @@ class DevServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        if ($this->isEnabled()) {
+        if ( $this->isEnabled() ) {
             $app = parent::boot();
             $this->bootMetas();
             $this->bootDebugbar();
@@ -57,10 +57,13 @@ class DevServiceProvider extends ServiceProvider
     {
         $this->registerDev();
         Codex::extend('dev', 'codex.dev');
-        if ($this->isEnabled()) {
+        if ( $this->isEnabled() ) {
             $app = parent::register();
             $this->registerMetas();
             $this->registerDebugbar();
+            $this->registerMeasurements($app);
+
+
             return $app;
         }
         return $this->app;
@@ -68,14 +71,14 @@ class DevServiceProvider extends ServiceProvider
 
     protected function registerMetas()
     {
-        if (class_exists('Laradic\Idea\IdeaServiceProvider') && $this->app->bound('idea-meta') === false) {
+        if ( class_exists('Laradic\Idea\IdeaServiceProvider') && $this->app->bound('idea-meta') === false ) {
             $this->app->register('Laradic\Idea\IdeaServiceProvider');
         }
     }
 
     protected function registerDebugbar()
     {
-        if (class_exists('Barryvdh\Debugbar\ServiceProvider') && $this->app->bound('debugbar') === false) {
+        if ( class_exists('Barryvdh\Debugbar\ServiceProvider') && $this->app->bound('debugbar') === false ) {
             $this->app->register('Barryvdh\Debugbar\ServiceProvider');
         }
     }
@@ -93,7 +96,7 @@ class DevServiceProvider extends ServiceProvider
 
     protected function bootMetas()
     {
-        if ($this->app->bound('laradic.idea.meta')) {
+        if ( $this->app->bound('laradic.idea.meta') ) {
             $this->app[ 'laradic.idea.meta' ]->add('codex', Metas\CodexMeta::class);
             $this->app[ 'laradic.idea.meta' ]->add('codex-projects', Metas\CodexProjectsMeta::class);
         }
@@ -102,13 +105,13 @@ class DevServiceProvider extends ServiceProvider
     protected function bootDebugbar()
     {
 
-        if ($this->app->bound('debugbar')) {
+        if ( $this->app->bound('debugbar') ) {
             $db = $this->app->make('debugbar');
             $db->addCollector($codexCollector = $this->app->make('codex.dev.debugbar.collector'));
             $db->addCollector($logsCollector = new Debugbar\CodexLogsCollector(config('codex.paths.log', ''), 'codexLogs'));
 
             $this->codexHook('controller:document', function (CodexDocumentController $controller, Document $document) use ($db) {
- //, Codex $codex, Project $project
+                //, Codex $codex, Project $project
                 /** @var CodexSimpleCollector $collector */
                 $collector = $db->getCollector('codex');
                 $collector->setDocument($document);
@@ -116,7 +119,7 @@ class DevServiceProvider extends ServiceProvider
                 $collector->data()->set('hookPoints', \Codex\Codex::$hookPoints);
                 $collector->data()->set('views', $this->codexAddons()->views->toArray());
                 $hooks = [];
-                foreach ($this->codexAddons()->hooks->all() as $hook) {
+                foreach ( $this->codexAddons()->hooks->all() as $hook ) {
                     $hooks[] = [ 'name' => $hook[ 'name' ], 'class' => $hook[ 'class' ], 'listener' => $hook[ 'listener' ] ];
                 }
                 $collector->data()->set('hooks', $hooks);
@@ -134,5 +137,61 @@ class DevServiceProvider extends ServiceProvider
         $this->codex()->theme->pushContentToStack('nav', $this->codexView('layout'), function ($view) use ($menu) {
             return $menu->render();
         });
+    }
+
+    /**
+     * registerMeasurements method
+     *
+     * @param $app
+     */
+    protected function registerMeasurements()
+    {
+        $this->app->booting(function () {
+            $this->dev->startMeasure('Application booting');
+        });
+        $this->app->booted(function () {
+            $this->dev->stopMeasure('Application booting');
+        });
+
+        // Projects
+        $this->codexHook('projects:construct', function () {
+            $this->dev->startMeasure('Projects::findAndRegisterAll');
+        });
+        $this->codexHook('projects:constructed', function () {
+            $this->dev->stopMeasure('Projects::findAndRegisterAll');
+        });
+
+        // Refs
+        $this->codexHook('refs:construct', function () {
+            $this->dev->startMeasure('Refs::resolveRefs');
+        });
+        $this->codexHook('refs:constructed', function () {
+            $this->dev->stopMeasure('Refs::resolveRefs');
+        });
+
+        // Documents
+        $this->codexHook('documents:construct', function () {
+            $this->dev->startMeasure('Documents::resolveAll');
+        });
+        $this->codexHook('documents:constructed', function () {
+            $this->dev->stopMeasure('Documents::resolveAll');
+        });
+
+        // Render
+        $this->codexHook('document:render', function (Document $document) {
+            $this->dev->startMeasure("Document::render({$document->getPath()})");
+        });
+        $this->codexHook('document:rendered', function (Document $document) {
+            $this->dev->stopMeasure("Document::render({$document->getPath()})");
+        });
+
+        // Controller
+        $this->codexHook('controller:document:get', function () {
+            $this->dev->startMeasure('CodexDocumentController::getDocument');
+        });
+        $this->codexHook('controller:document', function () {
+            $this->dev->stopMeasure('CodexDocumentController::getDocument');
+        });
+
     }
 }

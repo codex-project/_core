@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 
 
@@ -78,10 +78,10 @@ class Collection extends \Illuminate\Support\Collection
      *
      * @return Collection
      */
-    public function customMerge(array $items, array $key = null, $method = 'array_replace_recursive')
+    public function customMerge(array $items, $key = null, $method = 'array_replace_recursive')
     {
         if ($key) {
-            $this->set($key, call_user_func($method, $this->get($key, [ ]), $items));
+            $this->set($key, call_user_func($method, $this->get($key, [ ])->toArray(), $items));
         } else {
             $this->items = call_user_func($method, $this->items, $items);
         }
