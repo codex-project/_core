@@ -1,0 +1,46 @@
+@extends(codex()->view('layout'))
+
+@set($title, isset($title) ? $title  : 'Error')
+
+@push('title')
+| {{ $title }}
+@endpush
+
+@section('body')
+    <div id="page-loader">
+        <div class="loader loader-page"></div>
+    </div>
+    <div id="app" class="page-error sidebar-hidden sidebar-closed" v-cloak>
+        <c-theme :class="classes">
+            <c-header ref="header" :show-toggle="true" :logoLink="{ name: 'welcome' }">
+                @stack('nav')
+            </c-header>
+
+            <div class="c-page" ref="page" :style="{ 'min-height': minHeights.page + 'px' }">
+                <c-content ref="content" :min-height="minHeights.inner">
+                    <h1>{{ isset($title ) ? $title  : 'Error' }}</h1>
+                    @if(isset($text))
+                        <p>{{ $text }}</p>
+                    @endif
+                    @if(isset($goBack) && $goBack !== false)
+                        @set($goBackCount, is_int($goBack) ? $goBack : 1)
+                        <a href="javascript:history.back({{ $goBackCount }});">Go back</a>
+                    @endif
+
+                    @if(isset($trace) && config('app.debug', false) )
+                        <div class="trace">
+                            {!! $trace !!}
+                        </div>
+                    @endif
+                </c-content>
+            </div>
+
+            <c-scroll-to-top></c-scroll-to-top>
+
+            <c-footer ref="footer">
+                <p>footer</p>
+            </c-footer>
+        </c-theme>
+    </div>
+
+@stop
