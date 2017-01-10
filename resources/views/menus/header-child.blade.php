@@ -1,28 +1,10 @@
-
 @foreach($items as $item)
-    @if($item->meta('hidden', false) === true)
-        @continue
-    @endif
     @if($item->hasChildren())
-        <li class="submenu">
-            <a href="#">
-                {{ $item->getValue() }}
-            </a>
-            <ul class="dropdown-menu">
-                @include('codex::menus.header-child.blade.php', [
-                    'items' => $item->getChildren(),
-                    'menu' => $menu
-                ])
-            </ul>
-        </li>
+        <c-side-nav-item :has-children="true">
+            <span slot="title" {!!  $item->parseAttributes()  !!}>{{ $item->getValue() }}</span>
+            @include('codex::menus.header-child', ['items' => $item->getChildren()])
+        </c-side-nav-item>
     @else
-        <li>
-        <a href="{{ $item->attribute('href', '#') }}">
-            @if($item->meta('icon', false) !== false)
-                <i class="{{ $item->meta('icon') }}"></i>
-            @endif
-            {{ $item->getValue() }}
-        </a>
-        </li>
+        <c-side-nav-item {!!  $item->parseAttributes()  !!}>{{ $item->getValue() }}</c-side-nav-item>
     @endif
 @endforeach

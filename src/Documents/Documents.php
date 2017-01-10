@@ -16,6 +16,7 @@ use Closure;
 use Codex\Codex;
 use Codex\Contracts;
 use Codex\Exception\CodexException;
+use Codex\Exception\DocumentNotFoundException;
 use Codex\Projects\Project;
 use Codex\Projects\Ref;
 use Codex\Support\Extendable;
@@ -115,7 +116,7 @@ class Documents extends ExtendableCollection implements Contracts\Documents\Docu
         $resolved = $this->resolvePathName($pathName);
 
         if ($resolved === false) {
-            throw CodexException::documentNotFound($pathName);
+            throw DocumentNotFoundException::document($pathName);
         }
 
         if (!$this->items->has($pathName)) {

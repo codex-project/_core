@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Http\Controllers;
 
@@ -49,4 +49,11 @@ abstract class CodexController extends Controller
         $view->share('codex', $codex);
         $this->hookPoint('controller:constructed', [ $codex, $view ]);
     }
+
+
+    protected function error($title, $text, $code = 500, $goBack = true)
+    {
+        return response(view($this->codex->view('error'), compact('title', 'text', 'goBack'))->render(), $code);
+    }
+
 }

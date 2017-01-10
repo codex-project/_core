@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Addons;
 
@@ -120,7 +120,7 @@ class Addons implements Arrayable
     public static function __callStatic($method, array $parameters = [])
     {
         $instance = static::getInstance();
-        if (method_exists($instance, $method)) {
+        if ( method_exists($instance, $method) ) {
             return call_user_func_array([ $instance, $method ], $parameters);
         }
         throw new BadMethodCallException("Method $method does not exist in class " . static::class);
@@ -132,7 +132,7 @@ class Addons implements Arrayable
      */
     public static function getInstance()
     {
-        if (static::$instance === null) {
+        if ( static::$instance === null ) {
             static::$instance = new static;
         }
         return static::$instance;
@@ -180,27 +180,94 @@ class Addons implements Arrayable
      */
     public function resolveAndRegisterAddons()
     {
-        foreach ($this->manifest->get('addons.*.autoloads.*.path', []) as $path) {
+        Dev::getInstance()->startMeasure('Addons::resolveAndRegisterAddons');
+        foreach ( $this->manifest->get('addons.*.autoloads.*.path', []) as $path ) {
             $this->resolveAndRegisterDirectory($path);
         }
+        Dev::getInstance()->stopMeasure('Addons::resolveAndRegisterAddons');
+    }
+
+    protected function dev()
+    {
+        return Dev::getInstance();
     }
 
     public function resolveAndRegisterDirectory($path)
     {
-        foreach ($this->resolver->scanAndResolveDirectory($path) as $resolved) {
-            $this->registerResolved($resolved);
+
+        if ( $this->getCachedHash($path) !== $this->getDirectoryHash($path) ) {
+            $this->dev()->addMessage('non-cached', 'resolveAndRegisterDirectory');
+            $resolves = [];
+            foreach ( $this->resolver->scanAndResolveDirectory($path) as $resolved ) {
+                $this->dev()->addMessage("[resolveAndRegisterDirectory] non-cached for {$path}");
+                $resolves[] = $resolved->toArray();
+                $this->registerResolved($resolved);
+            }
+            $this->cacheResolved($path, $resolves);
+        } else {
+            foreach ( $this->getCachedResolved($path) as $resolved ) {
+                $this->dev()->addMessage("[resolveAndRegisterDirectory] cached for {$path}");
+                $this->registerResolved($resolved);
+            }
         }
     }
 
     protected function registerResolved(Resolved $resolved)
     {
-        if ($resolved->is(self::PROCESSOR)) {
+        if ( $resolved->is(self::PROCESSOR) ) {
             $this->processors->add($resolved->getClassFileInfo(), $resolved->getAnnotation());
-        } elseif ($resolved->is(self::PLUGIN)) {
+        } elseif ( $resolved->is(self::PLUGIN) ) {
             $this->plugins->add($resolved->getClassFileInfo(), $resolved->getAnnotation());
-        } elseif ($resolved->is(self::HOOK)) {
+        } elseif ( $resolved->is(self::HOOK) ) {
             $this->hooks->add($resolved->getClassFileInfo(), $resolved->getAnnotation(), $resolved->getMethod());
         }
+    }
+
+    protected function getCachedResolved($path)
+    {
+        $resolves = [];
+        foreach ( $this->manifest->get('resolved.' . $path, []) as $raw ) {
+            $classFileInfo = $this->resolver->getClassFileInfo($raw[ 'file' ], $raw[ 'class' ]);
+            $annotation    = new $raw[ 'annotationClass' ];
+            foreach ( $raw[ 'annotation' ] as $k => $v ) {
+                $annotation->{$k} = $v;
+            }
+            $resolved = new Resolved($raw[ 'type' ], $classFileInfo, $annotation);
+            if ( isset($raw[ 'property' ]) ) {
+                $resolved->setProperty($raw[ 'property' ]);
+            }
+            if ( isset($raw[ 'method' ]) ) {
+                $resolved->setMethod($raw[ 'method' ]);
+            }
+            $resolves[] = $resolved;
+        }
+        return $resolves;
+    }
+
+    protected function cacheResolved($path, array $resolves)
+    {
+        $this->manifest
+            ->set('scanned.' . $path, $this->getDirectoryHash($path))
+            ->put('resolved.' . $path, $resolves)
+            ->save();
+        return $this;
+    }
+
+    protected function getCachedHash($path)
+    {
+        return $this->manifest->get('scanned.' . $path, '');
+    }
+
+    protected function getDirectoryHash($path)
+    {
+        $size = 0;
+        $str  = '';
+        foreach ( file_allFiles($path) as $file ) {
+            /** @var \Symfony\Component\Finder\SplFileInfo $file */
+            $size += $file->getSize();
+            $str .= $file->getFilename();
+        }
+        return md5($str . $size);
     }
 
 
@@ -250,7 +317,7 @@ class Addons implements Arrayable
      */
     public function getManifest()
     {
-        if (null === $this->manifest || $this->manifest->isEmpty()) {
+        if ( null === $this->manifest || $this->manifest->isEmpty() ) {
             $this->loadManifest();
         }
         return $this->manifest;
@@ -275,10 +342,10 @@ class Addons implements Arrayable
      */
     public function __call($method, array $parameters = [])
     {
-        if (in_array($method, $this->collections, true)) {
+        if ( in_array($method, $this->collections, true) ) {
             $collection = $this->{$method};
             $args       = count($parameters);
-            if ($args === 0) {
+            if ( $args === 0 ) {
                 return $collection;
             } else {
                 $method = array_shift($parameters);
@@ -297,7 +364,7 @@ class Addons implements Arrayable
      */
     public function __get($name)
     {
-        if (in_array($name, $this->collections, true)) {
+        if ( in_array($name, $this->collections, true) ) {
             return $this->{$name};
         }
         throw new \RuntimeException("property $name not found");

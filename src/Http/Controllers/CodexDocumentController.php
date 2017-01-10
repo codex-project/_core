@@ -55,11 +55,11 @@ class CodexDocumentController extends CodexController
     public function getDocument($projectSlug = null, $ref = null, $path = null)
     {
         $res = $this->hookPoint('controller:document:get', [ $projectSlug, $ref, $path ]);
-        if ($res) {
+        if ( $res ) {
             return $res;
         }
 
-        if ($projectSlug === null) {
+        if ( $projectSlug === null ) {
             $projectSlug = $this->codex->config('default_project');
         }
         /** @var Codex $codex */
@@ -71,19 +71,22 @@ class CodexDocumentController extends CodexController
         try {
             /** @var Document $document */
             $document = $codex->get("{$projectSlug}/{$ref}::{$path}");
-        } catch (DocumentNotFoundException $e) {
+        }
+        catch (DocumentNotFoundException $e) {
             $ref = $codex->get("{$projectSlug}/{$ref}");
             $this->view->share('ref', $ref);
             $this->view->share('project', $ref->getProject());
             return $this->notFound('document', $e);
-        } catch (RefNotFoundException $e) {
+        }
+        catch (RefNotFoundException $e) {
             $project = $codex->get($projectSlug);
             $this->view->share('project', $project);
             return $this->notFound('ref', $e);
-        } catch (ProjectNotFoundException $e) {
+        }
+        catch (ProjectNotFoundException $e) {
             return $this->notFound('project', $e);
         }
-        if ($ref === '!' || $path === '!') {
+        if ( $ref === '!' || $path === '!' ) {
             return redirect(route('codex.document', [
                 'projectSlug' => $projectSlug,
                 'ref'         => $document->getRef(),
@@ -98,8 +101,9 @@ class CodexDocumentController extends CodexController
         $breadcrumb = $document->getBreadcrumb();
 
         $this->view->share(compact('project', 'ref', 'document'));
+        // @todo remove all parameters but document.
         $res = $this->hookPoint('controller:document', [ $document, $codex, $project, $ref ]);
-        if ($res) {
+        if ( $res ) {
             return $res;
         }
 

@@ -118,7 +118,7 @@ class CodexServiceProvider extends ServiceProvider
         $this->registerJavascriptData();
 
 
-        if ($this->config->get('codex.http.enabled', false)) {
+        if ( $this->config->get('codex.http.enabled', false) ) {
             $this->registerHttp();
         }
 
@@ -145,7 +145,6 @@ class CodexServiceProvider extends ServiceProvider
             ->addJavascript('radic.util', $assetPath . '/vendor/radic.util/radic.util' . $ext)
             ->addJavascript('vue', $assetPath . '/vendor/vue/vue' . $ext)
             ->addJavascript('vuex', $assetPath . '/vendor/vuex/vuex' . $ext, [ 'vue' ])
-
             ->addJavascript('manifest', $assetPath . '/js/manifest.js')
 //            ->addJavascript('prismjs', $assetPath . '/vendor/prismjs/prism.js')
 //            ->addJavascript('prismjs.autoloader', $assetPath . '/vendor/prismjs/plugins/autoloader/prism-autoloader', [ 'prismjs' ])
@@ -280,9 +279,11 @@ EOT
 
     protected function registerJavascriptData()
     {
-        $this->codexHook('controller:view', function (CodexDocumentController $controller, $view, Codex $codex, Projects\Project $project, Documents\Document $document) {
-            /** @var Codex $codex */
-            $theme = $codex->theme;
+        $this->codexHook('controller:document', function (CodexDocumentController $controller, Documents\Document $document) {
+            $codex   = $document->getCodex();
+            $theme   = $codex->theme;
+            $project = $document->getProject();
+
             $theme->set('codex', $c = $codex->config()->only('display_name', 'macros', 'links', 'document', 'default_project')->toArray());
             $theme->set('project', [
                 'name'         => $project->getName(),

@@ -87,10 +87,34 @@ return [
             'add_extra_data' => true,
         ],
         'buttons'    => [
+            'type'                => 'groups',
+            'groups'              => [
+//            'group-id' => [
+//                'button-id' => [
+//                    'text'   => 'Haai',
+//                    'href'   => 'http://goto.com/this',
+//                    'target' => '_blank',
+//                ],
+//            ]
+            ],
+            'buttons'             => [
+//            'button-id' => [
+//                'text'   => 'Haai',
+//                'icon' => 'fa fa-github',
+//                'attr' => [
+//                    'href'   => 'http://goto.com/this',
+//                    'target' => '_blank',
+//                ]
+//            ],
+            ],
+            'wrapper_class'       => 'top-buttons',
+            'group_wrapper_class' => 'top-button-group',
 
         ],
         'header'     => [
-
+            'view'                 => 'processors.header',
+            'remove_from_document' => true,
+            'remove_regex'         => '/<h1>(.*?)<\/h1>/',
         ],
         'links'      => [
             'needle' => 'codex',
@@ -112,6 +136,11 @@ return [
             ],
         ],
         'parser'     => [
+            'parser'   => 'Codex\Processors\Parser\MarkdownParser', // the parser with name 'markdown'
+            'markdown' => [ // refers to parser name
+                'renderer' => 'Codex\Processors\Parser\Markdown\CodexMarkdownRenderer',
+                // additional custom config possible for the renderer
+            ],
 
         ],
         'prismjs'    => [

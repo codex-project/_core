@@ -4,14 +4,16 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Addons;
 
 use Codex\Addons\Annotations\AbstractAnnotation;
 use Codex\Support\Collection;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Illuminate\Contracts\Support\Arrayable;
 use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
 
 /**
@@ -21,7 +23,7 @@ use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
  * @author         CLI
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  */
-class Resolved
+class Resolved implements Arrayable
 {
     /** @var ClassFileInfo */
     protected $classFileInfo;
@@ -147,5 +149,30 @@ class Resolved
     public function getAnnotation()
     {
         return $this->annotation;
+    }
+
+
+    /**
+     * String representation of object
+     * @link  http://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function toArray()
+    {
+        $annotation = [];
+        foreach ( get_class_vars(get_class($this->annotation)) as $key => $default ) {
+            $annotation[ $key ] = $this->annotation->{$key};
+        }
+
+        return [
+            'class'      => $this->getClassFileInfo()->getClassName(),
+            'file'       => $this->getClassFileInfo()->getPathname(),
+            'type'       => $this->type,
+            'property'   => $this->property,
+            'method'     => $this->method,
+            'annotationClass' => get_class($this->annotation),
+            'annotation' => $annotation,
+        ];
     }
 }

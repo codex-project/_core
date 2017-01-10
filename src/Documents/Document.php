@@ -179,6 +179,30 @@ class Document extends Extendable implements Arrayable
         }
         return $lastModified;
     }
+    public function shouldCache()
+    {
+        return $this->mode === self::CACHE_ENABLED || ($this->mode === self::CACHE_AUTO && config('app.debug') === false);
+    }
+
+    public function setCacheMode($mode)
+    {
+        if ( $mode === true ) {
+            $mode = self::CACHE_ENABLED;
+        } elseif ( $mode === false ) {
+            $mode = self::CACHE_DISABLED;
+        } elseif ( $mode === null ) {
+            $mode = self::CACHE_AUTO;
+        }
+        if ( !in_array($mode, [ self::CACHE_ENABLED, self::CACHE_DISABLED, self::CACHE_AUTO ], true) ) {
+            throw CodexException::create('Cache mode not supported: ' . (string)$mode);
+        }
+        $this->mode = $mode;
+    }
+
+    public function getCacheKey($suffix = '')
+    {
+        return 'codex.document.' . $this->project->getName() . '.' . str_slug($this->pathName) . $suffix;
+    }
 
     /**
      * Render the document.
@@ -204,6 +228,7 @@ class Document extends Extendable implements Arrayable
             $minutes      = $this->getCodex()->config('document.cache.minutes', null);
             $lastModified = $this->getCachedLastModified();
             if ( $this->lastModified === $lastModified ) {
+                $this->getCodex()->dev->addMessage('[Document::render] from cache');
                 $this->content = $this->cache->get($this->getCacheKey(':content'));
 
                 $forcedProcessors = $this->getProcessors()
@@ -217,6 +242,7 @@ class Document extends Extendable implements Arrayable
                 $this->getCodex()->dev->setData('forcedProcessors', $forcedProcessors);
                 $this->runProcessors($forcedProcessors);
             } else {
+                $this->getCodex()->dev->addMessage('[Document::render] NOT from cache. Adding to cache.');
                 $this->runProcessors();
                 $this->cache->put($this->getCacheKey(':last_modified'), $this->lastModified, $minutes);
                 $this->cache->put($this->getCacheKey(':content'), $this->content, $minutes);
@@ -229,6 +255,7 @@ class Document extends Extendable implements Arrayable
 //                $this->content = $this->cache->get($this->getCacheKey(':content'));
 //            }
         } else {
+            $this->getCodex()->dev->addMessage('[Document::render] should not cache.');
             $this->runProcessors();
         }
         $this->rendered = true;
@@ -236,10 +263,6 @@ class Document extends Extendable implements Arrayable
         return $this->content;
     }
 
-    public function getCacheKey($suffix = '')
-    {
-        return 'codex.document.' . $this->project->getName() . '.' . str_slug($this->pathName) . $suffix;
-    }
 
     /**
      * Run all the content processors that haven't run.
@@ -276,7 +299,10 @@ class Document extends Extendable implements Arrayable
         if ( $this->processed->has($name) ) {
             return;
         }
+//        $this->getCodex()->dev->addMessage('[Document::runProcessor] ' . $name);
+        $this->getCodex()->dev->startMeasure('[Document::runProcessor] ' . $name);
         $this->processed->set($name, $this->getProcessors()->run($name, $this));
+        $this->getCodex()->dev->stopMeasure('[Document::runProcessor] ' . $name);
     }
 
     #
@@ -291,6 +317,7 @@ class Document extends Extendable implements Arrayable
     {
         return [
             'name'              => $this->getName(),
+
             'pathName'          => $this->pathName,
             'extension'         => $this->extension,
             'cacheMode'         => $this->mode,
@@ -369,27 +396,6 @@ class Document extends Extendable implements Arrayable
     {
         $this->content = $dom->find('//body')->first()->html();
     }
-
-    public function shouldCache()
-    {
-        return $this->mode === self::CACHE_ENABLED || ($this->mode === self::CACHE_AUTO && config('app.debug') === false);
-    }
-
-    public function setCacheMode($mode)
-    {
-        if ( $mode === true ) {
-            $mode = self::CACHE_ENABLED;
-        } elseif ( $mode === false ) {
-            $mode = self::CACHE_DISABLED;
-        } elseif ( $mode === null ) {
-            $mode = self::CACHE_AUTO;
-        }
-        if ( !in_array($mode, [ self::CACHE_ENABLED, self::CACHE_DISABLED, self::CACHE_AUTO ], true) ) {
-            throw CodexException::create('Cache mode not supported: ' . (string)$mode);
-        }
-        $this->mode = $mode;
-    }
-
 
     #
     # GETTERS & SETTERS

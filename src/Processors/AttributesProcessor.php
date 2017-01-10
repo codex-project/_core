@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Processors;
 
@@ -29,14 +29,7 @@ use Symfony\Component\Yaml\Yaml;
 class AttributesProcessor
 {
     /** @var Collection */
-    public $config = [
-        'tags'    => [
-            [ 'open' => '<!--*', 'close' => '--*>' ], // html, markdown
-            [ 'open' => '---', 'close' => '---' ], // markdown (frontmatter)
-        ],
-        'remove_tags' => true,
-        'add_extra_data' => true
-    ];
+    public $config = 'codex.processors.attributes';
 
     /**
      * handle method

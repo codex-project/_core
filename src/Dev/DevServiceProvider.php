@@ -61,7 +61,7 @@ class DevServiceProvider extends ServiceProvider
             $app = parent::register();
             $this->registerMetas();
             $this->registerDebugbar();
-            $this->registerMeasurements($app);
+            $this->registerMeasurements();
 
 
             return $app;
@@ -147,10 +147,10 @@ class DevServiceProvider extends ServiceProvider
     protected function registerMeasurements()
     {
         $this->app->booting(function () {
-            $this->dev->startMeasure('Application booting');
+            $this->dev->startMeasure('Application::boot', 'Application::boot loops trough all registered Service Providers and boots them');
         });
         $this->app->booted(function () {
-            $this->dev->stopMeasure('Application booting');
+            $this->dev->stopMeasure('Application::boot');
         });
 
         // Projects

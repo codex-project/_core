@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 
 /**
@@ -33,30 +33,7 @@ use Codex\Support\Collection;
 class ButtonsProcessor
 {
     /** @var \Codex\Support\Collection */
-    public $config = [
-        'type'                => 'groups',
-        'groups'              => [
-//            'group-id' => [
-//                'button-id' => [
-//                    'text'   => 'Haai',
-//                    'href'   => 'http://goto.com/this',
-//                    'target' => '_blank',
-//                ],
-//            ]
-        ],
-        'buttons'             => [
-//            'button-id' => [
-//                'text'   => 'Haai',
-//                'icon' => 'fa fa-github',
-//                'attr' => [
-//                    'href'   => 'http://goto.com/this',
-//                    'target' => '_blank',
-//                ]
-//            ],
-        ],
-        'wrapper_class'       => 'top-buttons',
-        'group_wrapper_class' => 'top-button-group',
-    ];
+    public $config = 'codex.processors.buttons';
 
     /** @var Document */
     public $document;

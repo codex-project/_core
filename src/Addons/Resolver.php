@@ -65,7 +65,7 @@ class Resolver
      *
      * @return \Laradic\AnnotationScanner\Scanner\ClassFileInfo
      */
-    protected function getClassFileInfo($file, $class)
+    public function getClassFileInfo($file, $class)
     {
         $fileInfo = new SplFileInfo($file, $file, $file);
         return new ClassFileInfo($fileInfo, new ClassInspector($class, $this->reader));
