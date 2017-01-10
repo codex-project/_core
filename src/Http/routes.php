@@ -8,8 +8,8 @@
  * @copyright Copyright 2017 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
-$controller = config('codex.http.use_welcome_page', false) ? 'Welcome' : 'Document';
-Route::get('/', [ 'as' => 'index', 'uses' => "Codex{$controller}Controller@getIndex" ]);
+//$controller = config('codex.http.use_welcome_page', false) ? 'Welcome' : 'Document';
+//Route::get('/', [ 'as' => 'index', 'uses' => "Codex{$controller}Controller@getIndex" ]);
 
 $documentPrefix = str_ensure_right(config('codex.http.document_prefix', ''), '/');
 /**

@@ -155,18 +155,6 @@ class CodexServiceProvider extends ServiceProvider
             ->addJavascript('vendor', $assetPath . '/js/vendor.js', [ 'vue', 'vuex', 'jquery', 'radic.util' ])
             ->addJavascript('codex', $assetPath . '/js/codex.js', [ 'vendor' ]);
 
-        $this->codexHook('controller:welcome', function ($controller) use ($assetPath, $ext) {
-            $this->codex()->theme
-                ->addStylesheet('codex.page.welcome', $assetPath . '/styles/codex.page.welcome.css', [ 'codex' ])
-                ->addJavascript('wowjs', $assetPath . '/vendor/wowjs/wow' . $ext)
-                ->addJavascript('codex.page.welcome', $assetPath . '/js/codex.page.welcome.js', [ 'codex', 'wowjs' ])
-                ->addScript('init', <<<EOT
-var app = new codex.App({
-    el: '#app'
-})
-EOT
-                );
-        });
         $this->codexHook('controller:document', function ($controller) use ($assetPath) {
             $this->codex()->theme->addJavascript('codex.page.document', $assetPath . '/js/codex.page.document.js', [ 'codex' ])
                 ->addScript('init', <<<EOT

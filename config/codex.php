@@ -15,7 +15,7 @@ return [
 
     'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
 
-    'plugins' => [ 'phpdoc', 'auth', 'git', 'jira', 'misc' ],
+    'plugins' => [ 'phpdoc', 'auth', 'git', 'jira', 'welcome' ],
 
     'paths' => [
         'docs'     => env('CODEX_ROOT_DIR', base_path('resources/docs')),
@@ -25,10 +25,18 @@ return [
     ],
 
     'http' => [
-        'enabled'              => true,
-        'base_route'           => env('CODEX_BASE_ROUTE', null),
-        'use_welcome_page'     => true,
-        'document_prefix'      => 'documentation',
+        // you can disable the http service if you want to use your own, or some other reason
+        'enabled'         => true,
+        // run codex under a specific uri. For example, setting this to 'foobar' will result in urls like
+        // http://host.com/foobar/documentation/$PROJECT/$REF/$DOCUMENT
+        // http://host.com/foobar/api/v1
+        // you can leave this to null to not have a base_route
+        'base_route'      => env('CODEX_BASE_ROUTE', null),
+        'document_prefix' => 'documentation',
+
+        'route_prefix'          => null,
+        'document_route_prefix' => 'documentation',
+
         'ignore_project_names' => [ '_debugbar', ],
         'api'                  => [
             'enabled'    => true,
