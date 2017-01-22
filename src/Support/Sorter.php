@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Support;
 
@@ -17,8 +17,8 @@ use Codex\Contracts\Support\Sortable;
  * This is the Sorter.
  *
  * @package        Laradic\Support
- * @author         Sebwite Dev Team
- * @copyright      Copyright (c) 2015, Sebwite
+ * @author         Codex Project Dev Team
+ * @copyright      Copyright (c) 2015, Codex Project
  * @license        https://tldrlegal.com/license/mit-license MIT License
  */
 class Sorter implements Sortable

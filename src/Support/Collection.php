@@ -39,6 +39,22 @@ class Collection extends \Illuminate\Support\Collection
         return $this;
     }
 
+    /**
+     * addTo array method
+     *
+     * @param string $key
+     * @param $value
+     *
+     * @return $this
+     */
+    public function addTo($key, $value)
+    {
+        $items = data_get($this->items, $key, []);
+        $items[] = $value;
+        data_set($this->items, $key, $items);
+        return $this;
+    }
+
     public function whereHas($key, $value)
     {
         return $this->filter(function ($item) use ($key, $value) {

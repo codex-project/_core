@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Log;
 
@@ -20,8 +20,8 @@ use Monolog\Handler\FirePHPHandler;
  * This is the class Logger.
  *
  * @package        Codex\Core
- * @author         Sebwite
- * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
+ * @author         Codex Project
+ * @copyright      Copyright (c) 2015, Codex Project. All rights reserved
  */
 class Writer extends BaseWriter implements Log
 {

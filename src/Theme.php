@@ -163,7 +163,7 @@ class Theme extends Extendable implements Arrayable
      */
     public function addScript($name, $value, array $depends = [ ], array $attr = [ ])
     {
-        $this->scripts->set($name, compact('name', 'value', 'depends', 'attr'));
+        $this->scripts->put($name, compact('name', 'value', 'depends', 'attr'));
 
         return $this;
     }

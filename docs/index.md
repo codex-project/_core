@@ -53,7 +53,7 @@ Most of it's features are provided by addons. Codex is extenable, themeable, hac
 
 
 
-## How it works
+## How it workss
 
 **Codex** > **Projects** > **Refs (versions)** > **Documents** > **Processors**
 

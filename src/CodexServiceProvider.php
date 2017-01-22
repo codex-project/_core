@@ -31,15 +31,15 @@ use Monolog\Logger as Monolog;
  * This is the class CodexServiceProvider.
  *
  * @package        Codex\Core
- * @author         Sebwite
- * @copyright      Copyright (c) 2015, Sebwite. All rights reserved
+ * @author         Codex Project
+ * @copyright      Copyright (c) 2015, Codex Project. All rights reserved
  *
  */
 class CodexServiceProvider extends ServiceProvider
 {
     use CodexProviderTrait;
 
-    protected $configFiles = [ 'codex' ];
+    protected $configFiles = [ 'codex', 'codex.processors' ];
 
     protected $viewDirs = [
         'views' => 'codex',
@@ -267,20 +267,25 @@ EOT
 
     protected function registerJavascriptData()
     {
+
+//        _CODEX_PHP_DATA = {
+//        apiUrl     : 'http://codex-project.dev/api/v1',
+//          debug      : true,
+//          project    : 'codex',
+//          ref        : 'master',
+//          displayName: 'Codex'
+//      }
         $this->codexHook('controller:document', function (CodexDocumentController $controller, Documents\Document $document) {
             $codex   = $document->getCodex();
             $theme   = $codex->theme;
             $project = $document->getProject();
 
-            $theme->set('codex', $c = $codex->config()->only('display_name', 'macros', 'links', 'document', 'default_project')->toArray());
-            $theme->set('project', [
-                'name'         => $project->getName(),
-                'display_name' => $project->getDisplayName(),
-            ]);
-//            $theme->set('document', collect($document->toArray())->forget('content'));
-//            $theme->set('theme', $theme->toArray());
-            $theme->set('apiUrl', url('api'));
-            $theme->set('debug', config('app.debug', false));
+            $theme->set('codex', $c = $codex->config()->only('display_name', 'macros', 'links', 'document', 'default_project')->toArray())
+                ->set('apiUrl', url('api/v1'))
+                ->set('debug', config('app.debug'))
+                ->set('project', $project->getName())
+                ->set('ref', $document->getRef()->getName())
+                ->set('displayName', $project->getDisplayName());
         });
     }
 

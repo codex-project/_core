@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Http\Controllers\Api\V1;
 
@@ -15,13 +15,17 @@ use Codex\Exception\CodexException;
 use Codex\Http\Controllers\CodexController;
 use Codex\Projects\Project;
 use Codex\Projects\Ref;
+use Codex\Support\Traits\HookableTrait;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Routing\Controller;
 use JsonSerializable;
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class ApiController extends CodexController
+abstract class ApiController extends Controller
 {
+    use HookableTrait;
+
     /** @var \Codex\Codex */
     protected $codex;
 
@@ -46,9 +50,8 @@ abstract class ApiController extends CodexController
      * @param \Codex\Codex                       $codex
      * @param \Illuminate\Contracts\View\Factory $view
      */
-    public function __construct(Codex $codex, ViewFactory $view)
+    public function __construct(Codex $codex)
     {
-        parent::__construct($codex, $view);
         $this->codex    = $codex;
         $this->addons   = $this->codex->addons;
         $this->projects = $this->codex->projects;
@@ -57,7 +60,7 @@ abstract class ApiController extends CodexController
 
     protected function resolveRef($projectSlug, $ref = null)
     {
-        if (!$this->projects->has($projectSlug)) {
+        if ( !$this->projects->has($projectSlug) ) {
             return $this->error('Project does not exist', Response::HTTP_BAD_REQUEST);
         }
         $this->project = $this->projects->get($projectSlug);
@@ -69,7 +72,7 @@ abstract class ApiController extends CodexController
 
     protected function response($data = [])
     {
-        if ($data instanceof Arrayable && !$data instanceof JsonSerializable) {
+        if ( $data instanceof Arrayable && !$data instanceof JsonSerializable ) {
             $data = $data->toArray();
         }
         return response()->json([ 'success' => true, 'message' => '', 'data' => $data ]);
@@ -79,17 +82,17 @@ abstract class ApiController extends CodexController
      * error method
      *
      * @param      string|CodexException $message
-     * @param int   $code
-     * @param array $data
+     * @param int                        $code
+     * @param array                      $data
      *
      * @return mixed
      */
     protected function error($message, $code = 500, $data = [])
     {
-        if ($message instanceof CodexException) {
+        if ( $message instanceof CodexException ) {
             $ex      = $message;
             $message = $ex->getMessage();
-            if (config('app.debug')) {
+            if ( config('app.debug') ) {
                 $data = $ex->getTrace();
             }
         }
