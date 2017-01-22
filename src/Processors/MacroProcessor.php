@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Processors;
 
@@ -47,10 +47,11 @@ class MacroProcessor
 
         // foreach found macro
         foreach ($matches[ 0 ] as $i => $raw) {
-            $macro          = $this->createMacro($raw, $matches[1][$i]);
-            if (false === array_key_exists($macro->definition, $definitions)) {
+            $definition = Macro::extractDefinition($matches[1][$i]);
+            if (false === array_key_exists($definition, $definitions)) {
                 continue;
             }
+            $macro          = $this->createMacro($raw, $matches[1][$i]);
             static::$macros[] = $macro;
             $macro->setHandler($definitions[$macro->definition]);
             $macro->run();
@@ -60,11 +61,11 @@ class MacroProcessor
 
     protected function createMacro($raw, $cleaned)
     {
-        $docTag           = new Macro($raw, $cleaned);
-        $docTag->codex    = $this->codex;
-        $docTag->project  = $this->project;
-        $docTag->document = $this->document;
-        return $docTag;
+        $macro           = new Macro($raw, $cleaned);
+        $macro->codex    = $this->codex;
+        $macro->project  = $this->project;
+        $macro->document = $this->document;
+        return $macro;
     }
 
     /**

@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Processors\Links;
 
@@ -14,7 +14,6 @@ use Codex\Processors\LinksProcessor;
 use Codex\Support\Traits\ConfigTrait;
 use FluentDOM\Element;
 use League\Uri\Schemes\Http;
-use PHPHtmlParser\Dom\HtmlNode;
 
 /**
  * This is the class Action.
@@ -137,7 +136,7 @@ class Action
     }
 
     /**
-     * @return HtmlNode
+     * @return Element
      */
     public function getElement()
     {

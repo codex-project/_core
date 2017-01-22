@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Processors\Macros;
 
@@ -70,10 +70,23 @@ class Macro
     {
         $this->raw     = $raw;
         $this->cleaned = $cleaned;
+        $this->definition = static::extractDefinition($cleaned);
+    }
+
+    /**
+     * The definition is how the macro key. Similair to how it is registered in the config (eg: 'jira:issues:search' or 'general:hide' or 'table:responsive')
+     *
+     * @param string $cleaned
+     *
+     * @return string
+     * @throws \Codex\Exception\CodexException
+     */
+    public static function extractDefinition($cleaned)
+    {
         if (preg_match_all('/(?:\/|^)(.*?)(?:\(|$)/', $cleaned, $definition) === 0) {
             throw CodexException::create('Macro definition could not be extracted');
         }
-        $this->definition = $definition[ 1 ][ 0 ];
+        return $definition[ 1 ][ 0 ];
     }
 
 
