@@ -53,9 +53,21 @@ class Codex extends Extendable implements Arrayable
     use Traits\FilesTrait,
         Traits\ConfigTrait;
 
+    /**
+     *
+     */
     const SHOW_MASTER_BRANCH = 0;
+    /**
+     *
+     */
     const SHOW_LAST_VERSION = 1;
+    /**
+     *
+     */
     const SHOW_LAST_VERSION_OTHERWISE_MASTER_BRANCH = 2;
+    /**
+     *
+     */
     const SHOW_CUSTOM = 3;
 
 
@@ -74,16 +86,17 @@ class Codex extends Extendable implements Arrayable
     protected $cache;
 
     /**
-     * Path to the directory containing all docs
+     * Path to the directory containing all docs, containsi the config value of "codex.paths.docs"
      *
      * @var string
-     * @example
-     * <?php
-     * codex()->projects->get('codex')->documents->get('index')->render();
+     *
      */
     protected $docsPath;
 
-    /** @var Collection */
+    /**
+     * A collection of resolved extensions
+     * @var Collection
+     */
     protected static $resolved;
 
     /**
@@ -114,6 +127,11 @@ class Codex extends Extendable implements Arrayable
     /**
      * Codex constructor.
      *
+     * **Example**
+     * ```php
+     * codex()->projects->get('codex')->documents->get('index')->render();
+     * ```
+     *
      * @param \Illuminate\Contracts\Container\Container $container The container instance
      * @param \Illuminate\Filesystem\Filesystem         $files     The filesystem instance
      * @param \Illuminate\Contracts\Cache\Repository    $cache     The cache instance
@@ -143,12 +161,21 @@ class Codex extends Extendable implements Arrayable
 
 
     /**
-     * Shorthand helper method for getting projects, refs or documents
+     * Shorthand method for getting projects, refs or documents
      *
-     * <strong>Example:</strong>
-     * <code>
-     * <?php
+     * **Syntax:**
+     * {project?}/{$ref?}::{documentPath?}
+     *
+     * **Modifiers:**
+     * * = The collection (projects, refs or documents)
+     * ! = The default of the collection (project, def or document)
+     *
+     * **Syntax examples:**
+     * `codex/master::getting-started/installation`
+     *
+     * ```php
      * $projects    = codex()->get('*'); # Codex\Projects\Projects
+     * $project     = codex()->get('!'); # Codex\Projects\Project (default)
      * $project     = codex()->get('codex'); # Codex\Projects\Project
      * $refs        = codex()->get('codex/*'); # Codex\Projects\Refs
      * $ref         = codex()->get('codex/!'); # Codex\Projects\Ref (default ref)
@@ -159,21 +186,11 @@ class Codex extends Extendable implements Arrayable
      * $document    = codex()->get('codex/master::!'); # Codex\Documents\Document (default document)
      * $document    = codex()->get('codex/master::index'); # Codex\Documents\Document
      * $document    = codex()->get('codex/master::develop/hooks'); # Codex\Documents\Document
-     * </code>
+     * ```
      *
-     * <strong>Syntax:</strong>
-     * {project?}/{$ref?}::{documentPath?}
+     * @param string $query The query to run
      *
-     * <strong>Special modifiers:</strong>
-     * * = The collection (projects, refs or documents)
-     * ! = The default of the collection (project, def or document)
-     *
-     * <strong>Syntax examples:</strong>
-     * codex/master::getting-started/installation
-     *
-     * @param $query
-     *
-     * @return \Codex\Documents\Document|\Codex\Documents\Documents|\Codex\Projects\Project|\Codex\Projects\Projects
+     * @return \Codex\Documents\Document|\Codex\Documents\Documents|\Codex\Projects\Project|\Codex\Projects\Projects|\Codex\Projects\Ref|\Codex\Projects\Refs
      * @throws \Codex\Exception\DocumentNotFoundException
      * @throws \Codex\Exception\ProjectNotFoundException
      * @throws \Codex\Exception\RefNotFoundException
@@ -191,6 +208,7 @@ class Codex extends Extendable implements Arrayable
      * $document    = codex()->get('codex::!'); # Codex\Documents\Document (from default ref, default document)
      * $document    = codex()->get('codex/master::index'); # Codex\Documents\Document
      * $document    = codex()->get('codex/master::develop/hooks'); # Codex\Documents\Document
+     *
      */
     public function get($query)
     {
@@ -258,9 +276,11 @@ class Codex extends Extendable implements Arrayable
     }
 
     /**
-     * Returns a Codex view name
+     * Get or set a Codex view
      *
      * @param string $name The simple name
+     *
+     * @param null | string   $view If given, this view will be set
      *
      * @return string The namespaced view name
      */
@@ -308,6 +328,15 @@ class Codex extends Extendable implements Arrayable
         return $this->docsPath;
     }
 
+    /**
+     * getCachedLastModified method
+     *
+     * @param          $key
+     * @param          $lastModified
+     * @param \Closure $create
+     *
+     * @return mixed
+     */
     public function getCachedLastModified($key, $lastModified, \Closure $create)
     {
         /** @var \Illuminate\Contracts\Cache\Repository $cache */
@@ -322,12 +351,28 @@ class Codex extends Extendable implements Arrayable
     }
 
 
+    /**
+     * Sets a config value
+     *
+     * @param      $key
+     * @param null $value
+     *
+     * @return $this
+     */
     public function setConfig($key, $value = null)
     {
         config()->set("codex.{$key}", $value);
         return $this;
     }
 
+    /**
+     * Get a config value
+     *
+     * @param null $key
+     * @param null $default
+     *
+     * @return \Codex\Support\Collection
+     */
     public function config($key = null, $default = null)
     {
         if ( $key === null ) {
@@ -361,11 +406,22 @@ class Codex extends Extendable implements Arrayable
         return $this;
     }
 
+    /**
+     * getLog method
+     * @return \Codex\Contracts\Log\Log
+     */
     public function getLog()
     {
         return $this->log;
     }
 
+    /**
+     * setLog method
+     *
+     * @param $log
+     *
+     * @return $this
+     */
     public function setLog($log)
     {
         $this->log = $log;
@@ -373,6 +429,10 @@ class Codex extends Extendable implements Arrayable
         return $this;
     }
 
+    /**
+     * toArray method
+     * @return array
+     */
     public function toArray()
     {
         $projects = $this->projects->getItems();
@@ -387,6 +447,13 @@ class Codex extends Extendable implements Arrayable
         ];
     }
 
+    /**
+     * __get method
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
     public function __get($name)
     {
         if ( in_array($name, [ 'addons', 'dev' ], true) ) {

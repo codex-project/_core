@@ -26,14 +26,24 @@ buttons:
 
 <!--*codex:/general:hide*-->
 
+
+<!--*codex:phpdoc:method_signature('Codex\\Codex::url()')*-->
+
 ## Introduction
 **Codex** is a file-based documentation platform built on top of Laravel. It's completely customizable and dead simple to use to create beautiful documentation.
 
 Codex is able to do things like transforming markdown or automaticaly fetching documentation from a Bitbucket/Github repositories.
 Most of it's features are provided by addons. Codex is extenable, themeable, hackable and simple to setup and use.
 
+## How it works
 
-### Features
+**Codex** > **Projects** > **Refs (versions)** > **Documents** > **Processors**
+
+- _Codex_ can provide documentation for multiple _Projects_.
+- Each _Project_ has one or more _Refs (versions)_ containing your _Documents_.
+- _Documents_ are passed trough _Processors_, modifying it's content before displaying.
+
+## Features
 - Laravel 5
 - Markdown, Creole or custom document parsers
 - Host a unlimited number of _projects/manuals_ with accompanying _versions_
@@ -50,20 +60,20 @@ Most of it's features are provided by addons. Codex is extenable, themeable, hac
 - (Addon Feature) Access restriction on projects using Github/Bitbucket login
 - Much, much more!
 
+### Examples
+One of Codex it's defining features is PHPDoc integration.
+The `codex/addon-phpdoc` adds **links**, **macros** and even a complete API browser.
+It comes down to be able to do this kind of stuff in your documentation:
 
-
-
-## How it workss
-
-**Codex** > **Projects** > **Refs (versions)** > **Documents** > **Processors**
-
-- _Codex_ can provide documentation for multiple _Projects_. 
-- Each _Project_ has one or more _Refs (versions)_ containing your _Documents_. 
-- _Documents_ are passed trough _Processors_, modifying it's content before displaying.
+#### Macros
+`<!--*codex:phpdoc:method:signature('Codex\\Codex::url()')*-->`
+<!--*codex:phpdoc:method:signature('Codex\\Codex::url()')*-->
 
 
 ### Addons
 The `addon-*` packages are a collection of _Plugins_, _Hooks_ and _Processors_.
+
+
 
 #### Plugins
 Plugins are used to alter Codex. They are capable of doing something very minor or completely alter the way Codex works. 

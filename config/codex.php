@@ -13,6 +13,8 @@
 return [
     'display_name' => env('CODEX_DISPLAY_NAME', 'Codex (BETA)'),
 
+    'description' => 'Codex is a file-based documentation platform built on top of Laravel. It\'s completely customizable and dead simple to use to create beautiful documentation.',
+
     'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
 
     'plugins' => [ 'phpdoc', 'auth', 'git', 'jira', 'welcome' ],
@@ -55,7 +57,7 @@ return [
             // true     = enabled
             // false    = disabled
             // null     = disabled when app.debug is true
-            'mode'    => true,
+            'mode'    => null,
 
 
             // Whenever a document's last modified time changes, the document's cache is refreshed.
