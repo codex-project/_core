@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Addons\Collections;
 
@@ -26,6 +26,7 @@ use Laradic\AnnotationScanner\Scanner\ClassFileInfo;
  * @author         CLI
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  *
+ * @method \Codex\Addons\Hydrators\ProcessorHydrator[] all()
  */
 class ProcessorCollection extends BaseCollection
 {

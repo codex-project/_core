@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Processors\Links;
 
@@ -25,7 +25,7 @@ class Codex
         $project = codex('projects')->get($action->param(0));
 
 
-        if ($action->hasParameter(1) && false === $project->hasRef($action->param(1))) {
+        if ($action->hasParameter(1) && false === $project->refs->has($action->param(1))) {
             return;
         }
 

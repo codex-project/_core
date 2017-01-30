@@ -71,6 +71,7 @@ class Codex extends Extendable implements Arrayable
     const SHOW_CUSTOM = 3;
 
 
+
     /**
      * The codex log writer instance
      *
@@ -383,7 +384,7 @@ class Codex extends Extendable implements Arrayable
 
 
     /**
-     * Get cache.
+     * Get cache instance
      *
      * @return Cache
      */

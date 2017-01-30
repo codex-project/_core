@@ -63,11 +63,62 @@ Most of it's features are provided by addons. Codex is extenable, themeable, hac
 ### Examples
 One of Codex it's defining features is PHPDoc integration.
 The `codex/addon-phpdoc` adds **links**, **macros** and even a complete API browser.
-It comes down to be able to do this kind of stuff in your documentation:
+It comes down to be able to do this kind of stuff in your documentation (using popovers, hover the class names).
+
+
+#### Links
+Create links using `[text](#codex:phpdoc['MyNamespace\\MyClass'])`.
+
+You can use modifiers for various extra behaviours like `[text](#codex:phpdoc['MyNamespace\\MyClass']:popover)`.
+
+| Example | Name | Code |
+|:--------|:-----|:-----|
+| [`Codex`](#codex:phpdoc['Codex\\Codex']:popover) | Class popover | `#codex:phpdoc['Codex\\Codex']:popover` |
+| [`get`](#codex:phpdoc['Codex\\Codex::get']:popover:signature) | Method signature popover | `#codex:phpdoc['Codex\\Codex::get']:popover:signature` |
+| [`get`](#codex:phpdoc['Codex\\Codex::get']:popover) | Method popover | `#codex:phpdoc['Codex\\Codex::get']:popover` |
+| [`Codex`](#codex:phpdoc['Codex\\Codex']:modal) | Class modal | `#codex:phpdoc['Codex\\Codex']:modal` |
+| [`Codex`](#codex:phpdoc['Codex\\Codex']:modal:method-list) | Class method list modal | `#codex:phpdoc['Codex\\Codex']:modal:method-list` |
+| [`Codex`](#codex:phpdoc['Codex\\Codex']:modal:property-list) | Class property list modal | `#codex:phpdoc['Codex\\Codex']:modal:property-list` |
+| [`Codex`](#codex:phpdoc['Codex\\Codex']:modal:source) | Class source modal | `#codex:phpdoc['Codex\\Codex']:modal:source` |
+| [`Codex`](#codex:phpdoc['Codex\\Codex']:modal:modal-full:app) | Class source modal | `#codex:phpdoc['Codex\\Codex']:modal:app` |
+| [`get`](#codex:phpdoc['Codex\\Codex::get']:modal:signature) | Method signature modal | `#codex:phpdoc['Codex\\Codex::get']:modal:signature` |
+| [`get`](#codex:phpdoc['Codex\\Codex::get']:modal) | Method modal | `#codex:phpdoc['Codex\\Codex::get']:modal` |
+
+
+
 
 #### Macros
-`<!--*codex:phpdoc:method:signature('Codex\\Codex::url()')*-->`
+```markdown
 <!--*codex:phpdoc:method:signature('Codex\\Codex::url()')*-->
+```
+<!--*codex:phpdoc:method:signature('Codex\\Codex::url()')*-->
+
+
+```markdown
+<!--*codex:phpdoc:method('Codex\\Codex::url()')*-->
+```
+<!--*codex:phpdoc:method('Codex\\Codex::url()')*-->
+
+
+```markdown
+<!--*codex:phpdoc:list:method('Codex\\Codex')*-->
+```
+<!--*codex:phpdoc:list:method('Codex\\Codex')*-->
+
+
+```markdown
+<!--*codex:phpdoc:list:property('Codex\\Codex')*-->
+```
+<!--*codex:phpdoc:list:property('Codex\\Codex')*-->
+
+
+
+```markdown
+<!--*codex:phpdoc:entity('Codex\\Codex')*-->
+```
+<!--*codex:phpdoc:entity('Codex\\Codex')*-->
+
+
 
 
 ### Addons
@@ -108,18 +159,18 @@ Hooks are able to execute when Codex executes code which have hook-points define
 
 
 #### Example
-The data is provided by the **PHPDoc Addon**. It uses the [`LinksProcessor`](#codex:phpdoc:popover:Codex\Processors\LinksProcessor) 
+The data is provided by the **PHPDoc Addon**. It uses the [`LinksProcessor`](#sodexxx:phpdoc:popover:Codex\Processors\LinksProcessor) 
 to alter the links based on the information provided by PHPDoc Addon. 
 
 | Example                                                          | Code                                                             |
 |:-----------------------------------------------------------------|:-----------------------------------------------------------------|
-| [`Codex`](../index.md#codex:phpdoc:Codex\Codex)                  | `[Codex](#codex:phpdoc:Codex\Codex)`                             |
-| [`Codex`](https://whatever.url#codex:phpdoc:popover:Codex\Codex) | `[Codex](https://whatever.url#codex:phpdoc:popover:Codex\Codex)` |
-| [`Codex::url`](../index.md#codex:phpdoc:popover:Codex\Codex:url) | `[Codex::url](#codex:phpdoc:popover:Codex\Codex:url)`            |
+| [`Codex`](../index.md#sodexxx:phpdoc:Codex\Codex)                  | `[Codex](#sodexxx:phpdoc:Codex\Codex)`                             |
+| [`Codex`](https://whatever.url#sodexxx:phpdoc:popover:Codex\Codex) | `[Codex](https://whatever.url#sodexxx:phpdoc:popover:Codex\Codex)` |
+| [`Codex::url`](../index.md#sodexxx:phpdoc:popover:Codex\Codex:url) | `[Codex::url](#sodexxx:phpdoc:popover:Codex\Codex:url)`            |
 
 
 
-- More information on how to use the [`LinksProcessor`](#codex:phpdoc:popover:Codex\Processors\LinksProcessor) [can be found here](develop/processors/links.md).
+- More information on how to use the [`LinksProcessor`](#sodexxx:phpdoc:popover:Codex\Processors\LinksProcessor) [can be found here](develop/processors/links.md).
 - More information on the PHPDoc Addon [should be here](addons/phpdoc.md).
 
 

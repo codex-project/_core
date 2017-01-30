@@ -24,7 +24,8 @@ use vierbergenlars\SemVer\version;
  * @author         CLI
  * @copyright      Copyright (c) 2015, CLI. All rights reserved
  *
- * @method Ref get($name)
+ * @method \Codex\Projects\Ref get($name)
+ * @method \Codex\Projects\Ref[] all()
  */
 class Refs extends ExtendableCollection implements Arrayable
 {

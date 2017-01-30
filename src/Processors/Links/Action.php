@@ -35,7 +35,10 @@ class Action
     protected $element;
 
     /** @var array */
-    protected $parameters = [ ];
+    protected $parameters = [];
+
+    /** @var array|Modifier[] */
+    protected $modifiers = [];
 
     /** @var \Codex\Documents\Document */
     protected $document;
@@ -45,6 +48,8 @@ class Action
 
     /** @var \Codex\Projects\Ref */
     protected $ref;
+
+    protected $id;
 
     /**
      * Action constructor.
@@ -62,18 +67,58 @@ class Action
         $this->ref       = $processor->document->getRef();
         $this->url       = $url;
         $this->element   = $element;
+
+        $this->parse($url->getFragment());
     }
 
-    /**
-     * setParameters method
-     *
-     * @param $parameters
-     */
-    public function setParameters($parameters)
+    protected function parse($str)
     {
-        if (is_array($parameters) && count($parameters) > 0) {
-            $this->parameters = $parameters;
+
+        $result = preg_match('/codex:(.*?)(?:\[(.*?)\]|$|)(?:(:.*)|$)/', urldecode($str), $matches);
+        if ( $result === 0 ) {
+            die('no results');
         }
+        list($_, $id, $params, $modifiers) = $matches;
+        $hasParams = strlen($params) > 0;
+        $params    = $hasParams ? explode(',', $params) : [];
+        $this->parseParams($params);
+        $this->parameters = $params;
+
+        $hasModifiers = strlen($modifiers) > 0;
+        $modifiers    = $hasModifiers ? explode(':', str_remove_left($modifiers, ':')) : [];
+        $modifiers    = array_map(function ($modifier) {
+            $name    = $modifier;
+            $params = [];
+            if ( stristr($modifier, '[') ) {
+                preg_match('/(.*?)\[(.*?)\]/', $modifier, $mparams);
+                $params = explode(',', $mparams[ 2 ]);
+                $this->parseParams($params);
+            }
+            return compact('name', 'params');
+        }, $modifiers);
+        foreach($modifiers as $modifier){
+            $this->modifiers[$modifier['name']] = new Modifier($modifier['name'], $modifier['params']);
+        }
+
+        $this->id         = $id;
+//        return (object) compact('id', 'params', 'hasParams', 'modifiers', 'hasModifiers');
+    }
+
+    protected function parseParams(array &$params)
+    {
+        $params = array_map(function ($param) {
+            $param = trim($param);
+            if ( starts_with($param, '"') ) {
+                $param = str_remove_left(str_remove_right($param, '"'), '"');
+            } elseif ( starts_with($param, '\'') ) {
+                $param = str_remove_left(str_remove_right($param, '\''), '\'');
+            } elseif ( is_numeric($param) ) {
+                $param = (int)$param;
+            } elseif ( is_bool($param) || $param === 'true' || $param === 'false' ) {
+                $param = (bool)$param;
+            }
+            return $param;
+        }, $params);
     }
 
     /**
@@ -98,6 +143,11 @@ class Action
         return $this->hasParameter($i) ? $this->parameters[ $i ] : $default;
     }
 
+    public function containsParameter($str)
+    {
+        return in_array($str, $this->parameters, true);
+    }
+
     /**
      * hasParameter method
      *
@@ -108,6 +158,45 @@ class Action
     public function hasParameter($i)
     {
         return isset($this->parameters[ $i ]);
+    }
+
+    /**
+     * hasModifiers method
+     * @return bool
+     */
+    public function hasModifiers()
+    {
+        return count($this->modifiers) > 0;
+    }
+
+    /**
+     * modifier method
+     *
+     * @param      $i
+     * @param null $default
+     *
+     * @return \Codex\Processors\Links\Modifier|mixed|null
+     */
+    public function modifier($i, $default = null)
+    {
+        return $this->hasModifier($i) ? $this->modifiers[ $i ] : $default;
+    }
+
+    public function containsModifier($str)
+    {
+        return array_key_exists($str, $this->modifiers);
+    }
+
+    /**
+     * hasModifier method
+     *
+     * @param $i
+     *
+     * @return bool
+     */
+    public function hasModifier($i)
+    {
+        return isset($this->modifiers[ $i ]);
     }
 
     /**
@@ -173,5 +262,10 @@ class Action
     public function getRef()
     {
         return $this->ref;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 }
