@@ -1,1 +1,668 @@
-﻿a.phpdoc-link,a.phpdoc-class-link,a.phpdoc-popover-link{text-decoration:none}.popover.popover-phpdoc{max-width:100%}.popover.popover-phpdoc>.popover-title{font-weight:normal;padding:15px 14px 12px 14px;font-size:13px}.popover.popover-phpdoc>.popover-content{font-size:11px;padding:0}.popover.popover-phpdoc .popover-phpdoc-description{font-style:italic;margin-top:10px}.popover.popover-phpdoc .popover-phpdoc-type{font-size:10px;position:absolute;top:1px;right:6px;color:#ada1a1}.tooltip.tooltip-phpdoc>.tooltip-inner{max-width:100%}.phpdoc-visibility-public{color:#388e3c}.phpdoc-visibility-protected{color:#f57f17}.phpdoc-visibility-private{color:#d32f2f}.phpdoc-modifier-static{color:#795548}.phpdoc-modifier-abstract{color:#343434}.phpdoc-modifier-inherited{color:#2196f3}.phpdoc-modifier-final{color:#343434}.phpdoc-type{font-family:'Source Code Pro', monospace, sans-serif;padding:0;text-decoration:none}.phpdoc-type-class{color:#388e3c}.phpdoc-type-trait{color:#2196f3}.phpdoc-type-interface{color:#6a1b9a}.phpdoc-type-external{color:#d32f2f}.phpdoc-type-simple{color:#ef6c00}i.phpdoc-visibility-public{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}i.phpdoc-visibility-public:before{content:""}i.phpdoc-visibility-protected{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}i.phpdoc-visibility-protected:before{content:""}i.phpdoc-visibility-private{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}i.phpdoc-visibility-private:before{content:""}i.phpdoc-modifier-static{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}i.phpdoc-modifier-static:before{content:""}i.phpdoc-modifier-abstract{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}i.phpdoc-modifier-abstract:before{content:""}i.phpdoc-modifier-inherited{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}i.phpdoc-modifier-inherited:before{content:""}i.phpdoc-modifier-final{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}i.phpdoc-modifier-final:before{content:""}i.phpdoc-type-class{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}i.phpdoc-type-class:before{content:""}i.phpdoc-type-interface{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}i.phpdoc-type-interface:before{content:""}i.phpdoc-type-trait{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}i.phpdoc-type-trait:before{content:""}.boxed.phpdoc-entity,.boxed.phpdoc-tags,.boxed.phpdoc-list-settings,.boxed.phpdoc-method-list,.boxed.phpdoc-property-list,.boxed.phpdoc-method{border:1px solid #c5d0dc}.phpdoc-tree{float:left;padding-top:10px;width:20%;border-right:1px solid #f0f2f1;overflow:hidden}.phpdoc-tree-context-menu{background:#fafafa;border:1px solid #bdbdbd;box-shadow:0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.2),0 1px 5px 0 rgba(0,0,0,0.12);display:block;list-style:none;margin:0;padding:0;position:absolute;width:250px;z-index:999999}.phpdoc-tree-context-menu li{border-bottom:1px solid #e0e0e0;margin:0;padding:5px 35px}.phpdoc-tree-context-menu li:last-child{border-bottom:none}.phpdoc-tree-context-menu li:hover{background:#1e88e5;color:#fafafa}.phpdoc-content{width:80%;float:left;font-size:14px}.phpdoc-content table.table-tags th,.phpdoc-content table.table-tags td{padding:3px;font-size:12px}.phpdoc-content i.inherited-icon{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;float:right;margin-right:-5px;margin-top:3px;font-size:12px;color:#ffc107}.phpdoc-content i.inherited-icon:before{content:""}.phpdoc-header{border-bottom:1px solid #f0f2f1;margin-bottom:10px;padding-left:20px}.phpdoc-header>i{line-height:22px !important;font-size:22px !important;padding-right:20px;float:left}.phpdoc-header>.header-title{font-weight:200;margin-top:15px !important;margin-bottom:13px;font-size:18px !important;line-height:24px}.phpdoc-description{padding-left:20px}.phpdoc-description p{font-size:0.9rem}.phpdoc-tabs{margin-left:20px}.phpdoc-tabs>.tab-content,.phpdoc-tabs>.slimScrollDiv>.tab-content{padding:0;border-top:1px solid #c5d0dc}.phpdoc-tabs-nav .nav-item:first-child{margin-left:10px}.phpdoc-tabs-nav .nav-item .nav-link{text-decoration:none;height:35px}.phpdoc-tabs-nav .nav-item.active .nav-link{color:#54b7e8}.phpdoc-tabs-nav .nav-item.tab-filters-toggler .nav-link{padding:8px;border-left:none}.phpdoc-tabs-nav .nav-item.tab-filters-toggler.active .nav-link{cursor:pointer}.phpdoc-tabs-nav .nav-item.tab-filters-toggler.active .nav-link:hover{color:black}.phpdoc-list-settings{padding:10px}.phpdoc-list-settings .filter-title:not(.empty){font-size:1.2rem;padding-bottom:5px;border-bottom:1px solid #ebe6e6;margin-bottom:10px;text-indent:3px}.phpdoc-list-settings .pretty{display:block}.phpdoc-list-settings .pretty label{font-size:0.9rem}.phpdoc-list-settings .pretty i{margin-right:4px}.phpdoc-list-settings .pretty i:after{top:-1px;left:-1px}.phpdoc-method-list,.phpdoc-property-list{list-style-type:none;padding-left:0;margin-bottom:0}.phpdoc-method-list .nav-item,.phpdoc-property-list .nav-item{background-color:#cfd8dc;border:1px solid #b0bec5}.phpdoc-method-list .nav-item:not(:first-child),.phpdoc-property-list .nav-item:not(:first-child){border-top:none}.phpdoc-method-list .nav-item.active,.phpdoc-property-list .nav-item.active{background-color:#90a4ae}.phpdoc-method-list .nav-item.active>.nav-link,.phpdoc-property-list .nav-item.active>.nav-link{color:#212121}.phpdoc-method-list .nav-item>.nav-link,.phpdoc-property-list .nav-item>.nav-link{padding:4px 10px;font-size:0.9rem;text-decoration:none;display:block;color:#616161;border-left:none}.phpdoc-method-list .nav-item>.nav-link i.fa,.phpdoc-property-list .nav-item>.nav-link i.fa{margin-right:10px}.phpdoc-method-list .nav-item>.nav-link:hover,.phpdoc-property-list .nav-item>.nav-link:hover{color:#424242;background-color:#b0bec5}.phpdoc-method-list .nav-item>.nav-link .phpdoc-method-signature,.phpdoc-property-list .nav-item>.nav-link .phpdoc-method-signature{display:inline;font-family:"Open Sans",Arial,sans-serif;padding:0;font-size:0.9rem}.phpdoc-method-list .nav-item>.nav-link-modifier,.phpdoc-property-list .nav-item>.nav-link-modifier{float:right;background-color:#cfd8dc;position:relative;top:-26px}.phpdoc-method-list .nav-item.seperator>span,.phpdoc-property-list .nav-item.seperator>span{display:block;font-weight:bold;padding:4px 10px;text-decoration:none;border:1px solid #c5d0dc;margin:0 -1px 0 0;color:darkgray;text-align:center}.phpdoc-method-signature{padding:12px 15px;font-family:"Source Code Pro",Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:12px;margin:0}.phpdoc-method-signature small.visibility{margin-right:15px}.phpdoc-method .method-details{padding:10px 0px 10px 20px}.phpdoc-method .method-block-title{font-size:0.7rem;border-bottom:1px solid #e2e2e2;padding-left:5px;margin:10px -20px 10px 0px;text-transform:uppercase;color:rgba(0,0,0,0.5);position:relative;left:-20px}.phpdoc-method .method-block-title:first-child{margin-top:0}.phpdoc-method .method-block{padding-left:5px}.phpdoc-method .method-arguments{list-style-type:none;margin-left:0}.phpdoc-method .method-arguments:first-child{counter-reset:customlistcounter}.phpdoc-method .method-arguments>li{counter-increment:customlistcounter}.phpdoc-method .method-arguments>li:before{content:counter(customlistcounter) " ";position:relative;left:-15px;font-size:0.7rem;color:lightgrey;top:9px;float:left}.phpdoc-method .method-argument{border-top:1px dashed #f1f1f1;border-bottom:1px dashed #f1f1f1;border-left:2px solid #e6e4e4;padding:3px 0 3px 5px}.phpdoc-method .method-argument+.method-block{border-left:2px solid #e6e4e4;margin-bottom:10px}.phpdoc-method .method-argument+.method-block p{margin:0;font-size:0.9rem;padding-top:2px}.phpdoc-method .phpdoc-method-signature+.method-details{border-top:1px solid #c5d0dc}.phpdoc-class-link{font-size:11px;line-height:11px;vertical-align:middle;background:rgba(238,238,238,0.35);direction:ltr;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;box-shadow:0 1px 1px rgba(0,0,0,0.125);background:#56565f;color:#ed6626;padding:1px 5px;border-radius:3px;tab-size:4;margin:0 3px;font-family:"Source Code Pro", monospace;text-decoration:none !important}
+@charset "UTF-8";
+/**
+ * Retrieves a color value from the $material-colors Sass map
+ * Inspired by https://github.com/nilskaspersson/Google-Material-UI-Color-Palette/
+ *
+ * @function
+ * @param {string} color-name             - quoted, lower-case, dasherized color
+ *                                          name (e.g. 'pink', 'amber')
+ * @param {string} [color-variant='500']  - quoted, lowercase color variant (e.g.
+ *                                          '200', 'a100')
+ */
+a.phpdoc-link,
+a.phpdoc-class-link,
+a.phpdoc-popover-link {
+  text-decoration: none;
+}
+
+.popover.popover-phpdoc {
+  max-width: 100%;
+}
+
+.popover.popover-phpdoc > .popover-title {
+  font-weight: normal;
+  padding: 15px 14px 12px 14px;
+  font-size: 13px;
+}
+
+.popover.popover-phpdoc > .popover-content {
+  font-size: 11px;
+  padding: 0;
+}
+
+.popover.popover-phpdoc > .popover-content p:last-child {
+  margin-bottom: 0;
+}
+
+.popover.popover-phpdoc .popover-phpdoc-description {
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.popover.popover-phpdoc .popover-phpdoc-type {
+  font-size: 10px;
+  position: absolute;
+  top: 1px;
+  right: 6px;
+  color: #ada1a1;
+}
+
+.modal.modal-phpdoc .modal-header {
+  display: none;
+}
+
+.modal.modal-phpdoc .modal-body {
+  padding: 0;
+}
+
+.modal.modal-phpdoc .modal-footer {
+  padding: 0 5px 5px 0;
+  border-top: none;
+}
+
+@media (min-width: 992px) {
+  .modal.modal-phpdoc .modal-full {
+    max-width: none;
+  }
+}
+
+.tooltip.tooltip-phpdoc > .tooltip-inner {
+  max-width: 100%;
+}
+
+.phpdoc-visibility-public {
+  color: #388e3c;
+}
+
+.phpdoc-visibility-protected {
+  color: #f57f17;
+}
+
+.phpdoc-visibility-private {
+  color: #d32f2f;
+}
+
+.phpdoc-modifier-static {
+  color: #795548;
+}
+
+.phpdoc-modifier-abstract {
+  color: #343434;
+}
+
+.phpdoc-modifier-inherited {
+  color: #2196f3;
+}
+
+.phpdoc-modifier-final {
+  color: #343434;
+}
+
+.phpdoc-type {
+  font-family: 'Source Code Pro', monospace, sans-serif;
+  padding: 0;
+  text-decoration: none;
+}
+
+.phpdoc-type-class {
+  color: #388e3c;
+}
+
+.phpdoc-type-trait {
+  color: #2196f3;
+}
+
+.phpdoc-type-interface {
+  color: #6a1b9a;
+}
+
+.phpdoc-type-external {
+  color: #d32f2f;
+}
+
+.phpdoc-type-simple {
+  color: #ef6c00;
+}
+
+i.phpdoc-visibility-public {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+i.phpdoc-visibility-public:before {
+  content: "";
+}
+
+i.phpdoc-visibility-protected {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+i.phpdoc-visibility-protected:before {
+  content: "";
+}
+
+i.phpdoc-visibility-private {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+i.phpdoc-visibility-private:before {
+  content: "";
+}
+
+i.phpdoc-modifier-static {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+i.phpdoc-modifier-static:before {
+  content: "";
+}
+
+i.phpdoc-modifier-abstract {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+i.phpdoc-modifier-abstract:before {
+  content: "";
+}
+
+i.phpdoc-modifier-inherited {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+i.phpdoc-modifier-inherited:before {
+  content: "";
+}
+
+i.phpdoc-modifier-final {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+i.phpdoc-modifier-final:before {
+  content: "";
+}
+
+i.phpdoc-type-class {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+i.phpdoc-type-class:before {
+  content: "";
+}
+
+i.phpdoc-type-interface {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+i.phpdoc-type-interface:before {
+  content: "";
+}
+
+i.phpdoc-type-trait {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+i.phpdoc-type-trait:before {
+  content: "";
+}
+
+.boxed.phpdoc-entity, .boxed.phpdoc-tags, .boxed.phpdoc-list-settings, .boxed.phpdoc-method-list, .boxed.phpdoc-property-list, .boxed.phpdoc-method, .boxed.phpdoc-app {
+  border: 1px solid #c5d0dc;
+}
+
+.phpdoc-tree {
+  float: left;
+  padding-top: 10px;
+  width: 100%;
+  border-right: 1px solid #f0f2f1;
+  overflow: hidden;
+}
+
+.phpdoc-tree-context-menu {
+  background: #fafafa;
+  border: 1px solid #bdbdbd;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  display: block;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  width: 250px;
+  z-index: 999999;
+}
+
+.phpdoc-tree-context-menu li {
+  border-bottom: 1px solid #e0e0e0;
+  margin: 0;
+  padding: 5px 35px;
+}
+
+.phpdoc-tree-context-menu li:last-child {
+  border-bottom: none;
+}
+
+.phpdoc-tree-context-menu li:hover {
+  background: #1e88e5;
+  color: #fafafa;
+}
+
+.phpdoc-source code {
+  white-space: pre;
+}
+
+.phpdoc-content {
+  width: 80%;
+  float: left;
+  font-size: 14px;
+}
+
+.phpdoc-content i.inherited-icon {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  float: right;
+  margin-right: -5px;
+  margin-top: 3px;
+  font-size: 12px;
+  color: #ffc107;
+}
+
+.phpdoc-content i.inherited-icon:before {
+  content: "";
+}
+
+.phpdoc-header {
+  border-bottom: 1px solid #f0f2f1;
+  margin-bottom: 10px;
+  padding-left: 20px;
+}
+
+.phpdoc-header > i {
+  line-height: 22px;
+  font-size: 22px;
+  padding-right: 20px;
+  float: left;
+}
+
+.phpdoc-header > .header-title {
+  font-weight: 200;
+  margin-top: 15px;
+  margin-bottom: 13px;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.phpdoc-header.compact > i {
+  line-height: 20px;
+  font-size: 13px;
+}
+
+.phpdoc-header.compact > .header-title {
+  font-size: 13px;
+  line-height: 15px;
+}
+
+.phpdoc-block {
+  padding: 0 20px;
+}
+
+.phpdoc-block p {
+  font-size: 0.9rem;
+}
+
+.phpdoc-block .table {
+  font-size: 12px;
+}
+
+.phpdoc-block .table th, .phpdoc-block .table td {
+  padding: 0;
+}
+
+.phpdoc-tabs {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.phpdoc-tabs > .tab-content {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  border-top: 1px solid #c5d0dc;
+}
+
+.phpdoc-tabs-nav .nav-item:first-child {
+  margin-left: 10px;
+}
+
+.phpdoc-tabs-nav .nav-item .nav-link {
+  text-decoration: none;
+  height: 35px;
+}
+
+.phpdoc-tabs-nav .nav-item.active .nav-link {
+  color: #54b7e8;
+}
+
+.phpdoc-tabs-nav .nav-item.tab-filters-toggler .nav-link {
+  padding: 8px;
+  border-left: none;
+}
+
+.phpdoc-tabs-nav .nav-item.tab-filters-toggler.active .nav-link {
+  cursor: pointer;
+}
+
+.phpdoc-tabs-nav .nav-item.tab-filters-toggler.active .nav-link:hover {
+  color: black;
+}
+
+.phpdoc-tags table.table-tags th, .phpdoc-tags table.table-tags td {
+  padding: 3px 0 1px 0;
+  font-size: 12px;
+  border-top: none;
+  border-bottom: 1px solid #eceeef;
+}
+
+.phpdoc-list-settings {
+  padding: 10px;
+}
+
+.phpdoc-list-settings .filter-title:not(.empty) {
+  font-size: 1.2rem;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ebe6e6;
+  margin-bottom: 10px;
+  text-indent: 3px;
+}
+
+.phpdoc-list-settings .pretty {
+  display: block;
+}
+
+.phpdoc-list-settings .pretty label {
+  font-size: 0.9rem;
+}
+
+.phpdoc-list-settings .pretty i {
+  margin-right: 4px;
+}
+
+.phpdoc-list-settings .pretty i:after {
+  top: -1px;
+  left: -1px;
+}
+
+.phpdoc-method-list, .phpdoc-property-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.phpdoc-method-list .nav-item, .phpdoc-property-list .nav-item {
+  background-color: #cfd8dc;
+  border: 1px solid #b0bec5;
+}
+
+.phpdoc-method-list .nav-item:not(:first-child), .phpdoc-property-list .nav-item:not(:first-child) {
+  border-top: none;
+}
+
+.phpdoc-method-list .nav-item.active, .phpdoc-property-list .nav-item.active {
+  background-color: #90a4ae;
+}
+
+.phpdoc-method-list .nav-item.active > .nav-link, .phpdoc-property-list .nav-item.active > .nav-link {
+  color: #212121;
+}
+
+.phpdoc-method-list .nav-item.seperator > span, .phpdoc-property-list .nav-item.seperator > span {
+  display: block;
+  font-weight: bold;
+  padding: 4px 10px;
+  text-decoration: none;
+  border: 1px solid #c5d0dc;
+  margin: 0 -1px 0 0;
+  color: darkgray;
+  text-align: center;
+}
+
+.phpdoc-method-list .nav-link, .phpdoc-property-list .nav-link {
+  padding: 4px 10px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: block;
+  color: #616161;
+  border-left: none;
+}
+
+.phpdoc-method-list .nav-link i.fa, .phpdoc-property-list .nav-link i.fa {
+  margin-right: 10px;
+}
+
+.phpdoc-method-list .nav-link:hover:not(.no-hover), .phpdoc-property-list .nav-link:hover:not(.no-hover) {
+  color: #424242;
+  background-color: #b0bec5;
+}
+
+.phpdoc-method-list .nav-link.no-click, .phpdoc-property-list .nav-link.no-click {
+  cursor: default;
+}
+
+.phpdoc-method-list .nav-link.no-click:hover, .phpdoc-property-list .nav-link.no-click:hover {
+  color: #616161;
+  background-color: transparent;
+}
+
+.phpdoc-method-list .nav-link > span.description, .phpdoc-property-list .nav-link > span.description {
+  font-size: 10px;
+}
+
+.phpdoc-method-list .nav-link > span.description p, .phpdoc-property-list .nav-link > span.description p {
+  margin-bottom: 0;
+}
+
+.phpdoc-method-list .nav-link .phpdoc-method-signature, .phpdoc-property-list .nav-link .phpdoc-method-signature {
+  display: inline;
+  font-family: "Open Sans", Arial, sans-serif;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.phpdoc-method-list .nav-link-modifier, .phpdoc-property-list .nav-link-modifier {
+  float: right;
+  background-color: #cfd8dc;
+  position: relative;
+  top: -26px;
+}
+
+.phpdoc-method-list.compact .nav-item, .phpdoc-property-list.compact .nav-item {
+  background-color: transparent;
+  border: none;
+}
+
+.phpdoc-method-list.compact .nav-link, .phpdoc-property-list.compact .nav-link {
+  padding: 1px 10px;
+}
+
+.phpdoc-method-list.compact .nav-link:hover, .phpdoc-property-list.compact .nav-link:hover {
+  background-color: transparent;
+  color: #616161;
+}
+
+.phpdoc-method-list.compact .nav-link-modifier, .phpdoc-property-list.compact .nav-link-modifier {
+  background-color: transparent;
+  float: left;
+  top: 0;
+}
+
+.phpdoc-method-signature {
+  padding: 12px 15px;
+  font-family: "Source Code Pro", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  margin: 0;
+}
+
+.phpdoc-method-signature small.visibility {
+  margin-right: 15px;
+}
+
+.phpdoc-method .method-details {
+  padding: 10px 20px 10px 20px;
+}
+
+.phpdoc-method .method-block-title {
+  font-size: 0.7rem;
+  border-bottom: 1px solid #e2e2e2;
+  padding-left: 5px;
+  margin: 10px -20px 10px 0px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+  position: relative;
+  left: -20px;
+}
+
+.phpdoc-method .method-block-title:first-child {
+  margin-top: 0;
+}
+
+.phpdoc-method .method-block {
+  padding-left: 5px;
+}
+
+.phpdoc-method .method-arguments {
+  list-style-type: none;
+  margin-left: 0;
+}
+
+.phpdoc-method .method-arguments:first-child {
+  counter-reset: customlistcounter;
+}
+
+.phpdoc-method .method-arguments > li {
+  counter-increment: customlistcounter;
+}
+
+.phpdoc-method .method-arguments > li:before {
+  content: counter(customlistcounter) " ";
+  position: relative;
+  left: -15px;
+  font-size: 0.7rem;
+  color: lightgrey;
+  top: 9px;
+  float: left;
+}
+
+.phpdoc-method .method-argument {
+  border-top: 1px dashed #f1f1f1;
+  border-bottom: 1px dashed #f1f1f1;
+  border-left: 2px solid #e6e4e4;
+  padding: 3px 0 3px 5px;
+}
+
+.phpdoc-method .method-argument + .method-block {
+  border-left: 2px solid #e6e4e4;
+  margin-bottom: 10px;
+}
+
+.phpdoc-method .method-argument + .method-block p {
+  margin: 0;
+  font-size: 0.9rem;
+  padding-top: 2px;
+}
+
+.phpdoc-method .phpdoc-method-signature + .method-details {
+  border-top: 1px solid #c5d0dc;
+}
+
+.phpdoc-app .zone {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  clear: both;
+  display: flex;
+}
+
+.phpdoc-app .zone .handle {
+  width: 6px;
+  background: #eceff1;
+}
+
+.phpdoc-app .zone .handle:hover {
+  background: #b0bec5;
+}
+
+.phpdoc-app .zone .item {
+  width: calc((100% - 30px) / 2);
+}
+
+.phpdoc-class-link {
+  font-size: 11px;
+  line-height: 11px;
+  vertical-align: middle;
+  background: rgba(238, 238, 238, 0.35);
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
+  background: #56565f;
+  color: #ed6626;
+  padding: 1px 5px;
+  border-radius: 3px;
+  tab-size: 4;
+  margin: 0 3px;
+  font-family: "Source Code Pro", monospace;
+  text-decoration: none !important;
+}

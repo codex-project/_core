@@ -350,7 +350,7 @@ var Config = (function () {
         delete obj[key];
     };
     Config.prototype.has = function (prop) {
-        return objectExists(this.data, Config.getPropString(prop));
+        return prop ? objectExists(this.data, Config.getPropString(prop)) : true;
     };
     Config.prototype.raw = function (prop) {
         if (prop) {
@@ -371,7 +371,7 @@ var Config = (function () {
     Config.prototype.merge = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i - 0] = arguments[_i];
+            args[_i] = arguments[_i];
         }
         if (args.length === 1) {
             this.data = lodash.merge(this.data, args[0]);
@@ -457,14 +457,15 @@ var Config = (function () {
     Config.prototype.toString = function () {
         return this.raw();
     };
-    Config.propStringTmplRe = /^<%=\s*([a-z0-9_$]+(?:\.[a-z0-9_$]+)*)\s*%>$/i;
     return Config;
 }());
+Config.propStringTmplRe = /^<%=\s*([a-z0-9_$]+(?:\.[a-z0-9_$]+)*)\s*%>$/i;
 var PersistentConfig = (function (_super) {
     __extends(PersistentConfig, _super);
     function PersistentConfig(obj, persistenceFilePath) {
-        _super.call(this, obj);
-        this.load();
+        var _this = _super.call(this, obj) || this;
+        _this.load();
+        return _this;
     }
     PersistentConfig.prototype.save = function () {
     };
@@ -478,7 +479,7 @@ var PersistentConfig = (function (_super) {
     PersistentConfig.prototype.merge = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i - 0] = arguments[_i];
+            args[_i] = arguments[_i];
         }
         _super.prototype.merge.call(this, args);
         this.save();
@@ -498,7 +499,7 @@ var getCallerFile = function getCallerFile(_position) {
     Error['prepareStackTrace'] = function (err, stack) {
         return stack;
     };
-    var stack = (new Error()).stack;
+    var stack = new Error().stack;
     Error['prepareStackTrace'] = oldPrepareStackTrace;
     var position = _position ? _position : 2;
     return stack[position] ? stack[position].getFileName() : undefined;
@@ -506,7 +507,7 @@ var getCallerFile = function getCallerFile(_position) {
 function inspect() {
     var args = [];
     for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i - 0] = arguments[_i];
+        args[_i] = arguments[_i];
     }
     args.forEach(function (arg) { return console.dir(arg, { colors: true, depth: 5, showHidden: true }); });
 }
@@ -941,23 +942,17 @@ var __extends$1 = (undefined && undefined.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-
-(function (StorageProvider) {
-    StorageProvider[StorageProvider["LOCAL"] = 0] = "LOCAL";
-    StorageProvider[StorageProvider["SESSION"] = 1] = "SESSION";
-    StorageProvider[StorageProvider["COOKIE"] = 2] = "COOKIE";
-})(exports.StorageProvider || (exports.StorageProvider = {}));
 var Storage = (function () {
     function Storage() {
     }
     Storage.hasBag = function (name) {
         return typeof Storage.bags[name] !== 'undefined';
     };
-    Storage.createBag = function (name, provider) {
+    Storage.createBag = function (name, storageType) {
         if (Storage.hasBag(name)) {
             throw new Error('StorageBag ' + name + ' already exists');
         }
-        return Storage.bags[name] = new StorageBag(Storage.make(name, provider));
+        return Storage.bags[name] = new StorageBag(Storage.make(name, storageType));
     };
     Storage.getBag = function (name) {
         if (!Storage.hasBag(name)) {
@@ -965,38 +960,49 @@ var Storage = (function () {
         }
         return Storage.bags[name];
     };
-    Storage.make = function (name, provider) {
-        if (provider === exports.StorageProvider.COOKIE)
+    Storage.getOrCreateBag = function (name, storageType) {
+        if (!Storage.hasBag(name)) {
+            return Storage.createBag(name, storageType);
+        }
+        return Storage.getBag(name);
+    };
+    Storage.make = function (name, storageType) {
+        if (storageType === 'cookie')
             return new CookieStorage(name);
-        if (provider === exports.StorageProvider.LOCAL)
+        if (storageType === 'local')
             return new LocalStorage(name);
-        if (provider === exports.StorageProvider.SESSION)
+        if (storageType === 'session')
             return new SessionStorage(name);
         throw new Error('Storage provider could not be maked. ... ?');
     };
     Storage.isSupportedProvider = function (provider) {
         if (provider instanceof LocalStorage) {
-            return defined(window.localStorage);
+            return window.localStorage !== undefined;
         }
         if (provider instanceof SessionStorage) {
-            return defined(window.localStorage);
+            return window.localStorage !== undefined;
         }
         if (provider instanceof CookieStorage) {
-            return defined(window.document.cookie);
+            return window.document.cookie !== undefined;
         }
     };
-    Storage.bags = {};
     return Storage;
 }());
+Storage.bags = {};
 var StorageBag = (function () {
-    function StorageBag(provider) {
+    function StorageBag(provider, options) {
+        if (options === void 0) { options = {}; }
+        this.options = {
+            json: true
+        };
         this.provider = provider;
+        lodash.merge(this.options, options);
     }
     StorageBag.prototype.on = function (callback) {
         this.provider.onStoreEvent(callback);
     };
     StorageBag.prototype.set = function (key, val, options) {
-        var options = lodash.merge({ json: true, expires: false }, options);
+        options = lodash.merge({ json: true, expires: false }, options);
         if (options.json) {
             val = JSON.stringify(val);
         }
@@ -1006,10 +1012,11 @@ var StorageBag = (function () {
         }
         this.provider.setItem(key, val);
     };
-    StorageBag.prototype.get = function (key, options) {
-        var options = lodash.merge({ json: true, def: null }, options);
+    StorageBag.prototype.get = function (key, defaultReturn, options) {
+        if (defaultReturn === void 0) { defaultReturn = null; }
+        options = lodash.merge({ json: this.options.json, default: defaultReturn }, options);
         if (!key) {
-            return options.def;
+            return options.default;
         }
         if (lodash.isString(this.provider.getItem(key))) {
             if (lodash.isString(this.provider.getItem(key + ':expire'))) {
@@ -1022,8 +1029,8 @@ var StorageBag = (function () {
             }
         }
         var val = this.provider.getItem(key);
-        if (!val || defined(val) && val == null) {
-            return options.def;
+        if (!val || val !== undefined && val == null) {
+            return options.default;
         }
         if (options.json) {
             return JSON.parse(val);
@@ -1053,7 +1060,7 @@ var BaseStorageProvider = (function () {
 var LocalStorage = (function (_super) {
     __extends$1(LocalStorage, _super);
     function LocalStorage() {
-        _super.apply(this, arguments);
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     LocalStorage.prototype.hasItem = function (key) {
         return window.localStorage.getItem(key) !== null;
@@ -1106,10 +1113,10 @@ var LocalStorage = (function (_super) {
 var SessionStorage = (function (_super) {
     __extends$1(SessionStorage, _super);
     function SessionStorage() {
-        _super.apply(this, arguments);
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     SessionStorage.prototype.hasItem = function (key) {
-        return window.localStorage.getItem(key) !== null;
+        return window.sessionStorage.getItem(key) !== null;
     };
     Object.defineProperty(SessionStorage.prototype, "length", {
         get: function () {
@@ -1159,8 +1166,9 @@ var SessionStorage = (function (_super) {
 var CookieStorage = (function (_super) {
     __extends$1(CookieStorage, _super);
     function CookieStorage() {
-        _super.apply(this, arguments);
-        this.cookieRegistry = [];
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.cookieRegistry = [];
+        return _this;
     }
     Object.defineProperty(CookieStorage.prototype, "length", {
         get: function () {
