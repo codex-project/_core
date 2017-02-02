@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author Robin Radic
+ * @author    Robin Radic
  * @copyright Copyright 2017 (c) Codex Project
- * @license http://codex-project.ninja/license The MIT License
+ * @license   http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Console;
 
@@ -37,9 +37,23 @@ class ListCommand extends Command
     protected function listProjects()
     {
         $this->line("<info>Projects</info>");
+        $table = collect();
         foreach ( codex()->projects->all() as $project ) {
-            # $content = $project->documents->get('asdf')->render();
-            $this->line(" - {$project->getName()}");
+            if ( $this->more ) {
+                $table[] = [
+                    'Name'         => $project->getName(),
+                    'Display name' => $project->getDisplayName(),
+                    'Disk driver'  => $project->getDiskConfig()->get('driver'),
+                    'Processors'   => implode(', ', $project->config('processors.enabled', [])),
+                ];
+            } else {
+                $this->line(" - {$project->getName()}");
+            }
+        }
+        if ( $this->more ) {
+            $this->table(array_keys($table[ 0 ]), $table->map(function ($data) {
+                return array_values($data);
+            })->toArray());
         }
     }
 
@@ -68,13 +82,24 @@ class ListCommand extends Command
     protected function listPlugins()
     {
         $this->line("<info>Plugins</info>");
+        $table = collect();
         foreach ( codex()->addons->plugins->all() as $plugin ) {
             if ( $this->more ) {
-
-                $this->line(" - {$plugin['name']}");
+                $table[] = [
+                    'Name'        => $plugin->name,
+                    'Description' => $plugin->description,
+                    'Requires'    => $plugin->requires ? implode(', ', $plugin->requires) : '-',
+                    'Replaces'    => $plugin->replace ? $plugin->replace : '-',
+                    'Enabled'     => codex()->addons->plugins->canRunPlugin($plugin) ? '<info>Yes</info>' : 'No',
+                ];
             } else {
                 $this->line(" - {$plugin->name}");
             }
+        }
+        if ( $this->more ) {
+            $this->table(array_keys($table[ 0 ]), $table->map(function ($data) {
+                return array_values($data);
+            })->toArray());
         }
     }
 }

@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author Robin Radic
+ * @author    Robin Radic
  * @copyright Copyright 2017 (c) Codex Project
- * @license http://codex-project.ninja/license The MIT License
+ * @license   http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Addons;
 
@@ -34,11 +34,10 @@ class Manifest extends \Illuminate\Support\Collection
      * @return \Codex\Addons\Manifest
      *
      */
-    public static function make($items = [ ])
+    public static function make($items = [])
     {
         return parent::make($items);
     }
-
 
 
     public function value()
@@ -49,13 +48,16 @@ class Manifest extends \Illuminate\Support\Collection
     /** @return static */
     public function clear()
     {
-        $this->items = [ ];
+        $this->items = [];
         return $this;
     }
 
     /** @return static */
     public function load()
     {
+        if ( false === file_exists($this->getManifestPath()) ) {
+            return $this;
+        }
         $manifest    = file_get_contents($this->getManifestPath());
         $this->items = json_decode($manifest, true);
         return $this;
@@ -102,7 +104,7 @@ class Manifest extends \Illuminate\Support\Collection
      */
     public function set($key, $value = null)
     {
-        if ($value === null) {
+        if ( $value === null ) {
             $this->customMerge($key);
         } else {
             data_set($this->items, $key, $value);
@@ -115,7 +117,7 @@ class Manifest extends \Illuminate\Support\Collection
      *
      * @return static
      */
-    public function forget($keys = [ ])
+    public function forget($keys = [])
     {
         Arr::forget($this->items, $keys);
         return $this;
@@ -124,7 +126,7 @@ class Manifest extends \Illuminate\Support\Collection
     public function whereHas($key, $value)
     {
         return $this->filter(function ($item) use ($key, $value) {
-            return in_array($value, data_get($item, $key, [ ]), true);
+            return in_array($value, data_get($item, $key, []), true);
         });
     }
 
@@ -137,8 +139,8 @@ class Manifest extends \Illuminate\Support\Collection
      */
     public function customMerge(array $items, array $key = null, $method = 'array_replace_recursive')
     {
-        if ($key) {
-            $this->set($key, call_user_func($method, $this->get($key, [ ]), $items));
+        if ( $key ) {
+            $this->set($key, call_user_func($method, $this->get($key, []), $items));
         } else {
             $this->items = call_user_func($method, $this->items, $items);
         }

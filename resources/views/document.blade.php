@@ -27,7 +27,7 @@
 
             <div class="c-page" ref="page" :style="{ 'min-height': minHeights.page + 'px' }">
                 @section('page')
-                    <c-sidebar ref="sidebar" :min-height="minHeights.inner" active="{{ isset($document) ? $document->url() : ''}}">
+                    <c-sidebar ref="sidebar" class="sidebar-compact" :min-height="minHeights.inner" active="{{ isset($document) ? $document->url() : ''}}">
                         @section('sidebar')
                             @if(isset($ref) && $ref->hasSidebarMenu())
                                 {!! $ref->getSidebarMenu()->render($project, $ref) !!}

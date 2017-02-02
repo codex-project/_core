@@ -9,56 +9,50 @@ project:
 # defines the sidebar menu
 #sidebar:
 menu:
-  - name: Prologue
+  - name: Codex
     icon: fa fa-eye
-    children:
-      - name: Release Notes
-        document: prologue/release-notes
+    document: index
 
-      - name: Upgrade Guide
-        document: prologue/changelog-upgrade-guide
-
-      - name: Contribution Guide
-        document: prologue/contribution-guide
-
-      - name: API Documentation
-        document: phpdoc
-
-  - name: Getting Started
+  - name: Getting started
     icon: fa fa-rocket
     children:
-
       - name: Installation
         document: getting-started/installation
-
       - name: Configuration
         document: getting-started/configuration
+      - name: Creating a project
+        document: getting-started/creating-a-project
 
-      - name: Directory Structure
-        document: getting-started/directory-structure
-
-  - name: Core Concepts
-    icon: fa fa-eye
+  - name: Configuration
+    icon: fa fa-cog
     children:
-      - name: Projects
-        document: core-concepts/projects
-      - name: Refs
-        document: core-concepts/projects
-      - name: Documents
-        document: core-concepts/projects
-      - name: Menus
-        document: core-concepts/projects
+      - name: Global
+        document: configuration/global
 
+      - name: Project
+        document: configuration/project
 
-  - name: Addons
-    icon: fa fa-eye
-    children:
-      - name: PHPDoc
-        document: addons/phpdoc
-      - name: Git
-        document: addons/git
-      - name: Auth
-        document: addons/auth
+      - name: Document
+        document: configuration/document
+
+      - name: Processors
+        children:
+          - name: Attributes
+            document: configuration/processors/attributes
+          - name: Parser
+            document: configuration/processors/parser
+          - name: Macros
+            document: configuration/processors/macros
+          - name: Header
+            document: configuration/processors/header
+          - name: ToC
+            document: configuration/processors/toc
+          - name: Links
+            document: configuration/processors/links
+          - name: Buttons
+            document: configuration/processors/buttons
+          - name: Prism
+            document: configuration/processors/toc
 
   - name: Develop
     icon: fa fa-code
@@ -75,6 +69,12 @@ menu:
             document: develop/processors
           - name: Hooks
             document: develop/hooks
+
+      - name: Examples
+        document: develop/api
+
+      - name: API Documentation
+        document: phpdoc
 
       - name: IntelliJ IDEA &amp; PHPStorm
         document: develop/intellij-idea-phpstorm
