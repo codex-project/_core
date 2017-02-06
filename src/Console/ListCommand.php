@@ -4,19 +4,17 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
+ * @author Robin Radic
  * @copyright Copyright 2017 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Console;
 
 use Codex\Codex;
-use Illuminate\Console\Command;
 use Illuminate\Support\Traits\Macroable;
 
 class ListCommand extends Command
 {
-    use Macroable;
 
     protected $signature = 'codex:list {what=projects} {--more}';
 

@@ -96,7 +96,7 @@ class PrismJsProcessor
 
     protected function applyEnabledPlugins()
     {
-        // apply the changes to the dom required by each plugin
+        // apply the changes to the dom for each enabled plugin
         $dom = $this->document->getDom();
         $dom->find('//pre/code')->each(function (Element $code) {
             $pre       = $code->parentNode;
@@ -136,6 +136,9 @@ class PrismJsProcessor
 
             $pre->setAttribute('class', $preClass);
             $code->setAttribute('class', $codeClass);
+
+            // trim the code text. primarily to prevent bash command line from displaying extra last line line
+            $code->textContent = trim($code->textContent);
         });
         $this->document->setDom($dom);
     }

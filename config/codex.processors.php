@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
+ * @author Robin Radic
  * @copyright Copyright 2017 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @license http://codex-project.ninja/license The MIT License
  */
 
 return [
@@ -51,11 +51,7 @@ return [
     'links'      => [
         'needle' => 'codex',
         'links'  => [
-            // #codex:project:blade-extensions
-            // #codex:project:blade-extensions:master
-            // #codex:project:blade-extensions:master:configuration
             'project' => 'Codex\Processors\Links\Codex@project',
-            'phpdoc'  => 'Codex\Addon\Phpdoc\PhpdocLink@handle',
 
         ],
     ],
@@ -63,7 +59,7 @@ return [
         'macros' => [
             'table:responsive'        => 'Codex\Processors\Macros\Table@responsive',
             'layout:row'              => 'Codex\Processors\Macros\Layout@row',
-            'layout:column'              => 'Codex\Processors\Macros\Layout@column',
+            'layout:column'           => 'Codex\Processors\Macros\Layout@column',
             'general:hide'            => 'Codex\Processors\Macros\General@hide',
             'attribute:print'         => 'Codex\Processors\Macros\Attribute@printValue',
             'phpdoc:method:signature' => 'Codex\Addon\Phpdoc\Macros@methodSignature',

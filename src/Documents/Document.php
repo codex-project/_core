@@ -128,9 +128,9 @@ class Document extends Extendable implements Arrayable
             throw CodexException::documentNotFound("{$this} in [{$project}]");
         }
 
-        $this->attributes   = $codex->config('default_document_attributes');
+        $this->attributes   = $codex->config('documents.default_attributes');
         $this->lastModified = $this->getFiles()->lastModified($this->getPath());
-        $this->setCacheMode($this->getCodex()->config('document.cache.mode', self::CACHE_DISABLED));
+        $this->setCacheMode($this->getCodex()->config('documents.cache.mode', self::CACHE_DISABLED));
 
         //$this->content = $this->getFiles()->get($this->getPath());
         $this->attr('view', null) === null && $this->setAttribute('view', $codex->view('document'));
@@ -167,7 +167,7 @@ class Document extends Extendable implements Arrayable
         if ( !$this->shouldCache() ) {
             return 0;
         }
-        $minutes = $this->getCodex()->config('document.cache.minutes', null);
+        $minutes = $this->getCodex()->config('documents.cache.minutes', null);
         if ( $minutes === null ) {
             $lastModified = (int)$this->cache->rememberForever($this->getCacheKey(':last_modified'), function () {
                 return 0;
@@ -225,14 +225,14 @@ class Document extends Extendable implements Arrayable
 
         $this->hookPoint('document:render');
         if ( $this->shouldCache() ) {
-            $minutes      = $this->getCodex()->config('document.cache.minutes', null);
+            $minutes      = $this->getCodex()->config('documents.cache.minutes', null);
             $lastModified = $this->getCachedLastModified();
             if ( $this->lastModified === $lastModified ) {
                 $this->getCodex()->dev->addMessage('[Document::render] from cache');
                 $this->content = $this->cache->get($this->getCacheKey(':content'));
 
                 $forcedProcessors = $this->getProcessors()
-                    ->only($this->getEnabledProcessors())
+                    ->only($this->getEnabledProcessorNames())
                     ->filter(function (ProcessorHydrator $processor) {
                         return $processor->forceCached === true;
                     })
@@ -272,7 +272,7 @@ class Document extends Extendable implements Arrayable
     public function runProcessors($forcedOnly = false)
     {
         $this->runProcessor('attributes');
-        $processors = $this->getProcessors()->getSorted($this->getEnabledProcessors());
+        $processors = $this->getProcessors()->getSorted($this->getEnabledProcessorNames());
         if ( $forcedOnly ) {
             $processors = $this->getProcessors()
                 ->only($processors)
@@ -323,7 +323,7 @@ class Document extends Extendable implements Arrayable
             'cacheMode'         => $this->mode,
             'lastModified'      => $this->lastModified,
             'content'           => $this->render(),
-            'enabledProcessors' => $this->getEnabledProcessors(),
+            'enabledProcessors' => $this->getEnabledProcessorNames(),
             'attributes'        => $this->getAttributes(),
             'breadcrumbs'       => $this->getBreadcrumb(),
         ];
@@ -334,7 +334,7 @@ class Document extends Extendable implements Arrayable
      *
      * @return array
      */
-    public function getEnabledProcessors()
+    public function getEnabledProcessorNames()
     {
         $enabled  = $this->project->config('processors.enabled', []);
         $enabled2 = $this->attr('processors.enabled', []);

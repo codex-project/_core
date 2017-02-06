@@ -40,6 +40,8 @@ menu:
   - name: Core Concepts
     icon: fa fa-eye
     children:
+      - name: Overview
+        document: core-concepts/overview
       - name: Projects
         document: core-concepts/projects
       - name: Refs
@@ -63,40 +65,14 @@ menu:
   - name: Develop
     icon: fa fa-code
     children:
-
       - name: Getting Started
         document: develop/getting-started
-
-      - name: Addons
-        children:
-          - name: Plugins
-            document: develop/plugins
-          - name: Processors
-            document: develop/processors
-          - name: Hooks
-            document: develop/hooks
+      - name: Plugins
+        document: develop/plugins
+      - name: Processors
+        document: develop/processors
+      - name: Hooks
+        document: develop/hooks
 
       - name: IntelliJ IDEA &amp; PHPStorm
         document: develop/intellij-idea-phpstorm
-
-  - name: Test pages
-    icon: fa fa-rocket
-    children:
-      - name: Overview
-        document: test-pages/index
-      - name: Empty
-        document: test-pages/empty
-      - name: Jira Todo
-        document: test-pages/jira-todo
-      - name: Jira Issues
-        document: test-pages/jira-issues
-
-  - name: Contributing
-    icon: fa fa-eye
-    children:
-      - name: Guidelines
-        document: contributing/guidelins
-      - name: PSR 1 Coding style
-        document: contributing/psr-1-coding-style
-      - name: PSR 2 Coding style
-        document: contributing/psr-2-coding-style

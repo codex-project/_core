@@ -8,8 +8,6 @@
  * @copyright Copyright 2017 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
-
-
 namespace Codex\Documents;
 
 use Closure;
@@ -100,7 +98,7 @@ class Documents extends ExtendableCollection implements Contracts\Documents\Docu
         if (array_key_exists($pathName, $this->customDocuments)) {
             return $this->getCodex()->getContainer()->call($this->customDocuments[ $pathName ], [ 'documents' => $this ]);
         }
-        foreach ($this->getCodex()->config('document.extensions', []) as $extension => $binding) {
+        foreach ($this->getCodex()->config('documents.extensions', []) as $extension => $binding) {
             $path = $this->ref->path("{$pathName}.{$extension}");
             if ($this->project->getFiles()->exists($path)) {
                 return compact('path', 'extension', 'binding');

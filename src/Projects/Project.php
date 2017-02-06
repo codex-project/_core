@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Projects;
 
@@ -23,14 +23,12 @@ use vierbergenlars\SemVer\version;
 /**
  * This is the class Project.
  *
- * @property \Codex\Documents\Documents    $documents Get documents
  * @property \Codex\Projects\Refs          $refs
  *
  * @package        Codex\Core
  * @author         Robin Radic
  * @copyright      Copyright (c) 2015, Robin Radic. All rights reserved
  *
- * @property \Codex\Documents\Documents    $documents2
  *
  * @method boolean hasEnabledAuth()
  * @method boolean hasAccess()

@@ -91,6 +91,7 @@ class Action
             $params = [];
             if ( stristr($modifier, '[') ) {
                 preg_match('/(.*?)\[(.*?)\]/', $modifier, $mparams);
+                $name = $mparams[1];
                 $params = explode(',', $mparams[ 2 ]);
                 $this->parseParams($params);
             }
@@ -114,8 +115,8 @@ class Action
                 $param = str_remove_left(str_remove_right($param, '\''), '\'');
             } elseif ( is_numeric($param) ) {
                 $param = (int)$param;
-            } elseif ( is_bool($param) || $param === 'true' || $param === 'false' ) {
-                $param = (bool)$param;
+            } elseif ( $param === 'true' || $param === 'false' ) {
+                $param = $param === 'true';
             }
             return $param;
         }, $params);

@@ -146,7 +146,7 @@ class Addons implements Arrayable
      */
     public function mergeDefaultProjectConfig($config, $method = 'array_replace_recursive')
     {
-        $this->mergeDefaults('default_project_config', $config, $method);
+        $this->mergeDefaults('projects.default_config', $config, $method);
     }
 
     /**
@@ -172,7 +172,7 @@ class Addons implements Arrayable
      */
     public function mergeDefaultDocumentAttributes($config, $method = 'array_replace_recursive')
     {
-        $this->mergeDefaults('default_document_attributes', $config, $method);
+        $this->mergeDefaults('documents.default_attributes', $config, $method);
     }
 
     /**

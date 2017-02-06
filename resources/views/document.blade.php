@@ -8,7 +8,17 @@
     @endpush
 @endif
 
-
+@section('scripts')
+    @parent
+    <script>
+        Vue.use(CodexPlugin)
+        Vue.use(CodexPhpdocPlugin)
+        var app = new codex.App({
+            el    : '#app',
+            mixins: [Vue.codex.phpdoc.mixins.phpdocDocument]
+        })
+    </script>
+@stop
 
 @section('body')
     <div id="page-loader">

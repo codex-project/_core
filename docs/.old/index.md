@@ -17,7 +17,6 @@ buttons:
           target: _blank
 -->
 
-
 # Codex Documentation
 
 <!--*codex:general:hide*-->

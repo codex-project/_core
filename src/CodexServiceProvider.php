@@ -105,7 +105,7 @@ class CodexServiceProvider extends ServiceProvider
     {
         $app = parent::register();
 
-        $app->register(\Codex\Dev\DevServiceProvider::class);
+        $this->registerDev();
 
         $this->registerLogger();
 
@@ -136,7 +136,7 @@ class CodexServiceProvider extends ServiceProvider
             ->addStylesheet('codex', $assetPath . '/styles/codex.css')
             ->addStylesheet('codex.theme', $assetPath . '/styles/themes/codex-default.css', [ 'codex' ]);
 
-        $ext = config('app.debug') ? '.js' : '.min.js';
+        $ext = config('app.debug', false) ? '.js' : '.min.js';
         $theme
             ->addJavascript('jquery', $assetPath . '/vendor/jquery/jquery' . $ext)
             ->addJavascript('lodash', $assetPath . '/vendor/lodash/lodash' . $ext)
@@ -148,23 +148,23 @@ class CodexServiceProvider extends ServiceProvider
             ->addJavascript('codex', $assetPath . '/js/codex.js', [ 'vendor' ]);
 
         $this->codexHook('controller:document', function ($controller) use ($assetPath) {
-            $this->codex()->theme->addJavascript('codex.page.document', $assetPath . '/js/codex.page.document.js', [ 'codex' ])
-                ->addScript('init', <<<EOT
-var app = new codex.App({
-    el: '#app'
-})
-EOT
-                );
+            $this->codex()->theme->addJavascript('codex.page.document', $assetPath . '/js/codex.page.document.js', [ 'codex' ]);
+//                ->addScript('init', <<<EOT
+//var app = new codex.App({
+//    el: '#app'
+//})
+//EOT
+//                );
         });
 
         $this->codexHook('controller:error', function ($controller, $what, \Exception $e) use ($assetPath) {
-            $this->codex()->theme->addJavascript('codex.page.document', $assetPath . '/js/codex.page.document.js', [ 'codex' ])
-                ->addScript('init', <<<EOT
-var app = new codex.App({
-    el: '#app'
-})
-EOT
-                );
+            $this->codex()->theme->addJavascript('codex.page.document', $assetPath . '/js/codex.page.document.js', [ 'codex' ]);
+//                ->addScript('init', <<<EOT
+//var app = new codex.App({
+//    el: '#app'
+//})
+//EOT
+//                );
         });
     }
 
@@ -215,8 +215,10 @@ EOT
         ));
         $log->setEnabled($this->config[ 'codex.log' ]);
         $log->useFiles($this->config[ 'codex.paths.log' ]);
-        $log->useChromePHP();
-        $log->useFirePHP();
+        if ( true === config('app.debug', false) ) {
+            $log->useChromePHP();
+            $log->useFirePHP();
+        }
         return $log;
     }
 
@@ -259,21 +261,23 @@ EOT
 
     protected function registerJavascriptData()
     {
-
-//        _CODEX_PHP_DATA = {
-//        apiUrl     : 'http://codex-project.dev/api/v1',
-//          debug      : true,
-//          project    : 'codex',
-//          ref        : 'master',
-//          displayName: 'Codex'
-//      }
         $this->codexHook('controller:document', function (CodexDocumentController $controller, Documents\Document $document) {
             $codex   = $document->getCodex();
             $theme   = $codex->theme;
             $project = $document->getProject();
 
-            $theme->set('codex', $c = $codex->config()->only('display_name', 'macros', 'links', 'document', 'default_project')->toArray())
+            $codex->config()->only('display_name', 'macros', 'links', 'document', 'default_project')->each(function ($value, $key) use ($theme) {
+                $theme->set($key, $value);
+            });
+            $theme->set('codex', $c = $codex->config()->only('display_name', 'default_project')->toArray())
                 ->set('apiUrl', url('api/v1'))
+//                ->set('api', [
+//                    'versions' => ['v1'],
+//                    'url' => url('api'),
+//                    'v1' => [
+//                        'url' => url('api/v1')
+//                    ]
+//                ])
                 ->set('debug', config('app.debug'))
                 ->set('project', $project->getName())
                 ->set('ref', $document->getRef()->getName())
@@ -287,5 +291,10 @@ EOT
         $this->addons->setManifestPath($this->app[ 'config' ][ 'codex.paths.manifest' ]);
         $this->addons->resolveAndRegisterDirectory(__DIR__ . '/Processors');
         $this->addons->resolveAndRegisterAddons();
+    }
+
+    protected function registerDev()
+    {
+        $this->app->register(\Codex\Dev\DevServiceProvider::class);
     }
 }

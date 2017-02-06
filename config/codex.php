@@ -52,7 +52,7 @@ return [
     // Enables the codex development helpers. Note that this also requires app.debug to be true
     'dev' => env('CODEX_DEV_ENABLED', true),
 
-    'document'   => [
+    'documents'   => [
         'cache'      => [
             // true     = enabled
             // false    = disabled
@@ -72,32 +72,33 @@ return [
             'html'     => 'codex.document',
             'rst'      => 'codex.document',
         ],
+        'default_attributes' => [
+            'author'     => '',
+            'title'      => '',
+            'subtitle'   => '',
+            'view'       => null,
+            'cache'      => true,
+            'processors' => [
+                'enabled'  => [],
+                'disabled' => [],
+            ],
+        ]
     ],
 
+    'projects' => [
 
-
-    'default_project_config' => [
-        'description' => '',
-        'default'     => \Codex\Projects\Refs::DEFAULT_AUTO,
-        'custom'      => null,
-        'first'       => '',
-        'index'       => 'index',
-        'extensions'  => [ 'md', 'markdown', 'html' ],
-        'processors'  => [
-            'enabled' => [],
+        'default_config' => [
+            'description' => '',
+            'default'     => \Codex\Projects\Refs::DEFAULT_AUTO,
+            'custom'      => null,
+            'first'       => '',
+            'index'       => 'index',
+            'extensions'  => [ 'md', 'markdown', 'html' ],
+            'processors'  => [
+                'enabled' => [],
+            ],
         ],
     ],
 
-    'default_document_attributes' => [
-        'author'     => 'John Doe',
-        'title'      => '',
-        'subtitle'   => '',
-        'view'       => null,
-        'cache'      => true,
-        'processors' => [
-            'enabled'  => [],
-            'disabled' => [],
-        ],
-    ],
 
 ];

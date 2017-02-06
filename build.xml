@@ -44,6 +44,8 @@
         <exec command="npm install" dir="${project.basedir}" logoutput="true" passthru="true"/>
     </target>
     <target name="theme-copy" description="copy the theme distribution files to assets" >
+        <delete dir="${project.basedir}/resources/assets"/>
+        <delete file="${project.basedir}/resources/assets"/>
         <copy todir="${project.basedir}/resources/assets">
             <fileset dir="${project.basedir}/node_modules/codex-theme/dist/assets">
                 <include name="**"/>

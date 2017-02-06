@@ -80,7 +80,7 @@ class Projects extends ExtendableCollection implements \Codex\Contracts\Projects
             /** @var \SplFileInfo $projectDir */
             $name   = Path::getDirectoryName($projectDir->getPath());
             $config = $this->getContainer()->make('fs')->getRequire($projectDir->getRealPath());
-            $config = array_replace_recursive($this->getCodex()->config('default_project_config'), $config);
+            $config = array_replace_recursive($this->getCodex()->config('projects.default_config'), $config);
 
             /** @var \Codex\Projects\Project $project */
             $project = $this->getContainer()->make('codex.project', [
