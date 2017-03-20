@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author Robin Radic
+ * @author    Robin Radic
  * @copyright Copyright 2017 (c) Codex Project
- * @license http://codex-project.ninja/license The MIT License
+ * @license   http://codex-project.ninja/license The MIT License
  */
 namespace Codex;
 
@@ -23,22 +23,13 @@ use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 /**
  * This is the main Codex class. Exposes several extensions and helper functions.
  *
  * @package        Codex\Core
  * @author         Robin Radic
- *
- * @property-read \Codex\Addons\Addons        $addons       The addons instance
- * @property-read \Codex\Projects\Projects    $projects     The projects instance
- * @property-read \Codex\Menus\Menus          $menus        The menus instance
- * @property-read \Codex\Addon\Auth\CodexAuth $auth         The auth addon instance
- * @property-read \Codex\Addon\Git\CodexGit   $git          The theme instance
- * @property-read \Codex\Addon\Phpdoc\Phpdoc  $phpdoc       The phpdoc instance
- * @property-read \Codex\Theme                $theme        The theme instance
- * @property-read \Codex\Dev\Dev              $dev          The Dev instance
- *
  *
  *
  * @copyright      Copyright (c) 2015, Codex Project. All rights reserved
@@ -71,7 +62,6 @@ class Codex extends Extendable implements Arrayable
     const SHOW_CUSTOM = 3;
 
 
-
     /**
      * The codex log writer instance
      *
@@ -86,8 +76,11 @@ class Codex extends Extendable implements Arrayable
      */
     protected $cache;
 
+    protected $projects;
+
     /**
      * A collection of resolved extensions
+     *
      * @var Collection
      */
     protected static $resolved;
@@ -103,13 +96,13 @@ class Codex extends Extendable implements Arrayable
      */
     public static function registerExtension($class, $name, $extension)
     {
-        if ( null === static::$resolved ) {
+        if (null === static::$resolved) {
             static::$resolved = new Collection();
         }
         \Illuminate\Container\Container::getInstance()->resolving($class, function ($instance) use ($name, $extension) {
             $className  = get_class($instance);
             $isExtended = static::$resolved->where('className', $className)->where('name', $name)->count() > 0;
-            if ( $isExtended ) {
+            if ($isExtended) {
                 return;
             }
             static::$resolved->push(compact('className', 'name'));
@@ -148,6 +141,42 @@ class Codex extends Extendable implements Arrayable
         $this->hookPoint('constructed', [ $this ]);
     }
 
+    public function getProjects()
+    {
+        if (null === $this->projects) {
+            $this->projects = [];
+            $finder         = new Finder();
+            $projects       = $finder
+                ->in($this->getDocsPath())
+                ->files()
+                ->name('config.php')
+                ->depth('<= 1')
+                ->followLinks();
+            foreach ($projects as $projectDir) {
+                /** @var \SplFileInfo $projectDir */
+                $name                    = path_get_directory_name($projectDir->getPath());
+                $config                  = $this->container->make('fs')->getRequire($projectDir->getRealPath());
+                $config                  = array_replace_recursive(config('codex.projects.default_config'), $config);
+                $this->projects[ $name ] = $config;
+            }
+        }
+        return $this->projects;
+    }
+
+    public function getProject($name)
+    {
+        $this->getProjects();
+        if (!array_key_exists($name, $this->projects)) {
+            throw CodexException::projectNotFound($name);
+        }
+        if (!$this->projects[ $name ] instanceof Project) {
+            $this->projects[ $name ] = $this->container->make('codex.project', [
+                'name'   => $name,
+                'config' => $this->projects[ $name ],
+            ]);
+        }
+        return $this->projects[ $name ];
+    }
 
     /**
      * Shorthand method for getting projects, refs or documents
@@ -211,47 +240,47 @@ class Codex extends Extendable implements Arrayable
         $documentPathName = isset($segments[ 1 ]) ? $segments[ 1 ] : false;
 
         # Projects / Project
-        if ( $projectName === '*' ) {
+        if ($projectName === '*') {
             // get('*')
             return $this->projects;
-        } elseif ( $projectName === '!' ) {
+        } elseif ($projectName === '!') {
             $projectName = config('codex.default_project');
         }
 
-        if ( false === $this->projects->has($projectName) ) {
+        if (false === $this->projects->has($projectName)) {
             throw ProjectNotFoundException::project($projectName);
         }
         $project = $this->projects->get($projectName);
 
         # Refs / Ref
-        if ( $projectRef === false ) {
-            if ( $documentPathName === false ) {
+        if ($projectRef === false) {
+            if ($documentPathName === false) {
                 // get('codex')
                 return $project;
             }
             $projectRef = '!'; // make it so that the default ref will be chosen when using get('codex::path/to/document')
         }
-        if ( $projectRef === '*' ) {
+        if ($projectRef === '*') {
             return $project->refs;
         }
-        if ( $projectRef === '!' ) {
+        if ($projectRef === '!') {
             $ref = $project->refs->getDefault();
         } else {
-            if ( false === $project->refs->has($projectRef) ) {
+            if (false === $project->refs->has($projectRef)) {
                 throw RefNotFoundException::ref($projectRef);
             }
             $ref = $project->refs->get($projectRef);
         }
-        if ( $documentPathName === false ) {
+        if ($documentPathName === false) {
             return $ref;
         }
 
         # Documents / Document
-        if ( $documentPathName === '*' ) {
+        if ($documentPathName === '*') {
             return $ref->documents;
-        } elseif ( $documentPathName === '!' ) {
+        } elseif ($documentPathName === '!') {
             $documentPathName = $project->config('index');
-        } elseif ( false === $ref->documents->has($documentPathName) ) {
+        } elseif (false === $ref->documents->has($documentPathName)) {
             throw DocumentNotFoundException::document($documentPathName);
         }
 
@@ -261,9 +290,9 @@ class Codex extends Extendable implements Arrayable
     /**
      * Get or set a Codex view
      *
-     * @param string $name The simple name
+     * @param string        $name The simple name
      *
-     * @param null | string   $view If given, this view will be set
+     * @param null | string $view If given, this view will be set
      *
      * @return string The namespaced view name
      */
@@ -309,7 +338,7 @@ class Codex extends Extendable implements Arrayable
     public function getDocsPath()
     {
         $docsPath = config('codex.paths.docs');
-        if ( path_is_relative($docsPath) ) {
+        if (path_is_relative($docsPath)) {
             $docsPath = base_path($docsPath);
         }
         return $docsPath;
@@ -330,13 +359,12 @@ class Codex extends Extendable implements Arrayable
         $cache = app('cache')->driver('file');
         $clm   = (int)$cache->get($key . '.lastModified', 0);
         $plm   = (int)$lastModified;
-        if ( $clm !== $plm ) {
+        if ($clm !== $plm) {
             $cache->forever($key, $create());
             $cache->forever($key . '.lastModified', $plm);
         }
         return $cache->get($key);
     }
-
 
     /**
      * Sets a config value
@@ -362,12 +390,11 @@ class Codex extends Extendable implements Arrayable
      */
     public function config($key = null, $default = null)
     {
-        if ( $key === null ) {
+        if ($key === null) {
             return new Collection($this->app[ 'config' ][ 'codex' ]);
         }
         return $this->app[ 'config' ]->get("codex.{$key}", $default);
     }
-
 
     /**
      * Get cache instance
@@ -395,6 +422,7 @@ class Codex extends Extendable implements Arrayable
 
     /**
      * getLog method
+     *
      * @return \Codex\Contracts\Log\Log
      */
     public function getLog()
@@ -418,12 +446,13 @@ class Codex extends Extendable implements Arrayable
 
     /**
      * toArray method
+     *
      * @return array
      */
     public function toArray()
     {
         $projects = $this->projects->getItems();
-        if ( $this->projects->isEmpty() ) {
+        if ($this->projects->isEmpty()) {
         }
         return [
             'defaultProject' => $this->config('default_project', $projects->first()->getName()),
@@ -443,39 +472,10 @@ class Codex extends Extendable implements Arrayable
      */
     public function __get($name)
     {
-        if ( in_array($name, [ 'addons', 'dev' ], true) ) {
+        if (in_array($name, [ 'addons', 'dev' ], true)) {
             return $this->container->make('codex.' . $name);
         }
         return parent::__get($name);
-    }
-
-
-    /**
-     * Push a view to a stack
-     *
-     * @deprecated
-     *
-     * @param string     $stackName The name of the stack
-     * @param string     $viewName  The namespaced name of the view
-     * @param array|null $data      (optional) The view data array
-     * @param string     $appendTo  (optional) The view to attach this to
-     *
-     * @return Codex
-     */
-    public function pushToStack($stackName, $viewName, $data = null, $appendTo = 'codex::layouts.default')
-    {
-        $this->theme->pushViewToStack($stackName, $viewName, $data, $appendTo);
-        return $this;
-    }
-
-    /**
-     * getVersion method
-     * @deprecated
-     * @return string
-     */
-    public function getVersion()
-    {
-        return '2.0.0-beta';
     }
 
     /**
@@ -502,6 +502,7 @@ class Codex extends Extendable implements Arrayable
 
     /**
      * isDev method
+     *
      * @deprecated
      * @return bool
      */
@@ -519,7 +520,7 @@ class Codex extends Extendable implements Arrayable
      *
      * @return $this
      */
-    public function hook($name, $hook, $replace=false)
+    public function hook($name, $hook, $replace = false)
     {
         $this->addons->hooks->hook($name, $hook, $replace);
         return $this;
