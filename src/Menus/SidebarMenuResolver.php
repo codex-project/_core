@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace Codex\Menus;
 
@@ -54,11 +54,13 @@ class SidebarMenuResolver implements MenuResolver
         $this->menu->clear();
         $items = $ref->config('menu', []);
 
-        if (!is_array($items)) {
+        if ( !is_array($items) && !is_bool($items) ) {
             throw CodexException::invalidMenuConfiguration(": menu.yml in [{$this}]");
         }
 
-        $this->recurse($items);
+        if ( $items !== false ) {
+            $this->recurse($items);
+        }
     }
 
     /**
@@ -70,15 +72,15 @@ class SidebarMenuResolver implements MenuResolver
     protected function recurse($items = [], $parentId = 'root')
     {
 
-        foreach ($items as $item) {
+        foreach ( $items as $item ) {
             $link = 'javascript:;';
             $type = null;
-            if (array_key_exists('document', $item)) {
+            if ( array_key_exists('document', $item) ) {
                 $type = 'document';
                 // remove .md extension if present
                 $path = ends_with($item[ 'document' ], [ '.md' ]) ? Str::remove($item[ 'document' ], '.md') : $item[ 'document' ];
                 $link = $this->codex->url($this->ref->getProject(), $this->ref->getName(), $path);
-            } elseif (array_key_exists('href', $item)) {
+            } elseif ( array_key_exists('href', $item) ) {
                 $type = 'href';
                 $link = $item[ 'href' ];
             }
@@ -90,20 +92,20 @@ class SidebarMenuResolver implements MenuResolver
             $node->setAttribute('id', $id);
 
 
-            if (isset($path)) {
+            if ( isset($path) ) {
                 $node->setMeta('path', $path);
             }
-            if (isset($item[ 'icon' ])) {
+            if ( isset($item[ 'icon' ]) ) {
                 $node->setMeta('icon', $item[ 'icon' ]);
             }
 
-            if (isset($item[ 'children' ])) {
+            if ( isset($item[ 'children' ]) ) {
                 $type = 'parent';
             }
 
             $node->setMeta('type', $type);
 
-            if (isset($item[ 'children' ])) {
+            if ( isset($item[ 'children' ]) ) {
                 $this->recurse($item[ 'children' ], $id);
             }
         }

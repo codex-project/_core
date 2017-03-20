@@ -19,6 +19,9 @@
         @show
     </title>
 
+    @foreach([] as $b)
+        {{ $loop->index}}
+    @endforeach
 
     @section('data')
         {!! codex()->theme->renderData() !!}

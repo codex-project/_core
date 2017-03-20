@@ -128,12 +128,17 @@ class Document extends Extendable implements Arrayable
             throw CodexException::documentNotFound("{$this} in [{$project}]");
         }
 
-        $this->attributes   = $codex->config('documents.default_attributes');
+        // attributes / config
+        $this->attributes   = $codex->config('documents.default_attributes', []);
+        $inheritConfig = $ref->config()->only($codex->config('documents.inherit_attributes', []))->toArray();
+        $this->mergeAttributes($inheritConfig);
+        $this->attr('view', null) === null && $this->setAttribute('view', $codex->view('document'));
+
+        // cache
         $this->lastModified = $this->getFiles()->lastModified($this->getPath());
         $this->setCacheMode($this->getCodex()->config('documents.cache.mode', self::CACHE_DISABLED));
 
-        //$this->content = $this->getFiles()->get($this->getPath());
-        $this->attr('view', null) === null && $this->setAttribute('view', $codex->view('document'));
+
         $this->hookPoint('document:constructed');
     }
 

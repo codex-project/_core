@@ -97,8 +97,8 @@ class CodexServiceProvider extends ServiceProvider
 
     public function booting()
     {
-        $this->bootMenus();
-        $this->bootTheme();
+        $this->bootMenus($this->app[ 'codex' ]);
+        $this->bootTheme($this->app[ 'codex' ]);
     }
 
     public function register()
@@ -118,17 +118,17 @@ class CodexServiceProvider extends ServiceProvider
         $this->registerJavascriptData();
 
 
-        if ( $this->config->get('codex.http.enabled', false) ) {
+        if ($this->config->get('codex.http.enabled', false)) {
             $this->registerHttp();
         }
 
         return $app;
     }
 
-    public function bootTheme()
+    public function bootTheme(Codex $codex)
     {
 
-        $theme = $this->codex()->theme;
+        $theme = $codex->theme;
 
         $assetPath = asset('vendor/codex');
         $theme
@@ -146,37 +146,22 @@ class CodexServiceProvider extends ServiceProvider
             ->addJavascript('manifest', $assetPath . '/js/manifest.js')
             ->addJavascript('vendor', $assetPath . '/js/vendor.js', [ 'vue', 'vuex', 'jquery', 'radic.util' ])
             ->addJavascript('codex', $assetPath . '/js/codex.js', [ 'vendor' ]);
-
-        $this->codexHook('controller:document', function ($controller) use ($assetPath) {
-            $this->codex()->theme->addJavascript('codex.page.document', $assetPath . '/js/codex.page.document.js', [ 'codex' ]);
-//                ->addScript('init', <<<EOT
-//var app = new codex.App({
-//    el: '#app'
-//})
-//EOT
-//                );
+        $codex->hook('controller:document', function ($controller) use ($assetPath, $theme) {
+            $theme->addJavascript('codex.page.document', $assetPath . '/js/codex.page.document.js', [ 'codex' ]);
         });
 
-        $this->codexHook('controller:error', function ($controller, $what, \Exception $e) use ($assetPath) {
-            $this->codex()->theme->addJavascript('codex.page.document', $assetPath . '/js/codex.page.document.js', [ 'codex' ]);
-//                ->addScript('init', <<<EOT
-//var app = new codex.App({
-//    el: '#app'
-//})
-//EOT
-//                );
+        $codex->hook('controller:error', function ($controller, $what, \Exception $e) use ($assetPath, $theme) {
+            $theme->addJavascript('codex.page.document', $assetPath . '/js/codex.page.document.js', [ 'codex' ]);
         });
     }
 
 
-    public function bootMenus()
+    public function bootMenus(Codex $codex)
     {
-        $codex = $this->codex();
-
         # Menus
 
         # Plugins
-        $this->addons->plugins->run();
+        $codex->addons->plugins->run();
 
         $codex->menus->add('sidebar')
             ->setResolver(SidebarMenuResolver::class)
@@ -190,7 +175,7 @@ class CodexServiceProvider extends ServiceProvider
             ->setResolver(RefsMenuResolver::class)
             ->setView($codex->view('menus.header'));
 
-        $this->codexHook('controller:document', function ($controller, Document $document, Codex $codex, $project, $ref) {
+        $codex->hook('controller:document', function ($controller, Document $document, Codex $codex, $project, $ref) {
             $codex->theme->pushContentToStack('nav', $codex->view('document'), function ($view) use ($codex, $document) {
                 return $codex->menus->get('refs')->render($document->getRef());
             });
@@ -215,7 +200,7 @@ class CodexServiceProvider extends ServiceProvider
         ));
         $log->setEnabled($this->config[ 'codex.log' ]);
         $log->useFiles($this->config[ 'codex.paths.log' ]);
-        if ( true === config('app.debug', false) ) {
+        if (true === config('app.debug', false)) {
             $log->useChromePHP();
             $log->useFirePHP();
         }

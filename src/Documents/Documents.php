@@ -92,7 +92,7 @@ class Documents extends ExtendableCollection implements Contracts\Documents\Docu
 
     protected function resolvePathName($pathName = null)
     {
-        $pathName = $pathName ?: 'index';
+        $pathName = $pathName ?: $this->getRef()->config('index');
         $this->hookPoint('documents:resolve:path', [ $pathName ]);
 
         if (array_key_exists($pathName, $this->customDocuments)) {

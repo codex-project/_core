@@ -13,6 +13,7 @@ subtitle: Core Concepts
 
 ## Configuration
 
+<!--*codex:phpdoc:method:signature('Codex\Codex::view()')*-->
 
 
 #### Plugins

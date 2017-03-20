@@ -87,14 +87,6 @@ class Codex extends Extendable implements Arrayable
     protected $cache;
 
     /**
-     * Path to the directory containing all docs, containsi the config value of "codex.paths.docs"
-     *
-     * @var string
-     *
-     */
-    protected $docsPath;
-
-    /**
      * A collection of resolved extensions
      * @var Collection
      */
@@ -151,10 +143,6 @@ class Codex extends Extendable implements Arrayable
         $this->cache = $cache;
         $this->log   = $log;
 
-        $this->docsPath = config('codex.paths.docs');
-        if ( path_is_relative($this->docsPath) ) {
-            $this->docsPath = base_path($this->docsPath);
-        }
 
         // 'factory:done' called after all factory operations have completed.
         $this->hookPoint('constructed', [ $this ]);
@@ -222,7 +210,6 @@ class Codex extends Extendable implements Arrayable
         $projectRef       = isset($psegments[ 1 ]) ? $psegments[ 1 ] : false;
         $documentPathName = isset($segments[ 1 ]) ? $segments[ 1 ] : false;
 
-        #
         # Projects / Project
         if ( $projectName === '*' ) {
             // get('*')
@@ -236,7 +223,6 @@ class Codex extends Extendable implements Arrayable
         }
         $project = $this->projects->get($projectName);
 
-        #
         # Refs / Ref
         if ( $projectRef === false ) {
             if ( $documentPathName === false ) {
@@ -246,7 +232,6 @@ class Codex extends Extendable implements Arrayable
             $projectRef = '!'; // make it so that the default ref will be chosen when using get('codex::path/to/document')
         }
         if ( $projectRef === '*' ) {
-            // get('codex/*')
             return $project->refs;
         }
         if ( $projectRef === '!' ) {
@@ -258,12 +243,9 @@ class Codex extends Extendable implements Arrayable
             $ref = $project->refs->get($projectRef);
         }
         if ( $documentPathName === false ) {
-            // get('codex/!')
-            // get('codex/ref')
             return $ref;
         }
 
-        #
         # Documents / Document
         if ( $documentPathName === '*' ) {
             return $ref->documents;
@@ -326,7 +308,11 @@ class Codex extends Extendable implements Arrayable
      */
     public function getDocsPath()
     {
-        return $this->docsPath;
+        $docsPath = config('codex.paths.docs');
+        if ( path_is_relative($docsPath) ) {
+            $docsPath = base_path($docsPath);
+        }
+        return $docsPath;
     }
 
     /**
@@ -522,5 +508,20 @@ class Codex extends Extendable implements Arrayable
     public function isDev()
     {
         return $this->config('codex.dev', false) !== false;
+    }
+
+    /**
+     * hook method
+     *
+     * @param      $name
+     * @param      $hook
+     * @param bool $replace
+     *
+     * @return $this
+     */
+    public function hook($name, $hook, $replace=false)
+    {
+        $this->addons->hooks->hook($name, $hook, $replace);
+        return $this;
     }
 }

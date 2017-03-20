@@ -33,6 +33,8 @@ buttons:
 Codex is able to do things like transforming markdown or automaticaly fetching documentation from a Bitbucket/Github repositories.
 Most of it's features are provided by addons. Codex is extenable, themeable, hackable and simple to setup and use.
 
+[Codex Class](#codex:phpdoc['Codex\Codex']:popover)
+
 ## How it works
 
 **Codex** > **Projects** > **Refs (versions)** > **Documents** > **Processors**

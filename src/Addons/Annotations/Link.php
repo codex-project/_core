@@ -20,5 +20,19 @@ namespace Codex\Addons\Annotations;
  */
 final class Link extends AbstractProcessorAnnotation
 {
+    /**
+     * @Required()
+     * @var string
+     */
+    public $name;
+    /**
+     * Parameter names
+     * @var array
+     */
+    public $params = [];
 
+    /**
+     * @var array
+     */
+    public $modifiers = [];
 }

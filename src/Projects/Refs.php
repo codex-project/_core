@@ -32,11 +32,10 @@ class Refs extends ExtendableCollection implements Arrayable
     use FilesTrait;
 
     /** Automaticly picks a ref based on priority. LAST_VERSION (otherwise)> MASTER (otherwise)> FIRST_DIRECTORY  */
-    const DEFAULT_AUTO = 'auto';
-    const DEFAULT_MASTER = 'master';
-    const DEFAULT_LAST_VERSION = 'last';
-    const DEFAULT_FIRST_DIRECTORY = 'first';
-    const DEFAULT_CUSTOM = 'custom';
+    const DEFAULT_AUTO = 1;
+    const DEFAULT_MASTER = 2;
+    const DEFAULT_LAST_VERSION = 3;
+    const DEFAULT_FIRST_DIRECTORY = 4;
 
     /** @var \Codex\Support\Collection|Ref[] */
     protected $items;
@@ -122,8 +121,8 @@ class Refs extends ExtendableCollection implements Arrayable
             case static::DEFAULT_FIRST_DIRECTORY:
                 $defaultRef = $this->items->first()->getName();
                 break;
-            case static::DEFAULT_CUSTOM:
-                $defaultRef = $this->project->config('custom');
+            default:
+                $defaultRef = $this->project->config('default');
                 break;
         }
 

@@ -4,9 +4,9 @@
  *
  * License and copyright information bundled with this package in the LICENSE file.
  *
- * @author    Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
- * @license   http://codex-project.ninja/license The MIT License
+ * @author Robin Radic
+ * @copyright Copyright 2017 (c) Codex Project
+ * @license http://codex-project.ninja/license The MIT License
  */
 namespace {
 
@@ -32,7 +32,8 @@ namespace C {
         /** @return string[] */
         public function getProjects()
         {
-            return [new Project, new Project];
+            return [ 'a', 'b' ];
+//            return [ new Project, new Project ];
         }
 
         /** @return \C\Contracts\Project */
@@ -58,6 +59,11 @@ namespace C {
         {
             return new Theme;
         }
+
+        public function hook($name, $handler)
+        {
+            $this->getAddonManager()->getHookRepository()->create($name, $handler);
+        }
     }
 
     class Project implements Contracts\Project
@@ -71,6 +77,7 @@ namespace C {
         public function config($k, $def = null)
         {
         }
+
         /**
          * public function getVersions();
          *
@@ -80,7 +87,8 @@ namespace C {
          */
         public function getRefs()
         {
-            return [ new Ref($this), new Ref($this) ];
+            return [ 'master', 'develop', '1.0', '1.1' ];
+//            return [ new Ref($this), new Ref($this) ];
         }
 
         /** @return \C\Contracts\Ref */
@@ -133,7 +141,14 @@ namespace C {
         /** @return string[] */
         public function getDocuments()
         {
-            return [ new Document($this), new Document($this) ];
+            return [
+                'index',
+                'getting-started' => [
+                    'installation',
+                    'configuration',
+                ],
+            ];
+//            return [ new Document($this), new Document($this) ];
         }
 
         /** @return \C\Contracts\Document */
@@ -270,12 +285,14 @@ namespace C\Addons {
 
         /**
          * hasMethod method
+         *
          * @return bool
          */
         public function hasMethod();
 
         /**
          * hasProperty method
+         *
          * @return bool
          */
         public function hasProperty();
@@ -320,6 +337,7 @@ namespace C\Addons {
 
         /**
          * getAnnotation method
+         *
          * @return \Codex\Addons\Annotations\AbstractAnnotation|mixed
          */
         public function getAnnotation();
@@ -616,8 +634,7 @@ namespace {
 
 
 # Addons
-    $addons   = \C\Addons\AddonManager::getInstance();
-    $addons   = $c->getAddonManager();
+    $addons = $c->getAddonManager();
 
     $addons->get('phpdoc');
     $processor = $addons->getProcessorRepository()->get('phpdoc');

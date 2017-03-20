@@ -15,6 +15,7 @@ use Illuminate\Events\Dispatcher;
 use Laradic\Support\Util;
 use Laradic\Testing\Laravel\AbstractTestCase;
 
+
 class TestCase extends AbstractTestCase
 {
     /** @var \Codex\Codex */
@@ -51,12 +52,10 @@ class TestCase extends AbstractTestCase
         file_touch(storage_path('codex.log'));
 
         // copy docs, only 1 time
-        if (file_isDirectory($this->fixturesPath('docs')) === false) {
-            file_copyDirectory($this->fixturesPath('docs'), resource_path('docs'));
+        if (file_isDirectory(resource_path('docs'))) {
+            file_deleteDirectory(resource_path('docs'));
         }
-        if (file_isDirectory(resource_path('docs/codex/master')) === false) {
-            file_copyDirectory($this->getPackagePath('docs'), resource_path('docs/codex/master'));
-        }
+        file_copyDirectory($this->fixturesPath('docs'), resource_path('docs'));
 
         $this->registerServiceProvider();
         $this->app[ 'config' ]->set('codex.plugins', []);

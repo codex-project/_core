@@ -69,22 +69,18 @@ class Ref extends Extendable implements Arrayable
 
         $this->hookPoint('ref:construct', [ $this ]);
 
-        $this->resolve();
+        // set config
+        $this->setConfig(config('codex.refs.default_config', []));
+        $inheritConfig = $this->getProject()->config()->only(config('codex.refs.inherit_config', []))->toArray();
+        $this->mergeConfig($inheritConfig);
 
-        $this->hookPoint('ref:constructed', [ $this ]);
-    }
-
-    protected function resolve()
-    {
-        // @TODO change to codex.yml only
         $fs = $this->getFiles();
         if ($fs->exists($this->path('codex.yml'))) {
             $yaml = $fs->get($this->path('codex.yml'));
-        } elseif ($fs->exists($this->path('menu.yml'))) {
-            $yaml = $fs->get($this->path('menu.yml'));
+            $this->mergeConfig(Yaml::parse($yaml));
         }
 
-        isset($yaml) && $this->setConfig(Yaml::parse($yaml));
+        $this->hookPoint('ref:constructed', [ $this ]);
     }
 
     /**

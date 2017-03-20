@@ -5,12 +5,18 @@
  * License and copyright information bundled with this package in the LICENSE file.
  *
  * @author Robin Radic
- * @copyright Copyright 2016 (c) Codex Project
+ * @copyright Copyright 2017 (c) Codex Project
  * @license http://codex-project.ninja/license The MIT License
  */
 
+/**
+ *
+ */
+namespace {
 
-
+    global $loop;
+    $loop = new \Radic\BladeExtensions\Helpers\Loop\Loop(null,[]);
+}
 namespace C\Contracts {
 
     interface Project

@@ -11,13 +11,17 @@
 
 // Documentation: http://codex-project.dev/codex/master/getting-started/configuration/global
 return [
-    'display_name' => env('CODEX_DISPLAY_NAME', 'Codex (BETA)'),
+    // This will be used for the <title> and for the header
+    'display_name'    => env('CODEX_DISPLAY_NAME', 'Codex (BETA)'),
 
-    'description' => 'Codex is a file-based documentation platform built on top of Laravel. It\'s completely customizable and dead simple to use to create beautiful documentation.',
 
+    'description'     => 'Codex is a file-based documentation platform built on top of Laravel. It\'s completely customizable and dead simple to use to create beautiful documentation.',
+
+    // The default project. Will be used when, for example, you do not specify the project name in the URL
     'default_project' => env('CODEX_DEFAULT_PROJECT', 'codex'),
 
-    'plugins' => [ 'phpdoc', 'auth', 'git', 'jira', 'welcome' ],
+    // enabled plugins
+    'plugins'         => [ 'phpdoc', 'auth', 'git', 'jira', 'welcome' ],
 
     'paths' => [
         'docs'     => env('CODEX_ROOT_DIR', base_path('resources/docs')),
@@ -52,12 +56,47 @@ return [
     // Enables the codex development helpers. Note that this also requires app.debug to be true
     'dev' => env('CODEX_DEV_ENABLED', true),
 
-    'documents'   => [
-        'cache'      => [
+    'projects' => [
+
+        'default_config' => [
+            'description' => '',
+            // default ref
+            'default'     => \Codex\Projects\Refs::DEFAULT_AUTO,
+//            'first'       => '',
+            // default document
+            'index'       => 'index',
+            'extensions'  => [ 'md', 'markdown', 'html' ],
+            // set default view for document. leave on null to let $codex->view('document') be it
+            'view'        => null,
+            'processors'  => [
+                'enabled' => [],
+            ],
+        ],
+    ],
+
+    'refs' => [
+        'inherit_config' => [
+            'index',
+            'processors',
+            'view',
+        ],
+        // the default values of codex.yml
+        'default_config' => [
+            // inherits from project:
+            // index
+            // processors
+            // view
+
+            'menu' => false,
+        ],
+    ],
+
+    'documents' => [
+        'cache'              => [
             // true     = enabled
             // false    = disabled
             // null     = disabled when app.debug is true
-            'mode'    => null,
+            'mode'    => \Codex\Documents\Document::CACHE_AUTO,
 
 
             // Whenever a document's last modified time changes, the document's cache is refreshed.
@@ -66,39 +105,24 @@ return [
             // Recommended is to put it on null
             'minutes' => 7,
         ],
-        'extensions' => [
+        'extensions'         => [
             'md'       => 'codex.document',
             'markdown' => 'codex.document',
             'html'     => 'codex.document',
             'rst'      => 'codex.document',
         ],
+        'inherit_attributes' => [
+            'processors',
+            'view',
+        ],
         'default_attributes' => [
-            'author'     => '',
-            'title'      => '',
-            'subtitle'   => '',
-            'view'       => null,
-            'cache'      => true,
-            'processors' => [
-                'enabled'  => [],
-                'disabled' => [],
-            ],
-        ]
-    ],
-
-    'projects' => [
-
-        'default_config' => [
-            'description' => '',
-            'default'     => \Codex\Projects\Refs::DEFAULT_AUTO,
-            'custom'      => null,
-            'first'       => '',
-            'index'       => 'index',
-            'extensions'  => [ 'md', 'markdown', 'html' ],
-            'processors'  => [
-                'enabled' => [],
-            ],
+            'author'   => '',
+            'title'    => '',
+            'subtitle' => '',
+            'cache'    => true,
+            // inherits from refs codex.yml
+            // processors
         ],
     ],
-
 
 ];
